@@ -29,11 +29,6 @@ export const contactFormSchema = z.object({
     })
     .nullable()
     .optional(),
-  position: z.string({
-    required_error: "Please provide your position",
-    invalid_type_error: "Please provide your position",
-    message: "Please provide your position",
-  }),
   subject: z.string({
     required_error: "Please choose a topic",
     invalid_type_error: "Please choose a topic",
