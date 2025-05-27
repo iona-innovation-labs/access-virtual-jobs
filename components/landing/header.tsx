@@ -38,9 +38,9 @@ export default function Header() {
                 </Link>
               </li>
               <li className="ml-6">
-                <Link href="/schedule-call">
+       
                   <CtaButton />
-                </Link>
+
               </li>
             </ul>
           </nav>

@@ -100,7 +100,7 @@ export default function FAQ() {
           <p className="text-gray-600 mb-4">
             Still have questions? We&apos;re here to help.
           </p>
-          <Link href="/contact" className="bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200">
+          <Link href="/contact" className="bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-dark transition-colors duration-200">
             Contact Support
           </Link>
         </div>

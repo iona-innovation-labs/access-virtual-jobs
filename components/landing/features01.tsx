@@ -37,7 +37,7 @@ export default function Features01() {
 
   return (
     <section className="relative">
-      <div className="absolute inset-0 bg-blue-600 -z-10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
             <Image className="w-full h-full object-cover" src={landingPage.features.bgImage} alt="Illustration" />
         </div>

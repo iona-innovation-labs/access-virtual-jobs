@@ -10,7 +10,7 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden">
       <div
-        className="absolute inset-0 bg-blue-600 pointer-events-none -z-10"
+        className="absolute inset-0 bg-brand pointer-events-none -z-10"
         aria-hidden="true"
       />
     <div

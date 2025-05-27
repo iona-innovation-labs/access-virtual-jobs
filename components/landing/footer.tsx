@@ -3,7 +3,7 @@ import Link from 'next/link'
 export default function Footer() {
   return (
     <footer className="relative">
-      <div className="absolute inset-0 bg-blue-600 -z-10" aria-hidden="true" />
+      <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
 
 
 
