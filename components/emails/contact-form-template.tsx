@@ -17,7 +17,6 @@ interface ContactFormTemplateProps {
   name: string;
   email: string;
   phone?: string | null;
-  position: string;
   subject: string;
   message: string;
   origin: string;
@@ -31,7 +30,6 @@ export const ContactFormTemplate = ({
   name,
   email,
   phone,
-  position,
   subject,
   message,
   origin,
@@ -75,8 +73,6 @@ export const ContactFormTemplate = ({
                 Phone Number
               </Text>
               <Text>{phone || "Not provided"}</Text>
-              <Text style={{ ...paragraph, fontWeight: "700" }}>Position</Text>
-              <Text>{position || "Not provided"}</Text>
               <Text style={{ ...paragraph, fontWeight: "700" }}>
                 Reason for Contacting
               </Text>
