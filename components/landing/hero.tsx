@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import {landingPage} from "@/config/landing-page.config"
 import { ArrowRight } from "lucide-react"
 import CtaButton from "./cta-button"
+import Image from "next/image"
 
 export default function Hero() {
   return (
@@ -13,18 +14,10 @@ export default function Hero() {
         className="absolute inset-0 bg-brand pointer-events-none -z-10"
         aria-hidden="true"
       />
-    <div
-    className="absolute left-1/2 -translate-x-1/2 md:-translate-x-1/2 -translate-y-1/4 pointer-events-none -z-10 opacity-50"
-    aria-hidden="true"
-    >
-        <object
-          type="image/svg+xml"
-          data={landingPage.hero.image.src}
-          width="1440"
-          height="1214"
-        />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
+          <Image className="w-full h-full object-cover" src={landingPage.features.bgImage} alt="Illustration" />
       </div>
-
+     
       {/* Hero Container */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6"  data-aos="fade-up">
         <div className="pt-28 pb-16 md:pt-40 md:pb-20">
