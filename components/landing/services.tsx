@@ -1,9 +1,4 @@
 import Image from 'next/image'
-import Service01 from '@/public/images/landing-feature/1.jpg'
-import Service02 from '@/public/images/landing-feature/2.jpg'
-import Service03 from '@/public/images/landing-feature/3.jpg'
-import Service04 from '@/public/images/landing-feature/4.jpg'
-import Service05 from '@/public/images/landing-feature/5.jpg'
 import { landingPage } from '@/config/landing-page.config'
 import CtaButton from './cta-button'
 

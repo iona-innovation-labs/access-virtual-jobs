@@ -2,8 +2,6 @@
 // get auth session to check wether to render sign in and sign up button or profile creds
 
 import { auth } from "@/auth"
-import { SignUpButton } from "@/components/auth/sign-up-button"
-import { SignIn } from "@/components/auth/sign-in-button"
 import { SignOutButton } from "@/components/auth/sign-out-button"
 import Hero from "@/components/landing/hero"
 import JobCarousel from "@/components/landing/job-carousel"

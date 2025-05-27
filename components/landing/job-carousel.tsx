@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 // @ts-ignore
 import Swiper, { Autoplay } from 'swiper'
 import 'swiper/swiper.min.css'
-Swiper.use([Autoplay])
+
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card"
 import { useRouter } from 'next/navigation'
@@ -30,6 +30,7 @@ const jobListings: IJobListing[] = [...Array(6)].map((_, i) => ({
 }))
 
 export default function Clients() {
+  Swiper.use([Autoplay])
   const router = useRouter()
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import { sendEmailNotification } from "@/services/send-email-notif"; // Adjust if path differs
-import { signIn } from "@/auth";
 
 export async function POST(request: Request) {
   try {
