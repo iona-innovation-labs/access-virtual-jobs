@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { AppRouterWithNormalParamsWithId } from "@/types/general";
 import JobHeader from "@/components/submissions/job/job-header";
-import { getJobApplicationWithJobDetails, getJobPost } from "@/lib/api/jobs";
+import { getJobApplicationWithJobDetails } from "@/lib/api/jobs";
 import JobContent from "@/components/submissions/job/job-contents";
 
 export default async function ViewJobSubmission({

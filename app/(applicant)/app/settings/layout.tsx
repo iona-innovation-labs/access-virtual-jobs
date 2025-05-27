@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { Metadata } from "next";
 
-import ProfileTabs from "@/components/profile/tabs";
 import SettingsSidebar from "@/components/settings/side-bar";
 
 export const metadata: Metadata = {

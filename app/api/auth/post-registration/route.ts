@@ -20,7 +20,6 @@ export async function POST(req: Request) {
       const user = await db
         .insert(users)
         .values({
-          userId: user_id,
           email,
           firstName: given_name ?? "",
           lastName: family_name ?? "",
@@ -28,10 +27,10 @@ export async function POST(req: Request) {
           profileImage: picture ?? "",
           provider,
         })
-        .returning({ userId: users.id });
+        .returning();
 
       createNotification(
-        user[0].userId,
+        user[0].username as string,
         "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
         "info",
         "#"

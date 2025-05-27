@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { RxChevronRight } from "react-icons/rx";
 
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
 import { ImageProps } from "@/types/general";

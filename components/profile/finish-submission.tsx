@@ -1,12 +1,9 @@
 "use client";
 
-import { getUser } from "@/database/queries/users";
-import { IUserResponse } from "@/types/users";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 import { FaFileAlt } from "react-icons/fa";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useUserInfo } from "@/hooks/use-user-info";
 import { useProfileTabContext } from "@/context/profile-tab-context";
 

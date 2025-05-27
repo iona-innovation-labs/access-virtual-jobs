@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import Illustration from "@/public/images/landing/hero-blur.svg"
 import { Button } from "@/components/ui/button"
 import {landingPage} from "@/config/landing-page.config"
 import { ArrowRight } from "lucide-react"

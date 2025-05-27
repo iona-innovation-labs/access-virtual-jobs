@@ -1,14 +1,6 @@
-import { FaXTwitter } from "react-icons/fa6";
-import {
-  BiLogoFacebookCircle,
-  BiLogoInstagram,
-  BiLogoLinkedinSquare,
-  BiLogoYoutube,
-} from "react-icons/bi";
 import { Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { ImageProps } from "@/types/general";
-import GoogleMapLink from "../ui/googlemap-link";
 
 type Links = {
   title: string;
@@ -54,7 +46,6 @@ export const Footer = (props: Footer11Props) => {
     address,
     contact,
     columnLinks,
-    socialMediaLinks,
     footerText,
     footerLinks,
   } = {
@@ -80,7 +71,12 @@ export const Footer = (props: Footer11Props) => {
             <div className="mb-6 md:mb-8 text-white">
               <div className="space-x-2 flex flex-row items-start">
                 <span>{address.icon()}</span>
-                <GoogleMapLink address={address.value} />
+                <a
+                  className="mb-5 text-sm md:mb-6 hover:underline"
+                  href={`https://www.google.com/maps/search/?api=1&query=${address.value}`}
+                >
+                  {address.value}
+                </a>
               </div>
               <div className="space-x-2 flex flex-row items-start">
                 <span>{contact.icon()}</span>

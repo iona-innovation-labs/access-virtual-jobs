@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 
 import RecommendedJobCard from "./recommended-job-card";
 import { IJobListing } from "@/types/jobs";
-import icon from "@/public/images/icon.png";
 
 const RecommendedJobs = ({ positions }: { positions: IJobListing[] }) => {
   return (

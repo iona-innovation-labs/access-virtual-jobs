@@ -5,7 +5,7 @@ import { IconDotsVertical } from "@tabler/icons-react"
 import { useSession } from "next-auth/react"
 
 export default function NavUserDetails() {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   return (
     <DropdownMenuTrigger asChild>

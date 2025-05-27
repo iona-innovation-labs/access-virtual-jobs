@@ -91,7 +91,6 @@ export default function Features02() {
 function ContentBlock({
   title,
   description,
-  subtitle,
   items,
 }: {
   title: string

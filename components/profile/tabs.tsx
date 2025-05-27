@@ -12,7 +12,7 @@ const tabs = [
 ];
 
 const ProfileTabs = () => {
-  const { currentTab, setCurrentTab } = useProfileTabContext();
+  const { currentTab } = useProfileTabContext();
 
   return (
     <div className="flex items-center justify-center my-4">

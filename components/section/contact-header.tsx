@@ -1,5 +1,5 @@
-import { BiEnvelope, BiMap, BiMessageDetail, BiPhone } from "react-icons/bi";
-import GoogleMapLink from "../ui/googlemap-link";
+import { BiEnvelope } from "react-icons/bi";
+import GoogleMapLink from "@/components/ui/googlemap-link";
 
 type LinkProps = {
   label: string;

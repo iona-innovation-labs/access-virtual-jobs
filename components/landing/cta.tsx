@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/link'
 import Illustration from '@/public/images/landing/hero-blur.svg'
 import CtaButton from './cta-button'
 

@@ -314,7 +314,7 @@ export default function EditProfileForm() {
           <FormField
             control={profileDetailsForm.control}
             name="phone"
-            render={({ field, fieldState }) => (
+            render={() => (
               <FormItem className="col-span-4 grid grid-cols-4 gap-2">
                 <div className="col-span-4 xl:col-span-1">
                   <FormLabel className="mt-2 font-semibold">
@@ -421,7 +421,7 @@ export default function EditProfileForm() {
           <FormField
             control={profileDetailsForm.control}
             name="emailAddress"
-            render={({ field, fieldState }) => (
+            render={() => (
               <FormItem className="col-span-4 grid grid-cols-4 gap-2">
                 <div className="col-span-4 xl:col-span-1">
                   <FormLabel className="mt-2 font-semibold">

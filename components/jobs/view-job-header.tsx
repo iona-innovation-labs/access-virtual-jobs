@@ -1,4 +1,5 @@
 import { LucideIcon } from "lucide-react";
+import { JSX } from "react";
 
 type Details = {
   label: string;
@@ -16,7 +17,7 @@ export type ViewJobHeaderProps = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const ViewJobHeader = (props: ViewJobHeaderProps) => {
-  const { heading, details, applyBtn, jobId } = {
+  const { heading, details, applyBtn } = {
     ...props,
   };
 

@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useSession } from "next-auth/react";
 
 type IProfileProps = {
   profile: {
@@ -36,7 +36,10 @@ type IProfileProps = {
 };
 
 const ProfileCard = ({ profile }: IProfileProps) => {
-  const { user, error, isLoading } = useUser();
+  const session = useSession();
+
+  const user = session.data?.user;
+
   return (
     <Card className="xl:w-2/3 w-full bg-gray-100 border border-gray-500 max-w-3xl mx-auto xl:px-12 py-12 xl:py-8 shadow-lg rounded-lg relative">
       <a
@@ -52,7 +55,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
 
       <CardContent>
         <Image
-          src={user?.picture || ""}
+          src={user?.image || ""}
           alt="Avatar"
           className="size-20 rounded-full object-cover"
           width={150}

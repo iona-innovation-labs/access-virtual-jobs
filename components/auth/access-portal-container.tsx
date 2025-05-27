@@ -1,7 +1,8 @@
 "use client";
 
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { useSession } from "next-auth/react";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
+
 
 type Props = {
   logInButton: LinkButtonProps;
@@ -12,7 +13,13 @@ export type AuthContainerProps = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const AccessPortalContainer = (props: AuthContainerProps) => {
-  const { user, isLoading, error } = useUser();
+  const isLoading = false;
+  const session = useSession();
+  let error = null;
+  if(!session.data?.user) {
+    error = new Error("User not found");
+  }
+  const user = session.data?.user;
   const { logInButton, signUpButton } = {
     ...AuthContainerDefaults,
     ...props,

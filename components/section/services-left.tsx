@@ -1,7 +1,6 @@
 import { ImageProps } from "@/types/general";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
 import Image from "next/image";
-import { ChevronRight } from "lucide-react";
 
 type Props = {
   heading: string;

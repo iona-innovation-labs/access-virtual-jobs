@@ -1,4 +1,4 @@
-import { Banknote, MapPin, UserRound } from "lucide-react";
+import { Banknote, MapPin } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 
 import { PositionProps } from "@/types/jobs";

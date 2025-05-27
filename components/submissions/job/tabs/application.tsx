@@ -1,4 +1,4 @@
-import { getProgressReadableText, getProgressColor } from "@/lib/get-progress";
+import { getProgressReadableText } from "@/lib/get-progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { Progress, Status } from "@/types/jobs";

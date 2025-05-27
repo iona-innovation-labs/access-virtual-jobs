@@ -1,14 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
-} from "@relume_io/relume-ui";
-import clsx from "clsx";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
 import Image from "next/image";
 import { ImageProps } from "@/types/general";
@@ -27,13 +18,11 @@ export type Header21Props = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const HowWeHelpFeature = (props: Header21Props) => {
-  const [isIframeLoaded, setIsIframeLoaded] = useState(false);
   const {
     heading,
     description,
     description2,
     buttons,
-    video,
     image,
     highlights,
   } = {
@@ -121,7 +110,7 @@ export const Header21Defaults: Header21Props = {
   },
 };
 
-const Play = (props: React.SVGProps<SVGSVGElement>) => {
+export const Play = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -139,7 +128,7 @@ const Play = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-const Loading = (props: React.SVGProps<SVGSVGElement>) => {
+export const Loading = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

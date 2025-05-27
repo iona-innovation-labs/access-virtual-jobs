@@ -1,5 +1,4 @@
 import { ImageProps } from "@/types/general";
-import { Button } from "@relume_io/relume-ui";
 
 import Image from "next/image";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";

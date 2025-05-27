@@ -1,9 +1,8 @@
 "use client"
 
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import ProfileTabs from "@/components/profile/tabs";
-import { Button } from "@/components/ui/button";
-import { ProfileTabProvider, useProfileTabContext } from "@/context/profile-tab-context";
+import { ProfileTabProvider } from "@/context/profile-tab-context";
 import ProfileHeader from "@/components/profile/profile-header";
 import { ProfileFilesProvider } from "@/context/profile-files-context";
 import { ProfileDetailsProvider } from "@/context/profile-details-context";

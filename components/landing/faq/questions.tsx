@@ -40,9 +40,9 @@ const faqs = [
 ];
 
 export default function FAQ() {
-  const [openItem, setOpenItem] = useState(null);
+  const [openItem, setOpenItem] = useState<number | null>(null);
 
-  const toggleItem = (index) => {
+  const toggleItem = (index: number) => {
     setOpenItem(openItem === index ? null : index);
   };
 

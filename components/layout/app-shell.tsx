@@ -1,8 +1,5 @@
 import { auth } from "@/auth"
 import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
 import {
   SidebarInset,
@@ -29,7 +26,7 @@ const ApplicationShell = async ({children}: {children: React.ReactNode}) => {
             <VerifyEmailBanner email={session?.user?.email as string}/>
           )
         }
-      <SiteHeader title="Applicant Portal" />
+      <SiteHeader />
  
       <div className="flex flex-1 flex-col h-full overflow-hidden">
         <div className="@container/main flex flex-1 flex-col gap-2 overflow-hidden items-center">

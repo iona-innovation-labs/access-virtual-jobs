@@ -25,6 +25,7 @@ const adapter = DrizzleAdapter(db, {
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
+  trustHost: true,
   callbacks: {
     async jwt({ token, user, account }) {
       if (account?.provider === "credentials") {

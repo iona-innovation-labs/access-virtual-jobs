@@ -34,7 +34,7 @@ export const JobListSearchFormContainer = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = form;
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import JobApplicationCard from "@/components/submissions/job-application-card";
 
 import { useJobSubmissions } from "@/hooks/use-job-submissions";

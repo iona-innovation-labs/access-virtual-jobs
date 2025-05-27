@@ -25,6 +25,7 @@ export default function ChangePassword() {
     setLoading(true);
     try {
       // TODO: Infer the real type of response of the fetchApi
+      // @typescript-eslint/no-explicit-any
       const response = await fetchApi<any>("/auth/change-password", {
         method: "POST",
         body: JSON.stringify({ userId: user.id, email: user.email }),
@@ -41,6 +42,7 @@ export default function ChangePassword() {
           window.location.href = "/api/auth/logout";
         }, 2000);
       }
+      // @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error sending password reset email:", { error });
 

@@ -1,7 +1,6 @@
 "use client";
 import { ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FaArrowLeft } from "react-icons/fa";
 import { RxChevronLeft } from "react-icons/rx";
 
 interface LayoutProps {

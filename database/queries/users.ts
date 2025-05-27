@@ -6,7 +6,7 @@ import { IUserResponse } from "@/types/users";
 import { sql, eq } from "drizzle-orm";
 import { log } from "@/lib/logs";
 
-export async function getUser(userId: number): Promise<IUserResponse> {
+export async function getUser(userId: string): Promise<IUserResponse> {
   try {
     const user = await db
       .select()
@@ -18,6 +18,7 @@ export async function getUser(userId: number): Promise<IUserResponse> {
       return { ok: false, message: "User not found", user: undefined };
     }
 
+    //@ts-ignore
     return { ok: true, message: "User fetched successfully", user: user[0] };
   } catch (error) {
     log("Error fetching user:", "error", error);

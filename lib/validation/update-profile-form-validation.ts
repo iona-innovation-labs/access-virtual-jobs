@@ -1,16 +1,13 @@
-import {
-  isValidPhoneNumber,
-  isPossiblePhoneNumber,
-} from "react-phone-number-input";
+import { isPossiblePhoneNumber } from "react-phone-number-input";
 import * as z from "zod";
 
-const urlSchema = z
-  .string()
-  .url("Invalid URL format. Must be a valid web address.")
-  .regex(
-    /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/,
-    "URL must be a valid website with a proper domain"
-  );
+// const urlSchema = z
+//   .string()
+//   .url("Invalid URL format. Must be a valid web address.")
+//   .regex(
+//     /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/,
+//     "URL must be a valid website with a proper domain"
+//   );
 
 export const editProfileSchema = z.object({
   jobTitle: z.string().min(1, "This field is required"),

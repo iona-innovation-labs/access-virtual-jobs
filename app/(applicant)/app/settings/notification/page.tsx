@@ -1,6 +1,5 @@
 "use client";
 
-import useSWR from "swr";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";

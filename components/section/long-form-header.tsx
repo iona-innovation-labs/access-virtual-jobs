@@ -1,8 +1,4 @@
-import { Button } from "@relume_io/relume-ui";
-import type { ButtonProps } from "@relume_io/relume-ui";
-import { RxChevronRight } from "react-icons/rx";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
-import { ChevronRight } from "lucide-react";
 
 type SectionProps = {
   stepNumber: number;

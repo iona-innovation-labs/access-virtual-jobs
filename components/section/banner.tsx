@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+// @ts-ignore
 import Cookies from "js-cookie";
-import { Button } from "@relume_io/relume-ui";
-import type { ButtonProps } from "@relume_io/relume-ui";
 import { RxCross2 } from "react-icons/rx";
-import { ImageProps } from "@/types/general";
-import Image from "next/image";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
 
 type Props = {

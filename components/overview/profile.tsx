@@ -15,7 +15,7 @@ import { fetchApi } from "@/services/fetch-api";
 const Profile = () => {
   const router = useRouter();
   const { userInfo, isLoading } = useUserInfo(); // Updated hook usage
-  const { data, error } = useSWR<IProfileResponse, AppError>(
+  const { data } = useSWR<IProfileResponse, AppError>(
     "/profile",
     fetchApi
   );

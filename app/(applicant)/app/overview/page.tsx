@@ -1,6 +1,6 @@
-import AppliedJobs from "@/components/overview/applied-jobs";
-import Profile from "@/components/overview/profile";
-import Stepper from "@/components/overview/progress";
+// import AppliedJobs from "@/components/overview/applied-jobs";
+// import Profile from "@/components/overview/profile";
+// import Stepper from "@/components/overview/progress";
 import RecommendedJobs from "@/components/overview/recommended-jobs";
 import { getJobs } from "@/lib/api/jobs";
 import { Metadata } from "next";

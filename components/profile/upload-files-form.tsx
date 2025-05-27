@@ -10,7 +10,6 @@ import useSWR from "swr";
 import { fetchApi } from "@/services/fetch-api";
 import { X } from "lucide-react";
 import { useState } from "react";
-import { all } from "axios";
 
 interface ProfileData {
   fileUploads: {

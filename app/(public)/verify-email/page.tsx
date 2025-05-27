@@ -3,8 +3,14 @@ import { users } from "@/database/schema/users";
 import { eq, and, gte } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
-export default async function VerifyEmailPage({ searchParams }: { searchParams: { token?: string } }) {
-  const token = searchParams.token;
+export default async function VerifyEmailPage({ 
+  searchParams 
+}: { 
+  searchParams: Promise<{ token?: string }> 
+}) {
+  const resolvedSearchParams = await searchParams;
+  const token = resolvedSearchParams.token;
+  
   if (!token) redirect("/");
 
   const user = await db.query.users.findFirst({

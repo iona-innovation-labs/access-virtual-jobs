@@ -1,10 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import { db } from "@/database";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { auth } from "@/auth";
 
-export async function GET(req: NextRequest) {
+//export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const session = await auth()
 
@@ -45,7 +46,8 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+//export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const session = await auth()
 

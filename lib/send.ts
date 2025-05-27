@@ -8,7 +8,7 @@ import { ContactFormTemplate } from "@/components/emails/contact-form-template";
 const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function submitForm(formData: ContactFormSchema) {
   try {
-    const { data, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: `Access Virtual Staffing Website Visitor <${
         process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualstaffing.com"
       }>`,
@@ -37,6 +37,7 @@ export default async function submitForm(formData: ContactFormSchema) {
         "We received your message and we will get back to you soon. Thank you!",
     };
   } catch (error) {
+    console.error(error);
     return {
       errors: {
         message: "An unexpected error occurred. Could not submit form.",

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
-type Props = {};
 
-export const PodioForm = (props: Props) => {
+//export const PodioForm = (props: Props) => {
+export const PodioForm = () => {
   return (
     <section
       id="podio_form_container"

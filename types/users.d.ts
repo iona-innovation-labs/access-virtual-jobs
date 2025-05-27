@@ -2,7 +2,7 @@ export interface IUserResponse {
   message: string;
   ok: boolean;
   user?: {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
   };

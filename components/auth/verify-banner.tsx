@@ -34,6 +34,7 @@ export function VerifyEmailBanner({ email }: { email: string }) {
         });
       }
     } catch (err) {
+      console.error(err)
       toast({
         title: "Unexpected error",
         description: "Please try again later.",

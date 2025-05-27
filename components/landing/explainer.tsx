@@ -1,10 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
 import ModalVideo from '@/components/landing/modal-video'
 import VideoThumb from '@/public/images/landing/hero-blur.svg'
-import { Button } from '../ui/button'
 import { landingPage } from '@/config/landing-page.config'
 import CtaButton from './cta-button'
 

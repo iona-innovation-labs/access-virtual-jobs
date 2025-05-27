@@ -2,23 +2,23 @@
 
 import { useEffect } from 'react'
 import Image from 'next/image'
-import Illustration from '@/public/images/landing/hero-blur.svg'
-import Carousel01 from '@/public/images/landing-feature/1.jpg'
-import Carousel02 from '@/public/images/landing-feature/2.jpg'
-import Carousel03 from '@/public/images/landing-feature/3.jpg'
-import Carousel04 from '@/public/images/landing-feature/4.jpg'
-import Carousel05 from '@/public/images/landing-feature/5.jpg'
+// import Illustration from '@/public/images/landing/hero-blur.svg'
+// import Carousel01 from '@/public/images/landing-feature/1.jpg'
+// import Carousel02 from '@/public/images/landing-feature/2.jpg'
+// import Carousel03 from '@/public/images/landing-feature/3.jpg'
+// import Carousel04 from '@/public/images/landing-feature/4.jpg'
+// import Carousel05 from '@/public/images/landing-feature/5.jpg'
 
-import { BadgeDollarSign, Users, Star, ThumbsUp } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // @ts-ignore
 import Swiper, { Navigation } from 'swiper'
 import 'swiper/swiper.min.css'
 import { landingPage } from '@/config/landing-page.config'
-Swiper.use([Navigation])
+
 
 export default function Features01() {
+  Swiper.use([Navigation])
   useEffect(() => {
     new Swiper('.carousel', {
       slidesPerView: 'auto',

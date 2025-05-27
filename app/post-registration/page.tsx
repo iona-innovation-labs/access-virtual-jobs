@@ -29,7 +29,7 @@ export default function PostRegistrationPage() {
         router.replace("/app/overview");
       });
     }
-  }, [session]);
+  }, [session, router]);
 
   return <p className="text-center mt-10">Setting up your profile...</p>;
 }

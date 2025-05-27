@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import Link from 'next/link'
-import Illustration from '@/public/images/landing/hero-blur.svg'
 
 export default function Footer() {
   return (
@@ -71,12 +69,12 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a className="text-blue-300 hover:text-white transition duration-150 ease-in-out" href="#0">
+                <a className="text-blue-300 hover:text-white transition duration-150 ease-in-out" href="/contact">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a className="text-blue-300 hover:text-white transition duration-150 ease-in-out" href="#0">
+                <a className="text-blue-300 hover:text-white transition duration-150 ease-in-out" href="/faq">
                   FAQs
                 </a>
               </li>
