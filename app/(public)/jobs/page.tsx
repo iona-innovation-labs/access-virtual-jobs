@@ -1,11 +1,9 @@
 import { Metadata } from "next";
-import { ISearchParams, IJobListing } from "@/types/jobs";
 import { getJobs } from "@/lib/api/jobs";
 import { JobList } from "@/components/jobs/job-list";
 import JobHeader from "@/components/jobs/job-header";
 import JobFilter from "@/components/jobs/job-filter";
 import { JobListPaginationContainer } from "@/components/jobs/joblist-pagination-container";
-import { CTAFooter } from "@/components/section/cta-footer";
 import Cta from "@/components/landing/cta";
 
 export const metadata: Metadata = {

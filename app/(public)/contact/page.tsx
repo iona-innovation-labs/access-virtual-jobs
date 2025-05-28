@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import {
   Card,
@@ -32,7 +31,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import submitForm from "@/lib/send";
 
 const formSchema = z.object({
@@ -62,7 +61,6 @@ const subjectOptions = [
 
 export default function ContactForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
 
   const form = useForm<ContactFormSchema>({

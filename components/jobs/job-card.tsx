@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, Building2, MapPin, Bookmark } from 'lucide-react';
+import { Clock, Building2 } from 'lucide-react';
 import { IJobListing } from '@/types/jobs';
 import JobCardApply from './job-card-apply';
 

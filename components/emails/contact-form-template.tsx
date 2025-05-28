@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 import {
   Body,
   Container,
@@ -153,32 +152,6 @@ const senderSection = {
 
 const senderTable = {
   width: "100%",
-};
-
-const avatarCell = {
-  width: "64px",
-  verticalAlign: "top" as const,
-  paddingRight: "20px",
-};
-
-const avatarCircle = {
-  backgroundColor: "#3b82f6",
-  borderRadius: "50%",
-  width: "48px",
-  height: "48px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  textAlign: "center" as const,
-  lineHeight: "48px",
-};
-
-const avatarText = {
-  color: "#ffffff",
-  fontSize: "20px",
-  fontWeight: "600",
-  margin: "0",
-  lineHeight: "1",
 };
 
 const senderInfoCell = {

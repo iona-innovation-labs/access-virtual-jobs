@@ -13,11 +13,8 @@ interface FilterState {
   remote: boolean;
 }
 
-interface JobFilterProps {
-  // Remove onFiltersChange since we'll handle URL updates internally
-}
 
-export default function JobFilter({}: JobFilterProps) {
+export default function JobFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
   

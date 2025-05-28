@@ -90,6 +90,11 @@ export const EmailNotificationTemplate = ({
                 Manage notification preferences
               </Link>
             </Text>
+            <Text style={settingsText}>
+              <Link href={companyUrl} style={linkStyle}>
+                Visit our website
+              </Link>
+            </Text>
             <Text style={copyrightText}>
               © {new Date().getFullYear()} Access Virtual Staffing
             </Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, MapPin, Briefcase, TrendingUp, Users } from 'lucide-react';
+import { TrendingUp } from 'lucide-react';
 
 type Props = {
     heading: string;
