@@ -74,7 +74,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }).where(eq(users.email, message.user.email!));
 
       const firstName = message.user.name?.split(" ")[0] ?? "there";
-      const verifyLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`;
+      const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
 
       await sendEmailNotification({
         to: [message.user.email!],

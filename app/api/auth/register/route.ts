@@ -19,9 +19,13 @@ export async function POST(request: Request) {
       );
     }
 
+    console.log(email)
+
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, email),
     });
+
+    console.log(email)
 
     if (existingUser) {
       return NextResponse.json(
@@ -29,6 +33,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    console.log(email)
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = nanoid();
@@ -52,7 +58,7 @@ export async function POST(request: Request) {
 
     console.log("NEW: ", newUser)
 
-    const verifyLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`;
+    const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
 
     await sendEmailNotification({
       to: [email],

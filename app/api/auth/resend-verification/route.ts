@@ -36,7 +36,7 @@ export async function POST(req: Request) {
       })
       .where(eq(users.id, user.id));
 
-    const verifyLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`;
+    const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
     const firstName = user.firstName ?? user.name?.split(" ")[0] ?? "there";
 
     await sendEmailNotification({
