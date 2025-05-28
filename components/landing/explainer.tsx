@@ -44,7 +44,11 @@ export default function Explainer() {
           </div>
 
           <div className="text-center" data-aos="fade-in">
-            <CtaButton/>
+            <CtaButton
+              link='/register'
+              label='Create your account'
+              className='bg-brand'
+            />
           </div>
         </div>
       </div>

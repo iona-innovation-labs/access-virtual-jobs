@@ -40,7 +40,11 @@ export default function Hero() {
                   <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1 text-blue-500" />
                   </Link>
               </Button>
-              <CtaButton/>
+              <CtaButton
+                link='/register'
+                label='Create your account'
+                className='bg-brand'
+              />
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Illustration from '@/public/images/landing/hero-blur.svg'
 import CtaButton from './cta-button'
+import { landingPage } from '@/config/landing-page.config'
 
 export default function Cta() {
   return (
@@ -15,10 +16,10 @@ export default function Cta() {
         <div className="py-12 md:py-20">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="font-archivo text-xl md:text-3xl font-bold text-white mb-8" data-aos="fade-up">
-              Start hiring reliable and trustworthy talents today.
+              {landingPage.cta.title}
             </h2>
             <div data-aos="fade-up" data-aos-delay="100">
-              <CtaButton/>
+              <CtaButton className='bg-brand' link='/register' label='Create your account' />
             </div>
           </div>
         </div>

@@ -39,7 +39,11 @@ export default function Header() {
               </li>
               <li className="ml-6">
        
-                  <CtaButton />
+                  <CtaButton 
+                    link='/register'
+                    label='Create your account'
+                    className='bg-brand-dark'
+                  />
 
               </li>
             </ul>

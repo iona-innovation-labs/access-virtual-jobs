@@ -20,7 +20,7 @@ export default function Services() {
             {services.map((service, idx) => (
               <div key={idx} className="h-full flex flex-col">
                 <div className="mb-4">
-                  <a className="block group overflow-hidden" href={`/services/${service.label}`}>
+                  <a className="block group overflow-hidden" href={`/jobs/${service.label}`}>
                     <Image
                       className="w-full rounded-lg aspect-101/64 object-cover group-hover:scale-105 transition duration-700 ease-out"
                       src={service.image}
@@ -40,7 +40,7 @@ export default function Services() {
           </div>
 
           <div className="flex justify-center items-center absolute bottom-0 w-full h-48 bg-gradient-to-t from-gray-900 to-transparent" data-aos="fade-in">
-            <CtaButton className="bg-blue-800"/>
+            <CtaButton className="bg-brand" link='/jobs' label='Browse Jobs' />
           </div>
 
         </div>

@@ -170,6 +170,6 @@ export const landingPage = {
         ]
     },
     cta: {
-        title: "Hire remote-ready professionals today",
+        title: "Find your next remote job today",
     }
 }
