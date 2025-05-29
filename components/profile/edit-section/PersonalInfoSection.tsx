@@ -14,7 +14,6 @@ interface PersonalInfoSectionProps {
 export const PersonalInfoSection = ({
   userInfo,
   isUserLoading,
-  loading,
 }: PersonalInfoSectionProps) => {
   if (isUserLoading) {
     return (

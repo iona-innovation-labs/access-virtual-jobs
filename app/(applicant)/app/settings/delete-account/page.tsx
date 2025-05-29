@@ -2,14 +2,7 @@
 
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Trash2,
-  AlertTriangle,
-  Mail,
-  Shield,
-  ExternalLink,
-  Clock,
-} from "lucide-react";
+import { Trash2, Mail, Shield, ExternalLink, Clock } from "lucide-react";
 
 export default function DeleteAccount() {
   const handleEmailSupport = () => {
@@ -84,7 +77,7 @@ Thank you.`);
                   </li>
                   <li className="flex items-start">
                     <span className="font-medium mr-2">3.</span>
-                    You'll receive confirmation once your account has been
+                    You&apos;ll receive confirmation once your account has been
                     deleted
                   </li>
                 </ol>

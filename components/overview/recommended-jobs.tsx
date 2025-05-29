@@ -1,6 +1,5 @@
 import { Card } from "@/components/ui/card";
 
-import RecommendedJobCard from "./recommended-job-card";
 import { IJobListing } from "@/types/jobs";
 import JobCard from "../jobs/job-card";
 

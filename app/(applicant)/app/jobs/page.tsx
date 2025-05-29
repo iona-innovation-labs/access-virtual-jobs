@@ -2,9 +2,6 @@ import { Metadata } from "next";
 
 import { ISearchParams } from "@/types/jobs";
 import { getJobs } from "@/lib/api/jobs";
-import { JobListSearchFormContainer } from "@/components/jobs/joblist-search-form-container";
-import { JobListContainerAdvanced } from "@/components/jobs/joblist-container-advanced";
-import { JobListItemPosition } from "@/components/jobs/joblist-item-position";
 import { JobListPaginationContainer } from "@/components/jobs/joblist-pagination-container";
 import { JobList } from "@/components/jobs/job-list";
 import JobFilter from "@/components/jobs/job-filter";

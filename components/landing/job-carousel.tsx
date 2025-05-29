@@ -1,5 +1,4 @@
 import { getJobs } from "@/lib/api/jobs";
-import { Card, CardContent, CardHeader } from "../ui/card";
 import JobCarouselClient from "./job-carousel-list";
 
 export default async function JobCarouselList() {

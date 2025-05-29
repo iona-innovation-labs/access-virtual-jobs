@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import { notFound } from "next/navigation";
 
-import { ViewJobHeader } from "@/components/jobs/view-job-header";
 import LinkButton from "@/components/ui/link-button";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -136,8 +135,8 @@ export default async function ViewJob({
                           Application Submitted
                         </h3>
                         <p className="text-sm text-gray-600 mb-4">
-                          You've already applied for this position. Check your
-                          applications page for updates.
+                          You&apos;ve already applied for this position. Check
+                          your applications page for updates.
                         </p>
                         <Button variant="outline" className="w-full" disabled>
                           <CheckCircle2 className="w-4 h-4 mr-2" />

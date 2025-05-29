@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 // @ts-ignore
-import Swiper, { Autoplay } from "swiper";
 import "swiper/swiper.min.css";
 import { Card, CardContent, CardHeader } from "../ui/card";
 

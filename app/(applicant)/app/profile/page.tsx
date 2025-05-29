@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
-import { User, Upload, CheckCircle2, Settings } from "lucide-react";
+import { User, Upload, Settings } from "lucide-react";
 
 import EditProfileForm from "@/components/profile/edit-profile-form";
 import UploadFileForm from "@/components/profile/upload-files-form";

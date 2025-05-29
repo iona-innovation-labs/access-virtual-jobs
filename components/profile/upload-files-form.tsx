@@ -434,8 +434,8 @@ const UploadFilesForm = () => {
               All Required Files Uploaded!
             </h3>
             <p className="text-green-700">
-              You've successfully uploaded all required documents. Your profile
-              is now complete.
+              You&apos;ve successfully uploaded all required documents. Your
+              profile is now complete.
             </p>
           </CardContent>
         </Card>

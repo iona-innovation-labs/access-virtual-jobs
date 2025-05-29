@@ -231,7 +231,7 @@ export const TechnicalInfoSection = ({
                       <SelectLabel>PayPal Status</SelectLabel>
                       <SelectItem value="yes">Yes, I have PayPal</SelectItem>
                       <SelectItem value="no">
-                        No, I don't have PayPal
+                        No, I don&apos;t have PayPal
                       </SelectItem>
                     </SelectGroup>
                   </SelectContent>

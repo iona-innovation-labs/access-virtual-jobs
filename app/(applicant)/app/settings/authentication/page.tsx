@@ -120,9 +120,9 @@ export default function ChangePassword() {
                   How it works:
                 </h4>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• We'll send a secure reset link to your email</li>
+                  <li>• We&apos;ll send a secure reset link to your email</li>
                   <li>• Click the link to create a new password</li>
-                  <li>• You'll be logged out for security</li>
+                  <li>• You&apos;ll be logged out for security</li>
                 </ul>
               </div>
             </div>
@@ -137,9 +137,9 @@ export default function ChangePassword() {
           </div>
 
           <p className="text-sm text-gray-600">
-            Click the button below to receive a password reset email. You'll be
-            automatically logged out after the email is sent for security
-            purposes.
+            Click the button below to receive a password reset email.
+            You&apos;ll be automatically logged out after the email is sent for
+            security purposes.
           </p>
         </CardContent>
 
@@ -176,7 +176,7 @@ export default function ChangePassword() {
                 Security Notice
               </h4>
               <p className="text-sm text-gray-600">
-                For your security, we'll log you out of all devices after
+                For your security, we&apos;ll log you out of all devices after
                 sending the reset email. Make sure you have access to your email
                 before proceeding.
               </p>

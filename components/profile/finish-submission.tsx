@@ -99,7 +99,7 @@ const FinishSubmission = () => {
                   <div className="flex items-center space-x-2">
                     <div className="w-1.5 h-1.5 bg-amber-500 rounded-full"></div>
                     <span>
-                      You'll receive updates on your application status
+                      You&apos;ll receive updates on your application status
                     </span>
                   </div>
                 </div>

@@ -95,8 +95,8 @@ const AppliedJobs = () => {
               No applications yet
             </h3>
             <p className="text-gray-500 text-sm mb-6">
-              When you apply for jobs, they'll appear here so you can track your
-              progress.
+              When you apply for jobs, they&apos;ll appear here so you can track
+              your progress.
             </p>
             <Button
               onClick={() => (window.location.href = "/app/jobs")}

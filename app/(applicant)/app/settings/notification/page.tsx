@@ -155,7 +155,7 @@ export default function NotificationSettings() {
               <h3 className="font-semibold text-gray-900">Job Notifications</h3>
             </div>
             <p className="text-sm text-gray-500 mt-2">
-              Choose which job-related notifications you'd like to receive
+              Choose which job-related notifications you&apos;d like to receive
             </p>
           </CardHeader>
 
@@ -257,7 +257,7 @@ export default function NotificationSettings() {
                   <p className="text-sm text-blue-800 leading-relaxed">
                     You can change these settings at any time. All notifications
                     will be sent to your registered email address. Make sure to
-                    check your spam folder if you don't receive emails.
+                    check your spam folder if you don&apos;t receive emails.
                   </p>
                 </div>
               </div>
@@ -303,9 +303,9 @@ export default function NotificationSettings() {
                 Privacy Notice
               </h4>
               <p className="text-sm text-gray-600">
-                We respect your privacy and will only send notifications you've
-                opted into. You can unsubscribe from any email notifications at
-                any time.
+                We respect your privacy and will only send notifications
+                you&apos;ve opted into. You can unsubscribe from any email
+                notifications at any time.
               </p>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import { formatDistanceToNow } from "date-fns";
-import Image from "next/image";
 import { ChevronRight, Clock, Building2 } from "lucide-react";
 import Link from "next/link";
 
@@ -19,7 +18,6 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
       <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-brand/30 hover:bg-gray-50/50 transition-all duration-200 cursor-pointer">
         {/* Left Section */}
         <div className="flex items-center space-x-4 flex-1 min-w-0">
-          {/* Job Details */}
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">
               <div className="min-w-0 flex-1">

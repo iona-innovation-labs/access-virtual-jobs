@@ -2,14 +2,7 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  ArrowRight,
-  X,
-  CheckCircle2,
-  User,
-  Upload,
-  AlertTriangle,
-} from "lucide-react";
+import { ArrowRight, X, CheckCircle2, AlertTriangle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -242,7 +235,7 @@ const ProfileHeader = () => {
                           Submit Application?
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-gray-600 leading-relaxed">
-                          You're about to submit your complete profile and
+                          You&apos;re about to submit your complete profile and
                           documents to the employer. Make sure all information
                           is accurate and up-to-date.
                         </AlertDialogDescription>
