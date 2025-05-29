@@ -64,32 +64,32 @@ export async function POST(req: NextRequest) {
         .where(eq(users.id, session.user.id));
     }
 
-    const auth0Response = await fetch(
-      `${process.env.AUTH0_OAUTH_AUDIENCE}users/${session.user.id}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${managementApiToken}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ picture: profileImageURL }),
-      }
-    );
+    // const auth0Response = await fetch(
+    //   `${process.env.AUTH0_OAUTH_AUDIENCE}users/${session.user.id}`,
+    //   {
+    //     method: "PATCH",
+    //     headers: {
+    //       Authorization: `Bearer ${managementApiToken}`,
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({ picture: profileImageURL }),
+    //   }
+    // );
 
-    if (!auth0Response.ok) {
-      return NextResponse.json(
-        {
-          error: "Failed to update profile.",
-          message: "Failed to update profile image in Auth0",
-          ok: false,
-        },
-        { status: 400 }
-      );
-    }
+    // if (!auth0Response.ok) {
+    //   return NextResponse.json(
+    //     {
+    //       error: "Failed to update profile.",
+    //       message: "Failed to update profile image in Auth0",
+    //       ok: false,
+    //     },
+    //     { status: 400 }
+    //   );
+    // }
 
     await db
       .update(users)
-      .set({ profileImage: profileImageURL })
+      .set({ image: profileImageURL })
       .where(eq(users.id, session.user.id));
 
     log("POST /api/profile/update-avatar: success", "info", {

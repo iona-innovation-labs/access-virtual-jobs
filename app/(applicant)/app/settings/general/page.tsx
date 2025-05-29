@@ -191,9 +191,9 @@ export default function GeneralSettings() {
         <CardContent>
           <div className="flex items-center space-x-6">
             <div className="relative">
-              {userInfo?.profileImage ? (
+              {userInfo?.image ? (
                 <Image
-                  src={userInfo.profileImage}
+                  src={userInfo.image}
                   alt="Profile Photo"
                   className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
                   width={80}

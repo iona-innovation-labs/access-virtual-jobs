@@ -35,6 +35,7 @@ export async function GET() {
         email: user.email,
         username: user.name,
         profileImage: user.profileImage,
+        image: user.image,
         createdAt: user.createdAt,
         jobRecommendationNotifPref: user.jobRecommendationNotifPref,
         jobSubmissionNotifPref: user.jobSubmissionNotifPref,
