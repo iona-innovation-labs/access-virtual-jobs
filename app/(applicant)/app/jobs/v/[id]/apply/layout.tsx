@@ -27,10 +27,7 @@ export default function EditProfileLayout({ children }: LayoutProps) {
                 </div>
               </section>
               <ProfileHeader />
-              <section
-                id="joblist_header"
-                className="relative px-[5%] pt-8 md:pt-12"
-              >
+              <section id="joblist_header" className="relative px-[5%] pt-4">
                 <div className="container">{children}</div>
               </section>
             </div>

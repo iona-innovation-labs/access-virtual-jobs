@@ -78,7 +78,7 @@ const JobCard = ({
         </div>
 
         {/* Apply Button */}
-        <JobCardApply isPublic={isPublic} id={job.id} />
+        <JobCardApply isPublic={isPublic} id={job.id} url={job.url} />
       </div>
     </div>
   );

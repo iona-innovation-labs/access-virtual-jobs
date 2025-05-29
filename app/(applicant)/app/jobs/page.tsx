@@ -6,6 +6,9 @@ import { JobListSearchFormContainer } from "@/components/jobs/joblist-search-for
 import { JobListContainerAdvanced } from "@/components/jobs/joblist-container-advanced";
 import { JobListItemPosition } from "@/components/jobs/joblist-item-position";
 import { JobListPaginationContainer } from "@/components/jobs/joblist-pagination-container";
+import { JobList } from "@/components/jobs/job-list";
+import JobFilter from "@/components/jobs/job-filter";
+import JobHeader from "@/components/jobs/job-header";
 
 export const metadata: Metadata = {
   title: "Explore Jobs",
@@ -33,7 +36,7 @@ export default async function Jobs({
         "job-posting-status": 3,
       },
     },
-    resolvedSearchParams?.search?.toString() || undefined,
+    resolvedSearchParams?.q?.toString() || undefined,
     true
   );
 
@@ -41,37 +44,14 @@ export default async function Jobs({
 
   return (
     <main className="w-full mx-auto bg-white overflow-hidden">
-      <section id="joblist_header" className=" px-[5%] pt-8 md:pt-12">
-        <div className="container ">
-          <div className="w-full max-w-lg">
-            <h1 className=" text-2xl font-bold md:text-3xl">Explore Jobs</h1>
-          </div>
-        </div>
-      </section>
-      <JobListSearchFormContainer
-        totalSearchResult={totalFilteredCount}
-        searchText={
-          Array.isArray(resolvedSearchParams?.search)
-            ? resolvedSearchParams.search[0]
-            : resolvedSearchParams?.search || ""
-        }
+      <JobHeader
+        heading="Explore Jobs"
+        description="Explore and apply for jobs"
+        isPublic={false}
       />
-
-      <JobListContainerAdvanced>
-        <div className="flex flex-col gap-6 md:gap-8">
-          {positions && positions.items?.length ? (
-            positions.items.map((position, index) => (
-              <JobListItemPosition key={index} position={position} />
-            ))
-          ) : (
-            <div className="bg-zinc-300 p-8 lg:p-12 text-center">
-              <p className="md:text-md">
-                No Jobs available. Please check again later.
-              </p>
-            </div>
-          )}
-        </div>
-      </JobListContainerAdvanced>
+      <div className="mt-12"></div>
+      <JobFilter />
+      <JobList positions={positions?.items || []} />
       <JobListPaginationContainer
         totalCount={totalFilteredCount}
         siblingCount={1}

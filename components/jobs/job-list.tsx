@@ -10,7 +10,7 @@ export const JobList = ({ positions, isPublic = false }: Props) => {
   return (
     <section
       id="joblist_container"
-      className="container mx-auto px-[10%] py-8 md:py-12 lg:py-14"
+      className="container mx-auto px-[10%] py-2 md:py-2 lg:py-4"
     >
       <div className="container">
         <div className="flex flex-col gap-6 md:gap-8">

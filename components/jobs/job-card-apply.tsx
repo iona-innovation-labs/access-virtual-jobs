@@ -5,16 +5,18 @@ import { redirect } from "next/navigation";
 
 export default function JobCardApply({
   id,
+  url,
   isPublic = false,
 }: {
   id: string;
+  url?: string;
   isPublic?: boolean;
 }) {
   const handleApply = () => {
     if (isPublic) {
       redirect(`/register`);
     } else {
-      redirect(`/app/jobs/v/${id}`);
+      redirect(url || `/app/jobs/v/${id}/apply`);
     }
   };
   return (
