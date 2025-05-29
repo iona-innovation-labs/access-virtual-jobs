@@ -9,6 +9,7 @@ import {
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { fetchApi } from "@/services/fetch-api";
+import { User, Upload, Settings, Camera, AlertCircle } from "lucide-react";
 
 import { useUserInfo } from "@/hooks/use-user-info";
 import {
@@ -32,10 +33,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import Image from "next/image";
 
 export default function GeneralSettings() {
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const { toast } = useToast();
 
   const { userInfo, error, isLoading } = useUserInfo();
@@ -71,14 +74,14 @@ export default function GeneralSettings() {
       if (!response.ok) throw new Error("Failed to update general settings");
 
       toast({
-        title: "Success",
-        description: "General settings updated successfully!",
+        title: "Settings Updated",
+        description: "Your general settings have been updated successfully!",
         variant: "success",
       });
     } catch (error) {
       console.error("Error updating general settings:", error);
       toast({
-        title: "Error",
+        title: "Update Failed",
         description: "Failed to update general settings. Please try again.",
         variant: "destructive",
       });
@@ -87,188 +90,312 @@ export default function GeneralSettings() {
     }
   };
 
+  const handleAvatarUpload = async (result: CloudinaryUploadWidgetResults) => {
+    if (typeof result.info !== "string") {
+      const secureUrl = result.info?.secure_url;
+      if (secureUrl) {
+        setUploadingAvatar(true);
+        try {
+          // TODO: Pass the public id it can be used to replace existing image in cloudinary
+          await fetchApi("/profile/update-avatar", {
+            method: "POST",
+            body: JSON.stringify({
+              profileImageURL: secureUrl,
+            }),
+          });
+
+          toast({
+            title: "Profile Photo Updated",
+            description: "Your profile photo has been updated successfully!",
+            variant: "success",
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+        } catch (error) {
+          console.error("Error updating avatar:", error);
+          toast({
+            title: "Upload Failed",
+            description: "Failed to update profile photo. Please try again.",
+            variant: "destructive",
+          });
+        } finally {
+          setUploadingAvatar(false);
+        }
+      }
+    }
+  };
+
+  if (error) {
+    return (
+      <Card className="w-full max-w-2xl shadow-sm border-0">
+        <CardContent className="p-8 text-center">
+          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+            Error Loading Profile
+          </h3>
+          <p className="text-gray-600">
+            Failed to load your profile information. Please refresh the page.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <Card className="w-full max-w-2xl shadow-sm border-0">
+        <CardContent className="p-8">
+          <LoadingSpinner size="lg" />
+          <p className="text-center text-gray-500 mt-4">
+            Loading your profile...
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="w-full max-w-2xl shadow-md">
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardHeader className="font-semibold text-gray-700">
-          Settings / General
+    <div className="w-full mx-auto space-y-6">
+      {/* Header Card */}
+      <Card className="shadow-sm border-0">
+        <CardHeader className="pb-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
+              <Settings className="w-4 h-4 text-brand" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">
+                General Settings
+              </h2>
+              <p className="text-sm text-gray-500">
+                Manage your personal information
+              </p>
+            </div>
+          </div>
+        </CardHeader>
+      </Card>
+
+      {/* Profile Photo Card */}
+      <Card className="shadow-sm border-0">
+        <CardHeader className="pb-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+              <Camera className="w-3 h-3 text-blue-600" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Profile Photo</h3>
+          </div>
         </CardHeader>
 
-        <CardContent className="space-y-8">
-          {error ? (
-            <p className="text-red-500 text-center">Failed to load profile.</p>
-          ) : isLoading ? (
-            <p className="text-gray-500 text-center">Loading profile...</p>
-          ) : (
-            <>
-              <div className="flex flex-col gap-4">
-                <h2 className="font-semibold text-sm text-gray-700">
-                  Profile Image
-                </h2>
-                <div className="flex flex-row gap-5 items-center">
-                  <Image
-                    src={userInfo?.profileImage || ""}
-                    alt="Avatar"
-                    className="size-20 rounded-full object-cover"
-                    width={50}
-                    height={50}
-                  />
-                  <CldUploadWidget
-                    options={{
-                      sources: ["local", "google_drive", "dropbox", "unsplash"],
-                      resourceType: "image",
-                      clientAllowedFormats: ["png", "jpg", "jpeg", "gif"],
-                    }}
-                    onSuccess={async (
-                      result: CloudinaryUploadWidgetResults
-                    ) => {
-                      if (typeof result.info !== "string") {
-                        const secureUrl = result.info?.secure_url;
-                        console.log(secureUrl);
-                        if (secureUrl) {
-                          try {
-                            // TODO: Pass the public id it can be used to replace existing image in cloudinary
-                            await fetchApi("/profile/update-avatar", {
-                              method: "POST",
-                              body: JSON.stringify({
-                                profileImageURL: secureUrl,
-                              }),
-                            });
-                            window.location.reload();
-                            toast({
-                              title: "Success",
-                              description:
-                                "Profile image updated successfully!",
-                              variant: "success",
-                            });
-                          } catch (error) {
-                            console.error("Error updating avatar:", error);
-                            toast({
-                              title: "Error",
-                              description:
-                                "Failed to update profile image. Please try again.",
-                              variant: "destructive",
-                            });
-                          }
-                        }
-                      }
-                    }}
-                    uploadPreset={"ProfileImagePreset"}
-                  >
-                    {({ open }) => {
-                      return (
-                        <Button
-                          type="button"
-                          variant="primary"
-                          onClick={() => open()}
-                          disabled={submitting}
-                        >
-                          Replace
-                        </Button>
-                      );
-                    }}
-                  </CldUploadWidget>
+        <CardContent>
+          <div className="flex items-center space-x-6">
+            <div className="relative">
+              {userInfo?.profileImage ? (
+                <Image
+                  src={userInfo.profileImage}
+                  alt="Profile Photo"
+                  className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                  width={80}
+                  height={80}
+                />
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
+                  <User className="w-8 h-8 text-brand" />
                 </div>
-              </div>
+              )}
+              {uploadingAvatar && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
+                  <LoadingSpinner size="sm" className="text-white" />
+                </div>
+              )}
+            </div>
 
-              <Form {...form}>
+            <div className="flex-1">
+              <h4 className="font-medium text-gray-900 mb-1">
+                Update Profile Photo
+              </h4>
+              <p className="text-sm text-gray-500 mb-4">
+                Choose a professional photo that represents you well
+              </p>
+
+              <CldUploadWidget
+                options={{
+                  sources: ["local", "google_drive", "dropbox", "unsplash"],
+                  resourceType: "image",
+                  clientAllowedFormats: ["png", "jpg", "jpeg", "gif"],
+                  maxFileSize: 10000000, // 10MB
+                  cropping: true,
+                  croppingAspectRatio: 1,
+                }}
+                onSuccess={handleAvatarUpload}
+                uploadPreset="ProfileImagePreset"
+              >
+                {({ open }) => (
+                  <Button
+                    type="button"
+                    onClick={() => open()}
+                    disabled={submitting || uploadingAvatar}
+                    variant="outline"
+                    className="border-brand/20 text-brand hover:bg-brand/5"
+                  >
+                    {uploadingAvatar ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Uploading...
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-4 h-4 mr-2" />
+                        {userInfo?.profileImage
+                          ? "Replace Photo"
+                          : "Upload Photo"}
+                      </>
+                    )}
+                  </Button>
+                )}
+              </CldUploadWidget>
+            </div>
+          </div>
+
+          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <div className="flex items-start space-x-2">
+              <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm text-amber-800">
+                  <strong>Photo Guidelines:</strong> Use a clear, professional
+                  headshot. Avoid group photos, sunglasses, or inappropriate
+                  content.
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Personal Information Card */}
+      <Card className="shadow-sm border-0">
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardHeader className="pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                <User className="w-3 h-3 text-green-600" />
+              </div>
+              <h3 className="font-semibold text-gray-900">
+                Personal Information
+              </h3>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-6">
+            <Form {...form}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700">
+                      <FormLabel className="text-sm font-medium text-gray-700">
                         First Name
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="border-gray-700"
-                          placeholder="First Name"
+                          placeholder="Enter your first name"
                           disabled={submitting}
+                          className="border-gray-300 focus:border-brand focus:ring-brand"
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500" />
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700">
+                      <FormLabel className="text-sm font-medium text-gray-700">
                         Last Name
                       </FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          className="border-gray-700"
-                          placeholder="Last Name"
+                          placeholder="Enter your last name"
                           disabled={submitting}
+                          className="border-gray-300 focus:border-brand focus:ring-brand"
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500" />
+                      <FormMessage className="text-red-500 text-sm" />
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700">
-                        Email
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="border-gray-700"
-                          type="email"
-                          placeholder="Email"
-                          disabled={submitting}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="font-semibold text-sm text-gray-700">
-                        Username
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="border-gray-700"
-                          placeholder="Username"
-                          disabled={submitting}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-red-500" />
-                    </FormItem>
-                  )}
-                />
-              </Form>
-            </>
-          )}
-        </CardContent>
+              </div>
 
-        <CardFooter className="flex justify-start space-x-2 my-4">
-          <Button
-            type="submit"
-            variant="primary"
-            className="min-w-[150px]"
-            disabled={submitting}
-          >
-            {submitting ? "Saving..." : "Submit"}
-          </Button>
-        </CardFooter>
-      </form>
-    </Card>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Email Address
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="email"
+                        placeholder="Enter your email address"
+                        disabled={submitting}
+                        className="border-gray-300 focus:border-brand focus:ring-brand"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-sm font-medium text-gray-700">
+                      Username
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Choose a unique username"
+                        disabled={submitting}
+                        className="border-gray-300 focus:border-brand focus:ring-brand"
+                      />
+                    </FormControl>
+                    <FormMessage className="text-red-500 text-sm" />
+                  </FormItem>
+                )}
+              />
+            </Form>
+          </CardContent>
+
+          <CardFooter className="pt-6">
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="bg-brand hover:bg-brand-dark text-white min-w-[150px]"
+            >
+              {submitting ? (
+                <>
+                  <LoadingSpinner size="sm" className="mr-2" />
+                  Saving Changes...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
   );
 }
