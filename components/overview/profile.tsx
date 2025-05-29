@@ -6,87 +6,113 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { User, MapPin, Briefcase, Edit3 } from "lucide-react";
 import { useUserInfo } from "@/hooks/use-user-info";
-// import ProfileOverviewDialog from "../profile/profile-overview-dialog";
 import { IProfileResponse } from "@/types/profiles";
 import { AppError } from "@/utils/app-error";
 import { fetchApi } from "@/services/fetch-api";
 
 const Profile = () => {
   const router = useRouter();
-  const { userInfo, isLoading } = useUserInfo(); // Updated hook usage
+  const { userInfo, isLoading } = useUserInfo();
   const { data } = useSWR<IProfileResponse, AppError>("/profile", fetchApi);
+
   if (isLoading) {
-    return <p>Loading...</p>; // Handle loading state
+    return (
+      <Card className="w-full p-6 animate-pulse">
+        <div className="flex items-center space-x-4">
+          <div className="w-16 h-16 bg-gray-200 rounded-full"></div>
+          <div className="flex-1 space-y-2">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+          </div>
+        </div>
+      </Card>
+    );
   }
 
+  const fullName =
+    userInfo?.firstName && userInfo?.lastName
+      ? `${userInfo.firstName} ${userInfo.lastName}`
+      : userInfo?.username || "User";
+
   return (
-    <Card className="w-full p-6 border border-gray-200 flex flex-col justify-between">
-      <div className=" flex justify-between items-start gap-4">
-        <div className="flex justify-between items-start gap-4">
-          <div className="flex items-center gap-4">
-            <Image
-              src={
-                userInfo?.profileImage ||
-                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fprofile_6522516&psig=AOvVaw1cahXpP4M3pUAyOwJ4YyJH&ust=1748073284614000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJiXmsuOuY0DFQAAAAAdAAAAABAE"
-              }
-              alt="Avatar"
-              className="size-20 rounded-full object-cover"
-              width={150}
-              height={150}
-            />
-          </div>
-          <div className="">
-            <div className="mb-4">
-              <h2 className="text-lg font-semibold">
-                {" "}
-                {userInfo?.firstName && userInfo?.lastName
-                  ? `${userInfo?.firstName} ${userInfo?.lastName}`
-                  : userInfo?.username}
+    <Card className="w-full bg-white shadow-sm border-0">
+      <div className="p-6">
+        <div className="flex items-start justify-between">
+          {/* Profile Info */}
+          <div className="flex items-center space-x-4">
+            {/* Avatar */}
+            <div className="relative">
+              {userInfo?.profileImage ? (
+                <Image
+                  src={userInfo.profileImage}
+                  alt={fullName}
+                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
+                  width={64}
+                  height={64}
+                />
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
+                  <User className="w-7 h-7 text-brand" />
+                </div>
+              )}
+            </div>
+
+            {/* User Details */}
+            <div className="space-y-1">
+              <h2 className="text-lg font-semibold text-gray-900">
+                {fullName}
               </h2>
-              <p className="text-sm text-gray-500">
-                {data?.profile?.jobTitle || "..."}
-              </p>
-              <p className="text-sm text-gray-500">
-                {data?.profile?.address || "..."}
-              </p>
+
+              {data?.profile?.jobTitle && (
+                <div className="flex items-center space-x-1 text-sm text-gray-600">
+                  <Briefcase className="w-3 h-3" />
+                  <span>{data.profile.jobTitle}</span>
+                </div>
+              )}
+
+              {data?.profile?.address && (
+                <div className="flex items-center space-x-1 text-sm text-gray-500">
+                  <MapPin className="w-3 h-3" />
+                  <span>{data.profile.address}</span>
+                </div>
+              )}
+
+              {!data?.profile?.jobTitle && !data?.profile?.address && (
+                <p className="text-sm text-gray-400">Complete your profile</p>
+              )}
             </div>
           </div>
-        </div>
-        <div>
-          {/* <ProfileOverviewDialog /> */}
+
+          {/* Edit Button */}
           <Button
+            onClick={() => router.push("/app/profile")}
             variant="outline"
             size="sm"
-            className="font-medium"
-            onClick={() => router.push("/app/profile")}
+            className="border-brand/20 text-brand hover:bg-brand hover:text-white transition-colors"
           >
-            Edit Profile
+            <Edit3 className="w-3 h-3 mr-1" />
+            Edit
           </Button>
         </div>
-      </div>
 
-      {/* <div className="flex flex-col gap-2 p-4">
-        <p className="text-sm font-semibold">
-          Where are you in your job search?
-        </p>
-        <p className="text-sm text-gray-500">
-          Keep your job status up-to-date to inform employers of your search.
-        </p>
-        <Select>
-          <SelectTrigger className="mt-2 bg-white">
-            <SelectValue placeholder="Ready to Interview" />
-          </SelectTrigger>
-          <SelectContent className="bg-white">
-            <SelectItem value="ready">Ready to Interview</SelectItem>
-            <SelectItem value="actively-looking">Actively Looking</SelectItem>
-            <SelectItem value="open-but-not-looking">
-              Open but Not Looking
-            </SelectItem>
-            <SelectItem value="not-interested">Not Interested</SelectItem>
-          </SelectContent>
-        </Select>{" "}
-      </div> */}
+        {/* Optional Status Section - Uncommented if needed */}
+        {/* 
+        <div className="mt-6 pt-4 border-t border-gray-100">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-gray-700">Job Search Status</span>
+            <span className="text-xs text-brand bg-brand/10 px-2 py-1 rounded-full">
+              Ready to Interview
+            </span>
+          </div>
+          <p className="text-xs text-gray-500">
+            Let employers know you're available for opportunities
+          </p>
+        </div>
+        */}
+      </div>
     </Card>
   );
 };

@@ -1,6 +1,9 @@
 // import AppliedJobs from "@/components/overview/applied-jobs";
 // import Profile from "@/components/overview/profile";
 // import Stepper from "@/components/overview/progress";
+import AppliedJobs from "@/components/overview/applied-jobs";
+import Profile from "@/components/overview/profile";
+import Stepper from "@/components/overview/progress";
 import RecommendedJobs from "@/components/overview/recommended-jobs";
 import { getJobs } from "@/lib/api/jobs";
 import { Metadata } from "next";
@@ -38,10 +41,10 @@ export default async function Overview() {
         {/* <div className="w-full justify-end items-end py-2">
             <h1 className=" text-end">Profile last updated on: <span className="font-medium">Feb 12, 2025</span></h1>
           </div> */}
-        {/* <Stepper /> */}
-        {/* <Profile /> */}
+        <Stepper />
+        <Profile />
         <RecommendedJobs positions={positions || []} />
-        {/* <AppliedJobs /> */}
+        <AppliedJobs />
       </div>
     </div>
   );

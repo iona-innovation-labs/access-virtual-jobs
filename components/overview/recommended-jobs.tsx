@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 
 import RecommendedJobCard from "./recommended-job-card";
 import { IJobListing } from "@/types/jobs";
+import JobCard from "../jobs/job-card";
 
 const RecommendedJobs = ({ positions }: { positions: IJobListing[] }) => {
   return (
@@ -19,7 +20,7 @@ const RecommendedJobs = ({ positions }: { positions: IJobListing[] }) => {
       <div className="flex flex-col gap-2 py-4">
         {positions && positions?.length ? (
           positions.map((position: IJobListing, index: number) => (
-            <RecommendedJobCard key={index} position={{ ...position }} />
+            <JobCard key={index} job={{ ...position }} />
           ))
         ) : (
           <div className="bg-zinc-300 p-8 lg:p-12 text-center">
