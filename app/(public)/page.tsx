@@ -11,6 +11,7 @@ import Features02 from "@/components/landing/features02";
 import Services from "@/components/landing/services";
 import FAQ from "@/components/landing/faqs";
 import Cta from "@/components/landing/cta";
+import ClientsSwiper from "@/components/landing/job-swiper";
 
 export default async function LandingPage() {
   const session = await auth();
@@ -27,7 +28,9 @@ export default async function LandingPage() {
   return (
     <div>
       <Hero />
-      <JobCarousel />
+      <ClientsSwiper>
+        <JobCarousel />
+      </ClientsSwiper>
       <Explainer />
       <Features01 />
       <Features02 />

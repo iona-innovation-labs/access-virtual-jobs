@@ -4,7 +4,6 @@ export default function Footer() {
   return (
     <footer className="relative">
       <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
-
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Blocks */}
         <div className="grid sm:grid-cols-12 lg:grid-cols-10 gap-8 py-8 border-t border-blue-500">

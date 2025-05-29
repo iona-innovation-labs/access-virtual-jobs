@@ -33,6 +33,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Mail, MapPin, Send, CheckCircle } from "lucide-react";
 import submitForm from "@/lib/send";
+import { contactConfig } from "@/config/contact.config";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -141,14 +142,13 @@ export default function ContactForm() {
                 variant="secondary"
                 className="mb-4 text-white hover:opacity-90 bg-[#00c2cb]"
               >
-                Get in Touch
+                {contactConfig.badge}
               </Badge>
               <h1 className="text-5xl font-bold mb-6 text-[#042e67] font-[Archivo] leading-tight">
-                Let&apos;s Start a Conversation
+                {contactConfig.title}
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed font-[Archivo]">
-                Ready to transform your business? We&apos;d love to hear from
-                you. Send us a message and we&apos;ll respond within 24 hours.
+                {contactConfig.description}
               </p>
             </div>
 
@@ -162,8 +162,7 @@ export default function ContactForm() {
                     Email
                   </h3>
                   <p className="text-gray-600 font-[Archivo]">
-                    {process.env.NEXT_SUPPORT_EMAIL ||
-                      "support@accessvirtualstaffing.com"}
+                    {contactConfig.email}
                   </p>
                 </div>
               </div>
@@ -177,7 +176,7 @@ export default function ContactForm() {
                     Office
                   </h3>
                   <p className="text-gray-600 font-[Archivo]">
-                    {process.env.NEXT_PUBLIC_ADDRESS}
+                    {contactConfig.office}
                   </p>
                 </div>
               </div>
