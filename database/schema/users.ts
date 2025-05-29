@@ -68,7 +68,7 @@ export const accounts = pgTable(
       }),
     },
   ]
-)
+);
 
 // ✅ SESSIONS table with text userId
 export const sessions = pgTable("session", {

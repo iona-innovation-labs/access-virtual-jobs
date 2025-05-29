@@ -7,11 +7,10 @@ export const metadata: Metadata = {
   description: "View and manage your job submissions",
 };
 
-
- export default async function Submissions() {
-    return (
-      <div className="h-[calc(100vh-4.5rem)] overflow-auto">
-        <SubmissionPages />
-      </div>
-    );
+export default async function Submissions() {
+  return (
+    <div className="h-[calc(100vh-4.5rem)] overflow-auto">
+      <SubmissionPages />
+    </div>
+  );
 }

@@ -1,22 +1,23 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import { useState } from 'react'
-import FeatImage1 from '@/public/images/landing-feature/1.jpg'
-import FeatImage2 from '@/public/images/landing-feature/2.jpg'
-import FeatImage3 from '@/public/images/landing-feature/3.jpg'
-import { Check, ChevronLeft, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { landingPage } from '@/config/landing-page.config'
+import Image from "next/image";
+import { useState } from "react";
+import FeatImage1 from "@/public/images/landing-feature/1.jpg";
+import FeatImage2 from "@/public/images/landing-feature/2.jpg";
+import FeatImage3 from "@/public/images/landing-feature/3.jpg";
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { landingPage } from "@/config/landing-page.config";
 
-const images = [FeatImage1, FeatImage2, FeatImage3]
+const images = [FeatImage1, FeatImage2, FeatImage3];
 
 export default function Features02() {
-  const [currentImage, setCurrentImage] = useState(0)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [currentImage, setCurrentImage] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const nextImage = () => setCurrentImage((prev) => (prev + 1) % images.length)
-  const prevImage = () => setCurrentImage((prev) => (prev - 1 + images.length) % images.length)
+  const nextImage = () => setCurrentImage((prev) => (prev + 1) % images.length);
+  const prevImage = () =>
+    setCurrentImage((prev) => (prev - 1 + images.length) % images.length);
 
   return (
     <section>
@@ -36,8 +37,8 @@ export default function Features02() {
                 onClick={() => setActiveIndex(index)}
                 className={`p-2 rounded-full  text-left transition-colors ${
                   index === activeIndex
-                    ? 'border-blue-500 bg-blue-500 text-white'
-                    : 'border-gray-200 hover:border-blue-300 hover:bg-gray-100'
+                    ? "border-blue-500 bg-blue-500 text-white"
+                    : "border-gray-200 hover:border-blue-300 hover:bg-gray-100"
                 }`}
               >
                 <h4 className="font-medium text-xs sm:text-sm">{item.title}</h4>
@@ -51,12 +52,17 @@ export default function Features02() {
               <ContentBlock
                 title={landingPage.services.items[activeIndex].title}
                 subtitle={landingPage.services.items[activeIndex].subtitle}
-                description={landingPage.services.items[activeIndex].description}
+                description={
+                  landingPage.services.items[activeIndex].description
+                }
                 items={landingPage.services.items[activeIndex].items}
               />
             </div>
 
-            <div className="relative w-full md:w-1/2 overflow-hidden rounded-lg" data-aos="fade-up">
+            <div
+              className="relative w-full md:w-1/2 overflow-hidden rounded-lg"
+              data-aos="fade-up"
+            >
               <Image
                 className="transition-all duration-500 object-cover w-full h-[300px] md:h-[400px] lg:h-[500px]"
                 src={images[currentImage]}
@@ -85,7 +91,7 @@ export default function Features02() {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 function ContentBlock({
@@ -93,29 +99,35 @@ function ContentBlock({
   description,
   items,
 }: {
-  title: string
-  description?: string
-  subtitle?: string
+  title: string;
+  description?: string;
+  subtitle?: string;
   items?: {
-    title: string
-    description: string
-  }[]
+    title: string;
+    description: string;
+  }[];
 }) {
   return (
     <div>
-      <h3 className="font-archivo text-xl md:text-3xl font-bold text-black mb-3">{title}</h3>
-      {description && <p className="mb-8 text-lg text-gray-500">{description}</p>}
+      <h3 className="font-archivo text-xl md:text-3xl font-bold text-black mb-3">
+        {title}
+      </h3>
+      {description && (
+        <p className="mb-8 text-lg text-gray-500">{description}</p>
+      )}
       <ul className="flex flex-col space-y-6">
         {items?.map((item, i) => (
           <li className="flex items-start" key={i}>
             <Check className="mr-3 mt-1.5 h-4 w-4 text-blue-500" />
             <div>
-              <div className="mb-1 font-cabinet-grotesk text-lg font-bold">{item.title}</div>
+              <div className="mb-1 font-cabinet-grotesk text-lg font-bold">
+                {item.title}
+              </div>
               <div className="text-gray-500">{item.description}</div>
             </div>
           </li>
         ))}
       </ul>
     </div>
-  )
+  );
 }

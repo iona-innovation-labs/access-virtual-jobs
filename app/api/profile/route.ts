@@ -17,7 +17,7 @@ import { auth } from "@/auth";
 //export async function GET(req: NextRequest) {
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(

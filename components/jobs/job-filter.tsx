@@ -1,8 +1,17 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Search, Filter, X, ChevronDown, MapPin, Briefcase, DollarSign, Clock } from "lucide-react";
-import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Filter,
+  X,
+  ChevronDown,
+  MapPin,
+  Briefcase,
+  DollarSign,
+  Clock,
+} from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface FilterState {
   query: string;
@@ -13,18 +22,17 @@ interface FilterState {
   remote: boolean;
 }
 
-
 export default function JobFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const [filters, setFilters] = useState<FilterState>({
-    query: '',
-    location: '',
+    query: "",
+    location: "",
     jobType: [],
-    salaryRange: '',
-    experience: '',
-    remote: false
+    salaryRange: "",
+    experience: "",
+    remote: false,
   });
 
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
@@ -32,46 +40,66 @@ export default function JobFilter() {
   // Initialize filters from URL on component mount
   useEffect(() => {
     const urlFilters: FilterState = {
-      query: searchParams.get('q') || '',
-      location: searchParams.get('location') || '',
-      jobType: searchParams.get('jobType') ? searchParams.get('jobType')!.split(',') : [],
-      salaryRange: searchParams.get('salary') || '',
-      experience: searchParams.get('experience') || '',
-      remote: searchParams.get('remote') === 'true'
+      query: searchParams.get("q") || "",
+      location: searchParams.get("location") || "",
+      jobType: searchParams.get("jobType")
+        ? searchParams.get("jobType")!.split(",")
+        : [],
+      salaryRange: searchParams.get("salary") || "",
+      experience: searchParams.get("experience") || "",
+      remote: searchParams.get("remote") === "true",
     };
     setFilters(urlFilters);
   }, [searchParams]);
 
   const updateURL = (newFilters: FilterState) => {
     const params = new URLSearchParams();
-    
-    if (newFilters.query) params.set('q', newFilters.query);
-    if (newFilters.location) params.set('location', newFilters.location);
-    if (newFilters.jobType.length > 0) params.set('jobType', newFilters.jobType.join(','));
-    if (newFilters.salaryRange) params.set('salary', newFilters.salaryRange);
-    if (newFilters.experience) params.set('experience', newFilters.experience);
-    if (newFilters.remote) params.set('remote', 'true');
+
+    if (newFilters.query) params.set("q", newFilters.query);
+    if (newFilters.location) params.set("location", newFilters.location);
+    if (newFilters.jobType.length > 0)
+      params.set("jobType", newFilters.jobType.join(","));
+    if (newFilters.salaryRange) params.set("salary", newFilters.salaryRange);
+    if (newFilters.experience) params.set("experience", newFilters.experience);
+    if (newFilters.remote) params.set("remote", "true");
 
     // Update URL without page reload
     router.push(`?${params.toString()}`, { scroll: false });
   };
 
-  const jobTypes = ['Full-time', 'Part-time', 'Contract', 'Freelance', 'Internship'];
-  const salaryRanges = ['Under $50k', '$50k - $75k', '$75k - $100k', '$100k - $150k', '$150k+'];
-  const experienceLevels = ['Entry Level', 'Mid Level', 'Senior Level', 'Executive'];
+  const jobTypes = [
+    "Full-time",
+    "Part-time",
+    "Contract",
+    "Freelance",
+    "Internship",
+  ];
+  const salaryRanges = [
+    "Under $50k",
+    "$50k - $75k",
+    "$75k - $100k",
+    "$100k - $150k",
+    "$150k+",
+  ];
+  const experienceLevels = [
+    "Entry Level",
+    "Mid Level",
+    "Senior Level",
+    "Executive",
+  ];
 
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     const newFilters = { ...filters, [key]: value };
     setFilters(newFilters);
     // Don't update URL immediately for text inputs (wait for search)
-    if (key !== 'query' && key !== 'location') {
+    if (key !== "query" && key !== "location") {
       updateURL(newFilters);
     }
   };
 
   const handleJobTypeToggle = (type: string) => {
     const newJobTypes = filters.jobType.includes(type)
-      ? filters.jobType.filter(t => t !== type)
+      ? filters.jobType.filter((t) => t !== type)
       : [...filters.jobType, type];
     const newFilters = { ...filters, jobType: newJobTypes };
     setFilters(newFilters);
@@ -85,18 +113,22 @@ export default function JobFilter() {
 
   const clearFilters = () => {
     const clearedFilters: FilterState = {
-      query: '',
-      location: '',
+      query: "",
+      location: "",
       jobType: [],
-      salaryRange: '',
-      experience: '',
-      remote: false
+      salaryRange: "",
+      experience: "",
+      remote: false,
     };
     setFilters(clearedFilters);
     updateURL(clearedFilters);
   };
 
-  const hasActiveFilters = filters.jobType.length > 0 || filters.salaryRange || filters.experience || filters.remote;
+  const hasActiveFilters =
+    filters.jobType.length > 0 ||
+    filters.salaryRange ||
+    filters.experience ||
+    filters.remote;
 
   return (
     <div className="max-w-6xl mx-auto mb-8 sm:mb-10">
@@ -106,25 +138,25 @@ export default function JobFilter() {
           <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex-1 relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Search jobs, companies, or keywords..."
                 value={filters.query}
-                onChange={(e) => handleFilterChange('query', e.target.value)}
+                onChange={(e) => handleFilterChange("query", e.target.value)}
                 className="w-full pl-12 pr-4 py-3 bg-transparent border-0 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-500"
               />
             </div>
             <div className="relative sm:w-48">
               <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Location"
                 value={filters.location}
-                onChange={(e) => handleFilterChange('location', e.target.value)}
+                onChange={(e) => handleFilterChange("location", e.target.value)}
                 className="w-full pl-12 pr-4 py-3 bg-transparent border-0 sm:border-l border-gray-200 focus:outline-none focus:ring-0 text-gray-900 placeholder-gray-500"
               />
             </div>
-            <button 
+            <button
               type="submit"
               className="bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-xl transition-colors duration-200 flex items-center justify-center"
             >
@@ -144,53 +176,70 @@ export default function JobFilter() {
           >
             <Filter className="w-4 h-4" />
             <span className="text-sm font-medium">Filters</span>
-            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showAdvancedFilters ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`w-4 h-4 transition-transform duration-200 ${showAdvancedFilters ? "rotate-180" : ""}`}
+            />
           </button>
 
           {/* Active Filter Tags */}
-          {filters.jobType.map(type => (
-            <span key={type} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+          {filters.jobType.map((type) => (
+            <span
+              key={type}
+              className="inline-flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+            >
               {type}
-              <button onClick={() => handleJobTypeToggle(type)} className="hover:bg-blue-200 rounded-full p-0.5">
+              <button
+                onClick={() => handleJobTypeToggle(type)}
+                className="hover:bg-blue-200 rounded-full p-0.5"
+              >
                 <X className="w-3 h-3" />
               </button>
             </span>
           ))}
-          
+
           {filters.salaryRange && (
             <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
               {filters.salaryRange}
-              <button onClick={() => {
-                const newFilters = { ...filters, salaryRange: '' };
-                setFilters(newFilters);
-                updateURL(newFilters);
-              }} className="hover:bg-green-200 rounded-full p-0.5">
+              <button
+                onClick={() => {
+                  const newFilters = { ...filters, salaryRange: "" };
+                  setFilters(newFilters);
+                  updateURL(newFilters);
+                }}
+                className="hover:bg-green-200 rounded-full p-0.5"
+              >
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
-          
+
           {filters.experience && (
             <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
               {filters.experience}
-              <button onClick={() => {
-                const newFilters = { ...filters, experience: '' };
-                setFilters(newFilters);
-                updateURL(newFilters);
-              }} className="hover:bg-purple-200 rounded-full p-0.5">
+              <button
+                onClick={() => {
+                  const newFilters = { ...filters, experience: "" };
+                  setFilters(newFilters);
+                  updateURL(newFilters);
+                }}
+                className="hover:bg-purple-200 rounded-full p-0.5"
+              >
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
-          
+
           {filters.remote && (
             <span className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 text-orange-800 text-sm rounded-full">
               Remote
-              <button onClick={() => {
-                const newFilters = { ...filters, remote: false };
-                setFilters(newFilters);
-                updateURL(newFilters);
-              }} className="hover:bg-orange-200 rounded-full p-0.5">
+              <button
+                onClick={() => {
+                  const newFilters = { ...filters, remote: false };
+                  setFilters(newFilters);
+                  updateURL(newFilters);
+                }}
+                className="hover:bg-orange-200 rounded-full p-0.5"
+              >
                 <X className="w-3 h-3" />
               </button>
             </span>
@@ -218,7 +267,7 @@ export default function JobFilter() {
                 Job Type
               </label>
               <div className="space-y-2">
-                {jobTypes.map(type => (
+                {jobTypes.map((type) => (
                   <label key={type} className="flex items-center">
                     <input
                       type="checkbox"
@@ -239,7 +288,7 @@ export default function JobFilter() {
                 Salary Range
               </label>
               <div className="space-y-2">
-                {salaryRanges.map(range => (
+                {salaryRanges.map((range) => (
                   <label key={range} className="flex items-center">
                     <input
                       type="radio"
@@ -265,7 +314,7 @@ export default function JobFilter() {
                 Experience Level
               </label>
               <div className="space-y-2">
-                {experienceLevels.map(level => (
+                {experienceLevels.map((level) => (
                   <label key={level} className="flex items-center">
                     <input
                       type="radio"
@@ -296,13 +345,18 @@ export default function JobFilter() {
                     type="checkbox"
                     checked={filters.remote}
                     onChange={(e) => {
-                      const newFilters = { ...filters, remote: e.target.checked };
+                      const newFilters = {
+                        ...filters,
+                        remote: e.target.checked,
+                      };
                       setFilters(newFilters);
                       updateURL(newFilters);
                     }}
                     className="rounded border-gray-300 text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
                   />
-                  <span className="ml-2 text-sm text-gray-600">Remote Work</span>
+                  <span className="ml-2 text-sm text-gray-600">
+                    Remote Work
+                  </span>
                 </label>
               </div>
             </div>

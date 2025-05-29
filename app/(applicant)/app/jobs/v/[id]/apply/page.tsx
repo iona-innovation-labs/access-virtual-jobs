@@ -1,10 +1,10 @@
 import ProfilePageClient from "@/components/profile/profile-page";
 import { getJobPost } from "@/lib/api/jobs";
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
@@ -16,7 +16,7 @@ export async function generateMetadata({
 }
 
 export default async function Apply() {
-    // const result = await getUser(2);
+  // const result = await getUser(2);
 
-    return <ProfilePageClient />;
+  return <ProfilePageClient />;
 }

@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 
 // export const dynamic = "force-dynamic";
 
-export default async function Jobs({ 
-  searchParams 
-}: { 
-  searchParams: Promise<ISearchParams> 
+export default async function Jobs({
+  searchParams,
+}: {
+  searchParams: Promise<ISearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
 

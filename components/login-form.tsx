@@ -61,7 +61,9 @@ export function LoginForm({
                   variant="outline"
                   className="w-full"
                   type="button"
-                  onClick={() => signIn("google", { callbackUrl: "/app/overview" })}
+                  onClick={() =>
+                    signIn("google", { callbackUrl: "/app/overview" })
+                  }
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +115,11 @@ export function LoginForm({
                     required
                   />
                 </div>
-                <Button type="submit" className="w-full bg-blue-900 cursor-pointer" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-900 cursor-pointer"
+                  disabled={loading}
+                >
                   {loading ? "Logging in..." : "Login"}
                 </Button>
               </div>

@@ -31,11 +31,11 @@ export const EmailNotificationTemplate = ({
   const renderMessage = (msg: string) => {
     const htmlRegex = /<[^>]*>/;
     const hasHtml = htmlRegex.test(msg);
-    
+
     if (hasHtml) {
       return (
-        <div 
-          style={{...messageText, whiteSpace: "normal"}} 
+        <div
+          style={{ ...messageText, whiteSpace: "normal" }}
           dangerouslySetInnerHTML={{ __html: msg }}
         />
       );
@@ -47,11 +47,11 @@ export const EmailNotificationTemplate = ({
   const renderFooterMessage = (msg: string) => {
     const htmlRegex = /<[^>]*>/;
     const hasHtml = htmlRegex.test(msg);
-    
+
     if (hasHtml) {
       return (
-        <div 
-          style={{...footerText, whiteSpace: "normal"}} 
+        <div
+          style={{ ...footerText, whiteSpace: "normal" }}
           dangerouslySetInnerHTML={{ __html: msg }}
         />
       );
@@ -75,7 +75,7 @@ export const EmailNotificationTemplate = ({
           <Section style={contentSection}>
             <Text style={titleText}>{title}</Text>
             {renderMessage(message)}
-            
+
             {footer && (
               <div style={footerNoteContainer}>
                 {renderFooterMessage(footer)}
@@ -110,7 +110,8 @@ export default EmailNotificationTemplate;
 // Clean, minimal styles inspired by big tech companies
 const main = {
   backgroundColor: "#ffffff",
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   margin: "0",
   padding: "32px 16px",
   width: "100%",

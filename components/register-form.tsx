@@ -67,7 +67,9 @@ export function RegisterForm({
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Create an account</CardTitle>
-          <CardDescription>Register with your email and password</CardDescription>
+          <CardDescription>
+            Register with your email and password
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit}>
@@ -115,7 +117,9 @@ export function RegisterForm({
                 />
               </div>
 
-              {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
 
               <Button
                 type="submit"
@@ -127,7 +131,10 @@ export function RegisterForm({
 
               <div className="text-center text-sm">
                 Already have an account?{" "}
-                <a href="/login" className="text-blue-600 underline underline-offset-4">
+                <a
+                  href="/login"
+                  className="text-blue-600 underline underline-offset-4"
+                >
                   Login
                 </a>
               </div>

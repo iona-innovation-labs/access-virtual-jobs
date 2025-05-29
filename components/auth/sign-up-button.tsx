@@ -1,11 +1,8 @@
-'use client'
+"use client";
 
-import { useRouter } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 export function SignUpButton() {
-  const router = useRouter()
-  return (
-    <button onClick={() => router.push("/register")}>Sign Up</button>
-  )
+  const router = useRouter();
+  return <button onClick={() => router.push("/register")}>Sign Up</button>;
 }
-

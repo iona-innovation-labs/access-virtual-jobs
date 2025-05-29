@@ -96,7 +96,7 @@ const ProfileHeader = () => {
           body: JSON.stringify(data),
         });
 
-        console.log("RESPONSE: ", response)
+        console.log("RESPONSE: ", response);
 
         if (!response.ok) {
           toast({

@@ -41,14 +41,7 @@ export type Footer11Props = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const Footer = (props: Footer11Props) => {
-  const {
-    logo,
-    address,
-    contact,
-    columnLinks,
-    footerText,
-    footerLinks,
-  } = {
+  const { logo, address, contact, columnLinks, footerText, footerLinks } = {
     ...Footer11Defaults,
     ...props,
   } as Props;

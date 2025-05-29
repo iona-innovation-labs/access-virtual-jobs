@@ -45,7 +45,6 @@ export const ContactFormTemplate = ({
           <Section style={senderSection}>
             <Table style={senderTable}>
               <tr>
-
                 <td style={senderInfoCell}>
                   <Text style={senderName}>{name || "Anonymous"}</Text>
                   <Text style={senderEmail}>{email}</Text>
@@ -75,10 +74,11 @@ export const ContactFormTemplate = ({
           {/* Footer */}
           <Section style={footerSection}>
             <Text style={footerText}>
-              Received on {new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: '2-digit', 
-                day: '2-digit' 
+              Received on{" "}
+              {new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
               })}
             </Text>
           </Section>
@@ -89,7 +89,13 @@ export const ContactFormTemplate = ({
 };
 
 // Table component for better email client compatibility
-const Table = ({ style, children }: { style: any; children: React.ReactNode }) => (
+const Table = ({
+  style,
+  children,
+}: {
+  style: any;
+  children: React.ReactNode;
+}) => (
   <table style={{ ...tableBase, ...style }}>
     <tbody>{children}</tbody>
   </table>
@@ -107,7 +113,8 @@ const tableBase = {
 // Main styles with fixed layout
 const main = {
   backgroundColor: "#f8fafc",
-  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   margin: "0",
   padding: "40px 20px",
   width: "100%",

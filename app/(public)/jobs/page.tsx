@@ -16,19 +16,20 @@ interface PageSearchParams {
   [key: string]: string | string[] | undefined;
 }
 
-export default async function PublicJobsPage({ 
-  searchParams 
-}: { 
-  searchParams: Promise<PageSearchParams>
+export default async function PublicJobsPage({
+  searchParams,
+}: {
+  searchParams: Promise<PageSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
 
-  const positions = await getJobs({
+  const positions = await getJobs(
+    {
       offset: (parseInt(resolvedSearchParams.page as string) - 1) * 10,
       sort_by: "created_on",
       sort_desc: true,
       limit: 10,
-      filters: { "job-posting-status": 3 }
+      filters: { "job-posting-status": 3 },
     },
     resolvedSearchParams.q || ""
   );
@@ -37,19 +38,19 @@ export default async function PublicJobsPage({
   console.log("search query", resolvedSearchParams.q);
 
   return (
-      <div className="mx-auto pt-8">
-        {/* Header */}
-        <JobHeader 
-          heading="Latest Job Listings" 
-          description="Find the latest job listings here" 
-        />
-        <JobFilter />
-        <JobList positions={positions?.items || []} isPublic={true} />
-        <JobListPaginationContainer 
-          totalCount={positions?.total || 0}
-          pageSize={10}
-        />
-        <Cta/>
-      </div>
+    <div className="mx-auto pt-8">
+      {/* Header */}
+      <JobHeader
+        heading="Latest Job Listings"
+        description="Find the latest job listings here"
+      />
+      <JobFilter />
+      <JobList positions={positions?.items || []} isPublic={true} />
+      <JobListPaginationContainer
+        totalCount={positions?.total || 0}
+        pageSize={10}
+      />
+      <Cta />
+    </div>
   );
 }

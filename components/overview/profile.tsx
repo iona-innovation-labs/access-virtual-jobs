@@ -15,10 +15,7 @@ import { fetchApi } from "@/services/fetch-api";
 const Profile = () => {
   const router = useRouter();
   const { userInfo, isLoading } = useUserInfo(); // Updated hook usage
-  const { data } = useSWR<IProfileResponse, AppError>(
-    "/profile",
-    fetchApi
-  );
+  const { data } = useSWR<IProfileResponse, AppError>("/profile", fetchApi);
   if (isLoading) {
     return <p>Loading...</p>; // Handle loading state
   }
@@ -29,7 +26,10 @@ const Profile = () => {
         <div className="flex justify-between items-start gap-4">
           <div className="flex items-center gap-4">
             <Image
-              src={userInfo?.profileImage || "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fprofile_6522516&psig=AOvVaw1cahXpP4M3pUAyOwJ4YyJH&ust=1748073284614000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJiXmsuOuY0DFQAAAAAdAAAAABAE"}
+              src={
+                userInfo?.profileImage ||
+                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fprofile_6522516&psig=AOvVaw1cahXpP4M3pUAyOwJ4YyJH&ust=1748073284614000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCJiXmsuOuY0DFQAAAAAdAAAAABAE"
+              }
               alt="Avatar"
               className="size-20 rounded-full object-cover"
               width={150}

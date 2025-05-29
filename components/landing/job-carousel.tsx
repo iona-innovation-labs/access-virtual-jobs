@@ -1,22 +1,21 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
+import { useEffect } from "react";
 // @ts-ignore
-import Swiper, { Autoplay } from 'swiper'
-import 'swiper/swiper.min.css'
+import Swiper, { Autoplay } from "swiper";
+import "swiper/swiper.min.css";
 
-
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
-import { useRouter } from 'next/navigation'
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 export interface IJobListing {
-  id: string
-  url: string
-  title: string
-  pay?: string
-  description?: string
-  createdAt: string
-  postedBy: string
+  id: string;
+  url: string;
+  title: string;
+  pay?: string;
+  description?: string;
+  createdAt: string;
+  postedBy: string;
 }
 
 const jobListings: IJobListing[] = [...Array(6)].map((_, i) => ({
@@ -27,22 +26,22 @@ const jobListings: IJobListing[] = [...Array(6)].map((_, i) => ({
   description: `Description for job temp temp temp temp right left${i + 1}`,
   createdAt: "2025-05-25",
   postedBy: `Company ${i + 1}`,
-}))
+}));
 
 export default function Clients() {
-  Swiper.use([Autoplay])
-  const router = useRouter()
+  Swiper.use([Autoplay]);
+  const router = useRouter();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      new Swiper('.clients-carousel', {
-        slidesPerView: 'auto',
+      new Swiper(".clients-carousel", {
+        slidesPerView: "auto",
         spaceBetween: 16,
         centeredSlides: true,
         loop: true,
         speed: 5000,
         noSwiping: true,
-        noSwipingClass: 'swiper-slide',
+        noSwipingClass: "swiper-slide",
         autoplay: {
           delay: 0,
           disableOnInteraction: true,
@@ -66,7 +65,9 @@ export default function Clients() {
               >
                 <Card className="cursor-pointer bg-gradient-to-br h-full from-gray-800 to-gray-900 text-white border-none shadow-md hover:shadow-lg transition-shadow duration-200">
                   <CardHeader className="pb-2">
-                    <h3 className="text-xl font-semibold tracking-tight">{job.title}</h3>
+                    <h3 className="text-xl font-semibold tracking-tight">
+                      {job.title}
+                    </h3>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <p className="text-sm text-gray-300 leading-relaxed">
@@ -74,10 +75,14 @@ export default function Clients() {
                     </p>
                     <div className="flex flex-col gap-1 text-sm text-gray-400">
                       <p>
-                        <span className="font-medium text-gray-200">Posted by:</span> {job.postedBy}
+                        <span className="font-medium text-gray-200">
+                          Posted by:
+                        </span>{" "}
+                        {job.postedBy}
                       </p>
                       <p>
-                        <span className="font-medium text-gray-200">Pay:</span> {job.pay || "Not specified"}
+                        <span className="font-medium text-gray-200">Pay:</span>{" "}
+                        {job.pay || "Not specified"}
                       </p>
                     </div>
                   </CardContent>
@@ -88,5 +93,5 @@ export default function Clients() {
         </div>
       </div>
     </section>
-  )
+  );
 }

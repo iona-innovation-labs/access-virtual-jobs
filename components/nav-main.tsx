@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  type Icon as TablerIcon,
-} from "@tabler/icons-react";
+import { type Icon as TablerIcon } from "@tabler/icons-react";
 
 import {
   SidebarGroup,

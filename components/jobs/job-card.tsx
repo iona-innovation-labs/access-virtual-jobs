@@ -1,21 +1,29 @@
-import React from 'react';
-import { Clock, Building2 } from 'lucide-react';
-import { IJobListing } from '@/types/jobs';
-import JobCardApply from './job-card-apply';
+import React from "react";
+import { Clock, Building2 } from "lucide-react";
+import { IJobListing } from "@/types/jobs";
+import JobCardApply from "./job-card-apply";
 
-const JobCard = ({ job, isPublic = false }: { job: IJobListing, isPublic?: boolean }) => {
+const JobCard = ({
+  job,
+  isPublic = false,
+}: {
+  job: IJobListing;
+  isPublic?: boolean;
+}) => {
   const stripHtml = (html: string) => {
-    if (typeof window !== 'undefined') {
-      const div = document.createElement('div');
+    if (typeof window !== "undefined") {
+      const div = document.createElement("div");
       div.innerHTML = html;
-      return div.textContent || div.innerText || '';
+      return div.textContent || div.innerText || "";
     }
-    return html.replace(/<[^>]*>/g, '');
+    return html.replace(/<[^>]*>/g, "");
   };
 
   const getDescriptionPreview = (description: string) => {
     const plainText = stripHtml(description);
-    return plainText.length > 120 ? plainText.substring(0, 120) + '...' : plainText;
+    return plainText.length > 120
+      ? plainText.substring(0, 120) + "..."
+      : plainText;
   };
 
   const formatDate = (dateString: string) => {
@@ -23,15 +31,15 @@ const JobCard = ({ job, isPublic = false }: { job: IJobListing, isPublic?: boole
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
+
+    if (diffDays === 0) return "Today";
+    if (diffDays === 1) return "Yesterday";
     if (diffDays < 7) return `${diffDays} days ago`;
     if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
-    return date.toLocaleDateString('en-US', { 
-      month: 'short', 
-      day: 'numeric',
-      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: date.getFullYear() !== now.getFullYear() ? "numeric" : undefined,
     });
   };
 
@@ -52,7 +60,7 @@ const JobCard = ({ job, isPublic = false }: { job: IJobListing, isPublic?: boole
       {/* Description */}
       <div className="mb-4 sm:mb-5">
         <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
-          {getDescriptionPreview(job.description || '')}
+          {getDescriptionPreview(job.description || "")}
         </p>
       </div>
 
@@ -68,9 +76,9 @@ const JobCard = ({ job, isPublic = false }: { job: IJobListing, isPublic?: boole
             {job.pay}
           </div>
         </div>
-        
+
         {/* Apply Button */}
-        <JobCardApply isPublic={isPublic} id={job.id}/>
+        <JobCardApply isPublic={isPublic} id={job.id} />
       </div>
     </div>
   );

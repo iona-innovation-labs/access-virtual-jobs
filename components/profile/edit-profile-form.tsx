@@ -172,7 +172,10 @@ export default function EditProfileForm() {
                     Profile Image
                   </Label>
                   <Image
-                    src={user?.image || "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fuser_9187604&psig=AOvVaw2BbHKeD9FKIdADnvSdZuty&ust=1748086769943000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCMj3oOnAuY0DFQAAAAAdAAAAABAW"}
+                    src={
+                      user?.image ||
+                      "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.flaticon.com%2Ffree-icon%2Fuser_9187604&psig=AOvVaw2BbHKeD9FKIdADnvSdZuty&ust=1748086769943000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCMj3oOnAuY0DFQAAAAAdAAAAABAW"
+                    }
                     alt="Avatar"
                     className="size-20 rounded-full object-cover"
                     width={50}

@@ -1,4 +1,4 @@
-import {  NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { db } from "@/database";
 import { users } from "@/database/schema/users";
@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 //export async function GET(req: NextRequest) {
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(

@@ -14,8 +14,8 @@ import { fetchApi } from "@/services/fetch-api";
 import { useSession } from "next-auth/react";
 
 export default function ChangePassword() {
-  const session = useSession()
-  const user = session?.data?.user
+  const session = useSession();
+  const user = session?.data?.user;
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 

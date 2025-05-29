@@ -9,10 +9,10 @@ import { ViewJobContent } from "@/components/jobs/view-job-content";
 import { getJobApplicationByJobId } from "@/database/queries/job_applications";
 import { Button } from "@/components/ui/button";
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
   const { id } = resolvedParams;
@@ -23,16 +23,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function ViewJob({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export default async function ViewJob({
+  params,
+}: {
+  params: Promise<{ id: string }>;
 }) {
   const resolvedParams = await params;
   const post = await getJobPost(
-    Array.isArray(resolvedParams?.id) ? resolvedParams?.id[0] : resolvedParams?.id || ""
+    Array.isArray(resolvedParams?.id)
+      ? resolvedParams?.id[0]
+      : resolvedParams?.id || ""
   );
-  const jobApplication = await getJobApplicationByJobId(resolvedParams?.id || "");
+  const jobApplication = await getJobApplicationByJobId(
+    resolvedParams?.id || ""
+  );
   const alreadyApplied = jobApplication.ok && jobApplication.application;
 
   if (!post) {
@@ -54,12 +58,9 @@ export default async function ViewJob({
             icon: Banknote,
           },
           {
-            label: formatDistanceToNow(
-              new Date(post?.item?.createdAt || ""),
-              {
-                addSuffix: true,
-              }
-            ),
+            label: formatDistanceToNow(new Date(post?.item?.createdAt || ""), {
+              addSuffix: true,
+            }),
             icon: Calendar,
           },
         ]}

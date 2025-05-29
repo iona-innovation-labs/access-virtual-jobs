@@ -102,7 +102,7 @@ export default function ContactForm() {
       reset();
       setValue("subject", "");
       setIsSubmitted(true);
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
@@ -120,7 +120,8 @@ export default function ContactForm() {
                 Message Sent Successfully!
               </h3>
               <p className="text-gray-600 font-[Archivo]">
-                Thank you for reaching out. We&apos;ll get back to you within 24 hours.
+                Thank you for reaching out. We&apos;ll get back to you within 24
+                hours.
               </p>
             </CardContent>
           </Card>
@@ -136,8 +137,8 @@ export default function ContactForm() {
           {/* Left Column - Contact Info */}
           <div className="space-y-8">
             <div>
-              <Badge 
-                variant="secondary" 
+              <Badge
+                variant="secondary"
                 className="mb-4 text-white hover:opacity-90 bg-[#00c2cb]"
               >
                 Get in Touch
@@ -146,8 +147,8 @@ export default function ContactForm() {
                 Let&apos;s Start a Conversation
               </h1>
               <p className="text-lg text-gray-600 leading-relaxed font-[Archivo]">
-                Ready to transform your business? We&apos;d love to hear from you. 
-                Send us a message and we&apos;ll respond within 24 hours.
+                Ready to transform your business? We&apos;d love to hear from
+                you. Send us a message and we&apos;ll respond within 24 hours.
               </p>
             </div>
 
@@ -161,7 +162,8 @@ export default function ContactForm() {
                     Email
                   </h3>
                   <p className="text-gray-600 font-[Archivo]">
-                    {process.env.NEXT_SUPPORT_EMAIL || "support@accessvirtualstaffing.com"}
+                    {process.env.NEXT_SUPPORT_EMAIL ||
+                      "support@accessvirtualstaffing.com"}
                   </p>
                 </div>
               </div>
@@ -175,7 +177,7 @@ export default function ContactForm() {
                     Office
                   </h3>
                   <p className="text-gray-600 font-[Archivo]">
-                    { process.env.NEXT_PUBLIC_ADDRESS }
+                    {process.env.NEXT_PUBLIC_ADDRESS}
                   </p>
                 </div>
               </div>
@@ -194,7 +196,10 @@ export default function ContactForm() {
             </CardHeader>
             <CardContent className="space-y-6">
               <Form {...form}>
-                <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit(onSubmitForm)}
+                  className="space-y-6"
+                >
                   <FormField
                     control={form.control}
                     name="name"
@@ -204,8 +209,8 @@ export default function ContactForm() {
                           Full Name
                         </FormLabel>
                         <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
+                          <Input
+                            placeholder="Enter your full name"
                             className="h-12 border-gray-200 transition-all duration-200 focus:border-[#042e67] focus:ring-[#042e67] focus:ring-opacity-10"
                             {...field}
                           />
@@ -225,9 +230,9 @@ export default function ContactForm() {
                             Email
                           </FormLabel>
                           <FormControl>
-                            <Input 
+                            <Input
                               type="email"
-                              placeholder="your@email.com" 
+                              placeholder="your@email.com"
                               className="h-12 border-gray-200 transition-all duration-200 focus:border-[#042e67] focus:ring-[#042e67] focus:ring-opacity-10"
                               {...field}
                             />
@@ -246,9 +251,9 @@ export default function ContactForm() {
                             Phone
                           </FormLabel>
                           <FormControl>
-                            <Input 
+                            <Input
                               type="tel"
-                              placeholder="+1 (555) 123-4567" 
+                              placeholder="+1 (555) 123-4567"
                               className="h-12 border-gray-200 transition-all duration-200 focus:border-[#042e67] focus:ring-[#042e67] focus:ring-opacity-10"
                               {...field}
                             />
@@ -267,7 +272,10 @@ export default function ContactForm() {
                         <FormLabel className="text-gray-700 font-medium font-[Archivo]">
                           Subject
                         </FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger className="h-12 border-gray-200 transition-all duration-200 w-full focus:border-[#042e67] focus:ring-[#042e67] focus:ring-opacity-10">
                               <SelectValue placeholder="Select a topic" />
@@ -275,7 +283,10 @@ export default function ContactForm() {
                           </FormControl>
                           <SelectContent>
                             {subjectOptions.map((option) => (
-                              <SelectItem key={option.value} value={option.value}>
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
                                 {option.label}
                               </SelectItem>
                             ))}
@@ -295,7 +306,7 @@ export default function ContactForm() {
                           Message
                         </FormLabel>
                         <FormControl>
-                          <Textarea 
+                          <Textarea
                             placeholder="Tell us about your project or inquiry..."
                             className="min-h-32 border-gray-200 transition-all duration-200 resize-none focus:border-[#042e67] focus:ring-[#042e67] focus:ring-opacity-10"
                             {...field}
@@ -306,8 +317,8 @@ export default function ContactForm() {
                     )}
                   />
 
-                  <Button 
-                    type="submit" 
+                  <Button
+                    type="submit"
                     disabled={isSubmitting}
                     className="w-full h-12 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 bg-[#042e67] hover:bg-[#003b59] font-[Montserrat]"
                   >
