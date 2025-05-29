@@ -2,13 +2,22 @@
 
 import React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  X,
+  CheckCircle2,
+  User,
+  Upload,
+  AlertTriangle,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useProfileDetails } from "@/context/profile-details-context";
 import { useProfileTabContext } from "@/context/profile-tab-context";
 import { fetchApi } from "@/services/fetch-api";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,7 +52,7 @@ const ProfileHeader = () => {
       console.log("Response from file submit:", response);
       if (!response.ok) {
         toast({
-          title: "Error",
+          title: "Application Failed",
           description: `Failed to submit job application. ${
             response.message || "Please try again."
           }`,
@@ -54,9 +63,9 @@ const ProfileHeader = () => {
       }
 
       toast({
-        title: "Success",
+        title: "Application Submitted!",
         description:
-          "Job application submitted successfully. Redirecting to submissions page...",
+          "Your job application has been submitted successfully. Redirecting...",
         variant: "success",
       });
       setLoading(false);
@@ -67,7 +76,7 @@ const ProfileHeader = () => {
     } catch (error) {
       console.error("Error submitting job application:", error);
       toast({
-        title: "Error",
+        title: "Submission Error",
         description: "Failed to submit job application. Please try again.",
         variant: "destructive",
       });
@@ -80,8 +89,8 @@ const ProfileHeader = () => {
 
     if (!result) {
       toast({
-        title: "Error",
-        description: "Failed to update profile. Please try again.",
+        title: "Validation Error",
+        description: "Please complete all required fields before continuing.",
         variant: "destructive",
       });
       return;
@@ -100,89 +109,178 @@ const ProfileHeader = () => {
 
         if (!response.ok) {
           toast({
-            title: "Error",
+            title: "Update Failed",
             description: "Failed to update profile. Please try again.",
             variant: "destructive",
           });
+          setLoading(false);
+          return;
         }
+
+        toast({
+          title: "Profile Updated",
+          description: "Your profile has been updated successfully!",
+          variant: "success",
+        });
 
         setLoading(false);
         setCurrentTab("Files");
       } catch (error) {
         console.error("Error updating profile:", error);
         toast({
-          title: "Error",
+          title: "Update Error",
           description: "Failed to update profile. Please try again.",
           variant: "destructive",
         });
+        setLoading(false);
       }
     })();
   };
 
+  const getStepInfo = () => {
+    switch (currentTab) {
+      case "Profile":
+        return {
+          title: "Complete Your Profile",
+          description: "Fill in your personal and professional information",
+          action: "Continue to Files",
+          handler: onDetailsSubmit,
+        };
+      case "Files":
+        return {
+          title: "Upload Documents",
+          description: "Add required documents and attachments",
+          action: "Submit Application",
+          handler: onFileSubmit,
+        };
+      default:
+        return null;
+    }
+  };
+
   if (currentTab === "Finish") return null;
 
+  const stepInfo = getStepInfo();
+  if (!stepInfo) return null;
+
   return (
-    <section id="joblist_header" className="relative px-[5%] pt-8 md:pt-12">
-      <div className="container">
-        <div className="w-full flex items-center justify-between border-t border-b p-2">
-          <h1 className=" text-2xl font-bold md:text-3xl">Profile</h1>
-          <div className="flex gap-2">
-            <Button
-              size="sm"
-              onClick={() => router.push(`/app/jobs/v/${jobId}`)}
-            >
-              Cancel
-            </Button>
-            {currentTab === "Profile" && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={onDetailsSubmit}
-                disabled={loading}
-              >
-                {loading ? "Loading..." : "Share Profile Details"}{" "}
-                <ArrowRight />
-              </Button>
-            )}
-            {currentTab === "Files" && (
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="primary" size="sm" disabled={loading}>
-                    {loading ? "Loading..." : " Share Profile Attachments"}{" "}
-                    <ArrowRight />
+    <div className="bg-white sticky top-0 z-40">
+      <div className="mx-auto px-6">
+        <Card className="shadow-sm border-0 py-0">
+          <div className="p-2">
+            <div className="flex items-center justify-between">
+              {/* Left Section - Step Info */}
+              <div className="flex items-center space-x-4">
+                <div>
+                  <h1 className="text-xl font-semibold text-gray-900">
+                    {stepInfo.title}
+                  </h1>
+                  <p className="text-sm text-gray-500 mt-1">
+                    {stepInfo.description}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Section - Actions */}
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  onClick={() => router.push(`/app/jobs/v/${jobId}`)}
+                  className="border-gray-300 hover:bg-gray-50"
+                >
+                  <X className="w-4 h-4 mr-2" />
+                  Cancel
+                </Button>
+
+                {currentTab === "Profile" && (
+                  <Button
+                    onClick={onDetailsSubmit}
+                    disabled={loading}
+                    className="bg-brand hover:bg-brand-dark text-white"
+                  >
+                    {loading ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        {stepInfo.action}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </>
+                    )}
                   </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="bg-zinc-300">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure you want to proceed?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      By continuing, you are confirming that you want to share
-                      your profile details and attachments with the employer.
-                      <br />
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction asChild>
+                )}
+
+                {currentTab === "Files" && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
                       <Button
-                        className="bg-deepBlue hover:bg-deepBlue/75 text-white"
-                        size="sm"
                         disabled={loading}
-                        onClick={onFileSubmit}
+                        className="bg-green-600 hover:bg-green-700 text-white"
                       >
-                        {loading ? "Sharing..." : "Continue"}
+                        {loading ? (
+                          <>
+                            <LoadingSpinner size="sm" className="mr-2" />
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle2 className="w-4 h-4 mr-2" />
+                            {stepInfo.action}
+                          </>
+                        )}
                       </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            )}
+                    </AlertDialogTrigger>
+
+                    <AlertDialogContent className="max-w-md">
+                      <AlertDialogHeader className="text-center">
+                        <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+                          <AlertTriangle className="w-6 h-6 text-amber-600" />
+                        </div>
+                        <AlertDialogTitle className="text-lg">
+                          Submit Application?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-gray-600 leading-relaxed">
+                          You're about to submit your complete profile and
+                          documents to the employer. Make sure all information
+                          is accurate and up-to-date.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+
+                      <AlertDialogFooter className="flex-col-reverse sm:flex-row gap-2">
+                        <AlertDialogCancel className="mt-0 sm:mt-0 w-full sm:w-auto">
+                          Review Again
+                        </AlertDialogCancel>
+                        <AlertDialogAction asChild>
+                          <Button
+                            className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+                            disabled={loading}
+                            onClick={onFileSubmit}
+                          >
+                            {loading ? (
+                              <>
+                                <LoadingSpinner size="sm" className="mr-2" />
+                                Submitting...
+                              </>
+                            ) : (
+                              <>
+                                <CheckCircle2 className="w-4 h-4 mr-2" />
+                                Submit Application
+                              </>
+                            )}
+                          </Button>
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        </Card>
       </div>
-    </section>
+    </div>
   );
 };
 

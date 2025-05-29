@@ -10,7 +10,7 @@ export default function ProfilePageClient() {
   const { currentTab } = useProfileTabContext();
 
   return (
-    <div className="flex  items-center mb-12">
+    <div className="flex justify-center items-center mb-12">
       {/*<ProfileCard profile={profileData} />*/}
       {currentTab === "Profile" && <EditProfileForm />}
       {currentTab === "Files" && <UploadFileForm />}
