@@ -1,6 +1,6 @@
 //must export images, contents, and other data for the landing page
 
-import { BadgeDollarSign, Clock, Globe, Laptop } from "lucide-react";
+import { BadgeDollarSign, Clock, Globe, Laptop, Shield } from "lucide-react";
 
 import HeroImage from "../public/images/landing/hero-blur.svg";
 
@@ -31,24 +31,24 @@ export const landingPage = {
     },
     explainers: [
       {
-        title: "Tailored Matches",
+        title: "Personalized Job Matches",
         description:
-          "We analyze your job requirements and connect you with the most compatible remote candidates.",
+          "We analyze your skills and preferences to connect you with the most compatible remote opportunities.",
       },
       {
-        title: "Fast Hiring Process",
+        title: "Quick Application Process",
         description:
-          "Streamlined workflows to help you onboard within days, not weeks.",
+          "Streamlined workflows to help you apply and interview within days, not weeks.",
       },
       {
-        title: "Verified Remote Workers",
+        title: "Verified Companies",
         description:
-          "Every talent is screened and equipped for productive remote work.",
+          "Every employer is screened and committed to supporting remote work success.",
       },
       {
-        title: "Timezone-Aligned Talent",
+        title: "Timezone-Friendly Roles",
         description:
-          "Work with professionals available in your preferred time zone.",
+          "Find positions with companies that respect your preferred working hours.",
       },
     ],
   },
@@ -64,28 +64,28 @@ export const landingPage = {
     ],
     items: [
       {
-        title: "Global Talent Pool",
+        title: "Global Opportunities",
         icon: <Globe size={50} />,
         description:
-          "Access thousands of vetted professionals from over 80 countries.",
+          "Discover remote positions with top companies from over 80 countries worldwide.",
       },
       {
-        title: "Timezone Flexibility",
+        title: "Flexible Schedules",
         icon: <Clock size={50} />,
         description:
-          "Match with candidates who can align with your business hours.",
+          "Find roles that match your preferred working hours and timezone.",
       },
       {
-        title: "Remote-First Experience",
+        title: "Remote-First Companies",
         icon: <Laptop size={50} />,
         description:
-          "All candidates have proven remote work experience and digital fluency.",
+          "Work with organizations built for remote collaboration and digital excellence.",
       },
       {
-        title: "Transparent Pricing",
-        icon: <BadgeDollarSign size={50} />,
+        title: "Vetted Positions",
+        icon: <Shield size={50} />,
         description:
-          "No hidden fees. Only pay for successful hires or subscriptions.",
+          "All job listings are verified and come from legitimate companies with proven track records.",
       },
     ],
   },

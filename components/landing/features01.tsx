@@ -106,15 +106,24 @@ export default function Features01() {
             {landingPage.features.items.map((item, i) => (
               <Card
                 key={i}
-                className="relative border-none bg-transparent h-full text-white p-5 hover:before:opacity-20 before:absolute before:inset-0 before:rounded-sm before:bg-gradient-to-tr before:from-white before:to-white/25 before:opacity-0 before:transition-all before:duration-150 before:ease-in-out"
+                className="group relative overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm h-full text-white p-6 rounded-lg transition-all duration-300 ease-out hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-black/25 hover:-translate-y-1"
               >
-                <CardHeader className="p-0">{item.icon}</CardHeader>
-                <CardTitle className="text-lg font-cabinet-grotesk font-bold">
+                <CardHeader className="p-0 mb-4">
+                  <div className="transition-transform duration-300 ease-out group-hover:scale-110">
+                    {item.icon}
+                  </div>
+                </CardHeader>
+
+                <CardTitle className="text-xl font-cabinet-grotesk font-bold mb-3 leading-tight">
                   {item.title}
                 </CardTitle>
-                <CardContent className="text-white/80 p-0 pt-2 text-sm leading-relaxed">
+
+                <CardContent className="text-white/70 p-0 text-sm leading-relaxed group-hover:text-white/85 transition-colors duration-300">
                   {item.description}
                 </CardContent>
+
+                {/* Subtle gradient overlay on hover */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-lg" />
               </Card>
             ))}
           </div>
