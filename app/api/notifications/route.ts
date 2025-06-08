@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq, sql, and } from "drizzle-orm";
 
 import { db } from "@/database";
 import { notifications } from "@/database/schema/notifications";
@@ -38,6 +38,11 @@ export async function GET(req: NextRequest) {
     const filter = url.searchParams.get("filter") || "all";
     const offset = (page - 1) * limit;
 
+    const whereConditions =
+      filter === "all"
+        ? eq(notifications.userId, userId)
+        : and(eq(notifications.userId, userId), eq(notifications.type, filter));
+
     const userNotifications = await db
       .select({
         id: notifications.id,
@@ -48,26 +53,33 @@ export async function GET(req: NextRequest) {
         link: notifications.linkTo,
       })
       .from(notifications)
-      .where(
-        filter === "all"
-          ? eq(notifications.userId, userId)
-          : eq(notifications.userId, userId) && eq(notifications.type, filter)
-      )
+      .where(whereConditions)
       .orderBy(desc(notifications.createdAt))
       .limit(limit)
       .offset(offset);
 
+    console.log("NOTIFICATIONS: ", userNotifications);
+    console.log("USER ID: ", userId);
+    console.log("FILTER: ", filter);
+
+    const totalCountConditions =
+      filter === "all"
+        ? eq(notifications.userId, userId)
+        : and(eq(notifications.userId, userId), eq(notifications.type, filter));
+
     const totalCountResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(notifications)
-      .where(eq(notifications.userId, userId));
+      .where(totalCountConditions);
 
     return NextResponse.json({
       ok: true,
       notifications: userNotifications,
       total: totalCountResult[0].count,
+      filter: filter,
     });
   } catch (error: any) {
+    console.error("Notifications API Error:", error);
     return NextResponse.json(
       {
         error: "Internal Server Error",

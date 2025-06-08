@@ -1,7 +1,8 @@
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ModeToggle } from "./ui/mode-toggle";
-import { ThemeSelector } from "./theme-selector";
+// import { ModeToggle } from "./ui/mode-toggle";
+// import { ThemeSelector } from "./theme-selector";
+import { NotificationDropdown } from "./notifications/notification-dropdown";
 
 export function SiteHeader({ params = "Applicant Portal" }) {
   return (
@@ -14,8 +15,12 @@ export function SiteHeader({ params = "Applicant Portal" }) {
         />
         <h1 className="text-base font-medium">{params}</h1>
         <div className="ml-auto flex items-center gap-2">
-          <ThemeSelector />
-          <ModeToggle />
+          {/*
+              <ThemeSelector />
+              <ModeToggle />
+            */}
+
+          <NotificationDropdown />
         </div>
       </div>
     </header>

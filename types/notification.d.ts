@@ -6,4 +6,5 @@ export interface INotification {
   link: string;
   id: string;
   isRead?: boolean;
+  createdAt: string;
 }

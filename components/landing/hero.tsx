@@ -27,7 +27,7 @@ export default function Hero() {
         <div className="pt-28 pb-16 md:pt-40 md:pb-20">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <h1
-              className="text-3xl md:text-6xl leading-tight  font-bold text-white font-archivo"
+              className="text-3xl md:text-6xl leading-tight font-extrabold text-transparent bg-gradient-to-r from-cyan-300 via-blue-200 to-white bg-clip-text font-archivo"
               data-aos="fade-up"
             >
               {landingPage.hero.title}
