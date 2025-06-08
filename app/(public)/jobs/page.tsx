@@ -22,7 +22,7 @@ export default async function PublicJobsPage({
   searchParams: Promise<PageSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
-
+  const page = parseInt(resolvedSearchParams?.page as string, 10) || 1;
   const positions = await getJobs(
     {
       offset: (parseInt(resolvedSearchParams.page as string) - 1) * 10,
@@ -34,8 +34,19 @@ export default async function PublicJobsPage({
     resolvedSearchParams.q || ""
   );
 
-  console.log("positions", positions);
-  console.log("search query", resolvedSearchParams.q);
+  const hasSearch = !!resolvedSearchParams?.q;
+  const actualItemsCount = positions?.items?.length || 0;
+
+  let totalFilteredCount = 0;
+  if (positions?.success) {
+    if (hasSearch && page === 1 && actualItemsCount < 10) {
+      totalFilteredCount = actualItemsCount;
+    } else {
+      totalFilteredCount = positions.total;
+    }
+  } else {
+    totalFilteredCount = 0;
+  }
 
   return (
     <div className="mx-auto pt-8">
@@ -44,10 +55,10 @@ export default async function PublicJobsPage({
         heading="Latest Job Listings"
         description="Find the latest job listings here"
       />
-      <JobFilter />
+      <JobFilter isPublic={true} />
       <JobList positions={positions?.items || []} isPublic={true} />
       <JobListPaginationContainer
-        totalCount={positions?.total || 0}
+        totalCount={totalFilteredCount}
         pageSize={10}
       />
       <Cta />

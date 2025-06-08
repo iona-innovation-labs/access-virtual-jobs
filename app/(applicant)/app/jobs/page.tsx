@@ -37,7 +37,19 @@ export default async function Jobs({
     true
   );
 
-  const totalFilteredCount = positions?.success ? positions.total : 0;
+  const hasSearch = !!resolvedSearchParams?.q;
+  const actualItemsCount = positions?.items?.length || 0;
+
+  let totalFilteredCount = 0;
+  if (positions?.success) {
+    if (hasSearch && page === 1 && actualItemsCount < 10) {
+      totalFilteredCount = actualItemsCount;
+    } else {
+      totalFilteredCount = positions.total;
+    }
+  } else {
+    totalFilteredCount = 0;
+  }
 
   return (
     <main className="w-full mx-auto bg-white overflow-hidden">
@@ -47,7 +59,7 @@ export default async function Jobs({
         isPublic={false}
       />
       <div className="mt-12"></div>
-      <JobFilter />
+      <JobFilter isPublic={false} />
       <JobList positions={positions?.items || []} />
       <JobListPaginationContainer
         totalCount={totalFilteredCount}
