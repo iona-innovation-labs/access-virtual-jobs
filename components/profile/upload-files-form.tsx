@@ -193,12 +193,14 @@ const UploadFilesForm = () => {
   // };
 
   const getRequiredUploaded = () => {
-    return fileFields.reduce((count, field) => {
+    const files = fileFields.reduce((count, field) => {
       if (field.required && getUploadedFiles(field.type).length > 0) {
         return count + 1;
       }
       return count;
     }, 0);
+    console.log(files);
+    return files;
   };
 
   if (isLoading) {

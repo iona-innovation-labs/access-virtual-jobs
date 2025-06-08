@@ -58,7 +58,6 @@ export default async function Jobs({
         description="Explore and apply for jobs"
         isPublic={false}
       />
-      <div className="mt-12"></div>
       <JobFilter isPublic={false} />
       <JobList positions={positions?.items || []} />
       <JobListPaginationContainer

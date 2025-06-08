@@ -12,7 +12,13 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -133,15 +139,17 @@ export default function SettingsSidebar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-80">
-            <div className="py-6">
-              <div className="flex items-center space-x-3 mb-6">
+            <SheetHeader className="text-left">
+              <SheetTitle className="flex items-center space-x-3">
                 <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
                   <Settings className="w-4 h-4 text-brand" />
                 </div>
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Settings
-                </h2>
-              </div>
+                <span className="text-lg font-semibold text-gray-900">
+                  Settings Menu
+                </span>
+              </SheetTitle>
+            </SheetHeader>
+            <div className="p-6">
               <NavigationContent isMobile={true} />
             </div>
           </SheetContent>

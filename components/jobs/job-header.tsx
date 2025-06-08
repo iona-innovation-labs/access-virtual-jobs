@@ -23,23 +23,23 @@ export default function JobHeader(props: Props) {
 
   if (isPublic) {
     return (
-      <div className="relative mt-8 overflow-hidden">
-        <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2 sm:py-4 lg:py-8 relative z-10">
+      <div className="relative mt-4 sm:mt-6 lg:mt-8 overflow-hidden">
+        <div className="px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto py-4 sm:py-6 lg:py-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto mb-2 sm:mb-4">
             {!isSpecific && (
-              <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-full px-4 sm:px-6 py-2 sm:py-2.5 mb-4 sm:mb-6 shadow-lg shadow-gray-200/40">
-                <TrendingUp className="w-4 h-4 text-brand mr-2" />
+              <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-full px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 lg:py-2.5 mb-3 sm:mb-4 lg:mb-6 shadow-lg shadow-gray-200/40">
+                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-brand mr-1.5 sm:mr-2" />
                 <span className="text-xs sm:text-sm font-medium text-gray-700">
                   Seize every opportunity
                 </span>
               </div>
             )}
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6 leading-tight">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 lg:mb-6 leading-tight px-2 sm:px-0">
               {heading}
             </h1>
 
-            <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
               {description}
             </p>
           </div>
@@ -49,49 +49,28 @@ export default function JobHeader(props: Props) {
   }
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-6 sm:py-8 lg:py-10">
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 sm:gap-6 lg:gap-8">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-lg">
-            <Briefcase className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+    <div className="px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto py-4 sm:py-6 lg:py-10">
+      <div className="flex flex-col gap-4 sm:gap-6">
+        {/* Main Header Section */}
+        <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-lg sm:rounded-xl bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center shadow-lg flex-shrink-0">
+            <Briefcase className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 text-white" />
           </div>
 
-          <div>
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight break-words">
               {heading}
             </h1>
             {description && (
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 mt-1 leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mt-1 leading-relaxed break-words">
                 {description}
               </p>
             )}
           </div>
         </div>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="text-right">
-            <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide font-medium">
-              Total Jobs
-            </div>
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-              24
-            </div>
-          </div>
-
-          <div className="w-px h-8 sm:h-10 bg-gray-200"></div>
-
-          <div className="text-right">
-            <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide font-medium">
-              Active
-            </div>
-            <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-emerald-600">
-              18
-            </div>
-          </div>
-        </div>
       </div>
 
-      <div className="border-b border-gray-100 mt-6 sm:mt-8"></div>
+      <div className="border-b border-gray-100 mt-4 sm:mt-6 lg:mt-8"></div>
     </div>
   );
 }
