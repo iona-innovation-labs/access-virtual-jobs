@@ -7,6 +7,43 @@ import { User, Upload, Settings } from "lucide-react";
 import EditProfileForm from "@/components/profile/edit-profile-form";
 import UploadFileForm from "@/components/profile/upload-files-form";
 import { Card } from "@/components/ui/card";
+import { Info, Check } from "lucide-react";
+
+const NeedHelp = () => {
+  return (
+    <div className="max-w-6xl mx-auto mb-8">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <div className="flex items-start space-x-4">
+          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+            <Info className="w-4 h-4 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-blue-900 mb-2">Need Help?</h3>
+            <p className="text-blue-800 text-sm leading-relaxed mb-3">
+              Take your time to complete your profile accurately. A complete
+              profile increases your chances of being selected for job
+              opportunities.
+            </p>
+            <div className="flex flex-wrap gap-4 text-sm">
+              <div className="flex items-center text-blue-700">
+                <Check className="w-4 h-4 mr-1" />
+                Complete all required fields
+              </div>
+              <div className="flex items-center text-blue-700">
+                <Check className="w-4 h-4 mr-1" />
+                Upload all required documents
+              </div>
+              <div className="flex items-center text-blue-700">
+                <Check className="w-4 h-4 mr-1" />
+                Review before submitting
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -43,7 +80,6 @@ export default function ProfilePage() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-[5%] mx-auto">
-      {/* Left Navigation */}
       <div className="lg:col-span-1">
         <Card className="shadow-sm border-0 sticky top-6">
           <div className="p-6">
@@ -106,7 +142,6 @@ export default function ProfilePage() {
               })}
             </nav>
 
-            {/* Progress Indicator */}
             <div className="mt-8 p-4 bg-gray-50 rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-gray-700">
@@ -128,9 +163,7 @@ export default function ProfilePage() {
         </Card>
       </div>
 
-      {/* Right Content Area */}
       <div className="lg:col-span-3">
-        {/* Mobile Navigation - Only visible on small screens */}
         <div className="lg:hidden mb-6">
           <Card className="shadow-sm border-0">
             <div className="p-4">
@@ -160,9 +193,8 @@ export default function ProfilePage() {
             </div>
           </Card>
         </div>
-
-        {/* Tab Content */}
         <div>
+          <NeedHelp />
           {activeTab === "profile" && <EditProfileForm />}
           {activeTab === "files" && <UploadFileForm />}
         </div>
