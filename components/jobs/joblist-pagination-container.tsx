@@ -50,6 +50,7 @@ export const JobListPaginationContainer = (
           <PaginationItem>
             {!isFirstPage && (
               <PaginationPrevious
+                size="default"
                 className="cursor-pointer"
                 onClick={() => onPageChange(currentPage - 1)}
                 aria-label="Go to previous page"
@@ -70,6 +71,7 @@ export const JobListPaginationContainer = (
             return (
               <PaginationItem key={pageNum}>
                 <PaginationLink
+                  size="default"
                   className="cursor-pointer"
                   onClick={() => onPageChange(pageNum)}
                   isActive={pageNum === currentPage}
@@ -85,6 +87,7 @@ export const JobListPaginationContainer = (
           <PaginationItem>
             {!isLastPage && (
               <PaginationNext
+                size="default"
                 className="cursor-pointer"
                 onClick={() => onPageChange(currentPage + 1)}
                 aria-label="Go to next page"
