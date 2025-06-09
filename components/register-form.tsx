@@ -15,137 +15,33 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Check, X } from "lucide-react";
-
-// Password validation schema
-const passwordSchema = z.string().refine(
-  (password) => {
-    if (password.length < 8) return false;
-
-    const checks = [
-      /[a-z]/.test(password), // lowercase
-      /[A-Z]/.test(password), // uppercase
-      /[0-9]/.test(password), // numbers
-      /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password), // special chars
-    ];
-
-    const satisfiedChecks = checks.filter(Boolean).length;
-    return satisfiedChecks >= 3;
-  },
-  {
-    message:
-      "Password must be at least 8 characters and contain at least 3 of: lowercase, uppercase, numbers, or special characters",
-  }
-);
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  PasswordStrengthChecker,
+  usePasswordValidation,
+  defaultPasswordRequirements,
+} from "@/components/auth/password/password-strength-checker";
+import { passwordSchema } from "@/lib/validation/password-validation";
+import { registrationCheckboxes } from "@/config/register-terms.config";
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   password: passwordSchema,
+  filipinoWorker: z.boolean().refine((val) => val === true, {
+    message: "You must confirm you are a Filipino worker",
+  }),
+  individualWorker: z.boolean().refine((val) => val === true, {
+    message: "You must confirm you are an individual worker",
+  }),
+  noMultipleAccounts: z.boolean().refine((val) => val === true, {
+    message: "You must confirm you don't have multiple accounts",
+  }),
+  agreeToTerms: z.boolean().refine((val) => val === true, {
+    message: "You must agree to the Terms of Service and Privacy Policy",
+  }),
 });
-
-interface PasswordRequirement {
-  label: string;
-  test: (password: string) => boolean;
-}
-
-const passwordRequirements: PasswordRequirement[] = [
-  {
-    label: "At least 8 characters",
-    test: (password) => password.length >= 8,
-  },
-  {
-    label: "Lower case letters (a-z)",
-    test: (password) => /[a-z]/.test(password),
-  },
-  {
-    label: "Upper case letters (A-Z)",
-    test: (password) => /[A-Z]/.test(password),
-  },
-  {
-    label: "Numbers (0-9)",
-    test: (password) => /[0-9]/.test(password),
-  },
-  {
-    label: "Special characters (e.g. !@#$%^&*)",
-    test: (password) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
-  },
-];
-
-function PasswordRequirements({ password }: { password: string }) {
-  const meetsLength = passwordRequirements[0].test(password);
-  const characterTypesMet = passwordRequirements
-    .slice(1)
-    .filter((req) => req.test(password)).length;
-  const meetsCharacterRequirement = characterTypesMet >= 3;
-
-  return (
-    <div className="space-y-2 p-3 bg-gray-50 rounded-lg border">
-      <p className="text-sm font-medium text-gray-700">
-        Your password must contain:
-      </p>
-
-      {/* Length requirement */}
-      <div className="flex items-center space-x-2">
-        {meetsLength ? (
-          <Check className="w-4 h-4 text-green-600" />
-        ) : (
-          <X className="w-4 h-4 text-gray-400" />
-        )}
-        <span
-          className={cn(
-            "text-sm",
-            meetsLength ? "text-green-600" : "text-gray-500"
-          )}
-        >
-          At least 8 characters
-        </span>
-      </div>
-
-      {/* Character type requirements */}
-      <div className="flex items-center space-x-2">
-        {meetsCharacterRequirement ? (
-          <Check className="w-4 h-4 text-green-600" />
-        ) : (
-          <X className="w-4 h-4 text-gray-400" />
-        )}
-        <span
-          className={cn(
-            "text-sm",
-            meetsCharacterRequirement ? "text-green-600" : "text-gray-500"
-          )}
-        >
-          At least 3 of the following:
-        </span>
-      </div>
-
-      {/* Individual character type checks */}
-      <div className="ml-6 space-y-1">
-        {passwordRequirements.slice(1).map((requirement, index) => {
-          const isMet = requirement.test(password);
-          return (
-            <div key={index} className="flex items-center space-x-2">
-              {isMet ? (
-                <Check className="w-3 h-3 text-green-600" />
-              ) : (
-                <X className="w-3 h-3 text-gray-400" />
-              )}
-              <span
-                className={cn(
-                  "text-xs",
-                  isMet ? "text-green-600" : "text-gray-500"
-                )}
-              >
-                {requirement.label}
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 export function RegisterForm({
   className,
@@ -154,20 +50,56 @@ export function RegisterForm({
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [checkboxes, setCheckboxes] = useState({
+    filipinoWorker: false,
+    individualWorker: false,
+    noMultipleAccounts: false,
+    agreeToTerms: false,
+  });
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  const { validatePassword } = usePasswordValidation(
+    defaultPasswordRequirements,
+    3
+  );
+
+  const handleCheckboxChange = (checkboxId: string, checked: boolean) => {
+    setCheckboxes((prev) => ({
+      ...prev,
+      [checkboxId]: checked,
+    }));
+
+    // Clear field error when checkbox is checked
+    if (checked && fieldErrors[checkboxId]) {
+      setFieldErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[checkboxId];
+        return newErrors;
+      });
+    }
+  };
+
+  async function handleSubmit() {
     setError("");
     setFieldErrors({});
     setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
+    // Get form data from DOM elements
+    const firstName =
+      (document.getElementById("firstName") as HTMLInputElement)?.value || "";
+    const lastName =
+      (document.getElementById("lastName") as HTMLInputElement)?.value || "";
+    const email =
+      (document.getElementById("email") as HTMLInputElement)?.value || "";
+
     const data = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
+      email,
+      password,
+      firstName,
+      lastName,
+      ...checkboxes,
     };
 
     // Validate with Zod
@@ -211,6 +143,12 @@ export function RegisterForm({
     }
   }
 
+  // Get password validation status for submit button
+  const passwordValidation = validatePassword(password);
+  const allCheckboxesChecked = Object.values(checkboxes).every(Boolean);
+  const isFormValid =
+    password && passwordValidation.isValid && allCheckboxesChecked;
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
@@ -221,7 +159,7 @@ export function RegisterForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit}>
+          <div>
             <div className="grid gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
@@ -281,24 +219,106 @@ export function RegisterForm({
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={fieldErrors.password ? "border-red-500" : ""}
+                  onFocus={() => setShowPasswordRequirements(true)}
+                  className={cn(
+                    fieldErrors.password ? "border-red-500" : "",
+                    password &&
+                      (passwordValidation.isValid
+                        ? "border-green-500"
+                        : "border-red-500")
+                  )}
                 />
                 {fieldErrors.password && (
                   <p className="text-sm text-red-500">{fieldErrors.password}</p>
                 )}
+
+                {/* Reusable Password Requirements Component */}
+                <PasswordStrengthChecker
+                  password={password}
+                  requirements={defaultPasswordRequirements}
+                  isVisible={showPasswordRequirements}
+                  showOverallStatus={true}
+                  overallStatusLabel="At least 3 requirements satisfied"
+                  minRequiredChecks={3}
+                  variant="default"
+                  className="mt-2"
+                />
               </div>
 
-              {/* Password Requirements Display */}
-              {password && <PasswordRequirements password={password} />}
+              {/* Registration Checkboxes */}
+              <div className="space-y-3">
+                <Label className="text-sm font-medium">
+                  Registration Requirements
+                </Label>
+                <div className="space-y-2">
+                  {registrationCheckboxes.map((checkbox) => (
+                    <div key={checkbox.id} className="space-y-1">
+                      <div className="flex items-start space-x-2">
+                        <Checkbox
+                          id={checkbox.id}
+                          checked={
+                            checkboxes[checkbox.id as keyof typeof checkboxes]
+                          }
+                          onCheckedChange={(checked) =>
+                            handleCheckboxChange(
+                              checkbox.id,
+                              checked as boolean
+                            )
+                          }
+                          className={cn(
+                            "mt-0.5 h-4 w-4",
+                            fieldErrors[checkbox.id] && "border-red-500"
+                          )}
+                        />
+                        <Label
+                          htmlFor={checkbox.id}
+                          className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                        >
+                          {checkbox.id === "agreeToTerms" ? (
+                            <>
+                              I agree to the{" "}
+                              <a
+                                href="/legal/terms-of-services"
+                                className="text-blue-600 hover:underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Terms of Service
+                              </a>{" "}
+                              and{" "}
+                              <a
+                                href="/legal/privacy-policy"
+                                className="text-blue-600 hover:underline"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                Privacy Policy
+                              </a>
+                            </>
+                          ) : (
+                            checkbox.label
+                          )}
+                        </Label>
+                      </div>
+                      {fieldErrors[checkbox.id] && (
+                        <p className="text-xs text-red-500 ml-6">
+                          {fieldErrors[checkbox.id]}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
               {error && (
                 <p className="text-sm text-red-500 text-center">{error}</p>
               )}
 
               <Button
-                type="submit"
+                type="button"
+                onClick={handleSubmit}
                 className="w-full bg-brand cursor-pointer hover:bg-brand-dark text-white"
-                disabled={loading}
+                disabled={loading || !isFormValid}
               >
                 {loading ? "Creating account..." : "Sign up"}
               </Button>
@@ -343,27 +363,9 @@ export function RegisterForm({
                 </a>
               </div>
             </div>
-          </form>
+          </div>
         </CardContent>
       </Card>
-
-      <div className="text-muted-foreground text-center text-xs text-balance">
-        By signing up, you agree to our{" "}
-        <a
-          href="/legal/terms-of-services"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Terms of Service
-        </a>{" "}
-        and{" "}
-        <a
-          href="/legal/privacy-policy"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Privacy Policy
-        </a>
-        .
-      </div>
     </div>
   );
 }
