@@ -4,28 +4,52 @@ import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
-import { sendEmailNotification } from "@/services/send-email-notif"; // Adjust if path differs
+import { sendEmailNotification } from "@/services/send-email-notif";
+import { z } from "zod";
+import { passwordSchema } from "@/lib/validation/password-validation";
+
+const registerSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email address"),
+  password: passwordSchema,
+});
 
 export async function POST(request: Request) {
   try {
-    const { email, password, firstName, lastName } = await request.json();
+    const body = await request.json();
 
-    console.log(email);
+    const validationResult = registerSchema.safeParse(body);
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map((err) => ({
+        field: err.path[0],
+        message: err.message,
+      }));
+
       return NextResponse.json(
-        { error: "Missing required fields" },
+        {
+          error: "Validation failed",
+          validationErrors: errors,
+          fieldErrors: errors.reduce(
+            (acc, curr) => ({
+              ...acc,
+              [curr.field]: curr.message,
+            }),
+            {}
+          ),
+        },
         { status: 400 }
       );
     }
 
-    console.log(email);
+    const { email, password, firstName, lastName } = validationResult.data;
+
+    console.log("Processing registration for:", email);
 
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, email),
     });
-
-    console.log(email);
 
     if (existingUser) {
       return NextResponse.json(
@@ -33,8 +57,6 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-
-    console.log(email);
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = nanoid();
@@ -56,30 +78,41 @@ export async function POST(request: Request) {
       })
       .returning();
 
-    console.log("NEW: ", newUser);
+    console.log("New user created:", newUser.id);
 
+    // Create proper verification link
     const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
 
+    // Send verification email
     await sendEmailNotification({
       to: [email],
       subject: "Verify your email for AVS Applicant Portal",
-      message: `Hi ${firstName},\n\nPlease verify your email by clicking the link below:\n\n${verifyLink}`,
+      message: `Hi ${firstName},\n\nWelcome to AVS Applicant Portal! Please verify your email by clicking the link below:\n\n${verifyLink}`,
       footer:
         "This link will expire in 24 hours. If you did not create an account, you can ignore this message.",
     });
 
-    console.log("email sent: ", email);
+    console.log("Verification email sent to:", email);
 
     return NextResponse.json({
       success: true,
       message: "Registration successful. Please check your email to verify.",
       credentials: {
         ...newUser,
-        password: password,
+        password: password, // For auto-login after registration
       },
     });
   } catch (error) {
     console.error("Registration error:", error);
+
+    // Handle Zod validation errors specifically
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Invalid registration data" },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -82,7 +82,9 @@ export default function GeneralSettings() {
       console.error("Error updating general settings:", error);
       toast({
         title: "Update Failed",
-        description: "Failed to update general settings. Please try again.",
+        description:
+          error?.internalMessage ||
+          "Failed to update general settings. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -96,7 +98,6 @@ export default function GeneralSettings() {
       if (secureUrl) {
         setUploadingAvatar(true);
         try {
-          // TODO: Pass the public id it can be used to replace existing image in cloudinary
           await fetchApi("/profile/update-avatar", {
             method: "POST",
             body: JSON.stringify({
@@ -158,7 +159,6 @@ export default function GeneralSettings() {
 
   return (
     <div className="w-full mx-auto space-y-6">
-      {/* Header Card */}
       <Card className="shadow-sm border-0">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
@@ -177,7 +177,6 @@ export default function GeneralSettings() {
         </CardHeader>
       </Card>
 
-      {/* Profile Photo Card */}
       <Card className="shadow-sm border-0">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
@@ -273,7 +272,6 @@ export default function GeneralSettings() {
         </CardContent>
       </Card>
 
-      {/* Personal Information Card */}
       <Card className="shadow-sm border-0">
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader className="pb-4">
