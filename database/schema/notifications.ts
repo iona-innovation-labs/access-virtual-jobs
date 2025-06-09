@@ -5,8 +5,8 @@ import { relations } from "drizzle-orm";
 export const notifications = pgTable("notifications", {
   id: serial("id").primaryKey(),
   userId: text("user_id")
-  .notNull()
-  .references(() => users.id, { onDelete: "cascade" }),
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   message: text("message"),
   createdAt: timestamp("created_at").defaultNow(),
   type: text("type"), // info, jobs, job_submissions

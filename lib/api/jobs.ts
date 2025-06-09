@@ -164,8 +164,6 @@ export const getJobs = async (
 ): Promise<FetchJobListingsResponse | null> => {
   const newAccessToken = await gainRefreshedAccessToken("jobs");
 
-  console.log("newAccessToken", newAccessToken);
-
   if (!newAccessToken) {
     return null;
   }

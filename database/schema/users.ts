@@ -43,7 +43,6 @@ export const users = pgTable("users", {
   }),
 });
 
-// ✅ ACCOUNTS table with text userId
 export const accounts = pgTable(
   "account",
   {
@@ -68,9 +67,8 @@ export const accounts = pgTable(
       }),
     },
   ]
-)
+);
 
-// ✅ SESSIONS table with text userId
 export const sessions = pgTable("session", {
   sessionToken: text("sessionToken").primaryKey(),
   userId: text("userId")
@@ -79,7 +77,6 @@ export const sessions = pgTable("session", {
   expires: timestamp("expires", { mode: "date" }).notNull(),
 });
 
-// ✅ VERIFICATION TOKENS table
 export const verificationTokens = pgTable(
   "verificationToken",
   {
@@ -93,3 +90,13 @@ export const verificationTokens = pgTable(
     }),
   ]
 );
+
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  email: text("email").notNull(),
+  token: text("token").unique().notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});

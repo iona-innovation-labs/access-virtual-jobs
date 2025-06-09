@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  type Icon as TablerIcon,
-} from "@tabler/icons-react";
-
+import { type Icon as TablerIcon } from "@tabler/icons-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -12,6 +9,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export function NavMain({
   items,
@@ -22,23 +21,34 @@ export function NavMain({
     icon?: TablerIcon;
   }[];
 }) {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
-      <SidebarGroupContent className="flex flex-col gap-2">
-        {/* Navigation Items */}
+      <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <Link href={item.url} passHref>
-                <SidebarMenuButton asChild tooltip={item.title}>
-                  <div className="flex items-center gap-2">
-                    {item.icon && <item.icon />}
-                    <span>{item.title}</span>
-                  </div>
+          {/* Navigation Items */}
+          {items.map((item) => {
+            const isActive =
+              pathname === item.url || pathname.startsWith(item.url + "/");
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  asChild
+                  className={cn(
+                    "transition-colors duration-200",
+                    isActive && "bg-brand text-white hover:bg-brand/15"
+                  )}
+                >
+                  <Link href={item.url}>
+                    {item.icon && <item.icon className="size-4" />}
+                    {item.title}
+                  </Link>
                 </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          ))}
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

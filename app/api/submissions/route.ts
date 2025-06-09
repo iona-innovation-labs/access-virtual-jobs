@@ -12,7 +12,7 @@ import { auth } from "@/auth";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -121,7 +121,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -159,15 +159,15 @@ export async function POST(req: NextRequest) {
     }
 
     const existingApplication = await db
-    .select()
-    .from(jobApplications)
-    .where(
-      and(
-        eq(jobApplications.jobId, jobId),
-        eq(jobApplications.userId, user[0].id)
+      .select()
+      .from(jobApplications)
+      .where(
+        and(
+          eq(jobApplications.jobId, jobId),
+          eq(jobApplications.userId, user[0].id)
+        )
       )
-    )
-    .limit(1);
+      .limit(1);
 
     console.log("existingApplication", existingApplication);
 

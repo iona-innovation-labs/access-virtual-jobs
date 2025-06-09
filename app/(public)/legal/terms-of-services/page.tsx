@@ -14,7 +14,8 @@ export default function TermsPage() {
           Effective Date: {tos.effectiveDate}
         </p>
         <p className="mt-2 text-base text-gray-600 max-w-2xl mx-auto">
-          Please read our Terms carefully. By using our platform, you agree to be bound by them.
+          Please read our Terms carefully. By using our platform, you agree to
+          be bound by them.
         </p>
       </div>
 
@@ -22,7 +23,9 @@ export default function TermsPage() {
       <div className="space-y-10">
         {tos.content.map((section, i) => (
           <section key={i} className="border-l-4 border-blue-100 pl-5 py-4">
-            <h2 className="text-xl font-semibold text-blue-900">{section.heading}</h2>
+            <h2 className="text-xl font-semibold text-blue-900">
+              {section.heading}
+            </h2>
             <p className="mt-2 text-gray-700 whitespace-pre-line leading-relaxed text-sm sm:text-base">
               {section.body}
             </p>

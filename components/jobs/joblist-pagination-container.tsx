@@ -31,9 +31,13 @@ export const JobListPaginationContainer = (
     pageSize,
   });
 
-  if (currentPage === 0 || !paginationRange || paginationRange.length < 2) {
+  if (!paginationRange || paginationRange.length < 2) {
     return null;
   }
+
+  const lastPage = paginationRange[paginationRange.length - 1] as number;
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === lastPage;
 
   const onPageChange = (pageNumber: number) => {
     handlePaginate(pageNumber);
@@ -44,45 +48,49 @@ export const JobListPaginationContainer = (
       <Pagination>
         <PaginationContent>
           <PaginationItem>
-            {currentPage > 1 && (
+            {!isFirstPage && (
               <PaginationPrevious
+                size="default"
                 className="cursor-pointer"
                 onClick={() => onPageChange(currentPage - 1)}
+                aria-label="Go to previous page"
               />
             )}
           </PaginationItem>
+
           {paginationRange.map((pageNumber, index) => {
             if (pageNumber === "DOTS") {
               return (
-                <PaginationItem key={index}>
+                <PaginationItem key={`dots-${index}`}>
                   <PaginationEllipsis />
                 </PaginationItem>
               );
             }
 
+            const pageNum = pageNumber as number;
             return (
-              <PaginationItem key={index}>
+              <PaginationItem key={pageNum}>
                 <PaginationLink
+                  size="default"
                   className="cursor-pointer"
-                  onClick={() => onPageChange(pageNumber as number)}
-                  isActive={pageNumber === currentPage}
+                  onClick={() => onPageChange(pageNum)}
+                  isActive={pageNum === currentPage}
+                  aria-label={`Go to page ${pageNum}`}
+                  aria-current={pageNum === currentPage ? "page" : undefined}
                 >
-                  {pageNumber}
+                  {pageNum}
                 </PaginationLink>
               </PaginationItem>
             );
           })}
+
           <PaginationItem>
-            {currentPage !== paginationRange[paginationRange.length - 1] ? (
+            {!isLastPage && (
               <PaginationNext
+                size="default"
                 className="cursor-pointer"
                 onClick={() => onPageChange(currentPage + 1)}
-              />
-            ) : (
-              <PaginationNext
-                className="cursor-pointer"
-                onClick={() => onPageChange(currentPage + 1)}
-                isActive={false}
+                aria-label="Go to next page"
               />
             )}
           </PaginationItem>

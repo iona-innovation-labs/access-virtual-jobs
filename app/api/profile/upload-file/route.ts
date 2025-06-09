@@ -9,7 +9,7 @@ import { auth } from "@/auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
     }
 
     const profile = await db.query.profiles.findFirst({
-        where: eq(profiles.userId, user.id),
+      where: eq(profiles.userId, user.id),
     });
 
     if (!profile) {
@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const session = await auth()
+    const session = await auth();
 
     if (!session?.user?.id) {
       return NextResponse.json(

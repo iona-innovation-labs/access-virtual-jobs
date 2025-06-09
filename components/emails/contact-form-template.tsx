@@ -1,13 +1,9 @@
-/* eslint-disable react/no-unescaped-entities */
 import {
   Body,
   Container,
   Head,
-  Hr,
   Html,
-  Img,
   Preview,
-  Row,
   Section,
   Text,
 } from "@react-email/components";
@@ -17,26 +13,20 @@ interface ContactFormTemplateProps {
   name: string;
   email: string;
   phone?: string | null;
-  position: string;
   subject: string;
   message: string;
   origin: string;
 }
 
-// const baseUrl = process.env.VERCEL_DOMAIN
-//   ? `https://${process.env.VERCEL_DOMAIN}`
-//   : "";
-
 export const ContactFormTemplate = ({
   name,
   email,
   phone,
-  position,
   subject,
   message,
   origin,
 }: ContactFormTemplateProps) => {
-  const previewText = `Read ${name || email} Contact Form Message | ${origin}`;
+  const previewText = `${name || email} sent you a message via ${origin}`;
 
   return (
     <Html>
@@ -45,43 +35,52 @@ export const ContactFormTemplate = ({
 
       <Body style={main}>
         <Container style={container}>
-          <Section>
-            <Img
-              src={`https://${process.env.NEXT_VERCEL_DOMAIN}/opengraph-image.jpg`}
-              width="96"
-              height="30"
-              alt="Access Virtual Staffing"
-              style={{ backgroundColor: "#ffffff" }}
-            />
-          </Section>
-          <Section style={{ paddingBottom: "20px" }}>
-            <Row>
-              <Text style={heading}>Here's what {name || email} wrote</Text>
-              <Text style={review}>{message}</Text>
-            </Row>
+          {/* Header */}
+          <Section style={headerSection}>
+            <Text style={headerTitle}>Contact Form</Text>
+            <Text style={headerSubtitle}>From {origin}</Text>
           </Section>
 
-          <Hr style={hr} />
+          {/* Sender information */}
+          <Section style={senderSection}>
+            <Table style={senderTable}>
+              <tr>
+                <td style={senderInfoCell}>
+                  <Text style={senderName}>{name || "Anonymous"}</Text>
+                  <Text style={senderEmail}>{email}</Text>
+                  {phone && <Text style={senderPhone}>{phone}</Text>}
+                </td>
+              </tr>
+            </Table>
+          </Section>
 
-          <Section>
-            <Row>
-              <Text style={heading}>Other Important Details - {origin}</Text>
+          {/* Subject */}
+          <Section style={subjectSection}>
+            <Text style={subjectText}>{subject}</Text>
+          </Section>
 
-              <Text style={{ ...paragraph, fontWeight: "700" }}>Full Name</Text>
-              <Text>{name || "Not provided"}</Text>
-              <Text style={{ ...paragraph, fontWeight: "700" }}>Email</Text>
-              <Text>{email || "Not provided"}</Text>
-              <Text style={{ ...paragraph, fontWeight: "700" }}>
-                Phone Number
-              </Text>
-              <Text>{phone || "Not provided"}</Text>
-              <Text style={{ ...paragraph, fontWeight: "700" }}>Position</Text>
-              <Text>{position || "Not provided"}</Text>
-              <Text style={{ ...paragraph, fontWeight: "700" }}>
-                Reason for Contacting
-              </Text>
-              <Text>{subject || "Not provided"}</Text>
-            </Row>
+          {/* Message content */}
+          <Section style={messageSection}>
+            <Table style={messageTable}>
+              <tr>
+                <td style={messageAccent}></td>
+                <td style={messageContent}>
+                  <Text style={messageText}>{message}</Text>
+                </td>
+              </tr>
+            </Table>
+          </Section>
+
+          {/* Footer */}
+          <Section style={footerSection}>
+            <Text style={footerText}>
+              Received on{" "}
+              {new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+              })}
+            </Text>
           </Section>
         </Container>
       </Body>
@@ -89,43 +88,157 @@ export const ContactFormTemplate = ({
   );
 };
 
+// Table component for better email client compatibility
+const Table = ({
+  style,
+  children,
+}: {
+  style: any;
+  children: React.ReactNode;
+}) => (
+  <table style={{ ...tableBase, ...style }}>
+    <tbody>{children}</tbody>
+  </table>
+);
+
 export default ContactFormTemplate;
 
+// Base table styles for email compatibility
+const tableBase = {
+  width: "100%",
+  borderCollapse: "collapse" as const,
+  borderSpacing: "0",
+};
+
+// Main styles with fixed layout
 const main = {
-  backgroundColor: "#ffffff",
+  backgroundColor: "#f8fafc",
   fontFamily:
-    '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  margin: "0",
+  padding: "40px 20px",
+  width: "100%",
 };
 
 const container = {
-  margin: "0 auto",
-  padding: "20px 0 48px",
-  width: "580px",
-  maxWidth: "100%",
   backgroundColor: "#ffffff",
+  borderRadius: "12px",
+  margin: "0 auto",
+  maxWidth: "600px",
+  width: "100%",
+  overflow: "hidden",
+  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
 };
 
-const heading = {
-  fontSize: "32px",
+const headerSection = {
+  backgroundColor: "#1e40af",
+  padding: "40px 40px",
+  textAlign: "center" as const,
+};
+
+const headerTitle = {
+  color: "#ffffff",
+  fontSize: "24px",
+  fontWeight: "600",
+  margin: "0 0 8px 0",
   lineHeight: "1.3",
-  fontWeight: "700",
-  color: "#484848",
 };
 
-const paragraph = {
-  fontSize: "18px",
+const headerSubtitle = {
+  color: "#93c5fd",
+  fontSize: "16px",
+  fontWeight: "400",
+  margin: "0",
   lineHeight: "1.4",
-  color: "#484848",
 };
 
-const review = {
-  ...paragraph,
-  padding: "24px",
-  backgroundColor: "#f2f3f3",
-  borderRadius: "4px",
+const senderSection = {
+  padding: "40px",
+  borderBottom: "1px solid #e2e8f0",
 };
 
-const hr = {
-  borderColor: "#cccccc",
-  margin: "20px 0",
+const senderTable = {
+  width: "100%",
+};
+
+const senderInfoCell = {
+  verticalAlign: "top" as const,
+};
+
+const senderName = {
+  color: "#1e293b",
+  fontSize: "20px",
+  fontWeight: "600",
+  margin: "0 0 8px 0",
+  lineHeight: "1.3",
+};
+
+const senderEmail = {
+  color: "#3b82f6",
+  fontSize: "16px",
+  margin: "0 0 4px 0",
+  lineHeight: "1.4",
+  textDecoration: "none",
+};
+
+const senderPhone = {
+  color: "#64748b",
+  fontSize: "16px",
+  margin: "0",
+  lineHeight: "1.4",
+};
+
+const subjectSection = {
+  padding: "32px 40px",
+  borderBottom: "1px solid #e2e8f0",
+};
+
+const subjectText = {
+  color: "#1e293b",
+  fontSize: "22px",
+  fontWeight: "600",
+  margin: "0",
+  lineHeight: "1.4",
+};
+
+const messageSection = {
+  padding: "40px",
+};
+
+const messageTable = {
+  backgroundColor: "#f8fafc",
+  borderRadius: "8px",
+  overflow: "hidden",
+};
+
+const messageAccent = {
+  backgroundColor: "#3b82f6",
+  width: "4px",
+  padding: "0",
+};
+
+const messageContent = {
+  padding: "32px",
+  verticalAlign: "top" as const,
+};
+
+const messageText = {
+  color: "#374151",
+  fontSize: "16px",
+  lineHeight: "1.6",
+  margin: "0",
+  whiteSpace: "pre-wrap" as const,
+};
+
+const footerSection = {
+  padding: "32px 40px",
+  textAlign: "center" as const,
+  borderTop: "1px solid #e2e8f0",
+};
+
+const footerText = {
+  color: "#94a3b8",
+  fontSize: "14px",
+  margin: "0",
+  lineHeight: "1.4",
 };

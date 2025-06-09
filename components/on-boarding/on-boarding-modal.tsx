@@ -123,7 +123,7 @@ export const OnboardingModal = () => {
           {activeStep < 4 ? (
             <motion.button
               onClick={handleNext}
-              className="bg-deepBlue text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
+              className="bg-deepBlue text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-brand-dark active:scale-95"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -132,7 +132,7 @@ export const OnboardingModal = () => {
           ) : (
             <motion.button
               onClick={handleGetStarted}
-              className="bg-deepBlue text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-blue-700 active:scale-95"
+              className="bg-deepBlue text-white px-6 py-2 rounded-lg shadow-md transition-all duration-300 hover:bg-brand-dark active:scale-95"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

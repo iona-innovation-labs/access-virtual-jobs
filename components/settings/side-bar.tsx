@@ -2,20 +2,53 @@
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import {
+  Menu,
+  Settings,
+  User,
+  Key,
+  Bell,
+  Trash2,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const menuItems = [
-  { name: "General", href: "/app/settings/general" },
-  { name: "Authentication", href: "/app/settings/authentication" },
-  { name: "Notification", href: "/app/settings/notification" },
   {
-    name: "Delete account",
+    name: "General",
+    href: "/app/settings/general",
+    icon: User,
+    description: "Personal information and profile",
+  },
+  {
+    name: "Authentication",
+    href: "/app/settings/authentication",
+    icon: Key,
+    description: "Password and security settings",
+  },
+  {
+    name: "Notifications",
+    href: "/app/settings/notification",
+    icon: Bell,
+    description: "Email and notification preferences",
+  },
+  {
+    name: "Delete Account",
     href: "/app/settings/delete-account",
-    className: "text-red-500",
+    icon: Trash2,
+    description: "Permanently remove your account",
+    className: "text-red-600 hover:text-red-700 hover:bg-red-50",
+    iconClassName: "text-red-600",
   },
 ];
 
@@ -23,59 +56,140 @@ export default function SettingsSidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  return (
-    <div className="lg:w-64 w-full lg:block flex justify-between items-center">
-      <div className="container">
-        <div className="w-full max-w-lg">
-          <h1 className="text-2xl font-bold md:text-3xl lg:hidden">Settings</h1>
-        </div>
-      </div>
+  const NavigationContent = ({ isMobile = false }) => (
+    <div className="space-y-2">
+      {menuItems.map((item, index) => {
+        const Icon = item.icon;
+        const isActive = pathname === item.href;
 
-      {/* Mobile Menu */}
-      <div className="lg:hidden">
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <Menu className="h-6 w-6" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right">
-            <nav className="flex flex-col space-y-2">
-              {menuItems.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.href}
+        return (
+          <Link
+            key={index}
+            href={item.href}
+            className={cn(
+              "group flex items-center space-x-3 p-4 rounded-lg transition-all duration-200",
+              isActive
+                ? "bg-brand text-white shadow-sm"
+                : "hover:bg-gray-50 text-gray-700",
+              item.className && !isActive ? item.className : "",
+              isMobile ? "w-full" : ""
+            )}
+            onClick={() => isMobile && setIsOpen(false)}
+          >
+            <Icon
+              className={cn(
+                "w-5 h-5 flex-shrink-0",
+                isActive
+                  ? "text-white"
+                  : item.iconClassName || "text-gray-400 group-hover:text-brand"
+              )}
+            />
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <p
                   className={cn(
-                    "block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md",
-                    item.className,
-                    pathname === item.href ? "font-bold" : ""
+                    "font-medium text-sm",
+                    isActive ? "text-white" : "text-gray-900"
                   )}
-                  onClick={() => setIsOpen(false)}
                 >
                   {item.name}
-                </Link>
-              ))}
-            </nav>
+                </p>
+                {!isMobile && (
+                  <ChevronRight
+                    className={cn(
+                      "w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity",
+                      isActive ? "text-white" : "text-gray-400"
+                    )}
+                  />
+                )}
+              </div>
+              {!isMobile && (
+                <p
+                  className={cn(
+                    "text-xs mt-1",
+                    isActive ? "text-white/80" : "text-gray-500"
+                  )}
+                >
+                  {item.description}
+                </p>
+              )}
+            </div>
+          </Link>
+        );
+      })}
+    </div>
+  );
+
+  return (
+    <div className="lg:w-80 w-full">
+      {/* Mobile Header */}
+      <div className="lg:hidden flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+          <p className="text-sm text-gray-500">
+            Manage your account preferences
+          </p>
+        </div>
+
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="sm">
+              <Menu className="h-4 w-4 mr-2" />
+              Menu
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-80">
+            <SheetHeader className="text-left">
+              <SheetTitle className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
+                  <Settings className="w-4 h-4 text-brand" />
+                </div>
+                <span className="text-lg font-semibold text-gray-900">
+                  Settings Menu
+                </span>
+              </SheetTitle>
+            </SheetHeader>
+            <div className="p-6">
+              <NavigationContent isMobile={true} />
+            </div>
           </SheetContent>
         </Sheet>
       </div>
 
       {/* Desktop Sidebar */}
-      <nav className="hidden lg:flex flex-col space-y-2 w-64 border-r pr-4">
-        {menuItems.map((item, index) => (
-          <Link
-            key={index}
-            href={item.href}
-            className={cn(
-              "block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md",
-              item.className,
-              pathname === item.href ? "font-bold" : ""
-            )}
-          >
-            {item.name}
-          </Link>
-        ))}
-      </nav>
+      <div className="hidden lg:block sticky top-6">
+        <Card className="shadow-sm border-0 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
+              <Settings className="w-4 h-4 text-brand" />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
+              <p className="text-sm text-gray-500">Account preferences</p>
+            </div>
+          </div>
+
+          <NavigationContent />
+
+          {/* Settings Info */}
+          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start space-x-3">
+              <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Settings className="w-3 h-3 text-blue-600" />
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-blue-900 mb-1">
+                  Need Help?
+                </h4>
+                <p className="text-xs text-blue-800 leading-relaxed">
+                  Contact support if you need assistance with any of these
+                  settings.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

@@ -36,16 +36,13 @@ export default async function AppRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    const session = await auth()
-    if (!session?.user) {
-        redirect("/login")
-    }
-    return (
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/login");
+  }
+  return (
     <>
-
-      <ApplicationShell>
-        {children}
-      </ApplicationShell>
+      <ApplicationShell>{children}</ApplicationShell>
     </>
   );
 }

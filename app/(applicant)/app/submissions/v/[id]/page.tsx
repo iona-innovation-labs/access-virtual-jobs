@@ -6,26 +6,26 @@ import { getJobApplicationWithJobDetails } from "@/lib/api/jobs";
 import JobContent from "@/components/submissions/job/job-contents";
 
 export default async function ViewJobSubmission({
-    params,
-  }: AppRouterWithNormalParamsWithId) {
-    const fetchedJobApplication = await getJobApplicationWithJobDetails(
-      params?.id || ""
-    );
+  params,
+}: AppRouterWithNormalParamsWithId) {
+  const fetchedJobApplication = await getJobApplicationWithJobDetails(
+    params?.id || ""
+  );
 
-    if (!fetchedJobApplication) {
-      return notFound();
-    }
-
-    return (
-      <div className="h-fit overflow-auto p-6 bg-white rounded-lg shadow-md max-w-2xl mx-auto">
-        <JobHeader
-          jobApplication={{
-            title: fetchedJobApplication.job.title,
-            submittedAt: fetchedJobApplication.submittedAt,
-          }}
-        />
-
-        <JobContent jobApplicationDetails={fetchedJobApplication} />
-      </div>
-    );
+  if (!fetchedJobApplication) {
+    return notFound();
   }
+
+  return (
+    <div className="h-fit overflow-auto p-6 bg-white rounded-lg w-full mx-auto">
+      <JobHeader
+        jobApplication={{
+          title: fetchedJobApplication.job.title,
+          submittedAt: fetchedJobApplication.submittedAt,
+        }}
+      />
+
+      <JobContent jobApplicationDetails={fetchedJobApplication} />
+    </div>
+  );
+}

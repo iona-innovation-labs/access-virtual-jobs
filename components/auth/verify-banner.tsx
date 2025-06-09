@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 export function VerifyEmailBanner({ email }: { email: string }) {
   const [cooldown, setCooldown] = useState(0);
   const [loading, setLoading] = useState(false);
-  const {toast} = useToast()
+  const { toast } = useToast();
 
   const handleResend = async () => {
     try {
@@ -34,7 +34,7 @@ export function VerifyEmailBanner({ email }: { email: string }) {
         });
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
       toast({
         title: "Unexpected error",
         description: "Please try again later.",
@@ -69,8 +69,8 @@ export function VerifyEmailBanner({ email }: { email: string }) {
           {loading
             ? "Sending..."
             : cooldown > 0
-            ? `Resend in ${cooldown}s`
-            : "Resend Email"}
+              ? `Resend in ${cooldown}s`
+              : "Resend Email"}
         </Button>
       </CardContent>
     </Card>

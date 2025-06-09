@@ -3,7 +3,6 @@
 import { useSession } from "next-auth/react";
 import LinkButton, { LinkButtonProps } from "../ui/link-button";
 
-
 type Props = {
   logInButton: LinkButtonProps;
   signUpButton: LinkButtonProps;
@@ -16,7 +15,7 @@ export const AccessPortalContainer = (props: AuthContainerProps) => {
   const isLoading = false;
   const session = useSession();
   let error = null;
-  if(!session.data?.user) {
+  if (!session.data?.user) {
     error = new Error("User not found");
   }
   const user = session.data?.user;

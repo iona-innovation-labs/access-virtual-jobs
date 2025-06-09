@@ -11,4 +11,6 @@ const isNeon = process.env.DATABASE_URL?.includes("neon.tech");
 
 export const db = isNeon
   ? drizzleNeon(neon(process.env.DATABASE_URL!), { schema })
-  : drizzlePg(new Pool({ connectionString: process.env.DATABASE_URL! }), { schema });
+  : drizzlePg(new Pool({ connectionString: process.env.DATABASE_URL! }), {
+      schema,
+    });

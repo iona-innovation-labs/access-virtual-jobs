@@ -13,7 +13,9 @@ import { users } from "./users";
 export const profiles = pgTable("profiles", {
   id: serial("id").primaryKey(),
   jobTitle: text("job_title").notNull(),
-  userId: text("user_id").notNull().references(() => users.id),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
   whyFit: text("why_fit").notNull(),
   whatStrengths: text("what_strengths").notNull(),
   whatNeedImprovement: text("what_need_improvement").notNull(),

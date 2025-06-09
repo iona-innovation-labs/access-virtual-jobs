@@ -94,7 +94,7 @@ export const JobListItemPosition = ({ position }: PositionProps) => {
             __html:
               (position.description ?? "").length > 200
                 ? `${(position.description ?? "").slice(0, 200)}...`
-                : position.description ?? "",
+                : (position.description ?? ""),
           }}
         />
         <div className="flex flex-wrap gap-y-3 mt-2 md:mt-4">

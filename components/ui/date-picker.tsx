@@ -48,7 +48,7 @@ export const DatePicker = ({
         <Calendar
           disabled={disabled}
           mode="single"
-          captionLayout="dropdown-buttons"
+          captionLayout="dropdown"
           selected={date}
           onSelect={onChange}
           initialFocus

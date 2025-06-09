@@ -18,14 +18,7 @@ export type Header21Props = React.ComponentPropsWithoutRef<"section"> &
   Partial<Props>;
 
 export const HowWeHelpFeature = (props: Header21Props) => {
-  const {
-    heading,
-    description,
-    description2,
-    buttons,
-    image,
-    highlights,
-  } = {
+  const { heading, description, description2, buttons, image, highlights } = {
     ...Header21Defaults,
     ...props,
   } as Props;

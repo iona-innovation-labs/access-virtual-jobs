@@ -11,16 +11,25 @@ type FileUploadProps = {
   maxSizeMB: number;
   onChange: (file: File | null) => void;
   value?: File | null;
-}
+};
 
-const FileUpload = ({ fieldName, label, acceptedTypes = [], maxSizeMB, onChange, value }: FileUploadProps) => {
-
+const FileUpload = ({
+  fieldName,
+  label,
+  acceptedTypes = [],
+  maxSizeMB,
+  onChange,
+  value,
+}: FileUploadProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
 
     if (!selectedFile) return;
 
-    if (acceptedTypes.length > 0 && !acceptedTypes.includes(selectedFile.type)) {
+    if (
+      acceptedTypes.length > 0 &&
+      !acceptedTypes.includes(selectedFile.type)
+    ) {
       alert(`Invalid file type. Allowed: ${acceptedTypes.join(", ")}`);
       return;
     }

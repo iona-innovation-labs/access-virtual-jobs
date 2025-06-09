@@ -4,7 +4,7 @@ import useSWR from "swr";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { UserIcon } from "lucide-react";
+import { User, ArrowRight, CheckCircle2 } from "lucide-react";
 import { fetchApi } from "@/services/fetch-api";
 import { IProfileResponse } from "@/types/profiles";
 
@@ -53,51 +53,73 @@ const Stepper = () => {
 
   const completedSteps = completedFields + completedFiles;
   const isProfileComplete = completedSteps === TOTAL_STEPS;
-
-  const progressMessage = isProfileComplete
-    ? "Profile Completed!"
-    : `Profile ${((completedSteps / TOTAL_STEPS) * 100).toFixed(0)}% complete`;
+  const progressPercentage = Math.round((completedSteps / TOTAL_STEPS) * 100);
 
   return (
-    <Card className="w-full border border-zinc-200">
-      <div className="flex gap-1 mt-2 px-2">
-        {Array.from({ length: TOTAL_STEPS }, (_, index) => (
-          <div
-            key={index}
-            className={`h-2 flex-1 rounded ${
-              index < completedSteps ? "bg-deepBlue" : "bg-zinc-300"
-            }`}
-          />
-        ))}
-      </div>
+    <Card className="border-0 bg-white shadow-sm">
+      {/* Header with Progress */}
+      <div className="px-6 ">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
+            <div
+              className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                isProfileComplete ? "bg-green-100" : "bg-brand/10"
+              }`}
+            >
+              {isProfileComplete ? (
+                <CheckCircle2 className="w-4 h-4 text-green-600" />
+              ) : (
+                <User className="w-4 h-4 text-brand" />
+              )}
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900">Profile Setup</h3>
+              <p className="text-xs text-gray-500">
+                {completedSteps}/{TOTAL_STEPS} completed
+              </p>
+            </div>
+          </div>
 
-      <div className="flex p-4 items-center justify-between gap-2">
-        <div className="flex items-center gap-2 font-bold text-lg">
-          <UserIcon className="h-6 w-6 text-zinc-600 font-bold" />
-          <p className="text-sm text-zinc-700 font-semibold">
-            {progressMessage}
-          </p>
+          <div
+            className={`text-xl font-bold ${
+              isProfileComplete ? "text-green-600" : "text-brand"
+            }`}
+          >
+            {progressPercentage}%
+          </div>
         </div>
 
-        {isProfileComplete ? (
+        {/* Progress Bar */}
+        <div className="w-full bg-gray-100 h-1.5 rounded-full overflow-hidden mb-4">
+          <div
+            className={`h-full transition-all duration-300 ${
+              isProfileComplete ? "bg-green-500" : "bg-brand"
+            }`}
+            style={{ width: `${progressPercentage}%` }}
+          />
+        </div>
+
+        {/* Action */}
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-600">
+            {isProfileComplete
+              ? "All set!"
+              : `${TOTAL_STEPS - completedSteps} items remaining`}
+          </span>
+
           <Button
-            variant="ghostPrimary"
             onClick={() => router.push("/app/profile")}
+            className={`${
+              isProfileComplete
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-brand hover:bg-brand-dark"
+            } text-white`}
             size="sm"
-            className="text-deepBlue"
           >
-            View Your Profile
+            {isProfileComplete ? "View Profile" : "Continue"}
+            <ArrowRight className="w-3 h-3 ml-1" />
           </Button>
-        ) : (
-          <Button
-            variant="ghostPrimary"
-            onClick={() => router.push("/app/profile")}
-            size="sm"
-            className="text-deepBlue"
-          >
-            Complete Your Profile
-          </Button>
-        )}
+        </div>
       </div>
     </Card>
   );

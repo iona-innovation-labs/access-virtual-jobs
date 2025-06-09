@@ -1,37 +1,18 @@
 "use client";
 import { ReactNode } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { RxChevronLeft } from "react-icons/rx";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 export default function EditProfileLayout({ children }: LayoutProps) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const isViewingSubmission = pathname.startsWith("/app/submissions/v/");
-
   return (
     <div className="h-fit overflow-auto">
-      <section id="joblist_header" className="relative px-[5%] pt-8 md:pt-12">
-        <div className="container">
-          <div className="w-full max-w-lg flex items-center space-x-4">
-            {isViewingSubmission && (
-              <button
-                onClick={() => router.replace("/app/submissions")}
-                className="text-gray-600 hover:underline flex items-center space-x-1"
-              >
-                <RxChevronLeft />
-                <span>Back</span>
-              </button>
-            )}
-            <h1 className="text-2xl font-bold md:text-3xl">Applications</h1>
-          </div>
-        </div>
-      </section>
-      <section id="joblist_header" className="relative px-[5%] pt-8 md:pt-6">
-        <div className="container">{children}</div>
+      <section
+        id="joblist_header"
+        className="relative pt-6 sm:px-6 sm:pt-7 md:px-[5%] md:pt-8 lg:pt-10 xl:px-[8%] xl:pt-12"
+      >
+        <div className="container mx-auto max-w-7xl">{children}</div>
       </section>
     </div>
   );
