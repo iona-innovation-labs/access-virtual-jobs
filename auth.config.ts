@@ -22,9 +22,6 @@ export default {
         const email = credentials?.email;
         const password = credentials?.password;
 
-        console.log("EMAIL: ", email);
-        console.log("PASS: ", password);
-
         if (!email || !password) {
           throw new Error("Missing email or password.");
         }
