@@ -2,7 +2,7 @@ import { db } from "@/database";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
-import { sendEmailNotification } from "@/services/send-email-notif"; // Adjust path if needed
+import { sendEmailNotification } from "@/services/send-email-notif";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     }
 
     const token = nanoid();
-    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
+    const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
 
     await db
       .update(users)
