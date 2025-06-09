@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { VerifyEmailBanner } from "../auth/verify-banner";
+import { Toaster } from "@/components/ui/toaster";
 
 const ApplicationShell = async ({
   children,
@@ -31,6 +32,7 @@ const ApplicationShell = async ({
           <div className="@container/main flex flex-1 flex-col gap-2 overflow-hidden items-center">
             <div className="flex-1 overflow-y-auto items-center justify-center w-full">
               {children}
+              <Toaster />
             </div>
           </div>
         </div>
