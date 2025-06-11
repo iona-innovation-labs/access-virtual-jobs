@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/database";
-import { users } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { users, deleteRequests } from "@/database/schema";
+import { eq, and } from "drizzle-orm";
 import { sendEmailNotification } from "@/services/send-email-notif";
 import { z } from "zod";
 import { auth } from "@/auth";
@@ -63,6 +63,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Check if user already has an active delete request
+    const existingDeleteRequest = await db.query.deleteRequests.findFirst({
+      where: and(
+        eq(deleteRequests.userId, existingUser.id),
+        eq(deleteRequests.status, "inprogress")
+      ),
+    });
+
+    if (existingDeleteRequest) {
+      return NextResponse.json(
+        {
+          error: "Request already exists",
+          message: "You already have a pending account deletion request.",
+          ok: false,
+        },
+        { status: 409 }
+      );
+    }
+
+    // Create delete request in database
+    const newDeleteRequest = await db
+      .insert(deleteRequests)
+      .values({
+        userId: existingUser.id,
+        reason: reason || null,
+        feedback: feedback || null,
+        status: "inprogress",
+      })
+      .returning();
+
     // Prepare user information for support team
     const userInfo = {
       id: existingUser.id,
@@ -82,6 +112,8 @@ export async function POST(req: NextRequest) {
 
     const supportEmailMessage = `
 ACCOUNT DELETION REQUEST
+
+Request ID: ${newDeleteRequest[0].id}
 
 User Details:
 - User ID: ${userInfo.id}
@@ -125,6 +157,7 @@ This is an automated message from AVS Applicant Portal.
 We have received your request to delete your AVS Applicant Portal account.
 
 Your request details:
+- Request ID: ${newDeleteRequest[0].id}
 - Request submitted: ${new Date().toLocaleString()}
 - Account email: ${userInfo.email}
 ${reason ? `- Reason: ${reason}` : ""}
@@ -148,12 +181,13 @@ Thank you for using AVS Applicant Portal.`;
 
     // Log the deletion request
     console.log(
-      `Account deletion request submitted by user: ${session.user.email}`
+      `Account deletion request submitted by user: ${session.user.email}, Request ID: ${newDeleteRequest[0].id}`
     );
 
     return NextResponse.json({
       message:
         "Account deletion request submitted successfully. You will receive a confirmation email shortly.",
+      requestId: newDeleteRequest[0].id,
       ok: true,
     });
   } catch (error: any) {
@@ -175,6 +209,64 @@ Thank you for using AVS Applicant Portal.`;
         error: "Failed to submit deletion request",
         message:
           "Something went wrong. Please try again later or contact support directly.",
+        ok: false,
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    // Get session - required for authenticated request
+    const session = await auth();
+
+    if (!session || !session.user?.email) {
+      return NextResponse.json(
+        {
+          error: "Unauthorized",
+          message: "Please login to view deletion requests.",
+          ok: false,
+        },
+        { status: 401 }
+      );
+    }
+
+    // Find user in database
+    const existingUser = await db.query.users.findFirst({
+      where: eq(users.email, session.user.email),
+    });
+
+    if (!existingUser) {
+      return NextResponse.json(
+        {
+          error: "User not found",
+          message: "User does not exist.",
+          ok: false,
+        },
+        { status: 404 }
+      );
+    }
+
+    // Get active delete request for the user
+    const activeDeleteRequest = await db.query.deleteRequests.findFirst({
+      where: and(
+        eq(deleteRequests.userId, existingUser.id),
+        eq(deleteRequests.status, "inprogress")
+      ),
+    });
+
+    return NextResponse.json({
+      deleteRequest: activeDeleteRequest || null,
+      ok: true,
+    });
+  } catch (error: any) {
+    console.error("Get delete request error:", error);
+
+    return NextResponse.json(
+      {
+        error: "Failed to fetch deletion request",
+        message: "Something went wrong. Please try again later.",
         ok: false,
       },
       { status: 500 }

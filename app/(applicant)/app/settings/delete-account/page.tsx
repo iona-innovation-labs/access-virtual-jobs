@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -41,6 +41,7 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle,
+  FileText,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchApi } from "@/services/fetch-api";
@@ -58,6 +59,16 @@ const deleteAccountSchema = z.object({
 
 type DeleteAccountFormValues = z.infer<typeof deleteAccountSchema>;
 
+interface DeleteRequest {
+  id: string;
+  userId: string;
+  reason: string | null;
+  feedback: string | null;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const deletionReasons = [
   { value: "no_longer_needed", label: "No longer need the service" },
   { value: "found_alternative", label: "Found an alternative solution" },
@@ -69,12 +80,30 @@ const deletionReasons = [
   { value: "other", label: "Other" },
 ];
 
+const statusLabels = {
+  inprogress: "In Progress",
+  approved: "Approved",
+  rejected: "Rejected",
+  completed: "Completed",
+};
+
+const statusColors = {
+  inprogress: "bg-yellow-100 text-yellow-800 border-yellow-200",
+  approved: "bg-green-100 text-green-800 border-green-200",
+  rejected: "bg-red-100 text-red-800 border-red-200",
+  completed: "bg-gray-100 text-gray-800 border-gray-200",
+};
+
 export default function DeleteAccount() {
   const session = useSession();
   const user = session?.data?.user;
   const [loading, setLoading] = useState(false);
+  const [fetchingRequest, setFetchingRequest] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [requestSubmitted, setRequestSubmitted] = useState(false);
+  const [existingRequest, setExistingRequest] = useState<DeleteRequest | null>(
+    null
+  );
   const { toast } = useToast();
 
   const form = useForm<DeleteAccountFormValues>({
@@ -84,6 +113,33 @@ export default function DeleteAccount() {
       feedback: "",
     },
   });
+
+  // Fetch existing delete request on component mount
+  useEffect(() => {
+    const fetchDeleteRequest = async () => {
+      if (!user) return;
+
+      setFetchingRequest(true);
+      try {
+        const response = await fetchApi<{
+          deleteRequest: DeleteRequest | null;
+          ok: boolean;
+        }>("/auth/delete-account", {
+          method: "GET",
+        });
+
+        if (response.ok && response.deleteRequest) {
+          setExistingRequest(response.deleteRequest);
+        }
+      } catch (error) {
+        console.error("Error fetching delete request:", error);
+      } finally {
+        setFetchingRequest(false);
+      }
+    };
+
+    fetchDeleteRequest();
+  }, [user]);
 
   const onSubmit = async (data: DeleteAccountFormValues) => {
     setLoading(true);
@@ -105,6 +161,11 @@ export default function DeleteAccount() {
         setRequestSubmitted(true);
         form.reset();
         setIsDialogOpen(false);
+
+        // Refresh the existing request data
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       }
     } catch (error: any) {
       console.error("Error submitting deletion request:", { error });
@@ -137,6 +198,17 @@ export default function DeleteAccount() {
     );
   }
 
+  if (fetchingRequest) {
+    return (
+      <Card className="w-full shadow-sm border-0">
+        <CardContent className="p-8 text-center">
+          <LoadingSpinner size="lg" className="mx-auto mb-4" />
+          <p className="text-gray-600">Loading account deletion status...</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (requestSubmitted) {
     return (
       <div className="w-full mx-auto space-y-6">
@@ -160,10 +232,7 @@ export default function DeleteAccount() {
                 <br />• All your data will be permanently deleted once processed
               </p>
             </div>
-            <Button
-              onClick={() => setRequestSubmitted(false)}
-              variant="outline"
-            >
+            <Button onClick={() => window.location.reload()} variant="outline">
               Back to Account Settings
             </Button>
           </CardContent>
@@ -172,6 +241,131 @@ export default function DeleteAccount() {
     );
   }
 
+  // Show existing request if one exists
+  if (existingRequest) {
+    const reasonLabel =
+      deletionReasons.find((r) => r.value === existingRequest.reason)?.label ||
+      existingRequest.reason;
+
+    return (
+      <div className="w-full mx-auto space-y-6">
+        <Card className="shadow-sm border-0">
+          <CardHeader className="pb-4">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center">
+                <FileText className="w-4 h-4 text-yellow-600" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Account Deletion Request
+                </h2>
+                <p className="text-sm text-gray-500">
+                  You have a pending deletion request
+                </p>
+              </div>
+            </div>
+          </CardHeader>
+        </Card>
+
+        <Card className="shadow-sm border-0">
+          <CardHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900">Request Details</h3>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium border ${statusColors[existingRequest.status as keyof typeof statusColors]}`}
+              >
+                {
+                  statusLabels[
+                    existingRequest.status as keyof typeof statusLabels
+                  ]
+                }
+              </span>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Request ID</p>
+                <p className="text-sm text-gray-900 font-mono">
+                  {existingRequest.id}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-gray-500">Submitted</p>
+                <p className="text-sm text-gray-900">
+                  {new Date(existingRequest.createdAt).toLocaleDateString()} at{" "}
+                  {new Date(existingRequest.createdAt).toLocaleTimeString()}
+                </p>
+              </div>
+            </div>
+
+            {existingRequest.reason && (
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">Reason</p>
+                <p className="text-sm text-gray-900">{reasonLabel}</p>
+              </div>
+            )}
+
+            {existingRequest.feedback && (
+              <div>
+                <p className="text-sm font-medium text-gray-500 mb-1">
+                  Additional Feedback
+                </p>
+                <p className="text-sm text-gray-900 bg-gray-50 p-3 rounded-lg">
+                  {existingRequest.feedback}
+                </p>
+              </div>
+            )}
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-start space-x-3">
+                <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="text-sm font-medium text-blue-900 mb-2">
+                    What happens next:
+                  </h4>
+                  <ul className="text-sm text-blue-800 space-y-1">
+                    <li>
+                      • Our support team will review your request within 2-3
+                      business days
+                    </li>
+                    <li>• You'll receive updates via email at {user.email}</li>
+                    <li>
+                      • All your data will be permanently deleted once processed
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-sm border-0 bg-white">
+          <CardContent className="p-4">
+            <div className="flex items-start space-x-3">
+              <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Shield className="w-3 h-3 text-gray-600" />
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 mb-1">
+                  Need Help?
+                </h4>
+                <p className="text-sm text-gray-600">
+                  If you have questions about your deletion request or need to
+                  make changes, contact our support team at{" "}
+                  <strong>support@accessvirtualstaffing.com</strong> with your
+                  request ID.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show the form if no existing request
   return (
     <div className="w-full mx-auto space-y-6">
       <Card className="shadow-sm border-0">
@@ -244,7 +438,7 @@ export default function DeleteAccount() {
 
           <div className="border border-gray-200 rounded-lg p-6">
             <div className="mb-6">
-              <h4 className="font-semibold text-white mb-2">
+              <h4 className="font-semibold text-gray-900 mb-2">
                 Submit Deletion Request
               </h4>
               <p className="text-sm text-gray-600">
