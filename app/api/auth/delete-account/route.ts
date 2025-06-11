@@ -216,7 +216,7 @@ Thank you for using AVS Applicant Portal.`;
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     // Get session - required for authenticated request
     const session = await auth();

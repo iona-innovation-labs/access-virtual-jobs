@@ -113,7 +113,7 @@ export default function GeneralSettings() {
       };
       form.reset(formData);
     }
-  }, [userInfo]);
+  }, [userInfo, form]);
 
   const onSubmit = async (formData: Omit<GeneralSchema, "email">) => {
     setSubmitting(true);

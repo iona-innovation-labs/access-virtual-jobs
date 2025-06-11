@@ -164,8 +164,8 @@ export default function EmailSettings() {
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <p className="text-sm text-blue-800">
                 <strong>Important:</strong> You may need to sign in again with
-                your new email address. Don't forget to verify your new email to
-                ensure uninterrupted service.
+                your new email address. Don&apos;t forget to verify your new
+                email to ensure uninterrupted service.
               </p>
             </div>
             <Button onClick={() => setUpdateSuccess(false)} variant="outline">
@@ -291,8 +291,8 @@ export default function EmailSettings() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Make sure you have access to this email address as you'll
-                      need to verify it.
+                      Make sure you have access to this email address as
+                      you&apos;ll need to verify it.
                     </FormDescription>
                     <FormMessage className="text-red-500 text-sm" />
                   </FormItem>
@@ -322,8 +322,8 @@ export default function EmailSettings() {
                   <strong>{form.getValues("email")}</strong>?
                   <br />
                   <br />
-                  You'll need to verify the new email address before it becomes
-                  active.
+                  You&apos;ll need to verify the new email address before it
+                  becomes active.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

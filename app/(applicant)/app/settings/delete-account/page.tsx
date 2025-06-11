@@ -330,7 +330,9 @@ export default function DeleteAccount() {
                       • Our support team will review your request within 2-3
                       business days
                     </li>
-                    <li>• You'll receive updates via email at {user.email}</li>
+                    <li>
+                      • You&apos;ll receive updates via email at {user.email}
+                    </li>
                     <li>
                       • All your data will be permanently deleted once processed
                     </li>

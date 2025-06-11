@@ -492,7 +492,7 @@ export default function RegisterForm() {
         {/* Additional Info */}
         <div className="text-center text-xs text-gray-500">
           <p>
-            By creating an account, you're joining a community of Filipino
+            By creating an account, you&apos;re joining a community of Filipino
             workers dedicated to finding meaningful employment opportunities.
           </p>
         </div>
