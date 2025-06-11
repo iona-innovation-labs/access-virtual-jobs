@@ -9,7 +9,7 @@ export const registrationCheckboxes: RegistrationCheckbox[] = [
   {
     id: "filipinoWorker",
     label:
-      "I am Filipino. I understand Onlinejobs.ph is only for Filipino workers.",
+      "I am Filipino. I understand Access Virtual Staffing is only for Filipino workers.",
     required: true,
     description:
       "This platform is specifically designed for Filipino remote workers.",

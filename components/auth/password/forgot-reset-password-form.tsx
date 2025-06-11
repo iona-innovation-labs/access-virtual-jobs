@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Eye, EyeOff } from "lucide-react";
 import {
   passwordSchema,
   confirmPasswordSchema,
@@ -35,6 +36,8 @@ export function ResetPasswordForm({
   const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPasswordRequirements, setShowPasswordRequirements] =
     useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
@@ -219,20 +222,39 @@ export function ResetPasswordForm({
 
               <div className="grid gap-3">
                 <Label htmlFor="password">New Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter new password"
-                  value={password}
-                  onChange={(e) => handlePasswordChange(e.target.value)}
-                  onFocus={() => setShowPasswordRequirements(true)}
-                  disabled={isLoading}
-                  className={cn(
-                    password.length > 0 &&
-                      (isPasswordValid ? "border-green-500" : "border-red-500")
-                  )}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter new password"
+                    value={password}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    onFocus={() => setShowPasswordRequirements(true)}
+                    disabled={isLoading}
+                    className={cn(
+                      "pr-10",
+                      password.length > 0 &&
+                        (isPasswordValid
+                          ? "border-green-500"
+                          : "border-red-500")
+                    )}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={!password || isLoading}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-400" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-400" />
+                    )}
+                  </Button>
+                </div>
                 {passwordErrors.length > 0 && (
                   <div className="space-y-1">
                     {passwordErrors.map((error, index) => (
@@ -257,21 +279,40 @@ export function ResetPasswordForm({
 
               <div className="grid gap-3">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirm new password"
-                  value={confirmPassword}
-                  onChange={(e) => handleConfirmPasswordChange(e.target.value)}
-                  disabled={isLoading}
-                  className={cn(
-                    confirmPassword.length > 0 &&
-                      (isConfirmPasswordValid
-                        ? "border-green-500"
-                        : "border-red-500")
-                  )}
-                  required
-                />
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm new password"
+                    value={confirmPassword}
+                    onChange={(e) =>
+                      handleConfirmPasswordChange(e.target.value)
+                    }
+                    disabled={isLoading}
+                    className={cn(
+                      "pr-10",
+                      confirmPassword.length > 0 &&
+                        (isConfirmPasswordValid
+                          ? "border-green-500"
+                          : "border-red-500")
+                    )}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    disabled={!confirmPassword || isLoading}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-400" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-400" />
+                    )}
+                  </Button>
+                </div>
                 {confirmPasswordError && (
                   <p className="text-sm text-red-600">{confirmPasswordError}</p>
                 )}
@@ -292,8 +333,8 @@ export function ResetPasswordForm({
               </Button>
 
               <div className="text-center text-sm">
-                <Link href="/login" className="underline underline-offset-4">
-                  Back to Login
+                <Link href="/register" className="underline underline-offset-4">
+                  Create a Free Account
                 </Link>
               </div>
             </div>
