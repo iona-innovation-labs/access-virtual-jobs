@@ -35,7 +35,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { firstName, lastName, email, username } = parsedData.data;
+    const {
+      firstName,
+      lastName,
+      email,
+      username,
+      gender,
+      countryOfResidence,
+      dateOfBirth,
+    } = parsedData.data;
+
+    console.log("DATA: ", parsedData);
 
     const currentUser = await db.query.users.findFirst({
       where: eq(users.id, session.user.id),
@@ -74,6 +84,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Track changes for all fields
     if (firstName !== currentUser.firstName) {
       changes.push(`First name: "${currentUser.firstName}" → "${firstName}"`);
     }
@@ -86,12 +97,36 @@ export async function POST(req: NextRequest) {
     if (username !== currentUser.name) {
       changes.push(`Username: "${currentUser.name}" → "${username}"`);
     }
+    if (gender !== currentUser.gender) {
+      changes.push(
+        `Gender: "${currentUser.gender || "Not specified"}" → "${gender || "Not specified"}"`
+      );
+    }
+    if (countryOfResidence !== currentUser.countryOfResidence) {
+      changes.push(
+        `Country: "${currentUser.countryOfResidence || "Not specified"}" → "${countryOfResidence || "Not specified"}"`
+      );
+    }
+
+    // Handle date of birth comparison
+    const currentDateOfBirth = currentUser.dateOfBirth
+      ? new Date(currentUser.dateOfBirth).toISOString().split("T")[0]
+      : null;
+    const newDateOfBirth = dateOfBirth || null;
+    if (currentDateOfBirth !== newDateOfBirth) {
+      changes.push(
+        `Date of birth: "${currentDateOfBirth || "Not specified"}" → "${newDateOfBirth || "Not specified"}"`
+      );
+    }
 
     let updateData: any = {
       firstName,
       lastName,
       email,
       name: username,
+      gender: gender || null,
+      countryOfResidence: countryOfResidence || null,
+      dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
     };
 
     if (emailChanged) {
@@ -164,6 +199,15 @@ If you did not make this change, please contact our support team immediately at 
           emailChanged,
           oldEmail: emailChanged ? oldEmail : undefined,
           newEmail: email,
+          fieldsUpdated: {
+            firstName: firstName !== currentUser.firstName,
+            lastName: lastName !== currentUser.lastName,
+            username: username !== currentUser.name,
+            gender: gender !== currentUser.gender,
+            countryOfResidence:
+              countryOfResidence !== currentUser.countryOfResidence,
+            dateOfBirth: currentDateOfBirth !== newDateOfBirth,
+          },
         });
       } catch (emailError) {
         log("Failed to send profile update email", "error", {

@@ -9,13 +9,18 @@ import {
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { fetchApi } from "@/services/fetch-api";
-import { User, Upload, Settings, Camera, AlertCircle } from "lucide-react";
+import {
+  User,
+  Upload,
+  Settings,
+  Camera,
+  AlertCircle,
+  CalendarDays,
+} from "lucide-react";
+import { z } from "zod";
+import { Country } from "country-state-city";
 
 import { useUserInfo } from "@/hooks/use-user-info";
-import {
-  generalSchema,
-  GeneralSchema,
-} from "@/lib/validation/general-settings-form-validation";
 
 import {
   Card,
@@ -31,10 +36,48 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import Image from "next/image";
+
+// Updated schema with new fields
+const generalSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  username: z.string().optional(),
+  gender: z.string().optional(),
+  countryOfResidence: z.string().optional(),
+  dateOfBirth: z.string().optional(),
+});
+
+// Keep the original type structure for API compatibility
+type GeneralSchema = z.infer<typeof generalSchema> & {
+  email: string;
+};
+
+// Countries dropdown options
+const countries = Country.getAllCountries().map((country) => ({
+  value: country.name,
+  label: country.name,
+  code: country.isoCode,
+}));
+
+// Gender options
+const genderOptions = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+  { value: "prefer_not_to_say", label: "Prefer not to say" },
+];
 
 export default function GeneralSettings() {
   const [submitting, setSubmitting] = useState(false);
@@ -43,32 +86,52 @@ export default function GeneralSettings() {
 
   const { userInfo, error, isLoading } = useUserInfo();
 
-  const form = useForm<GeneralSchema>({
+  const form = useForm<Omit<GeneralSchema, "email">>({
     resolver: zodResolver(generalSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
       username: "",
+      gender: "",
+      countryOfResidence: "Philippines",
+      dateOfBirth: "",
     },
   });
 
   React.useEffect(() => {
     if (userInfo) {
-      form.reset({
-        ...userInfo,
+      console.log(userInfo);
+      const formData = {
+        firstName: userInfo.firstName || "",
+        lastName: userInfo.lastName || "",
         username: userInfo?.username || "",
-      });
+        gender: userInfo?.gender || "",
+        countryOfResidence: userInfo?.countryOfResidence || "Philippines",
+        dateOfBirth: userInfo?.dateOfBirth
+          ? new Date(userInfo.dateOfBirth).toISOString().split("T")[0]
+          : "",
+      };
+      form.reset(formData);
     }
-  }, [userInfo, form]);
+  }, [userInfo]);
 
-  const onSubmit = async (formData: GeneralSchema) => {
+  const onSubmit = async (formData: Omit<GeneralSchema, "email">) => {
     setSubmitting(true);
     try {
+      const requestData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: userInfo?.email || "",
+        username: formData.username || "",
+        gender: formData.gender || "",
+        countryOfResidence: formData.countryOfResidence || "Philippines",
+        dateOfBirth: formData.dateOfBirth || null,
+      };
+
       // TODO: infer the type of response
       const response = await fetchApi<any>("/settings/general", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify(requestData),
       });
 
       if (!response.ok) throw new Error("Failed to update general settings");
@@ -130,7 +193,7 @@ export default function GeneralSettings() {
 
   if (error) {
     return (
-      <Card className="w-full max-w-2xl shadow-sm border-0">
+      <Card className="w-full shadow-sm border-0">
         <CardContent className="p-8 text-center">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -331,48 +394,126 @@ export default function GeneralSettings() {
                 />
               </div>
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
-                      Email Address
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        type="email"
-                        placeholder="Enter your email address"
-                        disabled={submitting}
-                        className="border-gray-300 focus:border-brand focus:ring-brand"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-sm" />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-700">
+                        Username
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="Choose a unique username"
+                          disabled={submitting}
+                          className="border-gray-300 focus:border-brand focus:ring-brand"
+                        />
+                      </FormControl>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
-                      Username
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Choose a unique username"
+                <FormField
+                  control={form.control}
+                  name="gender"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-700">
+                        Gender
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
                         disabled={submitting}
-                        className="border-gray-300 focus:border-brand focus:ring-brand"
-                      />
-                    </FormControl>
-                    <FormMessage className="text-red-500 text-sm" />
-                  </FormItem>
-                )}
-              />
+                      >
+                        <FormControl>
+                          <SelectTrigger className="border-gray-300 w-full focus:border-brand focus:ring-brand">
+                            <SelectValue placeholder="Select your gender" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {genderOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="countryOfResidence"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-700">
+                        Country of Residence
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={submitting}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="border-gray-300 w-full focus:border-brand focus:ring-brand">
+                            <SelectValue placeholder="Select your country" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="max-h-60 overflow-y-auto">
+                          {countries.map((country) => (
+                            <SelectItem
+                              key={country.code}
+                              value={country.value}
+                            >
+                              {country.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        The country where you currently reside
+                      </FormDescription>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="dateOfBirth"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm font-medium text-gray-700">
+                        Date of Birth
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Input
+                            {...field}
+                            type="date"
+                            disabled={submitting}
+                            className="border-gray-300 focus:border-brand focus:ring-brand"
+                            max={new Date().toISOString().split("T")[0]}
+                          />
+                          <CalendarDays className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        Your date of birth for age verification
+                      </FormDescription>
+                      <FormMessage className="text-red-500 text-sm" />
+                    </FormItem>
+                  )}
+                />
+              </div>
             </Form>
           </CardContent>
 
