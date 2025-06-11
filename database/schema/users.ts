@@ -20,6 +20,11 @@ export const users = pgTable("users", {
   image: text("image"),
   firstName: text("first_name"),
   lastName: text("last_name"),
+  gender: text("gender"),
+  countryOfResidence: text("country_of_residence").default("Philippines"),
+  dateOfBirth: timestamp("date_of_birth", {
+    mode: "date",
+  }),
   name: text("name"),
   createdAt: timestamp("created_at").defaultNow(),
   provider: text("provider"),
@@ -99,4 +104,18 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
   token: text("token").unique().notNull(),
   expires: timestamp("expires", { mode: "date" }).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const deleteRequests = pgTable("delete_requests", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  reason: text("reason"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  feedback: text("feedback"),
+  status: varchar("status", { length: 20 }).default("inprogress").notNull(), // inprogress, approved, rejected, completed
 });

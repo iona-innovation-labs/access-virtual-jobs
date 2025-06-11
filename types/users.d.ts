@@ -20,4 +20,8 @@ export interface IUserInfo {
   jobSubmissionNotifPref: string;
   jobSearchStatus: string;
   isNewUser: boolean;
+  isEmailVerified: boolean;
+  gender: string;
+  countryOfResidence: string;
+  dateOfBirth: Date;
 }
