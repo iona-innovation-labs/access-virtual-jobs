@@ -19,6 +19,10 @@ export interface IProfileResponse {
     desiredSalary: string;
     howHear: string;
     referrer?: string;
+    jobType?: string;
+    availability?: string;
+    education?: string;
+    createdAt?: string;
   };
   phones: { type: string; number: string }[];
   emails: { type: string; address: string }[];

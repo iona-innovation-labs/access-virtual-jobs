@@ -31,6 +31,8 @@ export const profiles = pgTable("profiles", {
   desiredSalary: text("desired_salary").notNull(),
   howHear: text("how_hear"),
   referrer: text("referrer"),
+  jobType: text("job_type"),
+  availability: text("availability"),
 });
 
 export const phones = pgTable("phones", {
@@ -96,6 +98,66 @@ export const fileUploads = pgTable("file_uploads", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const workHistory = pgTable("work_history", {
+  id: serial("id").primaryKey(),
+  profileId: integer("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
+  company: text("company").notNull(),
+  position: text("position").notNull(),
+  startDate: date("start_date", { mode: "date" }).notNull(),
+  endDate: date("end_date", { mode: "date" }), // null for current job
+  description: text("description"),
+  isCurrentJob: text("is_current_job").default("no"), // "yes" or "no"
+  location: text("location"),
+  employmentType: text("employment_type"), // "full-time", "part-time", "contract", "freelance"
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const certifications = pgTable("certifications", {
+  id: serial("id").primaryKey(),
+  profileId: integer("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
+  name: text("name").notNull(),
+  issuingOrganization: text("issuing_organization").notNull(),
+  issueDate: date("issue_date", { mode: "date" }).notNull(),
+  expirationDate: date("expiration_date", { mode: "date" }), // null for non-expiring
+  credentialId: text("credential_id"),
+  credentialUrl: text("credential_url"),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const skills = pgTable("skills", {
+  id: serial("id").primaryKey(),
+  profileId: integer("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
+  name: text("name").notNull(),
+  category: text("category"), // "technical", "soft", "language", "tools", etc.
+  proficiencyLevel: text("proficiency_level"), // "beginner", "intermediate", "advanced", "expert"
+  yearsOfExperience: integer("years_of_experience"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const education = pgTable("education", {
+  id: serial("id").primaryKey(),
+  profileId: integer("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
+  institution: text("institution").notNull(),
+  degree: text("degree").notNull(), // "Bachelor's", "Master's", "PhD", "Certificate", etc.
+  fieldOfStudy: text("field_of_study").notNull(),
+  startDate: date("start_date", { mode: "date" }).notNull(),
+  endDate: date("end_date", { mode: "date" }), // null for ongoing
+  gpa: text("gpa"),
+  description: text("description"),
+  isCurrentlyStudying: text("is_currently_studying").default("no"), // "yes" or "no"
+  location: text("location"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   profiles: many(profiles),
 }));
@@ -111,4 +173,36 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
   assessmentTests: many(assessmentTests),
   workSamples: many(workSamples),
   fileUploads: many(fileUploads),
+  workHistory: many(workHistory),
+  certifications: many(certifications),
+  skills: many(skills),
+  education: many(education),
+}));
+
+export const workHistoryRelations = relations(workHistory, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [workHistory.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const certificationsRelations = relations(certifications, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [certifications.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const skillsRelations = relations(skills, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [skills.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const educationRelations = relations(education, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [education.profileId],
+    references: [profiles.id],
+  }),
 }));
