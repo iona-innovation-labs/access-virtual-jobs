@@ -1,32 +1,34 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { User, ExternalLink } from "lucide-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Briefcase, Share } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-interface PersonalInfoSectionProps {
+interface ProfileCardProps {
   userInfo: any;
   isUserLoading: boolean;
-  loading: boolean;
+  showEditButton?: boolean;
 }
 
 export const PersonalInfoSection = ({
   userInfo,
   isUserLoading,
-}: PersonalInfoSectionProps) => {
+  showEditButton = true,
+}: ProfileCardProps) => {
+  console.log(showEditButton);
   if (isUserLoading) {
     return (
-      <Card className="animate-pulse">
-        <CardHeader>
-          <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-200 rounded w-32"></div>
-              <div className="h-4 bg-gray-200 rounded w-24"></div>
+      <Card className="w-full mx-auto animate-pulse border-gray-200">
+        <CardContent className="p-8">
+          <div className="flex flex-col items-center space-y-6">
+            <div className="w-28 h-28 bg-gray-200 rounded-full"></div>
+            <div className="space-y-3 text-center w-full">
+              <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+            </div>
+            <div className="w-full space-y-3">
+              <div className="h-4 bg-gray-200 rounded w-full"></div>
+              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
             </div>
           </div>
         </CardContent>
@@ -39,65 +41,92 @@ export const PersonalInfoSection = ({
       ? `${userInfo.firstName} ${userInfo.lastName}`
       : userInfo?.username || "User";
 
-  return (
-    <Card className="shadow-sm border-0">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-              <User className="w-4 h-4 text-brand" />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              Personal Information
-            </h2>
-          </div>
-          <Link
-            href="/app/settings/general"
-            className="flex items-center space-x-1 text-sm text-brand hover:text-brand-dark transition-colors"
-          >
-            <span>Update General Details</span>
-            <ExternalLink className="w-3 h-3" />
-          </Link>
-        </div>
-      </CardHeader>
+  const initials = fullName
+    .split(" ")
+    .map((name: string) => name.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
-      <CardContent className="space-y-6">
-        {/* Profile Image */}
-        <div>
-          <Label className="text-sm font-medium text-gray-700 mb-3 block">
-            Profile Image
-          </Label>
-          <div className="flex items-center space-x-4">
-            {userInfo?.image ? (
-              <Image
-                src={userInfo.image}
-                alt={fullName}
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-                width={64}
-                height={64}
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
-                <User className="w-7 h-7 text-brand" />
+  // Format job search status
+  const formatJobSearchStatus = (status: string) => {
+    if (!status) return null;
+    return status
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  // Get status color based on job search status
+  const getStatusColor = (status: string) => {
+    const lowerStatus = status?.toLowerCase();
+    if (lowerStatus?.includes("active") || lowerStatus?.includes("looking")) {
+      return "text-green-600 bg-green-50 border-green-200";
+    } else if (
+      lowerStatus?.includes("open") ||
+      lowerStatus?.includes("considering")
+    ) {
+      return "text-blue-600 bg-blue-50 border-blue-200";
+    } else if (
+      lowerStatus?.includes("not") ||
+      lowerStatus?.includes("unavailable")
+    ) {
+      return "text-gray-600 bg-gray-50 border-gray-200";
+    }
+    return "text-indigo-600 bg-indigo-50 border-indigo-200";
+  };
+
+  return (
+    <Card className="w-full mx-auto border-none shadow-none bg-white ">
+      <CardContent className="p-4">
+        <div className="space-y-6">
+          {/* Header Section with Profile Image and Basic Info */}
+          <div className="flex flex-col items-center space-y-4">
+            {/* Profile Image */}
+            <div className="relative">
+              {userInfo?.image ? (
+                <Image
+                  src={userInfo.image}
+                  alt={fullName}
+                  className="w-50 h-50 rounded-full object-cover border-4 border-white ring-2 ring-gray-100"
+                  width={112}
+                  height={112}
+                />
+              ) : (
+                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center border-4 border-white ring-2 ring-gray-100">
+                  <span className="text-white text-2xl font-bold">
+                    {initials}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="text-center space-y-1">
+              <h3 className="text-2xl font-bold text-gray-900">{fullName}</h3>
+              {userInfo?.username && (
+                <p className="text-gray-500 text-sm font-medium flex items-center justify-center">
+                  @{userInfo.username}
+                  <span>
+                    <Button
+                      size="sm"
+                      className="bg-transparent text-gray-700 shadow-none "
+                    >
+                      <Share />
+                    </Button>
+                  </span>
+                </p>
+              )}
+            </div>
+
+            {userInfo?.jobSearchStatus && (
+              <div
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border ${getStatusColor(userInfo.jobSearchStatus)}`}
+              >
+                <Briefcase className="w-3 h-3" />
+                {formatJobSearchStatus(userInfo.jobSearchStatus)}
               </div>
             )}
-            <div>
-              <p className="text-sm text-gray-600">
-                Profile image is managed in general settings
-              </p>
-            </div>
           </div>
-        </div>
-
-        {/* Full Name */}
-        <div>
-          <Label className="text-sm font-medium text-gray-700 mb-2 block">
-            Full Name
-          </Label>
-          <p className="text-gray-900 font-medium">{fullName}</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Name can be updated in general settings
-          </p>
         </div>
       </CardContent>
     </Card>
