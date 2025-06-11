@@ -10,6 +10,7 @@ import {
   Bell,
   Trash2,
   ChevronRight,
+  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,12 @@ const menuItems = [
     href: "/app/settings/general",
     icon: User,
     description: "Personal information and profile",
+  },
+  {
+    name: "Email",
+    href: "/app/settings/email",
+    icon: Mail,
+    description: "Email settings",
   },
   {
     name: "Authentication",

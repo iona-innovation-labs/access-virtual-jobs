@@ -112,7 +112,7 @@ export default function NotificationSettings() {
 
   if (isLoading) {
     return (
-      <Card className="w-full max-w-2xl shadow-sm border-0">
+      <Card className="w-full shadow-sm border-0">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
           <p className="text-center text-gray-500 mt-4">
@@ -292,7 +292,7 @@ export default function NotificationSettings() {
       </Card>
 
       {/* Additional Info Card */}
-      <Card className="shadow-sm border-0 bg-gray-50">
+      <Card className="shadow-sm border-0 bg-white">
         <CardContent className="p-4">
           <div className="flex items-start space-x-3">
             <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
