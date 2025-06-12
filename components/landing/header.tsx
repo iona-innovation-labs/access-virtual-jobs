@@ -5,6 +5,9 @@ import Link from "next/link";
 import CtaButton from "./cta-button";
 import { CircleEllipsisIcon, MenuIcon, XIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import logo from "@/public/images/logo/logo.png";
+import Logo from "../logo";
 
 export default function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,17 +20,15 @@ export default function Header() {
         <div className="flex items-center justify-between h-16 md:h-20 pb-8">
           <div className="shrink-0 mr-4">
             <Link
-              className="block group flex items-center gap-2 font-bold"
+              className="block group flex items-center gap-2 font-bold justify-center"
               href="/"
               aria-label="Cruip"
             >
-              <CircleEllipsisIcon
-                className={`w-6 h-6 transition-colors ${isHome ? "text-white" : "text-blue-900"}`}
-              />
+              <Logo size="md" href="/" priority={true} />
               <p
                 className={`transition-colors ${isHome ? "text-white" : "text-blue-900"}`}
               >
-                AccessVirtualJobs
+                AVJ
               </p>
             </Link>
           </div>
