@@ -5,6 +5,7 @@ import {
   MapPin,
   CheckCircle2,
   ExternalLink,
+  AlertTriangle,
 } from "lucide-react";
 import { notFound } from "next/navigation";
 
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { getJobPost } from "@/lib/api/jobs";
 import { ViewJobContent } from "@/components/jobs/view-job-content";
 import { getJobApplicationByJobId } from "@/database/queries/job_applications";
+import { auth } from "@/auth";
 
 export async function generateMetadata({
   params,
@@ -44,6 +46,7 @@ export default async function ViewJob({
     resolvedParams?.id || ""
   );
   const alreadyApplied = jobApplication.ok && jobApplication.application;
+  const session = await auth();
 
   if (!post) {
     return notFound();
@@ -145,21 +148,45 @@ export default async function ViewJob({
                       </div>
                     ) : (
                       <div>
-                        <h3 className="font-semibold text-gray-900 mb-2">
+                        <h3 className="font-heading font-semibold text-text-primary mb-2">
                           Ready to Apply?
                         </h3>
-                        <p className="text-sm text-gray-600 mb-4">
+                        <p className="font-body text-sm text-text-secondary mb-4">
                           Submit your application and get one step closer to
                           your dream job.
                         </p>
-                        <LinkButton
-                          className="w-full bg-brand hover:bg-brand-dark text-white"
-                          navLink={{
-                            title: "Apply for This Job",
-                            url: `/app/jobs/v/${resolvedParams?.id}/apply`,
-                            follow: false,
-                          }}
-                        />
+
+                        {!session?.user?.isEmailVerified ? (
+                          <div className="bg-warning/10 border border-warning/20 rounded-md p-3 mb-4">
+                            <div className="flex items-start justify-center gap-2">
+                              <AlertTriangle
+                                size={16}
+                                className="text-warning mt-0.5 flex-shrink-0"
+                              />
+                              <div>
+                                <p className="font-body text-xs text-warning/80">
+                                  Please verify your email address before
+                                  applying for jobs.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <LinkButton
+                            className={`w-full text-white ${
+                              session?.user?.isEmailVerified
+                                ? "bg-brand hover:bg-brand-dark cursor-pointer"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                            }`}
+                            navLink={{
+                              title: "Apply for This Job",
+                              url: session?.user?.isEmailVerified
+                                ? `/app/jobs/v/${resolvedParams?.id}/apply`
+                                : "#",
+                              follow: false,
+                            }}
+                          />
+                        )}
                       </div>
                     )}
                   </div>

@@ -1,17 +1,39 @@
-"use client";
-
-import { ReactNode } from "react";
 import ProfileTabs from "@/components/profile/tabs";
 import { ProfileTabProvider } from "@/context/profile-tab-context";
 import ProfileHeader from "@/components/profile/profile-header";
 import { ProfileFilesProvider } from "@/context/profile-files-context";
 import { ProfileDetailsProvider } from "@/context/profile-details-context";
+import { auth } from "@/auth";
+import { Mail, AlertTriangle } from "lucide-react";
+import { ReactNode } from "react";
 
 interface LayoutProps {
   children: ReactNode;
 }
 
-export default function EditProfileLayout({ children }: LayoutProps) {
+const NotVerifiedEmail = () => {
+  return (
+    <div className="text-center py-4">
+      <div className="flex justify-center mb-3">
+        <AlertTriangle size={20} className="text-warning" />
+      </div>
+      <h4 className="font-heading font-bold text-warning text-xl mb-2">
+        Email verification required
+      </h4>
+      <p className="font-body text-sm text-text-secondary leading-relaxed">
+        Please verify your email address before applying for jobs.
+        <br />
+        Check your inbox for the verification link.
+      </p>
+    </div>
+  );
+};
+
+export default async function EditProfileLayout({ children }: LayoutProps) {
+  // const result = await getUser(2);
+  const session = await auth();
+
+  if (!session?.user?.isEmailVerified) return <NotVerifiedEmail />;
   return (
     <ProfileTabProvider>
       <ProfileDetailsProvider>
