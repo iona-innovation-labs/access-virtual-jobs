@@ -65,7 +65,7 @@ export function NotificationCardCompact({
     >
       <div className="flex-shrink-0 mt-0.5">
         <div className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center">
-          {getNotificationIcon(notification.type)}
+          {getNotificationIcon(notification?.type || "default")}
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export function NotificationCardCompact({
 
         <div className="flex items-center justify-between">
           <time className="text-xs text-muted-foreground">
-            {formatTime(notification.createdAt)}
+            {formatTime(notification.createdAt || new Date().toISOString())}
           </time>
 
           {notification.type && notification.type !== "info" && (
