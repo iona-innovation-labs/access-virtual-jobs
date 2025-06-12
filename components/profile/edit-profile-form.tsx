@@ -31,8 +31,6 @@ export default function EditProfileForm() {
     fetchApi
   );
 
-  console.log(profileDetailsForm.getValues());
-
   // Field Arrays
   const phoneFields = useFieldArray({
     control: profileDetailsForm.control,
@@ -78,6 +76,7 @@ export default function EditProfileForm() {
   }, [data]);
 
   const onSubmit = async (formData: EditProfileSchema) => {
+    console.log("SUBMIT");
     setLoading(true);
     try {
       const response = await fetchApi<any>("/profile/update-profile", {

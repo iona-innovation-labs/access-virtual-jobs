@@ -21,7 +21,7 @@ export const profiles = pgTable("profiles", {
   whatNeedImprovement: text("what_need_improvement").notNull(),
   address: text("address").notNull(),
   skypeId: text("skype_id").notNull(),
-  dateOfBirth: date("date_of_birth", { mode: "date" }).notNull(),
+  dateOfBirth: date("date_of_birth", { mode: "date" }),
   hasPaypal: text("has_paypal").notNull(),
   numberOfChildren: text("number_of_children").notNull(),
   internetProvider: text("internet_provider").notNull(),

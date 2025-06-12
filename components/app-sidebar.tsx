@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Logo from "./logo";
 
 const data = {
   user: {
@@ -74,10 +75,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href={"/dashboard"}>
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">
-                  Access Virtual Jobs
-                </span>
+                <Logo size="md" />
+                <span className="text-base font-semibold">AVJ</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
