@@ -71,17 +71,19 @@ export const OverviewSection = ({
       <Card>
         <CardContent className="px-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-blue-600" />
+            <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-brand" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-gray-900">Overview</h2>
-              <p className="text-xs text-gray-500 mt-1">
+              <h2 className="text-sm font-semibold text-foreground">
+                Overview
+              </h2>
+              <p className="text-xs text-muted-foreground mt-1">
                 Key information about your profile and preferences
               </p>
             </div>
           </div>
-          <div className="text-sm text-gray-500 py-6">
+          <div className="text-sm text-muted-foreground py-6">
             Loading profile information...
           </div>
         </CardContent>
@@ -93,12 +95,12 @@ export const OverviewSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <Briefcase className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <Briefcase className="w-5 h-5 text-brand" />
           </div>
           <div className="flex-1">
-            <h2 className="text-sm font-semibold text-gray-900">Overview</h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <h2 className="text-sm font-semibold text-foreground">Overview</h2>
+            <p className="text-xs text-muted-foreground mt-1">
               Key information about your profile and preferences
             </p>
           </div>
@@ -107,7 +109,7 @@ export const OverviewSection = ({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 hover:bg-blue-50"
+                className="h-8 w-8 p-0 hover:bg-brand/5"
               >
                 <Edit3 className="h-4 w-4" />
               </Button>
@@ -117,24 +119,24 @@ export const OverviewSection = ({
 
         <div>
           {/* Looking for work */}
-          <div className="group py-6 border-b border-gray-100">
+          <div className="group py-6 border-b border-border">
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0">
-                <Briefcase className="w-4 h-4 text-gray-600" />
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                <Briefcase className="w-4 h-4 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="text-gray-900 text-lg leading-relaxed">
+                <div className="text-foreground text-lg leading-relaxed">
                   <div className="">
                     Looking for{" "}
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-foreground">
                       {formatJobType(userInfo?.jobType || "")}
                     </span>{" "}
                     work{" "}
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-foreground">
                       ({formatAvailability(userInfo?.availability || "")})
                     </span>{" "}
                     at{" "}
-                    <span className=" font-medium text-gray-900">
+                    <span className=" font-medium text-foreground">
                       {formatSalary()}
                     </span>
                   </div>
@@ -143,19 +145,19 @@ export const OverviewSection = ({
             </div>
           </div>
 
-          {/* Education - Placeholder */}
-          <div className="group py-6 border-b border-gray-100">
+          {/* Education */}
+          <div className="group py-6 border-b border-border">
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
-                <Calendar className="w-4 h-4 text-gray-600" />
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-500">
+                  <h3 className="text-sm font-medium text-muted-foreground">
                     Education
                   </h3>
                 </div>
-                <div className="text-gray-900 leading-relaxed">
+                <div className="text-foreground leading-relaxed">
                   <div className="text-lg font-medium">
                     {userInfo?.education || "Not specified"}
                   </div>
@@ -167,16 +169,16 @@ export const OverviewSection = ({
           {/* Member Since */}
           <div className="group py-6 last:border-b-0">
             <div className="flex items-start gap-4">
-              <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
-                <User className="w-4 h-4 text-gray-600" />
+              <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                <User className="w-4 h-4 text-muted-foreground" />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium text-gray-500">
+                  <h3 className="text-sm font-medium text-muted-foreground">
                     Member Since
                   </h3>
                 </div>
-                <div className="text-gray-900 leading-relaxed">
+                <div className="text-foreground leading-relaxed">
                   <div className="text-lg font-medium">
                     {formatCreatedAt(userInfo?.createdAt ?? new Date())}
                   </div>

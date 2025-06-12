@@ -1,6 +1,7 @@
 import { Mail, MapPin } from "lucide-react";
 import Image from "next/image";
 import { ImageProps } from "@/types/general";
+import Link from "next/link";
 
 type Links = {
   title: string;
@@ -51,7 +52,10 @@ export const Footer = (props: Footer11Props) => {
         <div className="grid grid-cols-1 gap-x-[4vw] gap-y-12  border border-neutralLightZinc rounded-lg p-8 md:gap-y-16 md:p-12 lg:grid-cols-[1fr_0.5fr] lg:gap-y-4">
           <div className="flex flex-col">
             <div className="mb-6 md:mb-8  ">
-              <a href={logo.url} className="w-full">
+              <Link
+                href={logo.url ? logo.url : "https://google.com"}
+                className="w-full"
+              >
                 <Image
                   src={logo.src}
                   alt={logo.alt}
@@ -59,26 +63,26 @@ export const Footer = (props: Footer11Props) => {
                   width={logo.width}
                   height={logo.height}
                 />
-              </a>
+              </Link>
             </div>
             <div className="mb-6 md:mb-8 text-white">
               <div className="space-x-2 flex flex-row items-start">
                 <span>{address.icon()}</span>
-                <a
+                <Link
                   className="mb-5 text-sm md:mb-6 hover:underline"
                   href={`https://www.google.com/maps/search/?api=1&query=${address.value}`}
                 >
                   {address.value}
-                </a>
+                </Link>
               </div>
               <div className="space-x-2 flex flex-row items-start">
                 <span>{contact.icon()}</span>
-                <a
+                <Link
                   className="mb-5 text-sm md:mb-6 hover:underline"
                   href={`mailto:${contact.email}`}
                 >
                   {contact.email}
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -87,13 +91,13 @@ export const Footer = (props: Footer11Props) => {
               <ul key={index}>
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex} className="py-2 text-sm font-semibold">
-                    <a
+                    <Link
                       href={link.url}
                       className="hover:underline"
                       target={link.follow ? "_blank" : ""}
                     >
                       {link.title}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -106,9 +110,9 @@ export const Footer = (props: Footer11Props) => {
           <ul className="grid grid-flow-row grid-cols-[max-content] justify-center gap-x-0 gap-y-4 text-sm md:grid-flow-col md:gap-x-6 md:gap-y-0 text-white">
             {footerLinks.map((link, index) => (
               <li key={index} className="underline">
-                <a href={link.url} className="hover:underline">
+                <Link href={link.url} className="hover:underline">
                   {link.title}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

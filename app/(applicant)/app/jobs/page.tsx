@@ -52,7 +52,7 @@ export default async function Jobs({
   }
 
   return (
-    <main className="w-full mx-auto bg-white overflow-hidden">
+    <main className="w-full mx-auto bg-background overflow-hidden">
       <JobHeader
         heading="Explore Jobs"
         description="Explore and apply for jobs"

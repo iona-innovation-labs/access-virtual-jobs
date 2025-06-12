@@ -114,10 +114,10 @@ export default function EditProfileForm() {
   if (error) {
     return (
       <Card className="max-w-3xl mx-auto p-8 text-center">
-        <h2 className="text-lg font-semibold text-red-600 mb-2">
+        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">
           Error Loading Profile
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-200">
           Failed to load profile data. Please refresh the page.
         </p>
       </Card>
@@ -147,13 +147,6 @@ export default function EditProfileForm() {
           onSubmit={profileDetailsForm.handleSubmit(onSubmit)}
           className="space-y-8"
         >
-          {/* Personal Information 
-          <PersonalInfoSection
-            userInfo={userInfo}
-            isUserLoading={isLoading}
-            showEditButton={true}
-          />*/}
-
           {/* Professional Information */}
           <ProfessionalInfoSection
             control={profileDetailsForm.control}

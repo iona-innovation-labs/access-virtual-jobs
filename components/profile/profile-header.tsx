@@ -250,7 +250,7 @@ const ProfileHeader = () => {
   if (!stepInfo) return null;
 
   return (
-    <div className="bg-white sticky top-0 z-40 border-b border-gray-100">
+    <div className="bg-card sticky top-0 z-40 border-b border-border">
       <div className="mx-auto px-3 sm:px-4 lg:px-6">
         <Card className="shadow-none border-0 py-0">
           <div className="p-3 sm:p-4 lg:p-6">
@@ -258,10 +258,10 @@ const ProfileHeader = () => {
             <div className="block sm:hidden">
               {/* Title Section */}
               <div className="mb-3">
-                <h1 className="text-lg font-semibold text-gray-900 leading-tight">
+                <h1 className="text-lg font-semibold text-foreground leading-tight">
                   {stepInfo.title}
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {stepInfo.description}
                 </p>
               </div>
@@ -294,7 +294,7 @@ const ProfileHeader = () => {
                     <AlertDialogTrigger asChild>
                       <Button
                         disabled={loading}
-                        className="bg-green-600 hover:bg-green-700 text-white w-full justify-center"
+                        className="bg-success hover:bg-success text-white w-full justify-center"
                         size="sm"
                       >
                         {loading ? (
@@ -313,13 +313,13 @@ const ProfileHeader = () => {
 
                     <AlertDialogContent className="max-w-[90vw] sm:max-w-md mx-4">
                       <AlertDialogHeader className="text-center">
-                        <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-                          <AlertTriangle className="w-6 h-6 text-amber-600" />
+                        <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mx-auto mb-4">
+                          <AlertTriangle className="w-6 h-6 text-warning" />
                         </div>
                         <AlertDialogTitle className="text-lg">
                           Submit Application?
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-gray-600 leading-relaxed text-sm">
+                        <AlertDialogDescription className="text-muted-foreground leading-relaxed text-sm">
                           You&apos;re about to submit your complete profile and
                           documents to the employer. Make sure all information
                           is accurate and up-to-date.
@@ -332,7 +332,7 @@ const ProfileHeader = () => {
                         </AlertDialogCancel>
                         <AlertDialogAction asChild>
                           <Button
-                            className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto order-1 sm:order-2"
+                            className="bg-success hover:bg-success text-white w-full sm:w-auto order-1 sm:order-2"
                             disabled={loading}
                             onClick={onFileSubmit}
                           >
@@ -357,7 +357,7 @@ const ProfileHeader = () => {
                 <Button
                   variant="outline"
                   onClick={() => router.push(`/app/jobs/v/${jobId}`)}
-                  className="border-gray-300 hover:bg-gray-50 w-full justify-center"
+                  className="border-border hover:bg-accent w-full justify-center"
                   size="sm"
                 >
                   <X className="w-4 h-4 mr-2" />
@@ -371,10 +371,10 @@ const ProfileHeader = () => {
               {/* Left Section - Step Info */}
               <div className="flex items-center space-x-4">
                 <div>
-                  <h1 className="text-xl lg:text-2xl font-semibold text-gray-900">
+                  <h1 className="text-xl lg:text-2xl font-semibold text-foreground">
                     {stepInfo.title}
                   </h1>
-                  <p className="text-sm lg:text-base text-gray-500 mt-1">
+                  <p className="text-sm lg:text-base text-muted-foreground mt-1">
                     {stepInfo.description}
                   </p>
                 </div>
@@ -385,7 +385,7 @@ const ProfileHeader = () => {
                 <Button
                   variant="outline"
                   onClick={() => router.push(`/app/jobs/v/${jobId}`)}
-                  className="border-gray-300 hover:bg-gray-50"
+                  className="border-border hover:bg-accent"
                   size="sm"
                 >
                   <X className="w-4 h-4 mr-2" />
@@ -418,7 +418,7 @@ const ProfileHeader = () => {
                     <AlertDialogTrigger asChild>
                       <Button
                         disabled={loading}
-                        className="bg-green-600 hover:bg-green-700 text-white"
+                        className="bg-success hover:bg-success text-white"
                         size="sm"
                       >
                         {loading ? (
@@ -437,13 +437,13 @@ const ProfileHeader = () => {
 
                     <AlertDialogContent className="max-w-md">
                       <AlertDialogHeader className="text-center">
-                        <div className="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
-                          <AlertTriangle className="w-6 h-6 text-amber-600" />
+                        <div className="w-12 h-12 rounded-full bg-warning/10 flex items-center justify-center mx-auto mb-4">
+                          <AlertTriangle className="w-6 h-6 text-warning" />
                         </div>
                         <AlertDialogTitle className="text-lg">
                           Submit Application?
                         </AlertDialogTitle>
-                        <AlertDialogDescription className="text-gray-600 leading-relaxed">
+                        <AlertDialogDescription className="text-muted-foreground leading-relaxed">
                           You&apos;re about to submit your complete profile and
                           documents to the employer. Make sure all information
                           is accurate and up-to-date.
@@ -456,7 +456,7 @@ const ProfileHeader = () => {
                         </AlertDialogCancel>
                         <AlertDialogAction asChild>
                           <Button
-                            className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+                            className="bg-success hover:bg-success text-white w-full sm:w-auto"
                             disabled={loading}
                             onClick={onFileSubmit}
                           >

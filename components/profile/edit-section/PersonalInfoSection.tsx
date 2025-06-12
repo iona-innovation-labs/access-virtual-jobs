@@ -18,17 +18,17 @@ export const PersonalInfoSection = ({
   console.log(showEditButton);
   if (isUserLoading) {
     return (
-      <Card className="w-full mx-auto animate-pulse border-gray-200">
+      <Card className="w-full mx-auto animate-pulse border-border">
         <CardContent className="p-8">
           <div className="flex flex-col items-center space-y-6">
-            <div className="w-28 h-28 bg-gray-200 rounded-full"></div>
+            <div className="w-28 h-28 bg-muted rounded-full"></div>
             <div className="space-y-3 text-center w-full">
-              <div className="h-6 bg-gray-200 rounded w-3/4 mx-auto"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
+              <div className="h-6 bg-muted rounded w-3/4 mx-auto"></div>
+              <div className="h-4 bg-muted rounded w-1/2 mx-auto"></div>
             </div>
             <div className="w-full space-y-3">
-              <div className="h-4 bg-gray-200 rounded w-full"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-4 bg-muted rounded w-full"></div>
+              <div className="h-4 bg-muted rounded w-5/6"></div>
             </div>
           </div>
         </CardContent>
@@ -57,27 +57,27 @@ export const PersonalInfoSection = ({
       .join(" ");
   };
 
-  // Get status color based on job search status
+  // Get status color based on job search status (using semantic colors)
   const getStatusColor = (status: string) => {
     const lowerStatus = status?.toLowerCase();
     if (lowerStatus?.includes("active") || lowerStatus?.includes("looking")) {
-      return "text-green-600 bg-green-50 border-green-200";
+      return "text-success bg-success/10 border-success/20";
     } else if (
       lowerStatus?.includes("open") ||
       lowerStatus?.includes("considering")
     ) {
-      return "text-blue-600 bg-blue-50 border-blue-200";
+      return "text-brand bg-brand/10 border-brand/20";
     } else if (
       lowerStatus?.includes("not") ||
       lowerStatus?.includes("unavailable")
     ) {
-      return "text-gray-600 bg-gray-50 border-gray-200";
+      return "text-muted-foreground bg-muted border-border";
     }
-    return "text-indigo-600 bg-indigo-50 border-indigo-200";
+    return "text-primary bg-primary/10 border-primary/20";
   };
 
   return (
-    <Card className="w-full mx-auto border-none shadow-none bg-white ">
+    <Card className="w-full mx-auto border-none shadow-none bg-card">
       <CardContent className="p-4">
         <div className="space-y-6">
           {/* Header Section with Profile Image and Basic Info */}
@@ -88,12 +88,12 @@ export const PersonalInfoSection = ({
                 <Image
                   src={userInfo.image}
                   alt={fullName}
-                  className="w-50 h-50 rounded-full object-cover border-4 border-white ring-2 ring-gray-100"
+                  className="w-50 h-50 rounded-full object-cover border-4 border-card ring-2 ring-border"
                   width={112}
                   height={112}
                 />
               ) : (
-                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center border-4 border-white ring-2 ring-gray-100">
+                <div className="w-28 h-28 rounded-full bg-gradient-to-br from-brand to-brand-dark flex items-center justify-center border-4 border-card ring-2 ring-border">
                   <span className="text-white text-2xl font-bold">
                     {initials}
                   </span>
@@ -102,14 +102,14 @@ export const PersonalInfoSection = ({
             </div>
 
             <div className="text-center space-y-1">
-              <h3 className="text-2xl font-bold text-gray-900">{fullName}</h3>
+              <h3 className="text-2xl font-bold text-foreground">{fullName}</h3>
               {userInfo?.username && (
-                <p className="text-gray-500 text-sm font-medium flex items-center justify-center">
+                <p className="text-muted-foreground text-sm font-medium flex items-center justify-center">
                   @{userInfo.username}
                   <span>
                     <Button
                       size="sm"
-                      className="bg-transparent text-gray-700 shadow-none "
+                      className="bg-transparent text-muted-foreground shadow-none hover:text-foreground"
                     >
                       <Share />
                     </Button>

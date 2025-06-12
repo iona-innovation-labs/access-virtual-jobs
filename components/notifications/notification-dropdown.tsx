@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { INotification } from "@/types/notification";
 import { useNotifications } from "@/hooks/use-notifications";
 import { NotificationCardCompact } from "./notification-card-compact";
+import Link from "next/link";
 
 interface NotificationDropdownProps {
   className?: string;
@@ -22,17 +23,12 @@ interface NotificationDropdownProps {
 
 export function NotificationDropdown({ className }: NotificationDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    notifications,
-    loading,
-    unreadCount,
-    markAllAsRead,
-    markSingleAsRead,
-  } = useNotifications({
-    filter: "all",
-  });
+  const { notifications, loading, unreadCount, markAllAsRead } =
+    useNotifications({
+      filter: "all",
+    });
 
-  const handleNotificationClick = async (notification: INotification) => {
+  const handleNotificationClick = async () => {
     setIsOpen(false);
   };
 
@@ -105,7 +101,7 @@ export function NotificationDropdown({ className }: NotificationDropdownProps) {
                   <NotificationCardCompact
                     key={notification.id}
                     notification={notification}
-                    onClick={() => handleNotificationClick(notification)}
+                    onClick={() => handleNotificationClick()}
                   />
                 ))}
               </div>
@@ -136,10 +132,10 @@ export function NotificationDropdown({ className }: NotificationDropdownProps) {
                 className="w-full justify-between h-8 text-sm hover:bg-muted"
                 asChild
               >
-                <a href="/app/notifications">
+                <Link href="/app/notifications">
                   View All Notifications
                   <ChevronRight className="w-4 h-4" />
-                </a>
+                </Link>
               </Button>
             </div>
           </>

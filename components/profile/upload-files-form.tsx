@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import Link from "next/link";
 
 interface ProfileData {
   fileUploads: {
@@ -208,7 +209,7 @@ const UploadFilesForm = () => {
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
-          <p className="text-center text-gray-500 mt-4">
+          <p className="text-center text-muted-foreground mt-4">
             Loading file attachments...
           </p>
         </CardContent>
@@ -220,11 +221,11 @@ const UploadFilesForm = () => {
     return (
       <Card className="max-w-4xl mx-auto">
         <CardContent className="p-8 text-center">
-          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-2">
             Error Loading Files
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Failed to load file attachments. Please refresh the page.
           </p>
         </CardContent>
@@ -239,31 +240,33 @@ const UploadFilesForm = () => {
   return (
     <div className="w-full mx-auto space-y-6">
       {/* Progress Card */}
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
               <div
                 className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                  allRequiredUploaded ? "bg-green-100" : "bg-brand/10"
+                  allRequiredUploaded ? "bg-success/10" : "bg-brand/10"
                 }`}
               >
                 {allRequiredUploaded ? (
-                  <CheckCircle2 className="w-5 h-5 text-green-600" />
+                  <CheckCircle2 className="w-5 h-5 text-success" />
                 ) : (
                   <Upload className="w-5 h-5 text-brand" />
                 )}
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">Upload Progress</h3>
-                <p className="text-sm text-gray-500">
+                <h3 className="font-semibold text-foreground">
+                  Upload Progress
+                </h3>
+                <p className="text-sm text-muted-foreground">
                   {requiredUploaded} of {totalRequired} required files uploaded
                 </p>
               </div>
             </div>
             <div
               className={`text-2xl font-bold ${
-                allRequiredUploaded ? "text-green-600" : "text-brand"
+                allRequiredUploaded ? "text-success" : "text-brand"
               }`}
             >
               {Math.round((requiredUploaded / totalRequired) * 100)}%
@@ -271,10 +274,10 @@ const UploadFilesForm = () => {
           </div>
 
           {/* Progress Bar */}
-          <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
             <div
               className={`h-full transition-all duration-300 ${
-                allRequiredUploaded ? "bg-green-500" : "bg-brand"
+                allRequiredUploaded ? "bg-success" : "bg-brand"
               }`}
               style={{ width: `${(requiredUploaded / totalRequired) * 100}%` }}
             />
@@ -291,29 +294,29 @@ const UploadFilesForm = () => {
           const isCurrentlyUploading = uploading === field.type;
 
           return (
-            <Card key={field.name} className="shadow-sm border-0">
+            <Card key={field.name} className="shadow-sm border-border">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <div
                       className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                        hasFiles ? "bg-green-100" : "bg-gray-100"
+                        hasFiles ? "bg-success/10" : "bg-muted"
                       }`}
                     >
                       {hasFiles ? (
-                        <CheckCircle2 className="w-4 h-4 text-green-600" />
+                        <CheckCircle2 className="w-4 h-4 text-success" />
                       ) : (
-                        <Icon className="w-4 h-4 text-gray-400" />
+                        <Icon className="w-4 h-4 text-muted-foreground" />
                       )}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 flex items-center">
+                      <h3 className="font-semibold text-foreground flex items-center">
                         {field.label}
                         {field.required && (
-                          <span className="text-red-500 ml-1">*</span>
+                          <span className="text-destructive ml-1">*</span>
                         )}
                       </h3>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {field.description}
                       </p>
                     </div>
@@ -363,15 +366,15 @@ const UploadFilesForm = () => {
                     {uploadedFiles.map((file) => (
                       <div
                         key={file.id}
-                        className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border"
+                        className="flex items-center justify-between p-3 bg-muted rounded-lg border border-border"
                       >
                         <div className="flex items-center space-x-3 flex-1 min-w-0">
-                          <Icon className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                          <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
                           <div className="min-w-0 flex-1">
-                            <p className="text-sm font-medium text-gray-900 truncate">
+                            <p className="text-sm font-medium text-foreground truncate">
                               {file.filename}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-muted-foreground">
                               Uploaded successfully
                             </p>
                           </div>
@@ -384,7 +387,7 @@ const UploadFilesForm = () => {
                             asChild
                             className="text-brand hover:text-brand-dark"
                           >
-                            <a
+                            <Link
                               href={file.link}
                               target="_blank"
                               rel="noopener noreferrer"
@@ -392,7 +395,7 @@ const UploadFilesForm = () => {
                             >
                               <ExternalLink className="w-3 h-3 mr-1" />
                               View
-                            </a>
+                            </Link>
                           </Button>
 
                           <Button
@@ -401,7 +404,7 @@ const UploadFilesForm = () => {
                             onClick={() =>
                               handleDeleteFile(file.id, field.type)
                             }
-                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
                           >
                             <X className="w-4 h-4" />
                           </Button>
@@ -414,7 +417,7 @@ const UploadFilesForm = () => {
 
               {/* File Requirements */}
               <CardContent className="pt-0">
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-muted-foreground">
                   <p>
                     Accepted formats:{" "}
                     {field.allowedFileTypes.join(", ").toUpperCase()}
@@ -429,13 +432,13 @@ const UploadFilesForm = () => {
 
       {/* Completion Message */}
       {allRequiredUploaded && (
-        <Card className="shadow-sm border-0 bg-green-50 border-green-200">
+        <Card className="shadow-sm border-border bg-success/5 border-success/20">
           <CardContent className="p-6 text-center">
-            <CheckCircle2 className="w-12 h-12 text-green-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-green-900 mb-2">
+            <CheckCircle2 className="w-12 h-12 text-success mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">
               All Required Files Uploaded!
             </h3>
-            <p className="text-green-700">
+            <p className="text-muted-foreground">
               You&apos;ve successfully uploaded all required documents. Your
               profile is now complete.
             </p>

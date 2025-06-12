@@ -4,6 +4,7 @@ import { eq, and, gte } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import AutoRedirect from "@/components/emails/verification-success";
 import { auth } from "@/auth";
+import Link from "next/link";
 
 export default async function VerifyEmailPage({
   searchParams,
@@ -86,12 +87,12 @@ export default async function VerifyEmailPage({
             <AutoRedirect redirectTo="/login" delay={5} />
 
             <div className="flex flex-col space-y-4 max-w-xs mx-auto">
-              <a
+              <Link
                 href="/login"
                 className="inline-flex items-center justify-center border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
               >
                 Back to Login
-              </a>
+              </Link>
             </div>
           </div>
         </div>

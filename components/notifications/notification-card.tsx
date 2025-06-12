@@ -10,6 +10,7 @@ import {
   Clock,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 
 const notificationIcons = {
   job_submissions: <Briefcase className="w-5 h-5 text-brand-light" />,
@@ -62,7 +63,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
 
   return (
     <div className="group relative">
-      <a
+      <Link
         href={notification.link || "#"}
         className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 hover:border-gray-300 hover:shadow-sm transition-all duration-200"
         target={isExternalLink ? "_blank" : "_self"}
@@ -70,7 +71,9 @@ export function NotificationCard({ notification }: NotificationCardProps) {
       >
         <div className="flex-shrink-0 mt-0.5">
           <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-white group-hover:border-gray-300 transition-colors">
-            {getNotificationIcon(notification.type)}
+            {getNotificationIcon(
+              notification.type ? notification.type : "default"
+            )}
           </div>
         </div>
 
@@ -87,8 +90,18 @@ export function NotificationCard({ notification }: NotificationCardProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2 text-xs text-gray-500">
               <Clock className="w-3 h-3" />
-              <time dateTime={notification.createdAt}>
-                {formatTime(notification.createdAt)}
+              <time
+                dateTime={
+                  notification.createdAt
+                    ? notification.createdAt
+                    : new Date().toISOString()
+                }
+              >
+                {formatTime(
+                  notification.createdAt
+                    ? notification.createdAt
+                    : new Date().toISOString()
+                )}
               </time>
             </div>
 
@@ -108,7 +121,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
             )}
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }

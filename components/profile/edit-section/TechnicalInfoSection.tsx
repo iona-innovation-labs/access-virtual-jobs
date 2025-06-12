@@ -125,7 +125,7 @@ const EditDialog = ({
         </DialogHeader>
         <div className="py-4">
           {description && (
-            <p className="text-xs text-gray-500 mb-3">{description}</p>
+            <p className="text-xs text-muted-foreground mb-3">{description}</p>
           )}
           <Input
             type={type}
@@ -202,7 +202,7 @@ const SelectEditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -307,7 +307,7 @@ const SalaryEditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -322,7 +322,7 @@ const SalaryEditDialog = ({
           </DialogTitle>
         </DialogHeader>
         <div className="py-4 space-y-3">
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Please specify your monthly salary expectation
           </p>
           <div className="flex gap-2">
@@ -392,14 +392,14 @@ const SimpleInfoItem = ({
   max,
   description,
 }: SimpleInfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <EditDialog
             title={`Edit ${label}`}
             currentValue={value}
@@ -414,11 +414,11 @@ const SimpleInfoItem = ({
             description={description}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {value ? (
             <div className="text-base font-medium">{value}</div>
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -455,14 +455,16 @@ const SelectInfoItem = ({
     options.find((opt) => opt.value === value)?.label || value;
 
   return (
-    <div className="group py-6 border-b border-gray-100 last:border-b-0">
+    <div className="group py-6 border-b border-border last:border-b-0">
       <div className="flex items-start gap-4">
-        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              {label}
+            </h3>
             <SelectEditDialog
               title={`Edit ${label}`}
               currentValue={value}
@@ -474,11 +476,11 @@ const SelectInfoItem = ({
               description={description}
             />
           </div>
-          <div className="text-gray-900 leading-relaxed">
+          <div className="text-foreground leading-relaxed">
             {value ? (
               <div className="text-base font-medium">{displayValue}</div>
             ) : (
-              <span className="text-gray-400 italic text-sm">
+              <span className="text-muted-foreground italic text-sm">
                 Click edit to add {label.toLowerCase()}
               </span>
             )}
@@ -508,14 +510,14 @@ const SalaryInfoItem = ({
   onSubmit,
   icon,
 }: SalaryInfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <SalaryEditDialog
             title={`Edit ${label}`}
             currentSalary={salary}
@@ -525,13 +527,13 @@ const SalaryInfoItem = ({
             loading={loading}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {salary && unit ? (
             <div className="text-xl font-medium">
               {unit} {salary.toLocaleString()}
             </div>
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -556,14 +558,14 @@ export const TechnicalInfoSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <Monitor className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <Monitor className="w-5 h-5 text-brand" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Technical Setup
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Your work environment and technical specifications
             </p>
           </div>
@@ -577,7 +579,7 @@ export const TechnicalInfoSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<DollarSign className="w-4 h-4 text-gray-600" />}
+            icon={<DollarSign className="w-4 h-4 text-muted-foreground" />}
           />
           <SimpleInfoItem
             label="Internet Provider"
@@ -587,7 +589,7 @@ export const TechnicalInfoSection = ({
             fieldName="internetProvider"
             control={control}
             onSubmit={onUpdate}
-            icon={<Wifi className="w-4 h-4 text-gray-600" />}
+            icon={<Wifi className="w-4 h-4 text-muted-foreground" />}
             description="What is your Internet Service Provider? Please include the plan details."
           />
 
@@ -599,7 +601,7 @@ export const TechnicalInfoSection = ({
             fieldName="numberOfMonitors"
             control={control}
             onSubmit={onUpdate}
-            icon={<Monitor className="w-4 h-4 text-gray-600" />}
+            icon={<Monitor className="w-4 h-4 text-muted-foreground" />}
             type="number"
             min={1}
             max={10}
@@ -613,7 +615,7 @@ export const TechnicalInfoSection = ({
             fieldName="numberOfExperience"
             control={control}
             onSubmit={onUpdate}
-            icon={<Clock className="w-4 h-4 text-gray-600" />}
+            icon={<Clock className="w-4 h-4 text-muted-foreground" />}
             type="number"
             min={0}
             max={50}
@@ -626,7 +628,7 @@ export const TechnicalInfoSection = ({
             fieldName="hasPaypal"
             control={control}
             onSubmit={onUpdate}
-            icon={<CreditCard className="w-4 h-4 text-gray-600" />}
+            icon={<CreditCard className="w-4 h-4 text-muted-foreground" />}
             options={paypalOptions}
             description="We pay via PayPal. Do you have a PayPal account?"
           />
@@ -639,7 +641,7 @@ export const TechnicalInfoSection = ({
             fieldName="numberOfChildren"
             control={control}
             onSubmit={onUpdate}
-            icon={<Baby className="w-4 h-4 text-gray-600" />}
+            icon={<Baby className="w-4 h-4 text-muted-foreground" />}
             type="number"
             min={0}
             max={20}

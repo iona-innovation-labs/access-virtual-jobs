@@ -141,10 +141,10 @@ export default function JobFilter({
     <div className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-6 sm:mb-8 lg:mb-10">
       {/* Search Form */}
       <form onSubmit={handleSearch} className="mb-4 sm:mb-6">
-        <div className="bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg shadow-gray-200/40">
+        <div className="bg-card/90 backdrop-blur-sm border border-border/60 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-lg shadow-border/40">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-2">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
+              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-5 sm:h-5" />
               <Input
                 type="text"
                 placeholder="Search jobs, companies, or keywords..."
@@ -171,7 +171,7 @@ export default function JobFilter({
           <Button
             variant="outline"
             onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
-            className="bg-white/90 backdrop-blur-sm border-gray-200/60 hover:bg-white transition-colors duration-200 text-sm h-9 sm:h-10 px-3 sm:px-4"
+            className="bg-card/90 backdrop-blur-sm border-border/60 hover:bg-card transition-colors duration-200 text-sm h-9 sm:h-10 px-3 sm:px-4"
           >
             <Filter className="w-4 h-4" />
             <span className="text-sm font-medium ml-1.5 sm:ml-2">Filters</span>
@@ -186,7 +186,7 @@ export default function JobFilter({
               <Badge
                 key={type}
                 variant="secondary"
-                className="bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
+                className="bg-brand/10 hover:bg-brand/20 text-brand border border-brand/20 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
               >
                 <span className="max-w-[80px] sm:max-w-none truncate">
                   {type}
@@ -195,7 +195,7 @@ export default function JobFilter({
                   variant="ghost"
                   size="sm"
                   onClick={() => handleJobTypeToggle(type)}
-                  className="h-auto p-0.5 ml-1 hover:bg-blue-200 rounded-full"
+                  className="h-auto p-0.5 ml-1 hover:bg-brand/30 rounded-full"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -205,7 +205,7 @@ export default function JobFilter({
             {filters.salaryRange && (
               <Badge
                 variant="secondary"
-                className="bg-green-50 hover:bg-green-100 text-green-700 border border-green-200 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
+                className="bg-success/10 hover:bg-success/20 text-success border border-success/20 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
               >
                 <span className="max-w-[100px] sm:max-w-none truncate">
                   {filters.salaryRange}
@@ -218,7 +218,7 @@ export default function JobFilter({
                     setFilters(newFilters);
                     updateURL(newFilters);
                   }}
-                  className="h-auto p-0.5 ml-1 hover:bg-green-200 rounded-full"
+                  className="h-auto p-0.5 ml-1 hover:bg-success/30 rounded-full"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -228,7 +228,7 @@ export default function JobFilter({
             {filters.experience && (
               <Badge
                 variant="secondary"
-                className="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
+                className="bg-primary/10 hover:bg-primary/20 text-primary border border-primary/20 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
               >
                 <span className="max-w-[80px] sm:max-w-none truncate">
                   {filters.experience}
@@ -241,7 +241,7 @@ export default function JobFilter({
                     setFilters(newFilters);
                     updateURL(newFilters);
                   }}
-                  className="h-auto p-0.5 ml-1 hover:bg-purple-200 rounded-full"
+                  className="h-auto p-0.5 ml-1 hover:bg-primary/30 rounded-full"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -251,7 +251,7 @@ export default function JobFilter({
             {filters.remote && (
               <Badge
                 variant="secondary"
-                className="bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
+                className="bg-warning/10 hover:bg-warning/20 text-warning border border-warning/20 text-xs sm:text-sm h-7 sm:h-8 px-2 sm:px-3"
               >
                 Remote
                 <Button
@@ -262,7 +262,7 @@ export default function JobFilter({
                     setFilters(newFilters);
                     updateURL(newFilters);
                   }}
-                  className="h-auto p-0.5 ml-1 hover:bg-orange-200 rounded-full"
+                  className="h-auto p-0.5 ml-1 hover:bg-warning/30 rounded-full"
                 >
                   <X className="w-3 h-3" />
                 </Button>
@@ -275,7 +275,7 @@ export default function JobFilter({
           <Button
             variant="ghost"
             onClick={clearFilters}
-            className="text-xs sm:text-sm text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 h-8 sm:h-9 px-3 self-start sm:self-auto"
+            className="text-xs sm:text-sm text-muted-foreground hover:text-foreground font-medium transition-colors duration-200 h-8 sm:h-9 px-3 self-start sm:self-auto"
           >
             Clear all
           </Button>
@@ -284,11 +284,11 @@ export default function JobFilter({
 
       {/* Advanced Filters */}
       {showAdvancedFilters && (
-        <div className="bg-white/90 backdrop-blur-sm border border-gray-200/60 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg shadow-gray-200/40">
+        <div className="bg-card/90 backdrop-blur-sm border border-border/60 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg shadow-border/40">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {/* Job Type */}
             <div className="space-y-3 sm:space-y-4">
-              <Label className="flex items-center text-sm sm:text-base font-semibold text-gray-700">
+              <Label className="flex items-center text-sm sm:text-base font-semibold text-foreground">
                 <Briefcase className="w-4 h-4 mr-2" />
                 Job Type
               </Label>
@@ -302,11 +302,11 @@ export default function JobFilter({
                       id={`jobtype-${type}`}
                       checked={filters.jobType.includes(type)}
                       onCheckedChange={() => handleJobTypeToggle(type)}
-                      className="rounded border-gray-300 text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
+                      className="rounded border-border text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
                     />
                     <Label
                       htmlFor={`jobtype-${type}`}
-                      className="text-sm text-gray-600 cursor-pointer leading-tight"
+                      className="text-sm text-muted-foreground cursor-pointer leading-tight"
                     >
                       {type}
                     </Label>
@@ -317,7 +317,7 @@ export default function JobFilter({
 
             {/* Salary Range */}
             <div className="space-y-3 sm:space-y-4">
-              <Label className="flex items-center text-sm sm:text-base font-semibold text-gray-700">
+              <Label className="flex items-center text-sm sm:text-base font-semibold text-foreground">
                 <DollarSign className="w-4 h-4 mr-2" />
                 Salary Range
               </Label>
@@ -338,11 +338,11 @@ export default function JobFilter({
                     <RadioGroupItem
                       value={range}
                       id={`salary-${range}`}
-                      className="border-gray-300 text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
+                      className="border-border text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
                     />
                     <Label
                       htmlFor={`salary-${range}`}
-                      className="text-sm text-gray-600 cursor-pointer leading-tight"
+                      className="text-sm text-muted-foreground cursor-pointer leading-tight"
                     >
                       {range}
                     </Label>
@@ -353,7 +353,7 @@ export default function JobFilter({
 
             {/* Experience Level */}
             <div className="space-y-3 sm:space-y-4">
-              <Label className="flex items-center text-sm sm:text-base font-semibold text-gray-700">
+              <Label className="flex items-center text-sm sm:text-base font-semibold text-foreground">
                 <Clock className="w-4 h-4 mr-2" />
                 Experience Level
               </Label>
@@ -374,11 +374,11 @@ export default function JobFilter({
                     <RadioGroupItem
                       value={level}
                       id={`experience-${level}`}
-                      className="border-gray-300 text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
+                      className="border-border text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
                     />
                     <Label
                       htmlFor={`experience-${level}`}
-                      className="text-sm text-gray-600 cursor-pointer leading-tight"
+                      className="text-sm text-muted-foreground cursor-pointer leading-tight"
                     >
                       {level}
                     </Label>
@@ -389,7 +389,7 @@ export default function JobFilter({
 
             {/* Work Options */}
             <div className="space-y-3 sm:space-y-4">
-              <Label className="flex items-center text-sm sm:text-base font-semibold text-gray-700">
+              <Label className="flex items-center text-sm sm:text-base font-semibold text-foreground">
                 <MapPin className="w-4 h-4 mr-2" />
                 Work Options
               </Label>
@@ -406,11 +406,11 @@ export default function JobFilter({
                       setFilters(newFilters);
                       updateURL(newFilters);
                     }}
-                    className="rounded border-gray-300 text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
+                    className="rounded border-border text-brand focus:ring-brand focus:ring-offset-0 focus:ring-2"
                   />
                   <Label
                     htmlFor="remote-work"
-                    className="text-sm text-gray-600 cursor-pointer leading-tight"
+                    className="text-sm text-muted-foreground cursor-pointer leading-tight"
                   >
                     Remote Work
                   </Label>

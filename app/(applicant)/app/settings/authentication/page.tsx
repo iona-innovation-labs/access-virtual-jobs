@@ -76,13 +76,13 @@ export default function ChangePassword() {
 
   if (!user) {
     return (
-      <Card className="w-full shadow-sm border-0">
+      <Card className="w-full shadow-sm border-border">
         <CardContent className="p-8 text-center">
-          <Shield className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <Shield className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-2">
             Authentication Required
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Please sign in to access password settings.
           </p>
         </CardContent>
@@ -140,20 +140,19 @@ export default function ChangePassword() {
       [field]: !prev[field],
     }));
   };
-
   return (
     <div className="w-full mx-auto space-y-6">
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <Key className="w-4 h-4 text-brand" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-foreground">
                 Password Settings
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Manage your account security
               </p>
             </div>
@@ -161,17 +160,17 @@ export default function ChangePassword() {
         </CardHeader>
       </Card>
 
-      <Card className="shadow-sm border-0 bg-white">
+      <Card className="shadow-sm border-border bg-card">
         <CardContent className="p-4">
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-gray-600" />
+            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-muted-foreground" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">
+              <h4 className="text-sm font-medium text-foreground mb-1">
                 Security Notice
               </h4>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 For your security, you&apos;ll be logged out of all devices
                 after changing your password. This ensures only you have access
                 to your account with the new credentials.
@@ -181,28 +180,28 @@ export default function ChangePassword() {
         </CardContent>
       </Card>
 
-      <Alert className="border-blue-200 bg-blue-50">
-        <CheckCircle className="h-4 w-4 text-blue-600" />
-        <AlertDescription className="text-blue-800">
+      <Alert className="border-brand/20 bg-brand/5">
+        <CheckCircle className="h-4 w-4 text-brand" />
+        <AlertDescription className="text-muted-foreground">
           If you signed up with a social account and don&apos;t have a password
           yet, leave the &quot;Current Password&quot; field empty.
         </AlertDescription>
       </Alert>
 
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-              <Key className="w-3 h-3 text-green-600" />
+            <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
+              <Key className="w-3 h-3 text-success" />
             </div>
-            <h3 className="font-semibold text-gray-900">Change Password</h3>
+            <h3 className="font-semibold text-foreground">Change Password</h3>
           </div>
         </CardHeader>
 
         <CardContent className="space-y-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {formError && <p className="text-red-500">{formError}</p>}
+              {formError && <p className="text-destructive">{formError}</p>}
               <FormField
                 control={form.control}
                 name="oldPassword"
@@ -226,9 +225,9 @@ export default function ChangePassword() {
                           onClick={() => togglePasswordVisibility("old")}
                         >
                           {showPasswords.old ? (
-                            <EyeOff className="h-4 w-4 text-gray-400" />
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
                           ) : (
-                            <Eye className="h-4 w-4 text-gray-400" />
+                            <Eye className="h-4 w-4 text-muted-foreground" />
                           )}
                         </Button>
                       </div>
@@ -260,9 +259,9 @@ export default function ChangePassword() {
                           onClick={() => togglePasswordVisibility("new")}
                         >
                           {showPasswords.new ? (
-                            <EyeOff className="h-4 w-4 text-gray-400" />
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
                           ) : (
-                            <Eye className="h-4 w-4 text-gray-400" />
+                            <Eye className="h-4 w-4 text-muted-foreground" />
                           )}
                         </Button>
                       </div>
@@ -304,9 +303,9 @@ export default function ChangePassword() {
                           onClick={() => togglePasswordVisibility("confirm")}
                         >
                           {showPasswords.confirm ? (
-                            <EyeOff className="h-4 w-4 text-gray-400" />
+                            <EyeOff className="h-4 w-4 text-muted-foreground" />
                           ) : (
-                            <Eye className="h-4 w-4 text-gray-400" />
+                            <Eye className="h-4 w-4 text-muted-foreground" />
                           )}
                         </Button>
                       </div>
@@ -316,16 +315,16 @@ export default function ChangePassword() {
                 )}
               />
 
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-brand/5 border border-brand/20 rounded-lg p-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <AlertTriangle className="w-3 h-3 text-blue-600" />
+                  <div className="w-5 h-5 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <AlertTriangle className="w-3 h-3 text-brand" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-medium text-blue-900 mb-1">
+                    <h4 className="text-sm font-medium text-foreground mb-1">
                       Important Information:
                     </h4>
-                    <ul className="text-sm text-blue-800 space-y-1">
+                    <ul className="text-sm text-muted-foreground space-y-1">
                       <li>
                         • If you don&apos;t have a current password (social
                         login), leave that field empty

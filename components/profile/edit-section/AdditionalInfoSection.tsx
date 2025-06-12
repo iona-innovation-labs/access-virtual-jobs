@@ -101,7 +101,7 @@ const EditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -117,7 +117,7 @@ const EditDialog = ({
         </DialogHeader>
         <div className="py-4">
           {description && (
-            <p className="text-xs text-gray-500 mb-3">{description}</p>
+            <p className="text-xs text-muted-foreground mb-3">{description}</p>
           )}
           <Input
             value={value}
@@ -189,7 +189,7 @@ const SelectEditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -257,35 +257,24 @@ const ArrayInfoItem = ({
   fieldName,
   placeholder,
   description,
-  colorScheme,
 }: ArrayInfoItemProps) => {
   const [editMode, setEditMode] = useState(false);
 
-  const colorClasses = {
-    green: {
-      bg: "bg-green-50",
-      border: "border-green-200",
-      iconBg: "bg-green-100",
-      iconText: "text-green-600",
-      linkText: "text-green-600 hover:text-green-800",
-    },
-  };
-
-  const colors = colorClasses[colorScheme];
-
   return (
-    <div className="group py-6 border-b border-gray-100 last:border-b-0">
+    <div className="group py-6 border-b border-border last:border-b-0">
       <div className="flex items-start gap-4">
-        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              {label}
+            </h3>
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
               disabled={loading}
               onClick={(e) => {
                 e.preventDefault();
@@ -298,22 +287,18 @@ const ArrayInfoItem = ({
           </div>
 
           {/* Description Box */}
-          <div
-            className={`${colors.bg} ${colors.border} border rounded-lg p-3 mt-3 mb-4`}
-          >
+          <div className="bg-success/5 border-success/20 border rounded-lg p-3 mt-3 mb-4">
             <div className="flex items-start gap-3">
-              <div
-                className={`w-5 h-5 rounded-full ${colors.iconBg} flex items-center justify-center flex-shrink-0 mt-0.5`}
-              >
-                <FileText className={`w-2.5 h-2.5 ${colors.iconText}`} />
+              <div className="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <FileText className="w-2.5 h-2.5 text-success" />
               </div>
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-muted-foreground leading-relaxed">
                 {description}
               </div>
             </div>
           </div>
 
-          <div className="text-gray-900 leading-relaxed">
+          <div className="text-foreground leading-relaxed">
             {!editMode ? (
               items.length > 0 && items.some((item) => item.link) ? (
                 <div className="space-y-2">
@@ -325,7 +310,7 @@ const ArrayInfoItem = ({
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${colors.linkText} hover:underline font-medium break-all`}
+                          className="text-success hover:underline font-medium break-all"
                         >
                           {item.link}
                         </a>
@@ -333,7 +318,7 @@ const ArrayInfoItem = ({
                     ))}
                 </div>
               ) : (
-                <span className="text-gray-400 italic text-sm">
+                <span className="text-muted-foreground italic text-sm">
                   Click edit to add {label.toLowerCase()}
                 </span>
               )
@@ -347,7 +332,7 @@ const ArrayInfoItem = ({
                       render={({ field }) => (
                         <FormItem className="flex-1">
                           <div className="relative">
-                            <Link className="absolute left-3 top-2.5 w-3 h-3 text-gray-400" />
+                            <Link className="absolute left-3 top-2.5 w-3 h-3 text-muted-foreground" />
                             <FormControl>
                               <Input
                                 disabled={loading}
@@ -358,7 +343,7 @@ const ArrayInfoItem = ({
                               />
                             </FormControl>
                           </div>
-                          <FormMessage className="text-red-500 text-xs" />
+                          <FormMessage className="text-destructive text-xs" />
                         </FormItem>
                       )}
                     />
@@ -369,7 +354,7 @@ const ArrayInfoItem = ({
                         type="button"
                         disabled={loading}
                         onClick={() => fieldArray.remove(index)}
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                       >
                         <X className="w-3 h-3" />
                       </Button>
@@ -438,14 +423,14 @@ const SimpleInfoItem = ({
   icon,
   description,
 }: SimpleInfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <EditDialog
             title={`Edit ${label}`}
             currentValue={value}
@@ -457,11 +442,11 @@ const SimpleInfoItem = ({
             description={description}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {value ? (
             <div className="text-base font-medium">{value}</div>
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -496,14 +481,16 @@ const SelectInfoItem = ({
     options.find((opt) => opt.value === value)?.label || value;
 
   return (
-    <div className="group py-6 border-b border-gray-100 last:border-b-0">
+    <div className="group py-6 border-b border-border last:border-b-0">
       <div className="flex items-start gap-4">
-        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              {label}
+            </h3>
             <SelectEditDialog
               title={`Edit ${label}`}
               currentValue={value}
@@ -514,11 +501,11 @@ const SelectInfoItem = ({
               options={options}
             />
           </div>
-          <div className="text-gray-900 leading-relaxed">
+          <div className="text-foreground leading-relaxed">
             {value ? (
               <div className="text-base font-medium">{displayValue}</div>
             ) : (
-              <span className="text-gray-400 italic text-sm">
+              <span className="text-muted-foreground italic text-sm">
                 Click edit to add {label.toLowerCase()}
               </span>
             )}
@@ -549,7 +536,7 @@ export const AdditionalInfoSection = ({
 
   const workSampleDescription = (
     <div>
-      <div className="font-medium text-gray-800 mb-1 text-xs">
+      <div className="font-medium text-foreground mb-1 text-xs">
         Work Samples (Optional)
       </div>
       <div>
@@ -563,14 +550,14 @@ export const AdditionalInfoSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <MessageSquare className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <MessageSquare className="w-5 h-5 text-brand" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Additional Information
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Portfolio samples and referral information
             </p>
           </div>
@@ -583,7 +570,7 @@ export const AdditionalInfoSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<FileText className="w-4 h-4 text-gray-600" />}
+            icon={<FileText className="w-4 h-4 text-muted-foreground" />}
             fieldArray={workSampleFields}
             fieldName="workSamples"
             placeholder="Paste your work sample link here"
@@ -598,7 +585,7 @@ export const AdditionalInfoSection = ({
             fieldName="howHear"
             control={control}
             onSubmit={onUpdate}
-            icon={<UserCheck className="w-4 h-4 text-gray-600" />}
+            icon={<UserCheck className="w-4 h-4 text-muted-foreground" />}
             options={howHearOptions}
           />
 
@@ -610,7 +597,7 @@ export const AdditionalInfoSection = ({
             fieldName="referrer"
             control={control}
             onSubmit={onUpdate}
-            icon={<Users className="w-4 h-4 text-gray-600" />}
+            icon={<Users className="w-4 h-4 text-muted-foreground" />}
             description="Do you know someone working at Access Insurance? Please state their name if you do."
           />
         </div>

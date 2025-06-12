@@ -3,10 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import CtaButton from "./cta-button";
-import { CircleEllipsisIcon, MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, XIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import logo from "@/public/images/logo/logo.png";
 import Logo from "../logo";
 
 export default function Header() {

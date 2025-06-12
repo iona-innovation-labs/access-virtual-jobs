@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { landingPage } from "@/config/landing-page.config";
 import CtaButton from "./cta-button";
+import Link from "next/link";
 
 const services = landingPage.scale.items;
 
@@ -23,7 +24,7 @@ export default function Services() {
               {services.map((service, idx) => (
                 <div key={idx} className="h-full flex flex-col">
                   <div className="mb-4">
-                    <a
+                    <Link
                       className="block group overflow-hidden"
                       href={`/jobs/${service.label}`}
                     >
@@ -34,15 +35,15 @@ export default function Services() {
                         height={128}
                         alt={service.alt}
                       />
-                    </a>
+                    </Link>
                   </div>
                   <div className="grow text-center">
-                    <a
+                    <Link
                       className="font-monstserrat text-xs text-gray-100 hover:text-blue-500 transition duration-150 ease-in-out"
                       href="#0"
                     >
                       {service.label}
-                    </a>
+                    </Link>
                   </div>
                 </div>
               ))}

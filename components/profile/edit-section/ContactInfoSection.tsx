@@ -100,7 +100,7 @@ const EditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -184,7 +184,7 @@ const DateEditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
           type="button"
         >
@@ -242,14 +242,14 @@ const SimpleInfoItem = ({
   icon,
   type = "text",
 }: SimpleInfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <EditDialog
             title={`Edit ${label}`}
             currentValue={value}
@@ -261,11 +261,11 @@ const SimpleInfoItem = ({
             type={type}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {value ? (
             <div className="text-xl font-medium">{value}</div>
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -294,14 +294,14 @@ const DateInfoItem = ({
   onSubmit,
   icon,
 }: DateInfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <DateEditDialog
             title={`Edit ${label}`}
             currentValue={value}
@@ -311,13 +311,13 @@ const DateInfoItem = ({
             loading={loading}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {value ? (
             <div className="text-xl font-medium">
               {value.toLocaleDateString()}
             </div>
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -359,18 +359,20 @@ const ArrayInfoItem = ({
   const [editMode, setEditMode] = useState(false);
 
   return (
-    <div className="group py-6 border-b border-gray-100 last:border-b-0">
+    <div className="group py-6 border-b border-border last:border-b-0">
       <div className="flex items-start gap-4">
-        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              {label}
+            </h3>
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
               disabled={loading}
               onClick={(e) => {
                 e.preventDefault();
@@ -381,13 +383,13 @@ const ArrayInfoItem = ({
               <Edit3 className="h-4 w-4" />
             </Button>
           </div>
-          <div className="text-gray-900 leading-relaxed">
+          <div className="text-foreground leading-relaxed">
             {!editMode ? (
               items.length > 0 ? (
                 <div className="space-y-2">
                   {items.map((item, index) => (
                     <div key={index} className="text-sm">
-                      <span className="text-gray-500 capitalize">
+                      <span className="text-muted-foreground capitalize">
                         {item.type || "Unknown"}:
                       </span>{" "}
                       <span className="font-medium">
@@ -397,7 +399,7 @@ const ArrayInfoItem = ({
                   ))}
                 </div>
               ) : (
-                <span className="text-gray-400 italic text-sm">
+                <span className="text-muted-foreground italic text-sm">
                   Click edit to add {label.toLowerCase()}
                 </span>
               )
@@ -460,7 +462,7 @@ const ArrayInfoItem = ({
                         type="button"
                         disabled={loading}
                         onClick={() => fieldArray.remove(index)}
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                       >
                         <X className="w-3 h-3" />
                       </Button>
@@ -536,14 +538,14 @@ export const ContactInfoSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <Phone className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <Phone className="w-5 h-5 text-brand" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Contact Information
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Your contact details and communication preferences
             </p>
           </div>
@@ -558,7 +560,7 @@ export const ContactInfoSection = ({
             fieldName="address"
             control={control}
             onSubmit={onUpdate}
-            icon={<MapPin className="w-4 h-4 text-gray-600" />}
+            icon={<MapPin className="w-4 h-4 text-muted-foreground" />}
           />
 
           <DateInfoItem
@@ -568,7 +570,7 @@ export const ContactInfoSection = ({
             fieldName="dateOfBirth"
             control={control}
             onSubmit={onUpdate}
-            icon={<Calendar className="w-4 h-4 text-gray-600" />}
+            icon={<Calendar className="w-4 h-4 text-muted-foreground" />}
           />
 
           <ArrayInfoItem
@@ -577,7 +579,7 @@ export const ContactInfoSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<Phone className="w-4 h-4 text-gray-600" />}
+            icon={<Phone className="w-4 h-4 text-muted-foreground" />}
             fieldArray={phoneFields}
             fieldPrefix="phone"
             valueKey="number"
@@ -591,7 +593,7 @@ export const ContactInfoSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<Mail className="w-4 h-4 text-gray-600" />}
+            icon={<Mail className="w-4 h-4 text-muted-foreground" />}
             fieldArray={emailFields}
             fieldPrefix="emailAddress"
             valueKey="address"
@@ -608,7 +610,7 @@ export const ContactInfoSection = ({
             fieldName="skypeId"
             control={control}
             onSubmit={onUpdate}
-            icon={<MessageCircle className="w-4 h-4 text-gray-600" />}
+            icon={<MessageCircle className="w-4 h-4 text-muted-foreground" />}
           />
         </div>
       </CardContent>

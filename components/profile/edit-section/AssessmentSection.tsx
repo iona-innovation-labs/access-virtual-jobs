@@ -61,38 +61,21 @@ const ArrayInfoItem = ({
 }: ArrayInfoItemProps) => {
   const [editMode, setEditMode] = useState(false);
 
-  const colorClasses = {
-    blue: {
-      bg: "bg-blue-50",
-      border: "border-blue-200",
-      iconBg: "bg-blue-100",
-      iconText: "text-blue-600",
-      linkText: "text-blue-600 hover:text-blue-800",
-    },
-    amber: {
-      bg: "bg-amber-50",
-      border: "border-amber-200",
-      iconBg: "bg-amber-100",
-      iconText: "text-amber-600",
-      linkText: "text-amber-600 hover:text-amber-800",
-    },
-  };
-
-  const colors = colorClasses[colorScheme];
-
   return (
-    <div className="group py-6 border-b border-gray-100 last:border-b-0">
+    <div className="group py-6 border-b border-border last:border-b-0">
       <div className="flex items-start gap-4">
-        <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
           {icon}
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground">
+              {label}
+            </h3>
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+              className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
               disabled={loading}
               onClick={(e) => {
                 e.preventDefault();
@@ -106,21 +89,23 @@ const ArrayInfoItem = ({
 
           {/* Description Box */}
           <div
-            className={`${colors.bg} ${colors.border} border rounded-lg p-3 mt-3 mb-4`}
+            className={`${colorScheme === "blue" ? "bg-brand/5 border-brand/20" : "bg-warning/5 border-warning/20"} border rounded-lg p-3 mt-3 mb-4`}
           >
             <div className="flex items-start gap-3">
               <div
-                className={`w-5 h-5 rounded-full ${colors.iconBg} flex items-center justify-center flex-shrink-0 mt-0.5`}
+                className={`w-5 h-5 rounded-full ${colorScheme === "blue" ? "bg-brand/10" : "bg-warning/10"} flex items-center justify-center flex-shrink-0 mt-0.5`}
               >
-                <ExternalLink className={`w-2.5 h-2.5 ${colors.iconText}`} />
+                <ExternalLink
+                  className={`w-2.5 h-2.5 ${colorScheme === "blue" ? "text-brand" : "text-warning"}`}
+                />
               </div>
-              <div className="text-xs text-gray-600 leading-relaxed">
+              <div className="text-xs text-muted-foreground leading-relaxed">
                 {description}
               </div>
             </div>
           </div>
 
-          <div className="text-gray-900 leading-relaxed">
+          <div className="text-foreground leading-relaxed">
             {!editMode ? (
               items.length > 0 && items.some((item) => item.link) ? (
                 <div className="space-y-2">
@@ -132,7 +117,7 @@ const ArrayInfoItem = ({
                           href={item.link}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`${colors.linkText} hover:underline font-medium break-all`}
+                          className={`${colorScheme === "blue" ? "text-brand" : "text-warning"} hover:underline font-medium break-all`}
                         >
                           {item.link}
                         </a>
@@ -140,7 +125,7 @@ const ArrayInfoItem = ({
                     ))}
                 </div>
               ) : (
-                <span className="text-gray-400 italic text-sm">
+                <span className="text-muted-foreground italic text-sm">
                   Click edit to add {label.toLowerCase()}
                 </span>
               )
@@ -154,7 +139,7 @@ const ArrayInfoItem = ({
                       render={({ field }) => (
                         <FormItem className="flex-1">
                           <div className="relative">
-                            <Link className="absolute left-3 top-2.5 w-3 h-3 text-gray-400" />
+                            <Link className="absolute left-3 top-2.5 w-3 h-3 text-muted-foreground" />
                             <FormControl>
                               <Input
                                 disabled={loading}
@@ -165,7 +150,7 @@ const ArrayInfoItem = ({
                               />
                             </FormControl>
                           </div>
-                          <FormMessage className="text-red-500 text-xs" />
+                          <FormMessage className="text-destructive text-xs" />
                         </FormItem>
                       )}
                     />
@@ -176,7 +161,7 @@ const ArrayInfoItem = ({
                         type="button"
                         disabled={loading}
                         onClick={() => fieldArray.remove(index)}
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                        className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                       >
                         <X className="w-3 h-3" />
                       </Button>
@@ -232,7 +217,7 @@ export const AssessmentSection = ({
 }: AssessmentSectionProps) => {
   const discDescription = (
     <div>
-      <div className="font-medium text-gray-800 mb-1 text-xs">
+      <div className="font-medium text-foreground mb-1 text-xs">
         DISC Assessment Test
       </div>
       <div>
@@ -241,7 +226,7 @@ export const AssessmentSection = ({
           href="https://www.crystalknows.com/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-800 underline font-medium"
+          className="text-brand hover:text-brand underline font-medium"
         >
           crystalknows.com
         </a>{" "}
@@ -268,14 +253,14 @@ export const AssessmentSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <FileText className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-brand" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Assessment & Content
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Skills assessments and English proficiency demonstrations
             </p>
           </div>
@@ -288,7 +273,7 @@ export const AssessmentSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<FileText className="w-4 h-4 text-gray-600" />}
+            icon={<FileText className="w-4 h-4 text-muted-foreground" />}
             fieldArray={assessmentFields}
             fieldName="assessmentTests"
             placeholder="Paste your assessment test link here"
@@ -302,7 +287,7 @@ export const AssessmentSection = ({
             loading={loading}
             control={control}
             onSubmit={onUpdate}
-            icon={<Video className="w-4 h-4 text-gray-600" />}
+            icon={<Video className="w-4 h-4 text-muted-foreground" />}
             fieldArray={contentFields}
             fieldName="contentLinks"
             placeholder="Paste your recording link here"

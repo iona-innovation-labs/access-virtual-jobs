@@ -77,7 +77,7 @@ export default function SettingsSidebar() {
               "group flex items-center space-x-3 p-4 rounded-lg transition-all duration-200",
               isActive
                 ? "bg-brand text-white shadow-sm"
-                : "hover:bg-gray-50 text-gray-700",
+                : "hover:bg-accent text-foreground",
               item.className && !isActive ? item.className : "",
               isMobile ? "w-full" : ""
             )}
@@ -88,7 +88,8 @@ export default function SettingsSidebar() {
                 "w-5 h-5 flex-shrink-0",
                 isActive
                   ? "text-white"
-                  : item.iconClassName || "text-gray-400 group-hover:text-brand"
+                  : item.iconClassName ||
+                      "text-muted-foreground group-hover:text-brand"
               )}
             />
             <div className="flex-1 min-w-0">
@@ -96,7 +97,7 @@ export default function SettingsSidebar() {
                 <p
                   className={cn(
                     "font-medium text-sm",
-                    isActive ? "text-white" : "text-gray-900"
+                    isActive ? "text-white" : "text-foreground"
                   )}
                 >
                   {item.name}
@@ -105,7 +106,7 @@ export default function SettingsSidebar() {
                   <ChevronRight
                     className={cn(
                       "w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity",
-                      isActive ? "text-white" : "text-gray-400"
+                      isActive ? "text-white" : "text-muted-foreground"
                     )}
                   />
                 )}
@@ -114,7 +115,7 @@ export default function SettingsSidebar() {
                 <p
                   className={cn(
                     "text-xs mt-1",
-                    isActive ? "text-white/80" : "text-gray-500"
+                    isActive ? "text-white/80" : "text-muted-foreground"
                   )}
                 >
                   {item.description}
@@ -132,8 +133,8 @@ export default function SettingsSidebar() {
       {/* Mobile Header */}
       <div className="lg:hidden flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="text-sm text-gray-500">
+          <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+          <p className="text-sm text-muted-foreground">
             Manage your account preferences
           </p>
         </div>
@@ -151,7 +152,7 @@ export default function SettingsSidebar() {
                 <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
                   <Settings className="w-4 h-4 text-brand" />
                 </div>
-                <span className="text-lg font-semibold text-gray-900">
+                <span className="text-lg font-semibold text-foreground">
                   Settings Menu
                 </span>
               </SheetTitle>
@@ -165,30 +166,34 @@ export default function SettingsSidebar() {
 
       {/* Desktop Sidebar */}
       <div className="hidden lg:block sticky top-6">
-        <Card className="shadow-sm border-0 p-6">
+        <Card className="shadow-sm border-border p-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <Settings className="w-4 h-4 text-brand" />
             </div>
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">Settings</h2>
-              <p className="text-sm text-gray-500">Account preferences</p>
+              <h2 className="text-lg font-semibold text-foreground">
+                Settings
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Account preferences
+              </p>
             </div>
           </div>
 
           <NavigationContent />
 
           {/* Settings Info */}
-          <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="mt-8 p-4 bg-brand/5 border border-brand/20 rounded-lg">
             <div className="flex items-start space-x-3">
-              <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                <Settings className="w-3 h-3 text-blue-600" />
+              <div className="w-5 h-5 rounded-full bg-brand/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Settings className="w-3 h-3 text-brand" />
               </div>
               <div>
-                <h4 className="text-sm font-medium text-blue-900 mb-1">
+                <h4 className="text-sm font-medium text-foreground mb-1">
                   Need Help?
                 </h4>
-                <p className="text-xs text-blue-800 leading-relaxed">
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   Contact support if you need assistance with any of these
                   settings.
                 </p>

@@ -192,13 +192,13 @@ export default function GeneralSettings() {
 
   if (error) {
     return (
-      <Card className="w-full shadow-sm border-0">
+      <Card className="w-full shadow-sm border-border">
         <CardContent className="p-8 text-center">
-          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-2">
             Error Loading Profile
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Failed to load your profile information. Please refresh the page.
           </p>
         </CardContent>
@@ -208,10 +208,10 @@ export default function GeneralSettings() {
 
   if (isLoading) {
     return (
-      <Card className="w-full max-w-2xl shadow-sm border-0">
+      <Card className="w-full max-w-2xl shadow-sm border-border">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
-          <p className="text-center text-gray-500 mt-4">
+          <p className="text-center text-muted-foreground mt-4">
             Loading your profile...
           </p>
         </CardContent>
@@ -221,17 +221,17 @@ export default function GeneralSettings() {
 
   return (
     <div className="w-full mx-auto space-y-6">
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <Settings className="w-4 h-4 text-brand" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-foreground">
                 General Settings
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Manage your personal information
               </p>
             </div>
@@ -239,13 +239,13 @@ export default function GeneralSettings() {
         </CardHeader>
       </Card>
 
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
-              <Camera className="w-3 h-3 text-blue-600" />
+            <div className="w-6 h-6 rounded-full bg-brand/10 flex items-center justify-center">
+              <Camera className="w-3 h-3 text-brand" />
             </div>
-            <h3 className="font-semibold text-gray-900">Profile Photo</h3>
+            <h3 className="font-semibold text-foreground">Profile Photo</h3>
           </div>
         </CardHeader>
 
@@ -256,7 +256,7 @@ export default function GeneralSettings() {
                 <Image
                   src={userInfo.image}
                   alt="Profile Photo"
-                  className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
+                  className="w-20 h-20 rounded-full object-cover border-2 border-border"
                   width={80}
                   height={80}
                 />
@@ -273,10 +273,10 @@ export default function GeneralSettings() {
             </div>
 
             <div className="flex-1">
-              <h4 className="font-medium text-gray-900 mb-1">
+              <h4 className="font-medium text-foreground mb-1">
                 Update Profile Photo
               </h4>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Choose a professional photo that represents you well
               </p>
 
@@ -319,11 +319,11 @@ export default function GeneralSettings() {
             </div>
           </div>
 
-          <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="mt-4 p-3 bg-warning/5 border border-warning/20 rounded-lg">
             <div className="flex items-start space-x-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-warning flex-shrink-0 mt-0.5" />
               <div>
-                <p className="text-sm text-amber-800">
+                <p className="text-sm text-muted-foreground">
                   <strong>Photo Guidelines:</strong> Use a clear, professional
                   headshot. Avoid group photos, sunglasses, or inappropriate
                   content.
@@ -334,14 +334,14 @@ export default function GeneralSettings() {
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader className="pb-4">
             <div className="flex items-center space-x-3">
-              <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-                <User className="w-3 h-3 text-green-600" />
+              <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
+                <User className="w-3 h-3 text-success" />
               </div>
-              <h3 className="font-semibold text-gray-900">
+              <h3 className="font-semibold text-foreground">
                 Personal Information
               </h3>
             </div>
@@ -355,7 +355,7 @@ export default function GeneralSettings() {
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         First Name
                       </FormLabel>
                       <FormControl>
@@ -363,10 +363,10 @@ export default function GeneralSettings() {
                           {...field}
                           placeholder="Enter your first name"
                           disabled={submitting}
-                          className="border-gray-300 focus:border-brand focus:ring-brand"
+                          className="border-border focus:border-brand focus:ring-brand"
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />
@@ -376,7 +376,7 @@ export default function GeneralSettings() {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         Last Name
                       </FormLabel>
                       <FormControl>
@@ -384,10 +384,10 @@ export default function GeneralSettings() {
                           {...field}
                           placeholder="Enter your last name"
                           disabled={submitting}
-                          className="border-gray-300 focus:border-brand focus:ring-brand"
+                          className="border-border focus:border-brand focus:ring-brand"
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />
@@ -399,7 +399,7 @@ export default function GeneralSettings() {
                   name="username"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         Username
                       </FormLabel>
                       <FormControl>
@@ -407,10 +407,10 @@ export default function GeneralSettings() {
                           {...field}
                           placeholder="Choose a unique username"
                           disabled={submitting}
-                          className="border-gray-300 focus:border-brand focus:ring-brand"
+                          className="border-border focus:border-brand focus:ring-brand"
                         />
                       </FormControl>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />
@@ -420,7 +420,7 @@ export default function GeneralSettings() {
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         Gender
                       </FormLabel>
                       <Select
@@ -429,7 +429,7 @@ export default function GeneralSettings() {
                         disabled={submitting}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-gray-300 w-full focus:border-brand focus:ring-brand">
+                          <SelectTrigger className="border-border w-full focus:border-brand focus:ring-brand">
                             <SelectValue placeholder="Select your gender" />
                           </SelectTrigger>
                         </FormControl>
@@ -441,7 +441,7 @@ export default function GeneralSettings() {
                           ))}
                         </SelectContent>
                       </Select>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />
@@ -453,7 +453,7 @@ export default function GeneralSettings() {
                   name="countryOfResidence"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         Country of Residence
                       </FormLabel>
                       <Select
@@ -462,7 +462,7 @@ export default function GeneralSettings() {
                         disabled={submitting}
                       >
                         <FormControl>
-                          <SelectTrigger className="border-gray-300 w-full focus:border-brand focus:ring-brand">
+                          <SelectTrigger className="border-border w-full focus:border-brand focus:ring-brand">
                             <SelectValue placeholder="Select your country" />
                           </SelectTrigger>
                         </FormControl>
@@ -480,7 +480,7 @@ export default function GeneralSettings() {
                       <FormDescription>
                         The country where you currently reside
                       </FormDescription>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />
@@ -490,7 +490,7 @@ export default function GeneralSettings() {
                   name="dateOfBirth"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-sm font-medium text-gray-700">
+                      <FormLabel className="text-sm font-medium text-foreground">
                         Date of Birth
                       </FormLabel>
                       <FormControl>
@@ -499,16 +499,16 @@ export default function GeneralSettings() {
                             {...field}
                             type="date"
                             disabled={submitting}
-                            className="border-gray-300 focus:border-brand focus:ring-brand"
+                            className="border-border focus:border-brand focus:ring-brand"
                             max={new Date().toISOString().split("T")[0]}
                           />
-                          <CalendarDays className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                          <CalendarDays className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                         </div>
                       </FormControl>
                       <FormDescription>
                         Your date of birth for age verification
                       </FormDescription>
-                      <FormMessage className="text-red-500 text-sm" />
+                      <FormMessage className="text-destructive text-sm" />
                     </FormItem>
                   )}
                 />

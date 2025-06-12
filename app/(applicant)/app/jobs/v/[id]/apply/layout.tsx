@@ -4,7 +4,7 @@ import ProfileHeader from "@/components/profile/profile-header";
 import { ProfileFilesProvider } from "@/context/profile-files-context";
 import { ProfileDetailsProvider } from "@/context/profile-details-context";
 import { auth } from "@/auth";
-import { Mail, AlertTriangle } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import { ReactNode } from "react";
 
 interface LayoutProps {

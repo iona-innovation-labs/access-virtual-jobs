@@ -118,13 +118,13 @@ export default function EmailSettings() {
 
   if (error) {
     return (
-      <Card className="w-full shadow-sm border-0">
+      <Card className="w-full shadow-sm border-border">
         <CardContent className="p-8 text-center">
-          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <AlertCircle className="w-12 h-12 text-destructive mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-foreground mb-2">
             Error Loading Profile
           </h3>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Failed to load your profile information. Please refresh the page.
           </p>
         </CardContent>
@@ -134,10 +134,10 @@ export default function EmailSettings() {
 
   if (isLoading) {
     return (
-      <Card className="w-full shadow-sm border-0">
+      <Card className="w-full shadow-sm border-border">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
-          <p className="text-center text-gray-500 mt-4">
+          <p className="text-center text-muted-foreground mt-4">
             Loading your email settings...
           </p>
         </CardContent>
@@ -148,18 +148,18 @@ export default function EmailSettings() {
   if (updateSuccess) {
     return (
       <div className="w-full mx-auto space-y-6">
-        <Card className="shadow-sm border-0">
+        <Card className="shadow-sm border-border">
           <CardContent className="p-8 text-center">
-            <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <CheckCircle className="w-16 h-16 text-success mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-foreground mb-2">
               Email Updated Successfully
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               Your email address has been updated. Please check your new email
               inbox for a verification email to confirm the change.
             </p>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <p className="text-sm text-blue-800">
+            <div className="bg-brand/5 border border-brand/20 rounded-lg p-4 mb-6">
+              <p className="text-sm text-muted-foreground">
                 <strong>Important:</strong> You may need to sign in again with
                 your new email address. Don&apos;t forget to verify your new
                 email to ensure uninterrupted service.
@@ -176,17 +176,17 @@ export default function EmailSettings() {
 
   return (
     <div className="w-full mx-auto space-y-6">
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
-              <Mail className="w-4 h-4 text-blue-600" />
+            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
+              <Mail className="w-4 h-4 text-brand" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-foreground">
                 Email Settings
               </h2>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-muted-foreground">
                 Manage your email address and verification status
               </p>
             </div>
@@ -194,17 +194,17 @@ export default function EmailSettings() {
         </CardHeader>
       </Card>
 
-      <Card className="shadow-sm border-0 bg-white">
+      <Card className="shadow-sm border-border bg-card">
         <CardContent className="p-4">
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-gray-600" />
+            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-muted-foreground" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">
+              <h4 className="text-sm font-medium text-foreground mb-1">
                 Security & Privacy
               </h4>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-muted-foreground">
                 Your email address is used for account recovery and important
                 notifications. Keep it secure and up to date.
               </p>
@@ -214,36 +214,36 @@ export default function EmailSettings() {
       </Card>
 
       {/* Current Email Status */}
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
-              <Mail className="w-3 h-3 text-green-600" />
+            <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
+              <Mail className="w-3 h-3 text-success" />
             </div>
-            <h3 className="font-semibold text-gray-900">Current Email</h3>
+            <h3 className="font-semibold text-foreground">Current Email</h3>
           </div>
         </CardHeader>
 
         <CardContent>
-          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                <Mail className="w-5 h-5 text-blue-600" />
+              <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center">
+                <Mail className="w-5 h-5 text-brand" />
               </div>
               <div>
-                <p className="font-medium text-gray-900">{userInfo?.email}</p>
+                <p className="font-medium text-foreground">{userInfo?.email}</p>
                 <div className="flex items-center space-x-2 mt-1">
                   {userInfo?.isEmailVerified ? (
                     <>
-                      <CheckCircle className="w-4 h-4 text-green-600" />
-                      <span className="text-sm text-green-600 font-medium">
+                      <CheckCircle className="w-4 h-4 text-success" />
+                      <span className="text-sm text-success font-medium">
                         Verified
                       </span>
                     </>
                   ) : (
                     <>
-                      <AlertCircle className="w-4 h-4 text-amber-600" />
-                      <span className="text-sm text-amber-600 font-medium">
+                      <AlertCircle className="w-4 h-4 text-warning" />
+                      <span className="text-sm text-warning font-medium">
                         Unverified
                       </span>
                     </>
@@ -266,13 +266,13 @@ export default function EmailSettings() {
       </Card>
 
       {/* Update Email Form */}
-      <Card className="shadow-sm border-0">
+      <Card className="shadow-sm border-border">
         <CardHeader className="pb-4">
           <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
-              <Settings className="w-3 h-3 text-orange-600" />
+            <div className="w-6 h-6 rounded-full bg-warning/10 flex items-center justify-center">
+              <Settings className="w-3 h-3 text-warning" />
             </div>
-            <h3 className="font-semibold text-gray-900">
+            <h3 className="font-semibold text-foreground">
               Update Email Address
             </h3>
           </div>
@@ -294,7 +294,7 @@ export default function EmailSettings() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-foreground">
                       New Email Address
                     </FormLabel>
                     <FormControl>
@@ -303,14 +303,14 @@ export default function EmailSettings() {
                         type="email"
                         placeholder="Enter your new email address"
                         disabled={submitting}
-                        className="border-gray-300 focus:border-brand focus:ring-brand"
+                        className="border-border focus:border-brand focus:ring-brand"
                       />
                     </FormControl>
                     <FormDescription>
                       Make sure you have access to this email address as
                       you&apos;ll need to verify it.
                     </FormDescription>
-                    <FormMessage className="text-red-500 text-sm" />
+                    <FormMessage className="text-destructive text-sm" />
                   </FormItem>
                 )}
               />

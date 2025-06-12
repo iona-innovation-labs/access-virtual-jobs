@@ -9,6 +9,7 @@ import Image from "next/image";
 import { PositionProps } from "@/types/jobs";
 import { formatDistanceToNow } from "date-fns";
 import { Banknote, MapPin } from "lucide-react";
+import Link from "next/link";
 
 const RecommendedJobCard = ({ position }: PositionProps) => {
   return (
@@ -23,12 +24,12 @@ const RecommendedJobCard = ({ position }: PositionProps) => {
             className="rounded-md border border-border"
           />
           <div className="flex flex-col">
-            <a
+            <Link
               className="font-semibold text-base lg:text-lg text-foreground hover:text-brand hover:underline underline lg:no-underline"
               href={position.url || "#"}
             >
               {position.title}
-            </a>
+            </Link>
             <p className="text-sm text-muted-foreground">
               Access Virtual Staffing
             </p>

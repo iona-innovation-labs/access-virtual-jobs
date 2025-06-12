@@ -80,7 +80,7 @@ const EditDialog = ({
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-blue-50"
+          className="h-8 w-8 p-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-brand/5"
           disabled={loading}
         >
           <Edit3 className="h-4 w-4" />
@@ -147,14 +147,14 @@ const InfoItem = ({
   onSubmit,
   icon,
 }: InfoItemProps) => (
-  <div className="group py-6 border-b border-gray-100 last:border-b-0">
+  <div className="group py-6 border-b border-border last:border-b-0">
     <div className="flex items-start gap-4">
-      <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
+      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-medium text-gray-500">{label}</h3>
+          <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
           <EditDialog
             title={`Edit ${label}`}
             currentValue={value}
@@ -166,7 +166,7 @@ const InfoItem = ({
             onSubmit={onSubmit}
           />
         </div>
-        <div className="text-gray-900 leading-relaxed">
+        <div className="text-foreground leading-relaxed">
           {value ? (
             isTextarea ? (
               <div className="whitespace-pre-wrap text-sm">{value}</div>
@@ -174,7 +174,7 @@ const InfoItem = ({
               <div className="text-xl font-medium">{value}</div>
             )
           ) : (
-            <span className="text-gray-400 italic text-sm">
+            <span className="text-muted-foreground italic text-sm">
               Click edit to add {label.toLowerCase()}
             </span>
           )}
@@ -194,14 +194,14 @@ export const ProfessionalInfoSection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-            <Briefcase className="w-5 h-5 text-blue-600" />
+          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+            <Briefcase className="w-5 h-5 text-brand" />
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Professional Information
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Share your experience and professional background
             </p>
           </div>
@@ -216,7 +216,7 @@ export const ProfessionalInfoSection = ({
             fieldName="jobTitle"
             control={control}
             onSubmit={onUpdate}
-            icon={<User className="w-4 h-4 text-gray-600" />}
+            icon={<User className="w-4 h-4 text-muted-foreground" />}
           />
 
           <InfoItem
@@ -228,7 +228,7 @@ export const ProfessionalInfoSection = ({
             fieldName="whyFit"
             control={control}
             onSubmit={onUpdate}
-            icon={<Target className="w-4 h-4 text-gray-600" />}
+            icon={<Target className="w-4 h-4 text-muted-foreground" />}
           />
 
           <InfoItem
@@ -240,7 +240,7 @@ export const ProfessionalInfoSection = ({
             fieldName="whatStrengths"
             control={control}
             onSubmit={onUpdate}
-            icon={<Zap className="w-4 h-4 text-gray-600" />}
+            icon={<Zap className="w-4 h-4 text-muted-foreground" />}
           />
 
           <InfoItem
@@ -252,7 +252,7 @@ export const ProfessionalInfoSection = ({
             fieldName="whatNeedImprovement"
             control={control}
             onSubmit={onUpdate}
-            icon={<TrendingUp className="w-4 h-4 text-gray-600" />}
+            icon={<TrendingUp className="w-4 h-4 text-muted-foreground" />}
           />
         </div>
       </CardContent>

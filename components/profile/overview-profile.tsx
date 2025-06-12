@@ -109,10 +109,10 @@ export default function OverviewTab({
   if (error) {
     return (
       <Card className="max-w-4xl mx-auto p-8 text-center">
-        <h2 className="text-lg font-semibold text-red-600 mb-2">
+        <h2 className="text-lg font-semibold text-destructive mb-2">
           Error Loading Profile
         </h2>
-        <p className="text-gray-600">
+        <p className="text-muted-foreground">
           Failed to load profile data. Please refresh the page.
         </p>
       </Card>

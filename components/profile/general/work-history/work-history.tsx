@@ -91,14 +91,14 @@ export const WorkHistorySection = ({
       <Card>
         <CardContent className="px-4">
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-              <Briefcase className="w-5 h-5 text-green-600" />
+            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+              <Briefcase className="w-5 h-5 text-success" />
             </div>
             <div className="flex-1">
-              <h2 className="text-sm font-semibold text-gray-900">
+              <h2 className="text-sm font-semibold text-foreground">
                 Work History
               </h2>
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Your professional experience and career progression
               </p>
             </div>
@@ -107,7 +107,7 @@ export const WorkHistorySection = ({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 p-0 hover:bg-green-50"
+                className="h-8 w-8 p-0 hover:bg-success/5"
                 onClick={onAdd}
               >
                 <Plus className="h-4 w-4" />
@@ -116,13 +116,13 @@ export const WorkHistorySection = ({
           </div>
 
           <div className="py-12 text-center">
-            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-              <Briefcase className="w-8 h-8 text-gray-400" />
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+              <Briefcase className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <h3 className="text-lg font-medium text-foreground mb-2">
               No work experience added yet
             </h3>
-            <p className="text-gray-500 mb-6 max-w-sm mx-auto">
+            <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
               Showcase your professional experience to help employers understand
               your background
             </p>
@@ -142,14 +142,14 @@ export const WorkHistorySection = ({
     <Card>
       <CardContent className="px-4">
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center">
-            <Briefcase className="w-5 h-5 text-green-600" />
+          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+            <Briefcase className="w-5 h-5 text-success" />
           </div>
           <div className="flex-1">
-            <h2 className="text-sm font-semibold text-gray-900">
+            <h2 className="text-sm font-semibold text-foreground">
               Work History
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Your professional experience and career progression
             </p>
           </div>
@@ -158,7 +158,7 @@ export const WorkHistorySection = ({
               type="button"
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 hover:bg-green-50"
+              className="h-8 w-8 p-0 hover:bg-success/5"
               onClick={onAdd}
             >
               <Plus className="h-4 w-4" />
@@ -172,19 +172,19 @@ export const WorkHistorySection = ({
               key={item.id}
               className={`group py-6 ${
                 index !== sortedWorkHistory.length - 1
-                  ? "border-b border-gray-100"
+                  ? "border-b border-border"
                   : ""
               }`}
             >
               <div className="flex items-start gap-4">
-                <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 mt-1">
-                  <Building className="w-4 h-4 text-gray-600" />
+                <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 mt-1">
+                  <Building className="w-4 h-4 text-muted-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-lg font-semibold text-foreground">
                           {item.position}
                         </h3>
                         {item.isCurrentJob === "yes" && (
@@ -194,11 +194,11 @@ export const WorkHistorySection = ({
                         )}
                       </div>
 
-                      <div className="text-base font-medium text-gray-700 mb-2">
+                      <div className="text-base font-medium text-muted-foreground mb-2">
                         {item.company}
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-3">
                         <div className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           <span>
@@ -209,7 +209,7 @@ export const WorkHistorySection = ({
                           </span>
                         </div>
 
-                        <div className="text-gray-400">•</div>
+                        <div className="text-muted-foreground/50">•</div>
 
                         <div>
                           {calculateDuration(item.startDate, item.endDate)}
@@ -217,7 +217,7 @@ export const WorkHistorySection = ({
 
                         {item.location && (
                           <>
-                            <div className="text-gray-400">•</div>
+                            <div className="text-muted-foreground/50">•</div>
                             <div className="flex items-center gap-1">
                               <MapPin className="w-4 h-4" />
                               <span>{item.location}</span>
@@ -227,7 +227,7 @@ export const WorkHistorySection = ({
 
                         {item.employmentType && (
                           <>
-                            <div className="text-gray-400">•</div>
+                            <div className="text-muted-foreground/50">•</div>
                             <div>
                               {formatEmploymentType(item.employmentType)}
                             </div>
@@ -236,7 +236,7 @@ export const WorkHistorySection = ({
                       </div>
 
                       {item.description && (
-                        <div className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                        <div className="text-foreground leading-relaxed whitespace-pre-wrap">
                           {item.description}
                         </div>
                       )}
@@ -248,7 +248,7 @@ export const WorkHistorySection = ({
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="h-8 w-8 p-0 hover:bg-blue-50"
+                          className="h-8 w-8 p-0 hover:bg-brand/5"
                           onClick={() => onEdit?.(item)}
                         >
                           <Edit3 className="h-4 w-4" />

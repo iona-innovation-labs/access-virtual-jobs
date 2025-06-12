@@ -173,8 +173,8 @@ export const WorkHistoryContainer = ({
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-600 mb-2">Error loading work history</p>
-        <p className="text-gray-500 text-sm">{error.internalMessage}</p>
+        <p className="text-destructive mb-2">Error loading work history</p>
+        <p className="text-muted-foreground text-sm">{error.internalMessage}</p>
       </div>
     );
   }
@@ -182,7 +182,7 @@ export const WorkHistoryContainer = ({
   if (!workHistoryData) {
     return (
       <div className="animate-pulse">
-        <div className="h-48 bg-gray-200 rounded-lg"></div>
+        <div className="h-48 bg-muted rounded-lg"></div>
       </div>
     );
   }

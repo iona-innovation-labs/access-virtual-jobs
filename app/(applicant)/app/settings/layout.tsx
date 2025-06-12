@@ -14,7 +14,7 @@ interface LayoutProps {
 
 export default function SettingsLayout({ children }: LayoutProps) {
   return (
-    <div className="h-[calc(100vh-4.5rem)] overflow-auto bg-gray-50 pb-8 ">
+    <div className="h-[calc(100vh-4.5rem)] overflow-auto bg-background pb-8 ">
       <section id="joblist_header" className="relative px-[5%] pt-2 md:pt-2">
         <div className="w-full container mx-auto grid grid-cols-1 lg:grid-cols-4 gap-4">
           <section className="md:col-span-1 pt-4 md:pt-8">

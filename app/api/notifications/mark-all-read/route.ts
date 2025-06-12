@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { eq, and } from "drizzle-orm";
 import { db } from "@/database";
 import { notifications } from "@/database/schema/notifications";
 import { auth } from "@/auth";
 
-export async function PATCH(req: NextRequest) {
+export async function PATCH() {
   try {
     const session = await auth();
 

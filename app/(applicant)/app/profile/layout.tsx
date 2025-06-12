@@ -19,7 +19,7 @@ export default function ProfileLayout({ children }: LayoutProps) {
     <ProfileTabProvider>
       <ProfileDetailsProvider>
         <ProfileFilesProvider>
-          <div className="min-h-screen bg-gray-50">
+          <div className="min-h-screen bg-background">
             <div className="py-12 flex items-start justify-start">
               {children}
             </div>
