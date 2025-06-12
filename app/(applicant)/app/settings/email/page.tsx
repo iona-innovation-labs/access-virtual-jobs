@@ -49,10 +49,7 @@ const emailUpdateSchema = z.object({
 // Keep the original API type structure for compatibility
 type EmailUpdateSchema = z.infer<typeof emailUpdateSchema>;
 type APIRequestType = {
-  firstName: string;
-  lastName: string;
   email: string;
-  username: string;
 };
 
 export default function EmailSettings() {
@@ -72,6 +69,7 @@ export default function EmailSettings() {
 
   React.useEffect(() => {
     if (userInfo) {
+      console.log(userInfo);
       form.reset({
         email: userInfo.email || "",
       });
@@ -83,11 +81,10 @@ export default function EmailSettings() {
     try {
       // Maintain the exact same API request structure as the original general settings
       const requestData: APIRequestType = {
-        firstName: userInfo?.firstName || "",
-        lastName: userInfo?.lastName || "",
         email: formData.email, // Only this changes
-        username: userInfo?.username || "",
       };
+
+      console.log(requestData);
 
       const response = await fetchApi<any>("/settings/general", {
         method: "POST",
@@ -195,6 +192,25 @@ export default function EmailSettings() {
             </div>
           </div>
         </CardHeader>
+      </Card>
+
+      <Card className="shadow-sm border-0 bg-white">
+        <CardContent className="p-4">
+          <div className="flex items-start space-x-3">
+            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-gray-600" />
+            </div>
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 mb-1">
+                Security & Privacy
+              </h4>
+              <p className="text-sm text-gray-600">
+                Your email address is used for account recovery and important
+                notifications. Keep it secure and up to date.
+              </p>
+            </div>
+          </div>
+        </CardContent>
       </Card>
 
       {/* Current Email Status */}
@@ -346,26 +362,6 @@ export default function EmailSettings() {
             </AlertDialogContent>
           </AlertDialog>
         </CardFooter>
-      </Card>
-
-      {/* Security Notice */}
-      <Card className="shadow-sm border-0 bg-white">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-gray-600" />
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">
-                Security & Privacy
-              </h4>
-              <p className="text-sm text-gray-600">
-                Your email address is used for account recovery and important
-                notifications. Keep it secure and up to date.
-              </p>
-            </div>
-          </div>
-        </CardContent>
       </Card>
     </div>
   );

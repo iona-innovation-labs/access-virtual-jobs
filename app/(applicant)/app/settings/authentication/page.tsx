@@ -161,6 +161,26 @@ export default function ChangePassword() {
         </CardHeader>
       </Card>
 
+      <Card className="shadow-sm border-0 bg-white">
+        <CardContent className="p-4">
+          <div className="flex items-start space-x-3">
+            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-gray-600" />
+            </div>
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 mb-1">
+                Security Notice
+              </h4>
+              <p className="text-sm text-gray-600">
+                For your security, you&apos;ll be logged out of all devices
+                after changing your password. This ensures only you have access
+                to your account with the new credentials.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <Alert className="border-blue-200 bg-blue-50">
         <CheckCircle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-800">
@@ -344,26 +364,6 @@ export default function ChangePassword() {
               </div>
             </form>
           </Form>
-        </CardContent>
-      </Card>
-
-      <Card className="shadow-sm border-0 bg-white">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-gray-600" />
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-gray-900 mb-1">
-                Security Notice
-              </h4>
-              <p className="text-sm text-gray-600">
-                For your security, you&apos;ll be logged out of all devices
-                after changing your password. This ensures only you have access
-                to your account with the new credentials.
-              </p>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>

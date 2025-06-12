@@ -121,7 +121,6 @@ export default function GeneralSettings() {
       const requestData = {
         firstName: formData.firstName,
         lastName: formData.lastName,
-        email: userInfo?.email || "",
         username: formData.username || "",
         gender: formData.gender || "",
         countryOfResidence: formData.countryOfResidence || "Philippines",
