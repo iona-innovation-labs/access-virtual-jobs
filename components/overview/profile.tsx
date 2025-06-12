@@ -21,11 +21,11 @@ const Profile = () => {
     return (
       <Card className="w-full p-6 animate-pulse">
         <div className="flex items-center space-x-4">
-          <div className="w-16 h-16 bg-gray-200 rounded-full"></div>
+          <div className="w-16 h-16 bg-muted rounded-full"></div>
           <div className="flex-1 space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-            <div className="h-3 bg-gray-200 rounded w-2/3"></div>
+            <div className="h-4 bg-muted rounded w-3/4"></div>
+            <div className="h-3 bg-muted rounded w-1/2"></div>
+            <div className="h-3 bg-muted rounded w-2/3"></div>
           </div>
         </div>
       </Card>
@@ -38,7 +38,7 @@ const Profile = () => {
       : userInfo?.username || "User";
 
   return (
-    <Card className="w-full bg-white shadow-sm border-0">
+    <Card className="w-full bg-card shadow-sm border-border">
       <div className="p-6">
         <div className="flex items-start justify-between">
           {/* Profile Info */}
@@ -49,39 +49,41 @@ const Profile = () => {
                 <Image
                   src={userInfo.profileImage}
                   alt={fullName}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
+                  className="w-16 h-16 rounded-full object-cover border-2 border-border"
                   width={64}
                   height={64}
                 />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
-                  <User className="w-7 h-7 text-brand" />
+                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
+                  <User className="w-7 h-7 text-primary" />
                 </div>
               )}
             </div>
 
             {/* User Details */}
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-foreground">
                 {fullName}
               </h2>
 
               {data?.profile?.jobTitle && (
-                <div className="flex items-center space-x-1 text-sm text-gray-600">
+                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                   <Briefcase className="w-3 h-3" />
                   <span>{data.profile.jobTitle}</span>
                 </div>
               )}
 
               {data?.profile?.address && (
-                <div className="flex items-center space-x-1 text-sm text-gray-500">
+                <div className="flex items-center space-x-1 text-sm text-muted-foreground">
                   <MapPin className="w-3 h-3" />
                   <span>{data.profile.address}</span>
                 </div>
               )}
 
               {!data?.profile?.jobTitle && !data?.profile?.address && (
-                <p className="text-sm text-gray-400">Complete your profile</p>
+                <p className="text-sm text-muted-foreground">
+                  Complete your profile
+                </p>
               )}
             </div>
           </div>
@@ -91,7 +93,7 @@ const Profile = () => {
             onClick={() => router.push("/app/profile")}
             variant="outline"
             size="sm"
-            className="border-brand/20 text-brand hover:bg-brand hover:text-white transition-colors"
+            className="border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
           >
             <Edit3 className="w-3 h-3 mr-1" />
             Edit
@@ -100,14 +102,14 @@ const Profile = () => {
 
         {/* Optional Status Section - Uncommented if needed */}
         {/* 
-        <div className="mt-6 pt-4 border-t border-gray-100">
+        <div className="mt-6 pt-4 border-t border-border">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-700">Job Search Status</span>
-            <span className="text-xs text-brand bg-brand/10 px-2 py-1 rounded-full">
+            <span className="text-sm font-medium text-foreground">Job Search Status</span>
+            <span className="text-xs text-primary bg-primary/10 px-2 py-1 rounded-full">
               Ready to Interview
             </span>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-muted-foreground">
             Let employers know you're available for opportunities
           </p>
         </div>

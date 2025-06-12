@@ -56,7 +56,7 @@ const Stepper = () => {
   const progressPercentage = Math.round((completedSteps / TOTAL_STEPS) * 100);
 
   return (
-    <Card className="border-0 bg-white shadow-sm">
+    <Card className="border-0 shadow-sm">
       {/* Header with Progress */}
       <div className="px-6 ">
         <div className="flex items-center justify-between mb-4">
@@ -73,7 +73,7 @@ const Stepper = () => {
               )}
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Profile Setup</h3>
+              <h3 className="font-semibold">Profile Setup</h3>
               <p className="text-xs text-gray-500">
                 {completedSteps}/{TOTAL_STEPS} completed
               </p>
@@ -101,7 +101,7 @@ const Stepper = () => {
 
         {/* Action */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">
+          <span className="text-sm">
             {isProfileComplete
               ? "All set!"
               : `${TOTAL_STEPS - completedSteps} items remaining`}
