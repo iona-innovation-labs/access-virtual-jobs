@@ -6,7 +6,10 @@ import {
   date,
   varchar,
   timestamp,
+  boolean,
+  check,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
 
@@ -29,10 +32,20 @@ export const profiles = pgTable("profiles", {
   numberOfExperience: text("number_of_experience").notNull(),
   salaryUnit: text("salary_unit").notNull(),
   desiredSalary: text("desired_salary").notNull(),
+  isPublicSalary: boolean("is_public_salary").default(true).notNull(),
   howHear: text("how_hear"),
   referrer: text("referrer"),
   jobType: text("job_type"),
   availability: text("availability"),
+  jobSearchStatus: text("job_search_status")
+    .default("ready_to_interview")
+    .notNull(),
+  educationStatus: text("education_status").default("high_school").notNull(),
+
+  linkedInLink: text("linkedIn_link"),
+  instagramLink: text("instagram_link"),
+  xLink: text("x_link"),
+  profileDescription: text("profile_description"),
 });
 
 export const phones = pgTable("phones", {
@@ -61,13 +74,17 @@ export const contentLinks = pgTable("content_links", {
   link: text("link").notNull(),
 });
 
-// export const videoLinks = pgTable("video_links", {
-//   id: serial("id").primaryKey(),
-//   profileId: integer("profile_id").references(() => profiles.id, {
-//     onDelete: "cascade",
-//   }),
-//   link: text("link").notNull(),
-// });
+export const portfolioLinks = pgTable("portfolio_links", {
+  id: serial("id").primaryKey(),
+  profileId: integer("profile_id").references(() => profiles.id, {
+    onDelete: "cascade",
+  }),
+  title: text("title").notNull(), // e.g., "Personal Website", "GitHub"
+  url: text("url").notNull(),
+  description: text("description"), // Optional description
+  category: text("category"), // e.g., "website", "github", "behance", "dribbble"
+  createdAt: timestamp("created_at").defaultNow(),
+});
 
 export const assessmentTests = pgTable("assessment_tests", {
   id: serial("id").primaryKey(),
@@ -136,7 +153,7 @@ export const skills = pgTable("skills", {
   }),
   name: text("name").notNull(),
   category: text("category"), // "technical", "soft", "language", "tools", etc.
-  proficiencyLevel: text("proficiency_level"), // "beginner", "intermediate", "advanced", "expert"
+  starRating: integer("star_rating").notNull().default(1), // 1-5 stars
   yearsOfExperience: integer("years_of_experience"),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -158,6 +175,51 @@ export const education = pgTable("education", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const phonesRelations = relations(phones, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [phones.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const emailsRelations = relations(emails, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [emails.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const contentLinksRelations = relations(contentLinks, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [contentLinks.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const assessmentTestsRelations = relations(
+  assessmentTests,
+  ({ one }) => ({
+    profile: one(profiles, {
+      fields: [assessmentTests.profileId],
+      references: [profiles.id],
+    }),
+  })
+);
+
+export const workSamplesRelations = relations(workSamples, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [workSamples.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const fileUploadsRelations = relations(fileUploads, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [fileUploads.profileId],
+    references: [profiles.id],
+  }),
+}));
+
 export const usersRelations = relations(users, ({ many }) => ({
   profiles: many(profiles),
 }));
@@ -177,11 +239,19 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
   certifications: many(certifications),
   skills: many(skills),
   education: many(education),
+  portfolioLinks: many(portfolioLinks),
 }));
 
 export const workHistoryRelations = relations(workHistory, ({ one }) => ({
   profile: one(profiles, {
     fields: [workHistory.profileId],
+    references: [profiles.id],
+  }),
+}));
+
+export const portfolioLinksRelations = relations(portfolioLinks, ({ one }) => ({
+  profile: one(profiles, {
+    fields: [portfolioLinks.profileId],
     references: [profiles.id],
   }),
 }));

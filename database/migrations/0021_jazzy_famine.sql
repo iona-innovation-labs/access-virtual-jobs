@@ -1,0 +1,1 @@
+ALTER TABLE "skills" RENAME COLUMN "proficiency_level" TO "star_rating";

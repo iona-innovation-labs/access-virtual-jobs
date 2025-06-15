@@ -35,7 +35,7 @@ export interface IExtendedProfileResponse extends IProfileResponse {
     profileId: number;
     name: string;
     category?: string;
-    proficiencyLevel?: string;
+    starRating?: number; // Updated to use star rating (1-5)
     yearsOfExperience?: number;
     createdAt: string;
   }[];
@@ -99,7 +99,7 @@ export interface ISkillsResponse {
     profileId: number;
     name: string;
     category?: string;
-    proficiencyLevel?: string;
+    starRating?: number; // Updated to use star rating (1-5)
     yearsOfExperience?: number;
     createdAt: string;
   }[];
@@ -160,9 +160,7 @@ export const skillsSchema = z.object({
     z.object({
       name: z.string().min(1, "Skill name is required"),
       category: z.enum(["technical", "soft", "language", "tools"]).optional(),
-      proficiencyLevel: z
-        .enum(["beginner", "intermediate", "advanced", "expert"])
-        .optional(),
+      starRating: z.number().min(1).max(5).default(1), // 1-5 stars
       yearsOfExperience: z.number().min(0).optional(),
     })
   ),
@@ -228,7 +226,7 @@ export const overviewSchema = z.object({
       z.object({
         name: z.string(),
         category: z.string().optional(),
-        proficiencyLevel: z.string().optional(),
+        starRating: z.number().min(1).max(5).optional(), // 1-5 stars
         yearsOfExperience: z.number().optional(),
       })
     )

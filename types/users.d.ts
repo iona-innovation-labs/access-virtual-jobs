@@ -9,6 +9,7 @@ export interface IUserResponse {
 }
 
 export interface IUserInfo {
+  id: string;
   email: string;
   profileImage?: string | null;
   image?: string | null;
