@@ -1,4 +1,4 @@
-import { Check, Info, Settings, Upload, User } from "lucide-react";
+import { Check, Info, Settings, Upload, User, Verified } from "lucide-react";
 import { Card } from "../ui/card";
 
 const navigationItems = [
@@ -10,10 +10,10 @@ const navigationItems = [
     badge: null,
   },
   {
-    id: "overview",
-    label: "Overview",
-    icon: User,
-    description: "General information",
+    id: "verification",
+    label: "Verification",
+    icon: Verified,
+    description: "Verification status",
     badge: null,
   },
   {
@@ -77,7 +77,7 @@ export const ProfileNav = ({ handleTabChange, activeTab }: ProfileProps) => {
           <h2 className="font-semibold text-foreground">Profile Setup</h2>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-2 mb-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -128,24 +128,6 @@ export const ProfileNav = ({ handleTabChange, activeTab }: ProfileProps) => {
             );
           })}
         </nav>
-
-        <div className="my-8 p-4 bg-muted rounded-lg">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-medium text-foreground">
-              Progress
-            </span>
-            <span className="text-sm text-brand font-semibold">75%</span>
-          </div>
-          <div className="w-full bg-border h-2 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-brand transition-all duration-300"
-              style={{ width: "75%" }}
-            />
-          </div>
-          <p className="text-xs text-muted-foreground mt-2">
-            Complete all sections to unlock full features
-          </p>
-        </div>
         <NeedHelp />
       </div>
     </Card>
