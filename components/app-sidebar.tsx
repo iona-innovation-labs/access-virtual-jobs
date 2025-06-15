@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   IconDashboard,
-  IconInnerShadowTop,
   IconSettings,
   IconFile,
   IconBriefcase,
@@ -40,7 +39,7 @@ const data = {
     },
     {
       title: "Profile",
-      url: "/app/profile",
+      url: "/app/profile/overview",
       icon: IconUser,
     },
     {

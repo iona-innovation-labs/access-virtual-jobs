@@ -82,7 +82,10 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link href="/app/profile" className="flex items-center gap-2">
+                <Link
+                  href="/app/profile/overview"
+                  className="flex items-center gap-2"
+                >
                   <IconUserCircle />
                   Account
                 </Link>
