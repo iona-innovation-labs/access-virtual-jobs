@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 type IProfileProps = {
   profile: {
@@ -42,7 +43,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
 
   return (
     <Card className="xl:w-2/3 w-full bg-gray-100 border border-gray-500 max-w-3xl mx-auto xl:px-12 py-12 xl:py-8 shadow-lg rounded-lg relative">
-      <a
+      <Link
         href={profile.resume}
         target="_blank"
         rel="noopener noreferrer"
@@ -51,7 +52,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
         <Badge variant="outline" className="text-blue-600 border-blue-600">
           Resume
         </Badge>
-      </a>
+      </Link>
 
       <CardContent>
         <Image
@@ -130,9 +131,9 @@ const ProfileCard = ({ profile }: IProfileProps) => {
               asChild
               className="flex items-center justify-between"
             >
-              <a href={link} target="_blank" rel="noopener noreferrer">
+              <Link href={link} target="_blank" rel="noopener noreferrer">
                 Content {index + 1} <ExternalLink className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </Button>
           ))}
           {profile.videoLinks.map((link, index) => (
@@ -143,9 +144,9 @@ const ProfileCard = ({ profile }: IProfileProps) => {
               asChild
               className="flex items-center justify-between"
             >
-              <a href={link} target="_blank" rel="noopener noreferrer">
+              <Link href={link} target="_blank" rel="noopener noreferrer">
                 Video {index + 1} <ExternalLink className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </Button>
           ))}
           {profile.assessmentTests.map((link, index) => (
@@ -156,9 +157,9 @@ const ProfileCard = ({ profile }: IProfileProps) => {
               asChild
               className="flex items-center justify-between"
             >
-              <a href={link} target="_blank" rel="noopener noreferrer">
+              <Link href={link} target="_blank" rel="noopener noreferrer">
                 Test {index + 1} <ExternalLink className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </Button>
           ))}
           {profile.workSamples.map((link, index) => (
@@ -169,10 +170,10 @@ const ProfileCard = ({ profile }: IProfileProps) => {
               asChild
               className="flex items-center justify-between"
             >
-              <a href={link} target="_blank" rel="noopener noreferrer">
+              <Link href={link} target="_blank" rel="noopener noreferrer">
                 Work Sample {index + 1}{" "}
                 <ExternalLink className="ml-2 w-4 h-4" />
-              </a>
+              </Link>
             </Button>
           ))}
         </div>

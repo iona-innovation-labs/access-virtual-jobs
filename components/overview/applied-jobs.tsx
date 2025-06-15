@@ -16,15 +16,15 @@ const AppliedJobs = () => {
     return (
       <Card className="w-full px-6 animate-pulse">
         <div className="flex items-center space-x-3 mb-4">
-          <div className="w-8 h-8 bg-gray-200 rounded-lg"></div>
+          <div className="w-8 h-8 bg-muted rounded-lg"></div>
           <div className="space-y-2 flex-1">
-            <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-4 bg-muted rounded w-1/3"></div>
+            <div className="h-3 bg-muted rounded w-1/2"></div>
           </div>
         </div>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-20 bg-gray-100 rounded"></div>
+            <div key={i} className="h-20 bg-muted/50 rounded"></div>
           ))}
         </div>
       </Card>
@@ -32,17 +32,17 @@ const AppliedJobs = () => {
   }
 
   return (
-    <Card className="w-full bg-white shadow-sm border-0">
+    <Card className="w-full bg-card shadow-sm border-border">
       {/* Header */}
-      <div className="p-6 border-b border-gray-100">
+      <div className="p-6 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <FileText className="w-4 h-4 text-brand" />
             </div>
             <div>
-              <h2 className="font-semibold text-gray-900">Applied Jobs</h2>
-              <p className="text-sm text-gray-500">
+              <h2 className="font-semibold text-foreground">Applied Jobs</h2>
+              <p className="text-sm text-muted-foreground">
                 {jobApplications.length > 0
                   ? `${jobApplications.length} active applications`
                   : "Track your job applications"}
@@ -51,7 +51,7 @@ const AppliedJobs = () => {
           </div>
 
           {jobApplications.length > 0 && (
-            <div className="flex items-center space-x-1 text-sm text-gray-500">
+            <div className="flex items-center space-x-1 text-sm text-muted-foreground">
               <Clock className="w-3 h-3" />
               <span>Recent</span>
             </div>
@@ -71,7 +71,7 @@ const AppliedJobs = () => {
             ))}
 
             {(hasMore || jobApplications.length > 3) && (
-              <div className="pt-4 border-t border-gray-100">
+              <div className="pt-4 border-t border-border">
                 <Button
                   onClick={loadMore}
                   disabled={loading}
@@ -88,13 +88,13 @@ const AppliedJobs = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-              <FileText className="w-6 h-6 text-gray-400" />
+            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+              <FileText className="w-6 h-6 text-muted-foreground" />
             </div>
-            <h3 className="font-medium text-gray-900 mb-2">
+            <h3 className="font-medium text-foreground mb-2">
               No applications yet
             </h3>
-            <p className="text-gray-500 text-sm mb-6">
+            <p className="text-muted-foreground text-sm mb-6">
               When you apply for jobs, they&apos;ll appear here so you can track
               your progress.
             </p>

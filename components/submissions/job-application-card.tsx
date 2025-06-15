@@ -15,17 +15,17 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
       href={`/app/submissions/v/${jobApplication?.applicationPublicId}`}
       className="group block"
     >
-      <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:border-brand/30 hover:bg-gray-50/50 transition-all duration-200 cursor-pointer">
+      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:border-brand/30 hover:bg-accent/50 transition-all duration-200 cursor-pointer">
         {/* Left Section */}
         <div className="flex items-center space-x-4 flex-1 min-w-0">
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">
               <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 truncate group-hover:text-brand transition-colors">
+                <h3 className="font-semibold text-foreground truncate group-hover:text-brand transition-colors">
                   {jobApplication?.job?.title || "Job Title"}
                 </h3>
 
-                <div className="flex items-center space-x-1 mt-1 text-sm text-gray-500">
+                <div className="flex items-center space-x-1 mt-1 text-sm text-muted-foreground">
                   <Building2 className="w-3 h-3 flex-shrink-0" />
                   <span className="truncate">Access Virtual Staffing</span>
                 </div>
@@ -49,7 +49,7 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
         {/* Right Section */}
         <div className="flex items-center space-x-3 flex-shrink-0 ml-4">
           <div className="text-right">
-            <div className="flex items-center space-x-1 text-xs text-gray-400">
+            <div className="flex items-center space-x-1 text-xs text-muted-foreground">
               <Clock className="w-3 h-3" />
               <span>
                 {formatDistanceToNow(new Date(jobApplication?.submittedAt), {
@@ -59,7 +59,7 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
             </div>
           </div>
 
-          <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-brand transition-colors" />
+          <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-brand transition-colors" />
         </div>
       </div>
     </Link>

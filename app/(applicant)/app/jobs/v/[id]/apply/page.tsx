@@ -16,7 +16,5 @@ export async function generateMetadata({
 }
 
 export default async function Apply() {
-  // const result = await getUser(2);
-
   return <ProfilePageClient />;
 }

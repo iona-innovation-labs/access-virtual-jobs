@@ -9,6 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { INotification } from "@/types/notification";
 import { formatDistanceToNow } from "date-fns";
+import Link from "next/link";
 
 const notificationIcons = {
   job_submissions: <Briefcase className="w-4 h-4 text-brand-light" />,
@@ -56,7 +57,7 @@ export function NotificationCardCompact({
   const isExternalLink = notification.link?.startsWith("http");
 
   return (
-    <a
+    <Link
       href={notification.link || "#"}
       className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200 group"
       target={isExternalLink ? "_blank" : "_self"}
@@ -65,7 +66,7 @@ export function NotificationCardCompact({
     >
       <div className="flex-shrink-0 mt-0.5">
         <div className="w-8 h-8 rounded-full bg-background border border-border flex items-center justify-center">
-          {getNotificationIcon(notification.type)}
+          {getNotificationIcon(notification?.type || "default")}
         </div>
       </div>
 
@@ -81,7 +82,7 @@ export function NotificationCardCompact({
 
         <div className="flex items-center justify-between">
           <time className="text-xs text-muted-foreground">
-            {formatTime(notification.createdAt)}
+            {formatTime(notification.createdAt || new Date().toISOString())}
           </time>
 
           {notification.type && notification.type !== "info" && (
@@ -102,6 +103,6 @@ export function NotificationCardCompact({
           )}
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

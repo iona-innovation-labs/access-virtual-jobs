@@ -1,15 +1,14 @@
 import { Card } from "@/components/ui/card";
-
 import { IJobListing } from "@/types/jobs";
 import JobCard from "../jobs/job-card";
 
 const RecommendedJobs = ({ positions }: { positions: IJobListing[] }) => {
   return (
-    <Card className="w-full p-6 border border-gray-200 flex flex-col justify-between">
+    <Card className="w-full p-6 border border-border flex flex-col justify-between">
       <div className="flex flex-col">
         <div className="flex flex-col">
-          <h2 className="font-semibold">Recommended Jobs</h2>
-          {/* <p className="text-gray-700 text-xs">
+          <h2 className="font-semibold text-foreground">Recommended Jobs</h2>
+          {/* <p className="text-muted-foreground text-xs">
             Jobs where you&apos;re a top applicant based on your profile job
             search
           </p> */}
@@ -22,8 +21,8 @@ const RecommendedJobs = ({ positions }: { positions: IJobListing[] }) => {
             <JobCard key={index} job={{ ...position }} />
           ))
         ) : (
-          <div className="bg-zinc-300 p-8 lg:p-12 text-center">
-            <p className="md:text-md">
+          <div className="bg-muted p-8 lg:p-12 text-center">
+            <p className="md:text-md text-muted-foreground">
               No Jobs available. Please check again later.
             </p>
           </div>

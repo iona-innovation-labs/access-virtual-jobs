@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { ProfileTabProvider } from "@/context/profile-tab-context";
 import { ProfileDetailsProvider } from "@/context/profile-details-context";
 import { ProfileFilesProvider } from "@/context/profile-files-context";
+import ProfileNav from "@/components/profile/edit-profile-header";
 
 export const metadata: Metadata = {
   title: "My Profile",
@@ -19,8 +20,9 @@ export default function ProfileLayout({ children }: LayoutProps) {
     <ProfileTabProvider>
       <ProfileDetailsProvider>
         <ProfileFilesProvider>
-          <div className="min-h-screen bg-gray-50">
-            <div className="py-12 flex items-start justify-start">
+          <div className="min-h-screen bg-background">
+            <div className="py-12 flex flex-col items-start justify-start">
+              <ProfileNav />
               {children}
             </div>
           </div>

@@ -27,19 +27,19 @@ export default function JobHeader(props: Props) {
         <div className="px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto py-4 sm:py-6 lg:py-8 relative z-10">
           <div className="text-center max-w-4xl mx-auto mb-2 sm:mb-4">
             {!isSpecific && (
-              <div className="inline-flex items-center bg-white/80 backdrop-blur-sm border border-gray-200/60 rounded-full px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 lg:py-2.5 mb-3 sm:mb-4 lg:mb-6 shadow-lg shadow-gray-200/40">
+              <div className="inline-flex items-center bg-card/80 backdrop-blur-sm border border-border/60 rounded-full px-3 sm:px-4 lg:px-6 py-1.5 sm:py-2 lg:py-2.5 mb-3 sm:mb-4 lg:mb-6 shadow-lg shadow-border/40">
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-brand mr-1.5 sm:mr-2" />
-                <span className="text-xs sm:text-sm font-medium text-gray-700">
+                <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                   Seize every opportunity
                 </span>
               </div>
             )}
 
-            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 lg:mb-6 leading-tight px-2 sm:px-0">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-foreground mb-2 sm:mb-3 md:mb-4 lg:mb-6 leading-tight px-2 sm:px-0">
               {heading}
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto px-2 sm:px-0">
               {description}
             </p>
           </div>
@@ -58,11 +58,11 @@ export default function JobHeader(props: Props) {
           </div>
 
           <div className="flex-1 min-w-0">
-            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-900 leading-tight break-words">
+            <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-foreground leading-tight break-words">
               {heading}
             </h1>
             {description && (
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-600 mt-1 leading-relaxed break-words">
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-muted-foreground mt-1 leading-relaxed break-words">
                 {description}
               </p>
             )}
@@ -70,7 +70,7 @@ export default function JobHeader(props: Props) {
         </div>
       </div>
 
-      <div className="border-b border-gray-100 mt-4 sm:mt-6 lg:mt-8"></div>
+      <div className="border-b border-border mt-4 sm:mt-6 lg:mt-8"></div>
     </div>
   );
 }

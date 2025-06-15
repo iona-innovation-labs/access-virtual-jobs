@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Bell, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { INotification } from "@/types/notification";
 import { useNotifications } from "@/hooks/use-notifications";
 import { NotificationCardCompact } from "./notification-card-compact";
+import Link from "next/link";
 
 interface NotificationDropdownProps {
   className?: string;
@@ -22,11 +23,21 @@ interface NotificationDropdownProps {
 
 export function NotificationDropdown({ className }: NotificationDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const { notifications, loading } = useNotifications({
-    filter: "all",
-  });
+  const { notifications, loading, unreadCount, markAllAsRead } =
+    useNotifications({
+      filter: "all",
+    });
 
-  //const unreadCount = implement this in backend, add isRead field
+  const handleNotificationClick = async () => {
+    setIsOpen(false);
+  };
+
+  // Automatically mark all as read when dropdown opens and there are unread notifications
+  useEffect(() => {
+    if (isOpen && unreadCount > 0) {
+      markAllAsRead();
+    }
+  }, [isOpen, unreadCount, markAllAsRead]);
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -41,7 +52,14 @@ export function NotificationDropdown({ className }: NotificationDropdownProps) {
           )}
         >
           <Bell className="h-5 w-5" />
-          <span className="sr-only">Notifications</span>
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-xs font-medium text-white flex items-center justify-center">
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
+          <span className="sr-only">
+            Notifications {unreadCount > 0 && `(${unreadCount} unread)`}
+          </span>
         </Button>
       </DropdownMenuTrigger>
 
@@ -83,7 +101,7 @@ export function NotificationDropdown({ className }: NotificationDropdownProps) {
                   <NotificationCardCompact
                     key={notification.id}
                     notification={notification}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => handleNotificationClick()}
                   />
                 ))}
               </div>
@@ -114,10 +132,10 @@ export function NotificationDropdown({ className }: NotificationDropdownProps) {
                 className="w-full justify-between h-8 text-sm hover:bg-muted"
                 asChild
               >
-                <a href="/app/notifications">
+                <Link href="/app/notifications">
                   View All Notifications
                   <ChevronRight className="w-4 h-4" />
-                </a>
+                </Link>
               </Button>
             </div>
           </>

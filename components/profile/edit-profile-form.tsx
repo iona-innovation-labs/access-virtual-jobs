@@ -5,10 +5,8 @@ import React from "react";
 import useSWR from "swr";
 import { useFieldArray } from "react-hook-form";
 
-import { useUserInfo } from "@/hooks/use-user-info";
 import { EditProfileSchema } from "@/lib/validation/update-profile-form-validation";
 import { Form } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useProfileDetails } from "@/context/profile-details-context";
 import { useToast } from "@/hooks/use-toast";
@@ -17,7 +15,6 @@ import { AppError } from "@/utils/app-error";
 import { IProfileResponse } from "@/types/profiles";
 
 // Form Section Components
-import { PersonalInfoSection } from "./edit-section/PersonalInfoSection";
 import { ProfessionalInfoSection } from "./edit-section/ProfessionalInfoSection";
 import { ContactInfoSection } from "./edit-section/ContactInfoSection";
 import { AssessmentSection } from "./edit-section/AssessmentSection";
@@ -27,7 +24,6 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function EditProfileForm() {
   const profileDetailsForm = useProfileDetails();
-  const { userInfo, isLoading } = useUserInfo();
   const { toast } = useToast();
   const [loading, setLoading] = React.useState<boolean>(false);
   const { data, error } = useSWR<IProfileResponse, AppError>(
@@ -80,6 +76,7 @@ export default function EditProfileForm() {
   }, [data]);
 
   const onSubmit = async (formData: EditProfileSchema) => {
+    console.log("SUBMIT");
     setLoading(true);
     try {
       const response = await fetchApi<any>("/profile/update-profile", {
@@ -116,10 +113,10 @@ export default function EditProfileForm() {
   if (error) {
     return (
       <Card className="max-w-3xl mx-auto p-8 text-center">
-        <h2 className="text-lg font-semibold text-red-600 mb-2">
+        <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">
           Error Loading Profile
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-200">
           Failed to load profile data. Please refresh the page.
         </p>
       </Card>
@@ -149,23 +146,20 @@ export default function EditProfileForm() {
           onSubmit={profileDetailsForm.handleSubmit(onSubmit)}
           className="space-y-8"
         >
-          {/* Personal Information */}
-          <PersonalInfoSection
-            userInfo={userInfo}
-            isUserLoading={isLoading}
-            loading={loading}
-          />
-
           {/* Professional Information */}
           <ProfessionalInfoSection
             control={profileDetailsForm.control}
             loading={loading}
+            data={profileDetailsForm.getValues()}
+            onUpdate={profileDetailsForm.handleSubmit(onSubmit)}
           />
 
           {/* Contact Information */}
           <ContactInfoSection
             control={profileDetailsForm.control}
             loading={loading}
+            data={profileDetailsForm.getValues()}
+            onUpdate={profileDetailsForm.handleSubmit(onSubmit)}
             {...fieldArrayProps}
           />
 
@@ -175,24 +169,28 @@ export default function EditProfileForm() {
             loading={loading}
             assessmentFields={assessmentFields}
             contentFields={contentFields}
+            data={profileDetailsForm.getValues()}
+            onUpdate={profileDetailsForm.handleSubmit(onSubmit)}
           />
 
           {/* Technical Information */}
           <TechnicalInfoSection
             control={profileDetailsForm.control}
             loading={loading}
-            data={data}
+            data={profileDetailsForm.getValues()}
+            onUpdate={profileDetailsForm.handleSubmit(onSubmit)}
           />
 
           {/* Additional Information */}
           <AdditionalInfoSection
             control={profileDetailsForm.control}
             loading={loading}
-            data={data}
+            data={profileDetailsForm.getValues()}
             workSampleFields={workSampleFields}
+            onUpdate={profileDetailsForm.handleSubmit(onSubmit)}
           />
 
-          {/* Submit Button */}
+          {/* Submit Button 
           <div className="flex justify-center pt-8">
             <Button
               disabled={loading}
@@ -210,6 +208,7 @@ export default function EditProfileForm() {
               )}
             </Button>
           </div>
+          */}
         </form>
       </Form>
     </div>

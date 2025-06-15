@@ -1,32 +1,40 @@
 import React from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { User, ExternalLink } from "lucide-react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { Briefcase, MapPin, Calendar, Edit, Eye } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
-interface PersonalInfoSectionProps {
+interface ProfileHeaderProps {
   userInfo: any;
+  profileData?: any;
   isUserLoading: boolean;
-  loading: boolean;
+  showEditButton?: boolean;
 }
 
 export const PersonalInfoSection = ({
   userInfo,
+  profileData,
   isUserLoading,
-}: PersonalInfoSectionProps) => {
+}: ProfileHeaderProps) => {
   if (isUserLoading) {
     return (
-      <Card className="animate-pulse">
-        <CardHeader>
-          <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
-            <div className="space-y-2">
-              <div className="h-4 bg-gray-200 rounded w-32"></div>
-              <div className="h-4 bg-gray-200 rounded w-24"></div>
+      <Card className="w-full animate-pulse border-border py-0">
+        <CardContent className="p-0">
+          {/* Background Image Skeleton */}
+          <div className="h-48 bg-muted rounded-t-lg"></div>
+          <div className="p-8">
+            <div className="flex flex-col items-center space-y-6 -mt-16">
+              <div className="w-28 h-28 bg-muted rounded-full ring-4 ring-background"></div>
+              <div className="space-y-3 text-center w-full">
+                <div className="h-6 bg-muted rounded w-3/4 mx-auto"></div>
+                <div className="h-4 bg-muted rounded w-1/2 mx-auto"></div>
+              </div>
+              <div className="w-full space-y-3">
+                <div className="h-4 bg-muted rounded w-full"></div>
+                <div className="h-4 bg-muted rounded w-5/6"></div>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -37,67 +45,169 @@ export const PersonalInfoSection = ({
   const fullName =
     userInfo?.firstName && userInfo?.lastName
       ? `${userInfo.firstName} ${userInfo.lastName}`
-      : userInfo?.username || "User";
+      : userInfo?.name || userInfo?.username || "User";
+
+  const initials = fullName
+    .split(" ")
+    .map((name: string) => name.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  // Format job search status
+  const formatJobSearchStatus = (status: string) => {
+    if (!status) return null;
+    return status
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  // Get status color based on job search status
+  const getStatusColor = (status: string) => {
+    const lowerStatus = status?.toLowerCase();
+    if (lowerStatus?.includes("active") || lowerStatus?.includes("looking")) {
+      return "text-green-700 bg-green-50 border-green-200";
+    } else if (
+      lowerStatus?.includes("ready") ||
+      lowerStatus?.includes("interview")
+    ) {
+      return "text-blue-700 bg-blue-50 border-blue-200";
+    } else if (
+      lowerStatus?.includes("passive") ||
+      lowerStatus?.includes("considering")
+    ) {
+      return "text-yellow-700 bg-yellow-50 border-yellow-200";
+    } else if (
+      lowerStatus?.includes("not") ||
+      lowerStatus?.includes("unavailable")
+    ) {
+      return "text-gray-600 bg-gray-50 border-gray-200";
+    }
+    return "text-blue-700 bg-blue-50 border-blue-200";
+  };
+
+  // Format member since date
+  const formatMemberSince = (date: string | Date) => {
+    if (!date) return null;
+    const memberDate = new Date(date);
+    return memberDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+    });
+  };
+
+  const jobSearchStatus =
+    profileData?.jobSearchStatus || userInfo?.jobSearchStatus;
+  const jobTitle = profileData?.jobTitle || "Professional";
+  const memberSince = formatMemberSince(userInfo?.createdAt);
 
   return (
-    <Card className="shadow-sm border-0">
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-              <User className="w-4 h-4 text-brand" />
-            </div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              Personal Information
-            </h2>
-          </div>
-          <Link
-            href="/app/settings/general"
-            className="flex items-center space-x-1 text-sm text-brand hover:text-brand-dark transition-colors"
-          >
-            <span>Update General Details</span>
-            <ExternalLink className="w-3 h-3" />
-          </Link>
-        </div>
-      </CardHeader>
+    <Card className="w-full mx-auto border-none py-0 shadow-sm bg-card overflow-hidden">
+      <CardContent className="p-0">
+        {/* Background Cover Image */}
+        <div className="relative h-48 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+          <Image
+            src="https://images.unsplash.com/photo-1618397746666-63405ce5d015?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Profile Cover"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/20"></div>
 
-      <CardContent className="space-y-6">
-        {/* Profile Image */}
-        <div>
-          <Label className="text-sm font-medium text-gray-700 mb-3 block">
-            Profile Image
-          </Label>
-          <div className="flex items-center space-x-4">
-            {userInfo?.image ? (
-              <Image
-                src={userInfo.image}
-                alt={fullName}
-                className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-                width={64}
-                height={64}
-              />
-            ) : (
-              <div className="w-16 h-16 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
-                <User className="w-7 h-7 text-brand" />
-              </div>
-            )}
-            <div>
-              <p className="text-sm text-gray-600">
-                Profile image is managed in general settings
-              </p>
-            </div>
+          <div className="absolute top-4 right-4 flex space-x-2">
+            <Button
+              size="sm"
+              variant="outline"
+              className="hover:bg-background text-foregorund"
+            >
+              <Link
+                href={`/app/settings/general`}
+                target="_blank"
+                className=" flex items-center hover:bg-background"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+              </Link>
+              Edit Profile
+            </Button>
+            <Button size="sm" variant="outline" className="hover:bg-background">
+              <Link
+                href={`/profile/${userInfo.id}`}
+                target="_blank"
+                className=" flex items-center hover:bg-background"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                Public View
+              </Link>
+            </Button>
           </div>
         </div>
 
-        {/* Full Name */}
-        <div>
-          <Label className="text-sm font-medium text-gray-700 mb-2 block">
-            Full Name
-          </Label>
-          <p className="text-gray-900 font-medium">{fullName}</p>
-          <p className="text-xs text-gray-500 mt-1">
-            Name can be updated in general settings
-          </p>
+        {/* Profile Content */}
+        <div className="p-2 sm:p-4">
+          <div className="flex flex-col items-center space-y-6 -mt-20">
+            {/* Profile Image */}
+            <div className="relative">
+              {userInfo?.image ? (
+                <Image
+                  src={userInfo.image}
+                  alt={fullName}
+                  className="w-32 h-32 rounded-full object-cover border-4 border-background ring-4 ring-border/20"
+                  width={128}
+                  height={128}
+                />
+              ) : (
+                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-4 border-background ring-4 ring-border/20">
+                  <span className="text-white text-3xl font-bold">
+                    {initials}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Name and Title */}
+            <div className="text-center space-y-2">
+              <h1 className="text-3xl font-bold text-foreground">{fullName}</h1>
+              {jobTitle && (
+                <p className="text-lg text-muted-foreground font-medium">
+                  {jobTitle}
+                </p>
+              )}
+              {userInfo?.username && (
+                <p className="text-muted-foreground text-sm font-medium flex items-center justify-center gap-2">
+                  {userInfo.email}
+                </p>
+              )}
+            </div>
+
+            {/* Status and Info Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {jobSearchStatus && (
+                <Badge
+                  variant="outline"
+                  className={`px-3 py-1.5 text-sm font-medium border ${getStatusColor(jobSearchStatus)}`}
+                >
+                  <Briefcase className="w-4 h-4 mr-2" />
+                  {formatJobSearchStatus(jobSearchStatus)}
+                </Badge>
+              )}
+
+              {userInfo.countryOfResidence && (
+                <Badge variant="outline" className="px-3 py-1.5 text-sm">
+                  <MapPin className="w-4 h-4 mr-2" />
+                  {userInfo.countryOfResidence}
+                </Badge>
+              )}
+
+              {memberSince && (
+                <Badge variant="outline" className="px-3 py-1.5 text-sm">
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Member since {memberSince}
+                </Badge>
+              )}
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

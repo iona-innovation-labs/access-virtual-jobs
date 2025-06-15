@@ -1,18 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { z } from "zod";
 
 import { db } from "@/database";
 import { users } from "@/database/schema/users";
 import { log } from "@/lib/logs";
-import { generalSchema } from "@/lib/validation/general-settings-form-validation";
 import { sendEmailNotification } from "@/services/send-email-notif";
 import { auth } from "@/auth";
 
-export async function POST(req: NextRequest) {
-  try {
-    const session = await auth();
+// Email-only validation schema
+const emailOnlySchema = z.object({
+  email: z.string().email("Invalid email format").min(1, "Email is required"),
+});
 
+// Profile fields validation schema (excluding email)
+const profileFieldsSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  username: z.string().min(1, "Username is required"),
+  gender: z.string().optional().nullable(),
+  countryOfResidence: z.string().optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(),
+});
+
+export async function POST(req: NextRequest) {
+  const session = await auth();
+  try {
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "Unauthorized", message: "Please login.", ok: false },
@@ -21,8 +35,42 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const parsedData = generalSchema.safeParse(body);
     log("POST /api/settings/general", "info", { body });
+
+    // Determine update type based on request body
+    const isEmailOnly = Object.keys(body).length === 1 && "email" in body;
+    const isProfileFields =
+      !("email" in body) &&
+      Object.keys(body).some((key) =>
+        [
+          "firstName",
+          "lastName",
+          "username",
+          "gender",
+          "countryOfResidence",
+          "dateOfBirth",
+        ].includes(key)
+      );
+
+    if (!isEmailOnly && !isProfileFields) {
+      return NextResponse.json(
+        {
+          error: "Invalid Request",
+          message:
+            "Request must contain either email only OR profile fields only (not both).",
+          ok: false,
+        },
+        { status: 400 }
+      );
+    }
+
+    // Validate based on update type
+    let parsedData;
+    if (isEmailOnly) {
+      parsedData = emailOnlySchema.safeParse(body);
+    } else {
+      parsedData = profileFieldsSchema.safeParse(body);
+    }
 
     if (!parsedData.success) {
       return NextResponse.json(
@@ -34,8 +82,6 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-
-    const { firstName, lastName, email, username } = parsedData.data;
 
     const currentUser = await db.query.users.findFirst({
       where: eq(users.id, session.user.id),
@@ -52,11 +98,24 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const changes: string[] = [];
-    const oldEmail = currentUser.email;
-    const emailChanged = email !== oldEmail;
+    // Handle EMAIL ONLY update
+    if (isEmailOnly) {
+      const { email } = parsedData.data as z.infer<typeof emailOnlySchema>;
+      const oldEmail = currentUser.email;
 
-    if (emailChanged) {
+      // Check if email is actually changing
+      if (email === oldEmail) {
+        return NextResponse.json(
+          {
+            error: "No changes",
+            message: "New email is the same as current email.",
+            ok: false,
+          },
+          { status: 400 }
+        );
+      }
+
+      // Check if new email already exists
       const existingUser = await db.query.users.findFirst({
         where: eq(users.email, email),
       });
@@ -72,75 +131,48 @@ export async function POST(req: NextRequest) {
           { status: 400 }
         );
       }
-    }
 
-    if (firstName !== currentUser.firstName) {
-      changes.push(`First name: "${currentUser.firstName}" → "${firstName}"`);
-    }
-    if (lastName !== currentUser.lastName) {
-      changes.push(`Last name: "${currentUser.lastName}" → "${lastName}"`);
-    }
-    if (emailChanged) {
-      changes.push(`Email: "${oldEmail}" → "${email}"`);
-    }
-    if (username !== currentUser.name) {
-      changes.push(`Username: "${currentUser.name}" → "${username}"`);
-    }
-
-    let updateData: any = {
-      firstName,
-      lastName,
-      email,
-      name: username,
-    };
-
-    if (emailChanged) {
+      // Generate verification token
       const token = nanoid();
-      const expires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+      const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
 
-      updateData = {
-        ...updateData,
-        isEmailVerified: false,
-        verificationCode: token,
-        verificationCodeExpires: expires,
-      };
-    }
+      // Update user with new email and verification details
+      await db
+        .update(users)
+        .set({
+          email,
+          isEmailVerified: false,
+          verificationCode: token,
+          verificationCodeExpires: expires,
+        })
+        .where(eq(users.id, session.user.id));
 
-    await db.update(users).set(updateData).where(eq(users.id, session.user.id));
-
-    if (changes.length > 0) {
+      // Send email notifications
       try {
-        const notificationEmail = emailChanged ? oldEmail : email;
-        const emailSubject = "Profile Updated - AVS Applicant Portal";
-        const emailMessage = `Hi ${firstName},
-
-Your AVS Applicant Portal profile has been successfully updated.
-
-Changes made:
-${changes.map((change) => `• ${change}`).join("\n")}
-
-Updated on: ${new Date().toLocaleString()}
-${emailChanged ? `\nNote: Future notifications will be sent to your new email address: ${email}` : ""}
-
-If you did not make these changes, please contact our support team immediately at support@accessvirtualstaffing.com.
-
-Thank you for keeping your profile up to date.`;
-
+        // Notify old email about the change
         await sendEmailNotification({
-          to: [notificationEmail],
-          subject: emailSubject,
-          message: emailMessage,
+          to: [oldEmail],
+          subject: "Email Address Changed - AVS Applicant Portal",
+          message: `Hi ${currentUser.firstName || "User"},
+
+Your email address has been changed from ${oldEmail} to ${email}.
+
+Changed on: ${new Date().toLocaleString()}
+
+If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.
+
+Future notifications will be sent to your new email address.`,
           footer:
-            "If you didn't make these changes, please contact support immediately.",
+            "If you didn't make this change, please contact support immediately.",
         });
 
-        if (emailChanged) {
-          const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${updateData.verificationCode}">Verify your new email address</a>`;
+        // Send verification email to new address
+        const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your new email address</a>`;
 
-          await sendEmailNotification({
-            to: [email],
-            subject: "Verify Your New Email Address - AVS Applicant Portal",
-            message: `Hi ${firstName},
+        await sendEmailNotification({
+          to: [email],
+          subject: "Verify Your New Email Address - AVS Applicant Portal",
+          message: `Hi ${currentUser.firstName || "User"},
 
 Your email address has been updated to this address (${email}).
 
@@ -153,17 +185,159 @@ New email: ${email}
 Updated on: ${new Date().toLocaleString()}
 
 If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.`,
-            footer:
-              "This link will expire in 24 hours. If you didn't make this change, please contact support immediately.",
-          });
-        }
+          footer:
+            "This link will expire in 24 hours. If you didn't make this change, please contact support immediately.",
+        });
 
-        log("Profile update email notifications sent", "info", {
+        log("Email update notifications sent", "info", {
+          userId: session.user.id,
+          oldEmail,
+          newEmail: email,
+        });
+      } catch (emailError) {
+        log("Failed to send email update notifications", "error", {
+          error: emailError,
+          userId: session.user.id,
+          oldEmail,
+          newEmail: email,
+        });
+      }
+
+      return NextResponse.json({
+        message:
+          "Email updated successfully! Please check your new email to verify it.",
+        updateType: "email",
+        requiresVerification: true,
+        newEmail: email,
+        ok: true,
+      });
+    }
+
+    // Handle PROFILE FIELDS update
+    else {
+      const {
+        firstName,
+        lastName,
+        username,
+        gender,
+        countryOfResidence,
+        dateOfBirth,
+      } = parsedData.data as z.infer<typeof profileFieldsSchema>;
+
+      // Check if username is taken by another user (if changed)
+      if (username !== currentUser.name) {
+        const existingUser = await db.query.users.findFirst({
+          where: eq(users.name, username),
+        });
+
+        if (existingUser) {
+          return NextResponse.json(
+            {
+              error: "Username already exists",
+              message: "This username is already taken by another user.",
+              ok: false,
+            },
+            { status: 400 }
+          );
+        }
+      }
+
+      // Track changes for notification
+      const changes: string[] = [];
+
+      if (firstName !== currentUser.firstName) {
+        changes.push(`First name: "${currentUser.firstName}" → "${firstName}"`);
+      }
+      if (lastName !== currentUser.lastName) {
+        changes.push(`Last name: "${currentUser.lastName}" → "${lastName}"`);
+      }
+      if (username !== currentUser.name) {
+        changes.push(`Username: "${currentUser.name}" → "${username}"`);
+      }
+      if (gender !== currentUser.gender) {
+        changes.push(
+          `Gender: "${currentUser.gender || "Not specified"}" → "${gender || "Not specified"}"`
+        );
+      }
+      if (countryOfResidence !== currentUser.countryOfResidence) {
+        changes.push(
+          `Country: "${currentUser.countryOfResidence || "Not specified"}" → "${countryOfResidence || "Not specified"}"`
+        );
+      }
+
+      // Handle date of birth comparison
+      const currentDateOfBirth = currentUser.dateOfBirth
+        ? new Date(currentUser.dateOfBirth).toISOString().split("T")[0]
+        : null;
+      const newDateOfBirth = dateOfBirth || null;
+      if (currentDateOfBirth !== newDateOfBirth) {
+        changes.push(
+          `Date of birth: "${currentDateOfBirth || "Not specified"}" → "${newDateOfBirth || "Not specified"}"`
+        );
+      }
+
+      // If no changes detected, return early
+      if (changes.length === 0) {
+        return NextResponse.json({
+          message: "No changes detected in profile data.",
+          updateType: "profile",
+          changesDetected: false,
+          ok: true,
+        });
+      }
+
+      // Update user profile (excluding email fields)
+      const updateData = {
+        firstName,
+        lastName,
+        name: username,
+        gender: gender || null,
+        countryOfResidence: countryOfResidence || null,
+        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : null,
+      };
+
+      await db
+        .update(users)
+        .set(updateData)
+        .where(eq(users.id, session.user.id));
+
+      // Send notification email about profile changes
+      try {
+        const emailSubject = "Profile Updated - AVS Applicant Portal";
+        const emailMessage = `Hi ${firstName},
+
+Your AVS Applicant Portal profile has been successfully updated.
+
+Changes made:
+${changes.map((change) => `• ${change}`).join("\n")}
+
+Updated on: ${new Date().toLocaleString()}
+
+If you did not make these changes, please contact our support team immediately at support@accessvirtualstaffing.com.
+
+Thank you for keeping your profile up to date.`;
+
+        await sendEmailNotification({
+          to: [currentUser.email],
+          subject: emailSubject,
+          message: emailMessage,
+          footer:
+            "If you didn't make these changes, please contact support immediately.",
+        });
+
+        log("Profile update email notification sent", "info", {
           userId: session.user.id,
           changesCount: changes.length,
-          emailChanged,
-          oldEmail: emailChanged ? oldEmail : undefined,
-          newEmail: email,
+          email: currentUser.email,
+          fieldsUpdated: {
+            firstName: firstName !== currentUser.firstName,
+            lastName: lastName !== currentUser.lastName,
+            username: username !== currentUser.name,
+            gender: gender !== currentUser.gender,
+            countryOfResidence:
+              countryOfResidence !== currentUser.countryOfResidence,
+            dateOfBirth: currentDateOfBirth !== newDateOfBirth,
+          },
         });
       } catch (emailError) {
         log("Failed to send profile update email", "error", {
@@ -171,24 +345,25 @@ If you did not make this change, please contact our support team immediately at 
           userId: session.user.id,
         });
       }
-    }
 
-    return NextResponse.json({
-      message: emailChanged
-        ? "General settings updated successfully! Please check your new email to verify it."
-        : "General settings updated successfully!",
-      emailChanged,
-      ok: true,
-    });
+      return NextResponse.json({
+        message: "Profile updated successfully!",
+        updateType: "profile",
+        changesCount: changes.length,
+        changes,
+        ok: true,
+      });
+    }
   } catch (error: any) {
-    log("Error updating general settings:", "error", {
+    log("Error updating settings:", "error", {
       error: error?.message || "",
+      userId: session?.user?.id,
     });
     return NextResponse.json(
       {
         error: "Internal Server Error",
         ok: false,
-        message: "Error updating general settings",
+        message: "Error updating settings",
       },
       { status: 500 }
     );

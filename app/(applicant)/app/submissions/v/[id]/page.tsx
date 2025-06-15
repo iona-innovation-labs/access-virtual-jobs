@@ -17,7 +17,7 @@ export default async function ViewJobSubmission({
   }
 
   return (
-    <div className="h-fit overflow-auto p-6 bg-white rounded-lg w-full mx-auto">
+    <div className="h-fit overflow-auto p-6 bg-background rounded-lg w-full mx-auto">
       <JobHeader
         jobApplication={{
           title: fetchedJobApplication.job.title,

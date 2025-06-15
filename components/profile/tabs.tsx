@@ -59,8 +59,8 @@ const ProfileTabs = () => {
                         isActive
                           ? "bg-brand text-white shadow-md"
                           : isCompleted
-                            ? "bg-green-500 text-white shadow-sm"
-                            : "bg-gray-100 text-gray-400"
+                            ? "bg-success text-white shadow-sm"
+                            : "bg-muted text-muted-foreground"
                       }
                     `}
                   >
@@ -92,8 +92,8 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand"
                                 : isCompleted
-                                  ? "text-green-600"
-                                  : "text-gray-500"
+                                  ? "text-success"
+                                  : "text-muted-foreground"
                             }
                           `}
                         >
@@ -106,8 +106,8 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand/70"
                                 : isCompleted
-                                  ? "text-green-500"
-                                  : "text-gray-400"
+                                  ? "text-success"
+                                  : "text-muted-foreground"
                             }
                           `}
                         >
@@ -118,7 +118,7 @@ const ProfileTabs = () => {
                       {/* Status Badge */}
                       <div className="flex-shrink-0">
                         {isCompleted && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-success/10 text-success">
                             Complete
                           </span>
                         )}
@@ -128,7 +128,7 @@ const ProfileTabs = () => {
                           </span>
                         )}
                         {isUpcoming && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
                             Pending
                           </span>
                         )}
@@ -143,11 +143,7 @@ const ProfileTabs = () => {
                     <div
                       className={`
                         w-full h-4 transition-all duration-500
-                        ${
-                          index < currentStepIndex
-                            ? "bg-green-500"
-                            : "bg-gray-200"
-                        }
+                        ${index < currentStepIndex ? "bg-success" : "bg-border"}
                       `}
                     />
                   </div>
@@ -169,7 +165,7 @@ const ProfileTabs = () => {
               return (
                 <div key={tab.path} className="flex-1 relative">
                   {/* Step */}
-                  <div className="flex flex-col items-center relative z-10 bg-white">
+                  <div className="flex flex-col items-center relative z-10 bg-card">
                     <Button
                       variant="ghost"
                       className="flex flex-col items-center p-2 hover:bg-transparent group transition-all duration-200 w-full"
@@ -182,8 +178,8 @@ const ProfileTabs = () => {
                             isActive
                               ? "bg-brand text-white shadow-md"
                               : isCompleted
-                                ? "bg-green-500 text-white shadow-sm"
-                                : "bg-gray-200 text-gray-500"
+                                ? "bg-success text-white shadow-sm"
+                                : "bg-muted text-muted-foreground"
                           }
                         `}
                       >
@@ -213,8 +209,8 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand"
                                 : isCompleted
-                                  ? "text-green-600"
-                                  : "text-gray-500"
+                                  ? "text-success"
+                                  : "text-muted-foreground"
                             }
                           `}
                         >
@@ -232,8 +228,8 @@ const ProfileTabs = () => {
                           h-full transition-all duration-500
                           ${
                             index < currentStepIndex
-                              ? "bg-green-500"
-                              : "bg-gray-200"
+                              ? "bg-success"
+                              : "bg-border"
                           }
                         `}
                       />
@@ -247,7 +243,7 @@ const ProfileTabs = () => {
       </div>
 
       {/* Desktop Layout - Full Horizontal */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block bg-background">
         <div className="relative">
           <div className="flex items-center justify-between">
             {tabs.map((tab, index) => {
@@ -255,9 +251,9 @@ const ProfileTabs = () => {
               const isCompleted = index < currentStepIndex;
 
               return (
-                <div key={tab.path} className="flex-1 relative">
+                <div key={tab.path} className="flex-1 relative bg-background">
                   {/* Step */}
-                  <div className="flex flex-col items-center relative z-10 bg-white px-4">
+                  <div className="flex flex-col items-center relative z-10 bg-background px-4">
                     <Button
                       variant="ghost"
                       className="flex flex-col items-center p-0 hover:bg-transparent group transition-all duration-200 w-auto h-auto"
@@ -270,8 +266,8 @@ const ProfileTabs = () => {
                             isActive
                               ? "bg-brand text-white shadow-lg shadow-brand/25"
                               : isCompleted
-                                ? "bg-green-500 text-white shadow-md"
-                                : "bg-gray-200 text-gray-500"
+                                ? "bg-success text-white shadow-md"
+                                : "bg-muted text-muted-foreground"
                           }
                         `}
                       >
@@ -301,8 +297,8 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand"
                                 : isCompleted
-                                  ? "text-green-600"
-                                  : "text-gray-500"
+                                  ? "text-success"
+                                  : "text-muted-foreground"
                             }
                           `}
                         >
@@ -315,8 +311,8 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand/70"
                                 : isCompleted
-                                  ? "text-green-500"
-                                  : "text-gray-400"
+                                  ? "text-success"
+                                  : "text-muted-foreground"
                             }
                           `}
                         >
@@ -334,8 +330,8 @@ const ProfileTabs = () => {
                           h-full transition-all duration-500
                           ${
                             index < currentStepIndex
-                              ? "bg-green-500"
-                              : "bg-gray-200"
+                              ? "bg-success"
+                              : "bg-border"
                           }
                         `}
                       />
@@ -349,12 +345,12 @@ const ProfileTabs = () => {
       </div>
 
       {/* Progress Summary for Mobile */}
-      <div className="block sm:hidden mt-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
+      <div className="block sm:hidden mt-4 pt-4 border-t border-border">
+        <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
           <span>
             Step {currentStepIndex + 1} of {tabs.length}
           </span>
-          <div className="w-16 h-1 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-16 h-1 bg-border rounded-full overflow-hidden">
             <div
               className="h-full bg-brand transition-all duration-300"
               style={{

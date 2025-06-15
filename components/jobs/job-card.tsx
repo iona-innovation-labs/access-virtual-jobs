@@ -3,7 +3,7 @@ import { Clock, Building2 } from "lucide-react";
 import { IJobListing } from "@/types/jobs";
 import JobCardApply from "./job-card-apply";
 
-const JobCard = ({
+const JobCard = async ({
   job,
   isPublic = false,
 }: {
@@ -44,22 +44,22 @@ const JobCard = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow duration-200 h-fit">
+    <div className="bg-card border border-border rounded-lg p-4 sm:p-5 lg:p-6 hover:shadow-md transition-shadow duration-200 h-fit">
       {/* Header */}
       <div className="mb-3 sm:mb-4">
-        <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 leading-tight">
+        <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-foreground mb-2 sm:mb-3 leading-tight">
           {job.title}
         </h3>
         <hr className="my-2 w-10 sm:w-12 h-0.5 sm:h-1 rounded-full bg-brand" />
-        <div className="flex items-center text-gray-500 text-xs sm:text-sm">
+        <div className="flex items-center text-muted-foreground text-xs sm:text-sm">
           <Building2 className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 flex-shrink-0" />
-          <span className="truncate">{job.postedBy}</span>
+          <span className="truncate">Access Virtual Staffing</span>
         </div>
       </div>
 
       {/* Description */}
       <div className="mb-4 sm:mb-5">
-        <p className="text-gray-600 text-xs sm:text-sm leading-relaxed">
+        <p className="text-muted-foreground text-xs sm:text-sm leading-relaxed">
           {getDescriptionPreview(job.description || "")}
         </p>
       </div>
@@ -68,11 +68,11 @@ const JobCard = ({
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4">
         {/* Date and Pay - Stack on mobile, inline on larger screens */}
         <div className="flex items-center justify-between sm:justify-start sm:flex-1 sm:space-x-4">
-          <div className="flex items-center text-gray-500 text-xs sm:text-sm">
+          <div className="flex items-center text-muted-foreground text-xs sm:text-sm">
             <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
             <span>{formatDate(job.createdAt)}</span>
           </div>
-          <div className="text-base sm:text-lg font-semibold text-gray-900 sm:order-2">
+          <div className="text-base sm:text-lg font-semibold text-foreground sm:order-2">
             {job.pay}
           </div>
         </div>

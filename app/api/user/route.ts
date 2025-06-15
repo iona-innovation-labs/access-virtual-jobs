@@ -30,6 +30,7 @@ export async function GET() {
 
     return NextResponse.json({
       userInfo: {
+        id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
@@ -41,6 +42,10 @@ export async function GET() {
         jobSubmissionNotifPref: user.jobSubmissionNotifPref,
         isNewUser: user.isNewUser,
         jobSearchStatus: user.jobSearchStatus,
+        isEmailVerified: user.isEmailVerified,
+        dateOfBirth: user.dateOfBirth,
+        countryOfResidence: user.countryOfResidence,
+        gender: user.gender,
       },
       message: "User info fetched successfully.",
       ok: true,

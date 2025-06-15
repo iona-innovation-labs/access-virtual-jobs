@@ -9,6 +9,7 @@ export interface IUserResponse {
 }
 
 export interface IUserInfo {
+  id: string;
   email: string;
   profileImage?: string | null;
   image?: string | null;
@@ -20,4 +21,8 @@ export interface IUserInfo {
   jobSubmissionNotifPref: string;
   jobSearchStatus: string;
   isNewUser: boolean;
+  isEmailVerified: boolean;
+  gender: string;
+  countryOfResidence: string;
+  dateOfBirth: Date;
 }

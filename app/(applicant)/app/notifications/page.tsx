@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { useNotifications } from "@/hooks/use-notifications";
 import { INotification } from "@/types/notification";
 
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,7 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { NotificationCard } from "@/components/notifications/notification-card"; // Import the new component
-import { Bell, Filter, Loader2 } from "lucide-react";
+import { Bell, Filter } from "lucide-react";
 
 const notificationTypeLabels = {
   all: "All Notifications",
@@ -54,11 +53,9 @@ export default function NotificationsPage() {
   const { status } = useSession();
   const [filterType, setFilterType] = useState("all");
 
-  const { notifications, loading, error, hasMore, loadMore } = useNotifications(
-    {
-      filter: filterType,
-    }
-  );
+  const { notifications, loading, error } = useNotifications({
+    filter: filterType,
+  });
 
   if (status === "loading") {
     return (
@@ -190,27 +187,6 @@ export default function NotificationsPage() {
                 </div>
               )}
             </div>
-
-            {/* Load More Button */}
-            {hasMore && (
-              <div className="flex justify-center pt-8 mt-8 border-t border-gray-200">
-                <Button
-                  variant="outline"
-                  onClick={loadMore}
-                  disabled={loading}
-                  className="min-w-32 border-gray-300 hover:bg-gray-50"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Loading...
-                    </>
-                  ) : (
-                    "Load More"
-                  )}
-                </Button>
-              </div>
-            )}
           </div>
         </Card>
       </div>
