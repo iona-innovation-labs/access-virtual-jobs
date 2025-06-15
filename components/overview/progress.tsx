@@ -108,7 +108,7 @@ const Stepper = () => {
           </span>
 
           <Button
-            onClick={() => router.push("/app/profile")}
+            onClick={() => router.push("/app/profile/overview")}
             className={`${
               isProfileComplete
                 ? "bg-green-600 hover:bg-green-700"

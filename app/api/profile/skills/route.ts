@@ -152,9 +152,9 @@ export async function POST(req: NextRequest) {
           db.insert(skills).values({
             profileId: profile.id,
             name: skill.name,
-            category: skill.category,
-            proficiencyLevel: skill.proficiencyLevel,
-            yearsOfExperience: skill.yearsOfExperience,
+            category: skill.category || null,
+            starRating: skill.starRating || 1, // Updated to use starRating
+            yearsOfExperience: skill.yearsOfExperience || null,
           })
         )
       );

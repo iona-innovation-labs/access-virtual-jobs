@@ -90,7 +90,7 @@ const Profile = () => {
 
           {/* Edit Button */}
           <Button
-            onClick={() => router.push("/app/profile")}
+            onClick={() => router.push("/app/profile/edit")}
             variant="outline"
             size="sm"
             className="border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
