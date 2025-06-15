@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-
 import { db } from "@/database";
 import { fileUploads, profiles } from "@/database/schema/profiles";
 import { users } from "@/database/schema/users";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 import { log } from "@/lib/logs";
 import { auth } from "@/auth";
+
+const MAX_FILES_PER_TYPE = 5;
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { type, publicId, fileUrl, filename } = await req.json();
-    log("POST /api/profile/upload-files", "info", {
+    log("POST /api/profile/upload-file", "info", {
       type,
       publicId,
       fileUrl,
@@ -56,6 +57,28 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Not Found", message: "Profile not found.", ok: false },
         { status: 404 }
+      );
+    }
+
+    // Check current file count for this type and profile
+    const currentFileCount = await db
+      .select({ count: count() })
+      .from(fileUploads)
+      .where(
+        eq(fileUploads.profileId, profile.id) && eq(fileUploads.type, type)
+      );
+
+    const fileCount = currentFileCount[0]?.count || 0;
+
+    // Validate file limit
+    if (fileCount >= MAX_FILES_PER_TYPE) {
+      return NextResponse.json(
+        {
+          error: "File limit exceeded",
+          message: `Maximum ${MAX_FILES_PER_TYPE} files allowed for ${type} type.`,
+          ok: false,
+        },
+        { status: 400 }
       );
     }
 
