@@ -12,7 +12,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { auth } from "@/auth";
 import { useUserInfo } from "@/hooks/use-user-info";
 
 export type UserProfileData = {
@@ -23,11 +22,6 @@ export type UserProfileData = {
   gender?: "male" | "female" | "other" | "prefer_not_to_say";
   dateOfBirth?: string;
 };
-
-interface UserProfileProps {
-  loading?: boolean;
-  data?: UserProfileData;
-}
 
 interface ViewItemProps {
   label: string;

@@ -110,7 +110,7 @@ export const OnboardingModal = () => {
               Welcome to Access Virtual Staffing!
             </h2>
             <p className="text-sm text-gray-600">
-              Let's get you started in just a few steps
+              Let&apos;s get you started in just a few steps
             </p>
           </div>
 

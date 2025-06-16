@@ -336,8 +336,6 @@ export async function GET(
       fileUploads: [],
     };
 
-    console.log(publicProfile)
-
     return NextResponse.json({
       message: "Public profile retrieved successfully",
       profile: publicProfile,

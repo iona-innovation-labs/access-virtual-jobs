@@ -11,7 +11,6 @@ import { useUserInfo } from "@/hooks/use-user-info";
 import { IProfileResponse } from "@/types/profiles";
 import { AppError } from "@/utils/app-error";
 import { fetchApi } from "@/services/fetch-api";
-import { useProfile } from "@/hooks/use-profile";
 
 const Profile = () => {
   const router = useRouter();
