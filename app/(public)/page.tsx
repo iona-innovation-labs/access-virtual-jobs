@@ -1,8 +1,8 @@
 // basic landing page
-// get auth session to check wether to render sign in and sign up button or profile creds
+// get auth session to check whether to render sign in and sign up button or profile creds
 
 import { auth } from "@/auth";
-import { SignOutButton } from "@/components/auth/sign-out-button";
+import { redirect } from "next/navigation";
 import Hero from "@/components/landing/hero";
 import JobCarousel from "@/components/landing/job-carousel";
 import Explainer from "@/components/landing/explainer";
@@ -75,13 +75,9 @@ export const metadata: Metadata = {
 export default async function LandingPage() {
   const session = await auth();
 
+  // Redirect authenticated users to the app dashboard
   if (session) {
-    return (
-      <div>
-        <p>Welcome {session.user?.name}</p>
-        <SignOutButton />
-      </div>
-    );
+    redirect("/app/overview");
   }
 
   return (
