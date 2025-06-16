@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/database";
 import { fileUploads, profiles } from "@/database/schema/profiles";
 import { users } from "@/database/schema/users";
-import { eq, count } from "drizzle-orm";
+import { eq, count, and } from "drizzle-orm";
 import { log } from "@/lib/logs";
 import { auth } from "@/auth";
 
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       .select({ count: count() })
       .from(fileUploads)
       .where(
-        eq(fileUploads.profileId, profile.id) && eq(fileUploads.type, type)
+        and(eq(fileUploads.profileId, profile.id), eq(fileUploads.type, type))
       );
 
     const fileCount = currentFileCount[0]?.count || 0;

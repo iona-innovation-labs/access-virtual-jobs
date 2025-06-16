@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useUserInfo } from "@/hooks/use-user-info";
 
 export type UserProfileData = {
   firstName?: string;
@@ -21,11 +22,6 @@ export type UserProfileData = {
   gender?: "male" | "female" | "other" | "prefer_not_to_say";
   dateOfBirth?: string;
 };
-
-interface UserProfileProps {
-  loading?: boolean;
-  data?: UserProfileData;
-}
 
 interface ViewItemProps {
   label: string;
@@ -51,14 +47,6 @@ const ViewItem = ({ label, icon, children, description }: ViewItemProps) => (
   </div>
 );
 
-const GenderLabels = {
-  male: "Male",
-  female: "Female",
-  other: "Other",
-  prefer_not_to_say: "Prefer not to say",
-};
-
-// Country mapping (simplified list)
 const CountryLabels: Record<string, string> = {
   US: "United States",
   CA: "Canada",
@@ -123,11 +111,9 @@ const formatDate = (dateString?: string) => {
   }
 };
 
-export const UserProfileSection = ({
-  loading = false,
-  data = {},
-}: UserProfileProps) => {
-  if (loading) {
+export const UserProfileSection = () => {
+  const { userInfo, isLoading: userLoading } = useUserInfo();
+  if (userLoading) {
     return (
       <Card className="w-full">
         <CardContent className="p-6">
@@ -194,27 +180,23 @@ export const UserProfileSection = ({
         </div>
 
         <div className="space-y-8">
-          {/* Personal Details Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* First Name */}
             <ViewItem
               label="First Name"
               icon={<User className="w-4 h-4 text-muted-foreground" />}
               description="Your given name"
             >
               <p className="text-base font-medium text-foreground">
-                {data.firstName || "Not specified"}
+                {userInfo?.firstName || "Not specified"}
               </p>
             </ViewItem>
-
-            {/* Last Name */}
             <ViewItem
               label="Last Name"
               icon={<User className="w-4 h-4 text-muted-foreground" />}
               description="Your family name"
             >
               <p className="text-base font-medium text-foreground">
-                {data.lastName || "Not specified"}
+                {userInfo?.lastName || "Not specified"}
               </p>
             </ViewItem>
 
@@ -226,44 +208,44 @@ export const UserProfileSection = ({
             >
               <div className="flex items-center gap-2">
                 <Badge variant="outline" className="font-mono">
-                  @{data.username || "not-set"}
+                  @{userInfo?.username || "not-set"}
                 </Badge>
               </div>
             </ViewItem>
 
-            {/* Country of Residence */}
             <ViewItem
               label="Country of Residence"
               icon={<MapPin className="w-4 h-4 text-muted-foreground" />}
               description="Where you currently live"
             >
               <p className="text-base font-medium text-foreground">
-                {data.countryOfResidence
-                  ? CountryLabels[data.countryOfResidence] ||
-                    data.countryOfResidence
+                {userInfo?.countryOfResidence
+                  ? CountryLabels[userInfo?.countryOfResidence] ||
+                    userInfo.countryOfResidence
                   : "Not specified"}
               </p>
             </ViewItem>
 
-            {/* Gender */}
             <ViewItem
               label="Gender"
               icon={<UserCircle className="w-4 h-4 text-muted-foreground" />}
               description="Your gender identity"
             >
               <p className="text-base font-medium text-foreground">
-                {data.gender ? GenderLabels[data.gender] : "Not specified"}
+                {userInfo?.gender}
               </p>
             </ViewItem>
 
-            {/* Date of Birth */}
             <ViewItem
               label="Date of Birth"
               icon={<Calendar className="w-4 h-4 text-muted-foreground" />}
               description="Your birth date"
             >
               <p className="text-base font-medium text-foreground">
-                {formatDate(data.dateOfBirth)}
+                {formatDate(
+                  (userInfo?.dateOfBirth as string | undefined) ??
+                    new Date().toISOString().split("T")[0]
+                )}
               </p>
             </ViewItem>
           </div>

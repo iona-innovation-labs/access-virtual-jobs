@@ -16,6 +16,7 @@ import { AssessmentContentSection } from "./sections/assessment";
 import { TechnicalSetupSection } from "./sections/technical";
 import { AdditionalInformationSection } from "./sections/additional";
 import { UserProfileSection } from "./sections/user-detail";
+import { ContactInformationSection } from "./sections/contact";
 
 export default function EditProfile() {
   const { profile, professionalProfile, loading, error } = useProfile();
@@ -67,22 +68,25 @@ export default function EditProfile() {
         initialData={{ profileDescription: profile?.profileDescription || "" }}
         loading={loading}
       />
-      <UserProfileSection
-        loading={false}
-        data={{
-          firstName: "John",
-          lastName: "Doe",
-          username: "johndoe123",
-          countryOfResidence: "US",
-          gender: "male",
-          dateOfBirth: "1990-01-01",
-        }}
-      />
+      <UserProfileSection />
       <ProfessionalProfileSection
         initialData={
           (professionalProfile ?? {}) as Partial<ProfessionalProfileFormData>
         }
         loading={false}
+      />
+      <ContactInformationSection
+        loading={loading}
+        initialData={{
+          address: profile?.address,
+          skypeId: profile?.skypeId,
+          dateOfBirth:
+            profile?.dateOfBirth instanceof Date
+              ? profile.dateOfBirth.toISOString().split("T")[0]
+              : (profile?.dateOfBirth ?? undefined),
+          phones: profile?.phones,
+          emails: profile?.emails,
+        }}
       />
       <PrescreeningQuestionsSection
         initialData={{

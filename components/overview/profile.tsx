@@ -45,9 +45,9 @@ const Profile = () => {
           <div className="flex items-center space-x-4">
             {/* Avatar */}
             <div className="relative">
-              {userInfo?.profileImage ? (
+              {userInfo?.image ? (
                 <Image
-                  src={userInfo.profileImage}
+                  src={userInfo.image}
                   alt={fullName}
                   className="w-16 h-16 rounded-full object-cover border-2 border-border"
                   width={64}

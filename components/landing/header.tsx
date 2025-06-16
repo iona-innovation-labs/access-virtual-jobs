@@ -62,6 +62,8 @@ export default function Header() {
                         <Image
                           src={session.user.image}
                           alt="Profile"
+                          width={50}
+                          height={50}
                           className="w-full h-full rounded-full object-cover"
                         />
                       ) : (

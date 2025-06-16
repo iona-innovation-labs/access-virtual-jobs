@@ -3,8 +3,7 @@ import { Metadata } from "next";
 import ApplicationShell from "@/components/layout/app-shell";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-//import { Toaster } from "@/components/ui/toaster";
-//import { OnboardingModal } from "@/components/on-boarding/on-boarding-modal";
+import { OnboardingModal } from "@/components/on-boarding/on-boarding-modal";
 
 export const metadata: Metadata = {
   title: {
@@ -43,6 +42,7 @@ export default async function AppRootLayout({
   return (
     <>
       <ApplicationShell>{children}</ApplicationShell>
+      <OnboardingModal />
     </>
   );
 }

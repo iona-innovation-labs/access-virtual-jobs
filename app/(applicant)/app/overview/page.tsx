@@ -29,8 +29,6 @@ export default async function Overview() {
     true
   );
 
-  console.log("positionsResponse", positionsResponse);
-
   const positions = Array.isArray(positionsResponse?.items)
     ? positionsResponse.items
     : [];
@@ -38,9 +36,6 @@ export default async function Overview() {
   return (
     <div className="h-fit overflow-auto flex items-center justify-center">
       <div className="container flex flex-col mt-4 gap-4 px-4 mb-24">
-        {/* <div className="w-full justify-end items-end py-2">
-            <h1 className=" text-end">Profile last updated on: <span className="font-medium">Feb 12, 2025</span></h1>
-          </div> */}
         <Stepper />
         <Profile />
         <RecommendedJobs positions={positions || []} />
