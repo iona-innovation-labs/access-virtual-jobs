@@ -11,6 +11,7 @@ import { useUserInfo } from "@/hooks/use-user-info";
 import { IProfileResponse } from "@/types/profiles";
 import { AppError } from "@/utils/app-error";
 import { fetchApi } from "@/services/fetch-api";
+import { useProfile } from "@/hooks/use-profile";
 
 const Profile = () => {
   const router = useRouter();
@@ -45,9 +46,9 @@ const Profile = () => {
           <div className="flex items-center space-x-4">
             {/* Avatar */}
             <div className="relative">
-              {userInfo?.profileImage ? (
+              {userInfo?.image ? (
                 <Image
-                  src={userInfo.profileImage}
+                  src={userInfo.image}
                   alt={fullName}
                   className="w-16 h-16 rounded-full object-cover border-2 border-border"
                   width={64}

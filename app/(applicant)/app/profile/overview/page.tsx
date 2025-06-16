@@ -71,7 +71,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 px-[5%] mx-auto">
+    <div className="grid grid-cols-1 lg:grid-cols-4 w-full gap-8 px-[5%] mx-auto">
       <div className="lg:col-span-4 gap-4 flex flex-col">
         <PersonalInfoSection
           profileData={profile}

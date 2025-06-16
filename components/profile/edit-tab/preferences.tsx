@@ -67,17 +67,7 @@ export default function EditProfile() {
         initialData={{ profileDescription: profile?.profileDescription || "" }}
         loading={loading}
       />
-      <UserProfileSection
-        loading={false}
-        data={{
-          firstName: "John",
-          lastName: "Doe",
-          username: "johndoe123",
-          countryOfResidence: "US",
-          gender: "male",
-          dateOfBirth: "1990-01-01",
-        }}
-      />
+      <UserProfileSection />
       <ProfessionalProfileSection
         initialData={
           (professionalProfile ?? {}) as Partial<ProfessionalProfileFormData>
