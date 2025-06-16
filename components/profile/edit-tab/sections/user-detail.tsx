@@ -53,12 +53,6 @@ const ViewItem = ({ label, icon, children, description }: ViewItemProps) => (
   </div>
 );
 
-const GenderLabels = {
-  male: "Male",
-  female: "Female",
-  other: "Other",
-  prefer_not_to_say: "Prefer not to say",
-};
 const CountryLabels: Record<string, string> = {
   US: "United States",
   CA: "Canada",
