@@ -200,7 +200,6 @@ export const UserProfileSection = () => {
               </p>
             </ViewItem>
 
-            {/* Username */}
             <ViewItem
               label="Username"
               icon={<AtSign className="w-4 h-4 text-muted-foreground" />}
@@ -248,6 +247,18 @@ export const UserProfileSection = () => {
                 )}
               </p>
             </ViewItem>
+          </div>
+        </div>
+
+        <div className="mt-6 p-4 bg-muted/50 rounded-md">
+          <div className="text-xs text-muted-foreground space-y-1">
+            <p className="font-medium">👤 Personal Information Tips:</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <p>• Keep your profile information up to date</p>
+              <p>• Choose a professional username for business use</p>
+              <p>• Accurate location helps with regional opportunities</p>
+              <p>• Complete profiles get better visibility</p>
+            </div>
           </div>
         </div>
       </CardContent>
