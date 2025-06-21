@@ -8,7 +8,7 @@ export interface IProfileResponse {
     whatStrengths: string;
     whatNeedImprovement: string;
     address: string;
-    skypeId: string;
+    whatsappId: string;
     dateOfBirth: string;
     hasPaypal: string;
     numberOfChildren: string;
