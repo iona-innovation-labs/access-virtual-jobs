@@ -68,44 +68,83 @@ export default function LoginPage() {
     }
 
     setLoading(true);
+    setFieldErrors({});
 
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
+      // First, validate credentials with our API
+      const validateResponse = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
 
-      if (res?.ok) {
-        toast({
-          title: "Welcome Back!",
-          description: "You have been successfully logged in.",
-          variant: "success",
-        });
-        router.push("/app/overview");
-      } else {
-        // Handle different error scenarios
-        if (res?.error === "CredentialsSignin") {
-          setFieldErrors({
-            email: "Invalid email or password",
-            password: "Invalid email or password",
-          });
+      const validateData = await validateResponse.json();
+
+      if (!validateResponse.ok) {
+        // Handle validation errors
+        if (validateData.fieldErrors) {
+          setFieldErrors(validateData.fieldErrors);
+        }
+
+        if (validateData.requiresVerification) {
           toast({
-            title: "Login Failed",
+            title: "Email Verification Required",
             description:
-              "Invalid email or password. Please check your credentials and try again.",
+              validateData.message ||
+              "Please verify your email before logging in.",
+            variant: "destructive",
+          });
+        } else if (validateData.suggestGoogle) {
+          toast({
+            title: "No Password Set",
+            description:
+              validateData.message +
+              " You can also use the Google login button above.",
             variant: "destructive",
           });
         } else {
           toast({
             title: "Login Failed",
-            description: "Something went wrong. Please try again.",
+            description: validateData.message || "Invalid email or password.",
             variant: "destructive",
           });
         }
+        return;
       }
-    } catch (error: any) {
+
+      // If validation passes, use Auth.js signIn
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.ok && !result.error) {
+        toast({
+          title: "Welcome Back!",
+          description: "You have been successfully logged in.",
+          variant: "default", // Changed from "success" to "default"
+        });
+        router.push("/app/overview");
+      } else {
+        // This shouldn't happen if our validation worked, but just in case
+        setFieldErrors({
+          email: "Authentication failed",
+          password: "Authentication failed",
+        });
+
+        toast({
+          title: "Authentication Failed",
+          description:
+            "Something went wrong during authentication. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       console.error("Login error:", error);
+
       toast({
         title: "Network Error",
         description:
@@ -114,6 +153,21 @@ export default function LoginPage() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await signIn("google", {
+        callbackUrl: "/app/overview",
+      });
+    } catch (error) {
+      console.error("Google login error:", error);
+      toast({
+        title: "Google Login Failed",
+        description: "Unable to login with Google. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -142,9 +196,7 @@ export default function LoginPage() {
                 variant="outline"
                 className="w-full"
                 type="button"
-                onClick={() =>
-                  signIn("google", { callbackUrl: "/app/overview" })
-                }
+                onClick={handleGoogleLogin}
                 disabled={loading}
               >
                 <svg
@@ -274,7 +326,7 @@ export default function LoginPage() {
           <p>
             By clicking continue, you agree to our{" "}
             <Link
-              href="/legal/terms-of-service"
+              href="/legal/terms-of-services"
               className="text-blue-600 hover:text-blue-800 underline underline-offset-4"
             >
               Terms of Service
