@@ -79,7 +79,7 @@ export default function EditProfile() {
         loading={loading}
         initialData={{
           address: profile?.address,
-          skypeId: profile?.skypeId,
+          whatsappId: profile?.whatsappId,
           dateOfBirth:
             profile?.dateOfBirth instanceof Date
               ? profile.dateOfBirth.toISOString().split("T")[0]

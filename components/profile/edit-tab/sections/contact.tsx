@@ -33,7 +33,7 @@ import { useToast } from "@/hooks/use-toast";
 // Zod Schema
 const ContactInformationSchema = z.object({
   address: z.string().min(1, "Address is required"),
-  skypeId: z.string().min(1, "Skype ID is required"),
+  whatsappId: z.string().min(1, "Whatsapp ID is required"),
   dateOfBirth: z
     .string()
     .min(1, "Date of birth is required")
@@ -121,7 +121,7 @@ export const ContactInformationSection = ({
   const defaultValues = useMemo(
     (): ContactInformationFormData => ({
       address: "",
-      skypeId: "",
+      whatsappId: "",
       phones: [{ number: "", type: "mobile" }],
       emails: [{ address: "", type: "personal" }],
       ...initialData,
@@ -277,16 +277,16 @@ export const ContactInformationSection = ({
                 />
               </InfoItem>
 
-              {/* Skype ID */}
+              {/* Whatsapp ID */}
               <InfoItem
-                label="Skype ID"
+                label="Whatsapp ID"
                 icon={
                   <MessageCircle className="w-4 h-4 text-muted-foreground" />
                 }
-                description="Your Skype username for video calls"
+                description="Your Whatsapp username for video calls"
               >
                 <Controller
-                  name="skypeId"
+                  name="whatsappId"
                   control={control}
                   render={({ field }) => (
                     <div>
@@ -294,11 +294,11 @@ export const ContactInformationSection = ({
                         {...field}
                         placeholder="e.g., john.smith.skype"
                         disabled={loading || isSubmitting}
-                        className={errors.skypeId ? "border-red-500" : ""}
+                        className={errors.whatsappId ? "border-red-500" : ""}
                       />
-                      {errors.skypeId && (
+                      {errors.whatsappId && (
                         <p className="text-red-500 text-xs mt-1">
-                          {errors.skypeId.message}
+                          {errors.whatsappId.message}
                         </p>
                       )}
                     </div>
@@ -536,7 +536,7 @@ export const ContactInformationSection = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <p>• Use international format for phone numbers</p>
                 <p>• Add multiple contact methods for flexibility</p>
-                <p>• Ensure Skype ID is active and accessible</p>
+                <p>• Ensure Whatsapp ID is active and accessible</p>
                 <p>• Primary email should be professional</p>
               </div>
             </div>

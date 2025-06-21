@@ -41,7 +41,7 @@ interface ContactInfoSectionProps {
   data: {
     address: string;
     dateOfBirth: Date | undefined;
-    skypeId: string;
+    whatsappId: string;
     phone: Array<{ type: string; number: string }>;
     emailAddress: Array<{ type: string; address: string }>;
   };
@@ -603,11 +603,11 @@ export const ContactInfoSection = ({
           />
 
           <SimpleInfoItem
-            label="Skype ID"
-            value={data.skypeId}
-            placeholder="Enter your Skype ID"
+            label="Whatsapp ID"
+            value={data.whatsappId}
+            placeholder="Enter your Whatsapp ID"
             loading={loading}
-            fieldName="skypeId"
+            fieldName="whatsappId"
             control={control}
             onSubmit={onUpdate}
             icon={<MessageCircle className="w-4 h-4 text-muted-foreground" />}

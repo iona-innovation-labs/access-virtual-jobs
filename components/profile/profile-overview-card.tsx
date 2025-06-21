@@ -17,7 +17,7 @@ type IProfileProps = {
     email: string;
     address: string;
     phoneNumber: string;
-    skypeID: string;
+    whatsappId: string;
     whyFit: string;
     whatStrengths: string;
     whatNeedImprovement: string;
@@ -66,7 +66,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
         <p className="text-gray-500">{profile.email}</p>
         <p className="text-gray-500">{profile.phoneNumber}</p>
         <p className="text-gray-500">{profile.address}</p>
-        <p className="text-gray-500">Skype ID: {profile.skypeID}</p>
+        <p className="text-gray-500">Whatsapp ID: {profile.whatsappId}</p>
 
         <Separator className="my-4" />
 

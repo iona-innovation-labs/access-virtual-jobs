@@ -10,7 +10,7 @@ interface Profile {
   userId: string;
   jobTitle?: string;
   address?: string;
-  skypeId?: string;
+  whatsappId?: string;
   jobSearchStatus?: string;
   desiredSalary?: string;
   jobType?: string;

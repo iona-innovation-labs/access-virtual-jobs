@@ -1,0 +1,1 @@
+ALTER TABLE "profiles" RENAME COLUMN "skype_id" TO "whatsapp_id";

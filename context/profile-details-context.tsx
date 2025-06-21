@@ -25,7 +25,7 @@ export const ProfileDetailsProvider = ({
       whatStrengths: "",
       whatNeedImprovement: "",
       address: "",
-      skypeId: "",
+      whatsappId: "",
       hasPaypal: "",
       phone: [{ type: "", number: "" }],
       emailAddress: [{ type: "", address: "" }],
