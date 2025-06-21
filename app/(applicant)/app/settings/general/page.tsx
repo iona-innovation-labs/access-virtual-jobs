@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import {
   CldUploadWidget,
@@ -48,6 +48,7 @@ import {
 } from "@/components/ui/select";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import Image from "next/image";
+import PlaceholderAvatar from "@/components/avatar";
 
 // Updated schema with new fields
 const generalSchema = z.object({
@@ -82,7 +83,11 @@ const genderOptions = [
 export default function GeneralSettings() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [formReady, setFormReady] = useState(false);
   const { toast } = useToast();
+
+  // Add ref to track if form has been initialized
+  const formInitialized = useRef(false);
 
   const { userInfo, error, isLoading } = useUserInfo();
 
@@ -98,9 +103,9 @@ export default function GeneralSettings() {
     },
   });
 
-  React.useEffect(() => {
-    if (userInfo) {
-      console.log(userInfo);
+  useEffect(() => {
+    if (userInfo && !formInitialized.current) {
+      console.log("Initializing form with USER: ", userInfo);
       const formData = {
         firstName: userInfo.firstName || "",
         lastName: userInfo.lastName || "",
@@ -111,7 +116,13 @@ export default function GeneralSettings() {
           ? new Date(userInfo.dateOfBirth).toISOString().split("T")[0]
           : "",
       };
+
       form.reset(formData);
+      formInitialized.current = true;
+
+      setTimeout(() => {
+        setFormReady(true);
+      }, 100);
     }
   }, [userInfo, form]);
 
@@ -206,9 +217,9 @@ export default function GeneralSettings() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || !formReady) {
     return (
-      <Card className="w-full max-w-2xl shadow-sm border-border">
+      <Card className="w-full shadow-none border-none">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
           <p className="text-center text-muted-foreground mt-4">
@@ -261,9 +272,14 @@ export default function GeneralSettings() {
                   height={80}
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
-                  <User className="w-8 h-8 text-brand" />
-                </div>
+                <PlaceholderAvatar
+                  name={
+                    `${userInfo?.firstName || ""} ${userInfo?.lastName || ""}`.trim() ||
+                    "User"
+                  }
+                  size="xl"
+                  className="border-2 border-border"
+                />
               )}
               {uploadingAvatar && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
@@ -425,7 +441,7 @@ export default function GeneralSettings() {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value || ""}
                         disabled={submitting}
                       >
                         <FormControl>
@@ -458,7 +474,7 @@ export default function GeneralSettings() {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value || ""}
                         disabled={submitting}
                       >
                         <FormControl>
