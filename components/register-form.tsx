@@ -395,7 +395,7 @@ export default function RegisterForm() {
                             <>
                               I agree to the{" "}
                               <Link
-                                href="/legal/terms-of-service"
+                                href="/legal/terms-of-services"
                                 className="text-blue-600 hover:underline"
                                 target="_blank"
                                 rel="noopener noreferrer"

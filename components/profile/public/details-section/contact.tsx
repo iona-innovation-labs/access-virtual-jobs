@@ -22,7 +22,7 @@ interface Email {
 
 interface Profile {
   emails?: Email[];
-  skypeId?: string;
+  whatsappId?: string;
 }
 
 interface ContactInformationProps {
@@ -32,7 +32,7 @@ interface ContactInformationProps {
 
 export const ContactInformation = ({ profile, loading = false }: ContactInformationProps) => {
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
-  const [copiedSkype, setCopiedSkype] = useState(false);
+  const [copiedWhatsapp, setCopiedWhatsapp] = useState(false);
   const [showAllEmails, setShowAllEmails] = useState(false);
 
   const copyToClipboard = async (text: string, type: 'email' | 'skype', email?: string) => {
@@ -43,8 +43,8 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
         setCopiedEmail(email);
         setTimeout(() => setCopiedEmail(null), 2000);
       } else if (type === 'skype') {
-        setCopiedSkype(true);
-        setTimeout(() => setCopiedSkype(false), 2000);
+        setCopiedWhatsapp(true);
+        setTimeout(() => setCopiedWhatsapp(false), 2000);
       }
     } catch (err) {
       console.error('Failed to copy text: ', err);
@@ -67,7 +67,7 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
               ))}
             </div>
           </div>
-          {/* Skype skeleton */}
+          {/* Whatsapp skeleton */}
           <div className="space-y-3">
             <div className="h-5 bg-muted rounded w-20 animate-pulse"></div>
             <div className="h-12 bg-muted rounded animate-pulse"></div>
@@ -147,8 +147,8 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
     );
   };
 
-  const renderSkypeCard = () => {
-    if (!profile.skypeId) return null;
+  const renderWhatsappCard = () => {
+    if (!profile.whatsappId) return null;
     
     return (
       <div className="w-full border border-border rounded-lg p-4 bg-card hover:bg-muted/50 transition-colors">
@@ -156,14 +156,14 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
               <MessageCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-              <span className="text-sm font-medium text-foreground">Skype ID</span>
+              <span className="text-sm font-medium text-foreground">Whatsapp ID</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground break-all">
-                {profile.skypeId}
+                {profile.whatsappId}
               </span>
               <a
-                href={`skype:${profile.skypeId}?call`}
+                href={`skype:${profile.whatsappId}?call`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
@@ -176,10 +176,10 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => copyToClipboard(profile.skypeId!, 'skype')}
+            onClick={() => copyToClipboard(profile.whatsappId!, 'skype')}
             className="ml-2 shrink-0"
           >
-            {copiedSkype ? (
+            {copiedWhatsapp ? (
               <Check className="w-4 h-4 text-emerald-600" />
             ) : (
               <Copy className="w-4 h-4" />
@@ -191,7 +191,7 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
   };
 
   // Check if there's any contact information
-  const hasContactInfo = emails.length > 0 || profile.skypeId;
+  const hasContactInfo = emails.length > 0 || profile.whatsappId;
 
   return (
     <Card className="w-full">
@@ -202,8 +202,8 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
           {hasContactInfo && (
             <Badge variant="outline" className="ml-auto text-xs bg-muted/50">
               {emails.length} email{emails.length !== 1 ? 's' : ''} 
-              {profile.skypeId && emails.length > 0 && " • "}
-              {profile.skypeId && "Skype"}
+              {profile.whatsappId && emails.length > 0 && " • "}
+              {profile.whatsappId && "Whatsapp"}
             </Badge>
           )}
         </CardTitle>
@@ -245,15 +245,15 @@ export const ContactInformation = ({ profile, loading = false }: ContactInformat
           </div>
         )}
 
-        {/* Skype Information */}
-        {profile.skypeId && (
+        {/* Whatsapp Information */}
+        {profile.whatsappId && (
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
               <p className="text-sm font-medium text-foreground">Messaging</p>
             </div>
             
-            {renderSkypeCard()}
+            {renderWhatsappCard()}
           </div>
         )}
 

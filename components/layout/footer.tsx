@@ -180,6 +180,6 @@ export const Footer11Defaults: Footer11Props = {
   footerText: `© 2024 - ${new Date().getFullYear()} Access Virtual Staffing. All rights reserved.`,
   footerLinks: [
     { title: "Privacy Policy", url: "/privacy-policy" },
-    { title: "Terms of Service", url: "/terms-of-service" },
+    { title: "Terms of Service", url: "/terms-of-services" },
   ],
 };

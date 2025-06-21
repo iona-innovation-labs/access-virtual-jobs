@@ -9,7 +9,7 @@ interface Profile {
   whatStrengths: string;
   whatNeedImprovement: string;
   address: string;
-  skypeId: string;
+  whatsappId: string;
   dateOfBirth: Date | null;
   hasPaypal: string;
   numberOfChildren: string;
