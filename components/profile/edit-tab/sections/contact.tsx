@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Label } from "@/components/ui/label";
 
 // Zod Schema
 const ContactInformationSchema = z.object({
@@ -254,7 +255,7 @@ export const ContactInformationSection = ({
               <InfoItem
                 label="Address"
                 icon={<MapPin className="w-4 h-4 text-muted-foreground" />}
-                description="Your current residential address"
+                description="Your current residential address "
               >
                 <Controller
                   name="address"
@@ -267,6 +268,12 @@ export const ContactInformationSection = ({
                         disabled={loading || isSubmitting}
                         className={errors.address ? "border-red-500" : ""}
                       />
+                      <div className="bg-muted/50 mt-2 bg-background rounded-sm p-1 text-foreground/50 px-2">
+                        <p className="text-xs text-muted-foreground">
+                          it needs to be similar to the Address Verification
+                          image you are going to upload
+                        </p>
+                      </div>
                       {errors.address && (
                         <p className="text-red-500 text-xs mt-1">
                           {errors.address.message}
@@ -306,34 +313,6 @@ export const ContactInformationSection = ({
                 />
               </InfoItem>
             </div>
-
-            {/* Date of Birth (Full Width) */}
-            <InfoItem
-              label="Date of Birth"
-              icon={<Calendar className="w-4 h-4 text-muted-foreground" />}
-              description="Your date of birth (for age verification purposes)"
-            >
-              <Controller
-                name="dateOfBirth"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <Input
-                      {...field}
-                      type="date"
-                      disabled={loading || isSubmitting}
-                      className={errors.dateOfBirth ? "border-red-500" : ""}
-                      value={formatDateForInput(field.value)}
-                    />
-                    {errors.dateOfBirth && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.dateOfBirth.message}
-                      </p>
-                    )}
-                  </div>
-                )}
-              />
-            </InfoItem>
 
             {/* Phone Numbers */}
             <InfoItem
