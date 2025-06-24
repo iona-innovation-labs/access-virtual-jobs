@@ -32,16 +32,10 @@ const menuItems = [
     description: "Personal information and profile",
   },
   {
-    name: "Email",
-    href: "/app/settings/email",
-    icon: Mail,
-    description: "Email settings",
-  },
-  {
     name: "Authentication",
     href: "/app/settings/authentication",
     icon: Key,
-    description: "Password and security settings",
+    description: "Password and email settings",
   },
   {
     name: "Notifications",

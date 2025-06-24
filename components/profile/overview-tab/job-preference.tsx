@@ -55,33 +55,27 @@ const getJobSearchStatusInfo = (status: string) => {
       color: "bg-green-100 text-green-700",
       icon: <CheckCircle className="w-3 h-3" />,
       priority: "high" as const,
-      description: "Immediately available for interviews",
+      description:
+        "Actively seeking opportunities and available to start immediately",
     },
-    actively_looking: {
-      label: "Actively Looking",
+    open_to_offers: {
+      label: "Open to Offers",
       color: "bg-blue-100 text-blue-700",
-      icon: <Search className="w-3 h-3" />,
-      priority: "high" as const,
-      description: "Actively searching for new opportunities",
-    },
-    passively_looking: {
-      label: "Passively Looking",
-      color: "bg-muted text-muted-foreground",
       icon: <Eye className="w-3 h-3" />,
       priority: "medium" as const,
-      description: "Open to the right opportunity",
+      description:
+        "Currently employed but open to discussing exciting new opportunities",
     },
-    not_looking: {
-      label: "Not Looking",
+    closed_to_offers: {
+      label: "Closed to Offers",
       color: "bg-muted text-muted-foreground",
       icon: <EyeOff className="w-3 h-3" />,
       priority: "low" as const,
-      description: "Not currently seeking new positions",
+      description: "Not currently looking for new opportunities",
     },
   };
-
   return (
-    statusMap[status as keyof typeof statusMap] || statusMap["not_looking"]
+    statusMap[status as keyof typeof statusMap] || statusMap["closed_to_offers"]
   );
 };
 

@@ -36,6 +36,7 @@ export const profiles = pgTable("profiles", {
   howHear: text("how_hear"),
   referrer: text("referrer"),
   jobType: text("job_type"),
+  jobCategory: text("job_category"),
   availability: text("availability"),
   jobSearchStatus: text("job_search_status")
     .default("ready_to_interview")
