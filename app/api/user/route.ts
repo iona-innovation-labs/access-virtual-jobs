@@ -36,7 +36,7 @@ export async function GET() {
         username: user.name,
         profileImage: user.profileImage,
         image: user.image,
-        role: user.role, // Include role in response
+        role: user.role,
         createdAt: user.createdAt,
         jobRecommendationNotifPref: user.jobRecommendationNotifPref,
         jobSubmissionNotifPref: user.jobSubmissionNotifPref,

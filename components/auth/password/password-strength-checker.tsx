@@ -74,59 +74,36 @@ export function PasswordStrengthChecker({
   ).length;
   const isOverallValid = satisfiedCount >= minRequiredChecks;
 
-  const getVariantStyles = () => {
-    switch (variant) {
-      case "compact":
-        return "p-2 bg-muted/30";
-      case "minimal":
-        return "p-0 bg-transparent border-0 shadow-none";
-      default:
-        return "p-3 bg-muted/50";
-    }
-  };
-
-  const getItemSpacing = () => {
-    switch (variant) {
-      case "compact":
-        return "space-y-1";
-      case "minimal":
-        return "space-y-1";
-      default:
-        return "space-y-2";
-    }
-  };
-
-  const getTextSize = () => {
-    switch (variant) {
-      case "compact":
-        return "text-xs";
-      case "minimal":
-        return "text-xs";
-      default:
-        return "text-xs";
-    }
-  };
-
   return (
-    <Card className={cn(getVariantStyles(), className)}>
-      <div className={getItemSpacing()}>
-        {variant !== "minimal" && (
-          <p className={cn("font-medium text-muted-foreground", getTextSize())}>
-            Password Requirements:
-          </p>
-        )}
+    <div
+      className={cn(
+        "bg-gray-50 border border-gray-200 rounded-lg p-3",
+        className
+      )}
+    >
+      <div className="space-y-2">
+        <p className="text-xs font-medium text-gray-600">
+          Password Requirements:
+        </p>
 
         {requirementStatus.map((req) => (
-          <div key={req.id} className="flex items-center space-x-2">
-            {req.satisfied ? (
-              <Check className="h-3 w-3 text-green-600 flex-shrink-0" />
-            ) : (
-              <X className="h-3 w-3 text-red-500 flex-shrink-0" />
-            )}
+          <div key={req.id} className="flex items-center gap-2">
+            <div
+              className={cn(
+                "w-4 h-4 rounded-full flex items-center justify-center",
+                req.satisfied ? "bg-green-100" : "bg-gray-100"
+              )}
+            >
+              {req.satisfied ? (
+                <Check className="w-3 h-3 text-green-600" />
+              ) : (
+                <X className="w-3 h-3 text-gray-400" />
+              )}
+            </div>
             <span
               className={cn(
-                getTextSize(),
-                req.satisfied ? "text-green-700" : "text-muted-foreground"
+                "text-xs",
+                req.satisfied ? "text-green-700" : "text-gray-500"
               )}
             >
               {req.label}
@@ -135,23 +112,24 @@ export function PasswordStrengthChecker({
         ))}
 
         {showOverallStatus && (
-          <div
-            className={cn(
-              "pt-2 border-t border-border",
-              variant === "minimal" && "border-t-0 pt-1"
-            )}
-          >
-            <div className="flex items-center space-x-2">
-              {isOverallValid ? (
-                <Check className="h-3 w-3 text-green-600 flex-shrink-0" />
-              ) : (
-                <X className="h-3 w-3 text-red-500 flex-shrink-0" />
-              )}
+          <div className="pt-2 mt-2 border-t border-gray-200">
+            <div className="flex items-center gap-2">
+              <div
+                className={cn(
+                  "w-4 h-4 rounded-full flex items-center justify-center",
+                  isOverallValid ? "bg-green-100" : "bg-gray-100"
+                )}
+              >
+                {isOverallValid ? (
+                  <Check className="w-3 h-3 text-green-600" />
+                ) : (
+                  <X className="w-3 h-3 text-gray-400" />
+                )}
+              </div>
               <span
                 className={cn(
-                  "font-medium",
-                  getTextSize(),
-                  isOverallValid ? "text-green-700" : "text-muted-foreground"
+                  "text-xs font-medium",
+                  isOverallValid ? "text-green-700" : "text-gray-500"
                 )}
               >
                 {overallStatusLabel} ({satisfiedCount}/{requirements.length})
@@ -160,7 +138,7 @@ export function PasswordStrengthChecker({
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 }
 
