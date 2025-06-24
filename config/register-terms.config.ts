@@ -7,17 +7,9 @@ export interface RegistrationCheckbox {
 
 export const registrationCheckboxes: RegistrationCheckbox[] = [
   {
-    id: "filipinoWorker",
-    label:
-      "I am Filipino. I understand Access Virtual Staffing is only for Filipino workers.",
-    required: true,
-    description:
-      "This platform is specifically designed for Filipino remote workers.",
-  },
-  {
     id: "individualWorker",
     label:
-      "I am an individual worker and do not represent any agency or company.",
+      "I am an individual worker and I do not represent any agency or company.",
     required: true,
     description:
       "We only accept applications from individual freelancers, not agencies.",
@@ -25,7 +17,7 @@ export const registrationCheckboxes: RegistrationCheckbox[] = [
   {
     id: "noMultipleAccounts",
     label:
-      "I do not have an account. I know multiple accounts are not allowed.",
+      "I do not have any other accounts. I acknowledge that multiple accounts are not allowed",
     required: true,
     description: "Each person is allowed only one account on this platform.",
   },

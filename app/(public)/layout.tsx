@@ -6,6 +6,7 @@ import Header from "../../components/landing/header";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function PublicLayout({
   children,
@@ -23,6 +24,7 @@ export default function PublicLayout({
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       <Header />
+      <Toaster />
       <main className="grow">{children}</main>
       <Footer />
     </div>

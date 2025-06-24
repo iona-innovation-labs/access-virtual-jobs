@@ -4,7 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Users } from "lucide-react";
+import { Eye, EyeOff, Building2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
-export default function JobSeekerLoginPage() {
+export default function RecruiterLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -80,7 +80,7 @@ export default function JobSeekerLoginPage() {
         body: JSON.stringify({
           email,
           password,
-          expectedRole: "job_seeker", // Keep role validation
+          expectedRole: "recruiter", // Add role validation
         }),
       });
 
@@ -138,8 +138,8 @@ export default function JobSeekerLoginPage() {
           variant: "default",
         });
 
-        // Direct redirect to job seeker area
-        router.push("/app/overview");
+        // Direct redirect to recruiter area
+        router.push("/recruiter/dashboard");
       } else {
         // This shouldn't happen if our validation worked, but just in case
         setFieldErrors({
@@ -171,7 +171,7 @@ export default function JobSeekerLoginPage() {
   const handleGoogleLogin = async () => {
     try {
       await signIn("google", {
-        callbackUrl: "/app/overview",
+        callbackUrl: "/recruiter/dashboard",
       });
     } catch (error) {
       console.error("Google login error:", error);
@@ -186,13 +186,29 @@ export default function JobSeekerLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* Header */}
+        <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <div className="bg-blue-100 p-3 rounded-full">
+              <Building2 className="h-8 w-8 text-blue-600" />
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Recruiter Login
+          </h1>
+          <p className="text-gray-600">
+            Sign in to your account to manage your hiring process
+          </p>
+        </div>
+
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Log in to Your Account</CardTitle>
+            <CardTitle className="text-xl">Welcome back, Recruiter</CardTitle>
+            <CardDescription>Login to find the best talent</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6">
-              {/*
+              {/* Google Login */}
               <Button
                 variant="outline"
                 className="w-full"
@@ -213,22 +229,22 @@ export default function JobSeekerLoginPage() {
                 Login with Google
               </Button>
 
-             Divider 
+              {/* Divider */}
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                   Or continue with email
                 </span>
               </div>
-              */}
+
               {/* Login Form */}
               <form onSubmit={handleCredentialsLogin} className="space-y-6">
                 {/* Email Field */}
                 <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email">Business Email</Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder="recruiter@company.com"
                     value={email}
                     onChange={(e) => {
                       setEmail(e.target.value);
@@ -294,7 +310,7 @@ export default function JobSeekerLoginPage() {
                 {/* Submit Button */}
                 <Button
                   type="submit"
-                  className="w-full bg-brand cursor-pointer hover:bg-brand-dark text-white"
+                  className="w-full bg-blue-600 cursor-pointer hover:bg-blue-700 text-white"
                   disabled={loading}
                 >
                   {loading ? (
@@ -303,28 +319,30 @@ export default function JobSeekerLoginPage() {
                       Logging in...
                     </div>
                   ) : (
-                    "Submit"
+                    "Login as Recruiter"
                   )}
                 </Button>
               </form>
 
               {/* Sign Up Link */}
               <div className="text-center text-sm">
+                Don&apos;t have a recruiter account?{" "}
                 <Link
-                  href="/register"
-                  className="text-brand hover:text-brand-dark"
+                  href="/register/recruiter"
+                  className="text-blue-600 underline underline-offset-4 hover:text-blue-700"
                 >
-                  Create a Free Account.
+                  Sign up as Recruiter
                 </Link>
               </div>
 
               {/* Switch Account Type */}
               <div className="text-center text-sm border-t pt-4">
+                <p className="text-gray-600 mb-2">Are you a job seeker?</p>
                 <Link
-                  href="/login/recruiter"
-                  className="text-foreground/50 hover:text-brand-dark"
+                  href="/login"
+                  className="text-green-600 underline underline-offset-4 hover:text-green-700"
                 >
-                  Are you a recruiter?
+                  Login as Job Seeker instead
                 </Link>
               </div>
             </div>
