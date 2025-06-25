@@ -20,6 +20,8 @@ import {
 } from "@/components/auth/password/password-strength-checker";
 import { passwordSchema } from "@/lib/validation/password-validation";
 import { registrationCheckboxes } from "@/config/register-terms.config";
+import PrivacyDialog from "./landing/legal/privacy-dialog";
+import TermsDialog from "./landing/legal/term-dialog";
 
 // Registration schema with confirm password added
 const registerSchema = z
@@ -377,23 +379,8 @@ export default function JobSeekerRegisterForm() {
                           {checkbox.id === "agreeToTerms" ? (
                             <>
                               I agree to the{" "}
-                              <Link
-                                href="/legal/terms-of-services"
-                                className="text-blue-600 hover:underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Terms of Service
-                              </Link>{" "}
-                              and{" "}
-                              <Link
-                                href="/legal/privacy-policy"
-                                className="text-blue-600 hover:underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Privacy Policy
-                              </Link>
+                              <TermsDialog>Terms of Service</TermsDialog> and{" "}
+                              <PrivacyDialog>Privacy Policy</PrivacyDialog>
                             </>
                           ) : checkbox.id === "individualWorker" ? (
                             "I am an individual worker and I do not represent any agency or company."

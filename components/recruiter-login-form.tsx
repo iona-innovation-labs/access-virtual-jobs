@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import PrivacyDialog from "./landing/legal/privacy-dialog";
+import TermsDialog from "./landing/legal/term-dialog";
 
 export default function RecruiterLoginPage() {
   const router = useRouter();
@@ -353,20 +355,8 @@ export default function RecruiterLoginPage() {
         <div className="text-center text-xs text-gray-500">
           <p>
             By clicking continue, you agree to our{" "}
-            <Link
-              href="/legal/terms-of-services"
-              className="text-blue-600 hover:text-blue-800 underline underline-offset-4"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="/legal/privacy-policy"
-              className="text-blue-600 hover:text-blue-800 underline underline-offset-4"
-            >
-              Privacy Policy
-            </Link>
-            .
+            <TermsDialog>Terms of Service</TermsDialog> and{" "}
+            <PrivacyDialog>Privacy Policy</PrivacyDialog>.
           </p>
         </div>
       </div>

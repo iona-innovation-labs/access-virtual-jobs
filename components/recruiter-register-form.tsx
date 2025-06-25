@@ -25,6 +25,8 @@ import {
   defaultPasswordRequirements,
 } from "@/components/auth/password/password-strength-checker";
 import { passwordSchema } from "@/lib/validation/password-validation";
+import PrivacyDialog from "./landing/legal/privacy-dialog";
+import TermsDialog from "./landing/legal/term-dialog";
 
 // Recruiter-specific registration schema
 const recruiterRegisterSchema = z
@@ -648,23 +650,8 @@ export default function RecruiterRegisterForm() {
                         className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
                       >
                         I agree to the{" "}
-                        <Link
-                          href="/legal/terms-of-services"
-                          className="text-blue-600 hover:underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Terms of Service
-                        </Link>{" "}
-                        and{" "}
-                        <Link
-                          href="/legal/privacy-policy"
-                          className="text-blue-600 hover:underline"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Privacy Policy
-                        </Link>
+                        <TermsDialog>Terms of Service</TermsDialog> and{" "}
+                        <PrivacyDialog>Privacy Policy</PrivacyDialog>
                       </Label>
                     </div>
                     {fieldErrors.agreeToTerms && (
