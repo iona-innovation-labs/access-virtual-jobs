@@ -20,8 +20,15 @@ export default function Header() {
     signOut({ callbackUrl: "/" });
   };
 
+  const navigationLinks = [
+    { href: "/contact", label: "Contact" },
+    { href: "/faq", label: "FAQ" },
+    { href: "/jobs", label: "Jobs" },
+    { href: "/blogs", label: "Blogs" },
+  ];
+
   return (
-    <header className="absolute w-full z-30">
+    <header className="absolute w-full z-30 bg-transparent">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20 pb-8">
           <div className="shrink-0 mr-4">
@@ -30,9 +37,9 @@ export default function Header() {
               href="/"
               aria-label="AVJ"
             >
-              <Logo size="md" href="/" priority={true} />
+              <Logo size="xs" href="/" priority={true} isWhite={isHome} />
               <p
-                className={`transition-colors ${isHome ? "text-white" : "text-blue-900"}`}
+                className={`transition-colors text-xl ${isHome ? "text-white" : "text-blue-900"}`}
               >
                 AVJ
               </p>
@@ -41,6 +48,22 @@ export default function Header() {
 
           <nav className="hidden md:flex grow">
             <ul className="flex grow justify-end flex-wrap items-center">
+              {/* Navigation Links */}
+              {navigationLinks.map((link) => (
+                <li key={link.href} className="mr-6">
+                  <Link
+                    className={`font-cabinet-grotesk text-xs font-medium hover:underline transition-colors ${
+                      isHome
+                        ? "text-white hover:text-white/80"
+                        : "text-blue-900 hover:text-blue-700"
+                    }`}
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+
               {session?.user ? (
                 <li className="relative">
                   <button
@@ -115,7 +138,7 @@ export default function Header() {
                     <Link
                       className={`font-cabinet-grotesk text-sm font-bold ${
                         isHome ? "text-white" : "text-blue-900"
-                      } underline hover:no-underline flex items-center transition-colors`}
+                      } hover:no-underline flex items-center transition-colors`}
                       href="/login"
                     >
                       Sign in
@@ -154,78 +177,90 @@ export default function Header() {
         {isMobileMenuOpen && (
           <div className="md:hidden mt-2 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-6 shadow-xl border border-white/20">
             <ul className="space-y-4">
-              {session?.user ? (
-                // Authenticated mobile menu
-                <>
-                  <li className="pb-4 border-b border-gray-200">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        {session.user.image ? (
-                          <Image
-                            src={session.user.image}
-                            alt="Profile"
-                            className="w-full h-full rounded-full object-cover"
-                          />
-                        ) : (
-                          <User className="w-5 h-5 text-blue-600" />
-                        )}
+              {/* Navigation Links for Mobile */}
+              {navigationLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block text-gray-900 font-medium py-2 hover:text-blue-600 transition-colors"
+                    href={link.href}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+
+              {/* Divider */}
+              <li className="border-t border-gray-200 pt-4">
+                <div className="space-y-4">
+                  {session?.user ? (
+                    // Authenticated mobile menu
+                    <>
+                      <div className="pb-4 border-b border-gray-200">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                            {session.user.image ? (
+                              <Image
+                                src={session.user.image}
+                                alt="Profile"
+                                width={40}
+                                height={40}
+                                className="w-full h-full rounded-full object-cover"
+                              />
+                            ) : (
+                              <User className="w-5 h-5 text-blue-600" />
+                            )}
+                          </div>
+                          <div>
+                            <p className="font-semibold text-gray-900">
+                              {session.user.name || "User"}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {session.user.email}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-semibold text-gray-900">
-                          {session.user.name || "User"}
-                        </p>
-                        <p className="text-sm text-gray-600">
-                          {session.user.email}
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <Link
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 text-gray-900 font-semibold py-2"
-                      href="/profile"
-                    >
-                      <User className="w-5 h-5" />
-                      Go to Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        handleSignOut();
-                      }}
-                      className="flex items-center gap-3 text-red-600 font-semibold py-2 w-full text-left"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      Sign out
-                    </button>
-                  </li>
-                </>
-              ) : (
-                // Unauthenticated mobile menu
-                <>
-                  <li>
-                    <Link
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block text-gray-900 font-semibold py-2"
-                      href="/login"
-                    >
-                      Sign in
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      className="block bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg text-center hover:bg-blue-700 transition-colors"
-                      onClick={() => setMobileMenuOpen(false)}
-                      href="/register"
-                    >
-                      Create account
-                    </Link>
-                  </li>
-                </>
-              )}
+                      <Link
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="flex items-center gap-3 text-gray-900 font-semibold py-2"
+                        href="/app/profile/overview"
+                      >
+                        <User className="w-5 h-5" />
+                        Go to Profile
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setMobileMenuOpen(false);
+                          handleSignOut();
+                        }}
+                        className="flex items-center gap-3 text-red-600 font-semibold py-2 w-full text-left"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        Sign out
+                      </button>
+                    </>
+                  ) : (
+                    // Unauthenticated mobile menu
+                    <>
+                      <Link
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="block text-gray-900 font-semibold py-2"
+                        href="/login"
+                      >
+                        Sign in
+                      </Link>
+                      <Link
+                        className="block bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg text-center hover:bg-blue-700 transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                        href="/register"
+                      >
+                        Create account
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </li>
             </ul>
           </div>
         )}
