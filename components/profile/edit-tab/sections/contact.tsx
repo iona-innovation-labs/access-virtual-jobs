@@ -12,7 +12,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Calendar,
   MessageCircle,
   Plus,
   Trash2,
@@ -29,7 +28,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Label } from "@/components/ui/label";
 
 // Zod Schema
 const ContactInformationSchema = z.object({
@@ -220,14 +218,6 @@ export const ContactInformationSection = ({
   const handleCancel = () => {
     reset(originalData);
     setHasChanges(false);
-  };
-
-  // Helper function to format date for input
-  const formatDateForInput = (dateString: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "";
-    return date.toISOString().split("T")[0];
   };
 
   return (

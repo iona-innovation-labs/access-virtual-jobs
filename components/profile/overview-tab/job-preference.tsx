@@ -7,7 +7,6 @@ import {
   EyeOff,
   CheckCircle,
   AlertCircle,
-  Search,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

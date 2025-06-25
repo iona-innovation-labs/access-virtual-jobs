@@ -357,7 +357,7 @@ const ProfileHeader = () => {
                 <Button
                   variant="outline"
                   onClick={() => router.push(`/app/jobs/v/${jobId}`)}
-                  className="border-border hover:bg-accent w-full justify-center"
+                  className="border-border hover:bg-muted w-full justify-center"
                   size="sm"
                 >
                   <X className="w-4 h-4 mr-2" />
@@ -385,7 +385,7 @@ const ProfileHeader = () => {
                 <Button
                   variant="outline"
                   onClick={() => router.push(`/app/jobs/v/${jobId}`)}
-                  className="border-border hover:bg-accent"
+                  className="border-border hover:bg-muted"
                   size="sm"
                 >
                   <X className="w-4 h-4 mr-2" />

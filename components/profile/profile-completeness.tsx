@@ -1,19 +1,8 @@
 import React, { useState } from "react";
-import {
-  CheckCircle,
-  ChevronLeft,
-  ChevronRight,
-  User,
-  Mail,
-  Briefcase,
-  FileText,
-  ClipboardCheck,
-  Settings,
-  Plus,
-} from "lucide-react";
+import { CheckCircle, ChevronLeft, ChevronRight, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ProfileCompleteness } from "@/hooks/use-profile";
 
 interface ProfileCompletenessIndicatorProps {
@@ -60,20 +49,6 @@ const sectionMapping = {
   },
 };
 
-const getSectionIcon = (sectionKey: string) => {
-  const icons = {
-    contact: Mail,
-    jobPreferences: Briefcase,
-    professionalProfile: FileText,
-    prescreening: ClipboardCheck,
-    assessment: ClipboardCheck,
-    technicalSetup: Settings,
-    additionalInfo: Plus,
-    fileUploads: Plus,
-  };
-  return icons[sectionKey as keyof typeof icons] || User;
-};
-
 const getSectionDescription = (sectionKey: string, percentage: number) => {
   if (percentage === 0) {
     const descriptions = {
@@ -103,12 +78,6 @@ const getProgressColor = (percentage: number) => {
   return "bg-red-200";
 };
 
-const getStatusColor = (percentage: number) => {
-  if (percentage === 100) return "text-green-600";
-  if (percentage > 0) return "text-yellow-600";
-  return "text-red-500";
-};
-
 export const ProfileCompletenessIndicator = ({
   completeness,
   loading = false,
@@ -117,7 +86,6 @@ export const ProfileCompletenessIndicator = ({
 }: ProfileCompletenessIndicatorProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const router = useRouter();
-  const pathname = usePathname();
 
   // Internal navigation handler
   const handleUpdateSection = (sectionKey: string) => {
@@ -232,7 +200,7 @@ export const ProfileCompletenessIndicator = ({
 
   const currentSection = incompleteSections[currentStep];
   const [sectionKey, section] = currentSection;
-  const IconComponent = getSectionIcon(sectionKey);
+
   const sectionDescription = getSectionDescription(
     sectionKey,
     section.percentage
@@ -254,8 +222,8 @@ export const ProfileCompletenessIndicator = ({
           </div>
           <div className="flex-1">
             <h3 className="text-base font-medium text-foreground mb-1">
-              Your profile can't be found by recruiters because it's missing key
-              information
+              Your profile can&apos;t be found by recruiters because it&apos;s
+              missing key information
             </h3>
             <p className="text-sm text-muted-foreground">
               {totalSteps} steps to complete

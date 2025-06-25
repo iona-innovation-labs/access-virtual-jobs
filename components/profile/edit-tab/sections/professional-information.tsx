@@ -10,10 +10,8 @@ import {
   Instagram,
   Twitter,
   Globe,
-  Star,
   Plus,
   Trash2,
-  AlertCircle,
   Info,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,8 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+
 import { useToast } from "@/hooks/use-toast";
 import { SubmitHandler } from "react-hook-form";
 import { Resolver } from "react-hook-form";

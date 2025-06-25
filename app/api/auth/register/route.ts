@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 import { sendEmailNotification } from "@/services/send-email-notif";
 import { z } from "zod";
 import { passwordSchema } from "@/lib/validation/password-validation";
-import { userRoles, type UserRole } from "@/database/schema/users";
+import { userRoles } from "@/database/schema/users";
 import { createNotification } from "@/database/mutations/job_applicants";
 
 const registerSchema = z.object({

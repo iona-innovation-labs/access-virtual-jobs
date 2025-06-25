@@ -15,7 +15,7 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
       href={`/app/submissions/v/${jobApplication?.applicationPublicId}`}
       className="group block"
     >
-      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:border-brand/30 hover:bg-accent/50 transition-all duration-200 cursor-pointer">
+      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-all duration-200 cursor-pointer">
         {/* Left Section */}
         <div className="flex items-center space-x-4 flex-1 min-w-0">
           <div className="flex-1 min-w-0">

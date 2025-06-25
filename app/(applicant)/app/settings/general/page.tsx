@@ -9,15 +9,7 @@ import {
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { fetchApi } from "@/services/fetch-api";
-import {
-  User,
-  Upload,
-  Settings,
-  Camera,
-  AlertCircle,
-  CalendarDays,
-  CalendarIcon,
-} from "lucide-react";
+import { User, Upload, Settings, Camera, AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { Country } from "country-state-city";
 

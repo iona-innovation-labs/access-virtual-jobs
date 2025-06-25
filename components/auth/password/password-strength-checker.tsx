@@ -1,5 +1,4 @@
 import { Check, X } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 export interface PasswordRequirement {
@@ -61,6 +60,7 @@ export function PasswordStrengthChecker({
   isVisible = true,
 }: PasswordStrengthCheckerProps) {
   if (!isVisible || (showOnlyWhenFocused && !isVisible)) {
+    console.log(variant);
     return null;
   }
 
