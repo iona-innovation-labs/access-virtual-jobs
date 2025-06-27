@@ -176,6 +176,27 @@
       "when": 1750774220650,
       "tag": "0024_material_human_cannonball",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1750929750290,
+      "tag": "0025_spicy_bloodaxe",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1750939241625,
+      "tag": "0026_shallow_bucky",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1750943941770,
+      "tag": "0027_polite_red_ghost",
+      "breakpoints": true
     }
   ]
 }

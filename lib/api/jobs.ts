@@ -1,50 +1,121 @@
-import { getJobId } from "@/utils/get-job-id";
-import { gainRefreshedAccessToken } from "./authorization";
-import { IJobApplication, IJobListing } from "@/types/jobs";
+// @/lib/api/jobs.ts - Complete service layer replacing Podio functions
+
+import {
+  getJobs as getJobsFromDB,
+  getJobById as getJobByIdFromDB,
+  getJobBySlug as getJobBySlugFromDB,
+  getTotalJobsCount,
+  createJob as createJobInDB,
+  updateJob as updateJobInDB,
+  deleteJob as deleteJobFromDB,
+  searchJobs as searchJobsFromDB,
+  getJobsByRecruiter as getJobsByRecruiterFromDB,
+  getJobsFromUrl as getJobsFromUrlFromDB,
+  convertFrontendFilters,
+  parseUrlSearchParams,
+} from "@/database/queries/jobs";
 import { getJobApplicationById } from "@/database/queries/job_applications";
+import type {
+  FetchJobListingsResponse,
+  FetchJobResponse,
+  IJobListing,
+  IJobApplication,
+  FrontendJobType,
+  FrontendJobCategory,
+  FrontendSalaryRange,
+} from "@/types/jobs";
+import { log } from "@/lib/logs";
 
-interface FetchJobListingsResponse {
-  success: boolean;
-  items: IJobListing[];
-  total: number;
-  all: number;
-}
+// INTERFACES FOR BACKWARD COMPATIBILITY
 
-type FetchJobListingsConfig = {
-  sort_by: string;
-  sort_desc: boolean;
+interface FetchJobListingsConfig {
+  sort_by?: string;
+  sort_desc?: boolean;
   filters?: Record<string, any>;
   limit?: number;
   offset?: number;
   remember?: boolean;
-};
-
-interface FetchJobResponse {
-  success: boolean;
-  item: IJobListing | null;
 }
 
-export const fetchJobListings = async (
-  accessToken: string,
-  appId: string,
-  config?: FetchJobListingsConfig,
+interface FrontendFilterState {
+  query: string;
+  jobType: string[];
+  jobCategory: string[];
+  salaryRange: string;
+  remote: boolean;
+}
+
+interface CreateJobData {
+  title: string;
+  description?: string;
+  salaryAmount?: number;
+  salaryCurrency?: string;
+  salaryType?: "hourly" | "monthly" | "yearly";
+  location?: string;
+  jobType?: FrontendJobType;
+  jobCategory?: FrontendJobCategory;
+  remoteAllowed?: boolean;
+  postedById: string;
+}
+
+interface UpdateJobData extends Partial<CreateJobData> {
+  id: number;
+}
+
+// MAIN FUNCTIONS - Direct replacements for your existing Podio functions
+
+/**
+ * Main jobs fetching function - EXACT replacement for your Podio getJobs
+ * Maintains same signature: getJobs(config, search?, isApp?)
+ */
+export const getJobs = async (
+  config: FetchJobListingsConfig = {},
+  search?: string,
   isApp?: boolean
-): Promise<FetchJobListingsResponse> => {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `OAuth2 ${accessToken || "invalid"}`,
-    },
-    body: JSON.stringify(config),
-  };
+): Promise<FetchJobListingsResponse | null> => {
+  try {
+    // Convert old config format to new query config
+    const queryConfig = {
+      filters: convertFrontendFilters({
+        search: search,
+        ...config.filters,
+      }),
+      sortBy:
+        config.sort_by === "created_on"
+          ? ("createdAt" as const)
+          : ("createdAt" as const),
+      sortDesc: config.sort_desc || false,
+      limit: config.limit || 20,
+      offset: config.offset || 0,
+    };
 
-  const url = `https://api.podio.com/item/app/${appId || "invalid"}/filter`;
+    const [jobsResult, totalCountResult] = await Promise.all([
+      getJobsFromDB(queryConfig),
+      getTotalJobsCount(queryConfig.filters),
+    ]);
 
-  const response: any = await fetch(url, options);
+    if (!jobsResult.ok) {
+      log("Failed to fetch jobs:", "error", jobsResult.message);
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
 
-  if (response?.error === "unauthorized") {
-    console.log("Request unauthorized - please gain new access token");
+    const formattedJobs = jobsResult.data.map((job) =>
+      formatJobForFrontend(job, isApp)
+    );
+
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: totalCountResult.ok ? totalCountResult.data : 0,
+    };
+  } catch (error) {
+    log("Error in getJobs service:", "error", error);
     return {
       success: false,
       items: [],
@@ -52,205 +123,521 @@ export const fetchJobListings = async (
       all: 0,
     };
   }
-
-  const data = await response.json();
-  console.log(`There are ${data?.items?.length} jobs`);
-
-  const formattedData = data?.items?.map((item: any) => {
-    const title =
-      item.fields.find((field: any) => field.external_id === "title")?.values[0]
-        ?.value || "N/A";
-    const urlFriendlyTitle = `${item.app_item_id}-${title
-      ?.toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/\//g, "-")}`;
-    const estimatedSalary = item.fields.find(
-      (field: any) => field.external_id === "estimated-salary"
-    )?.values[0];
-    console.log(estimatedSalary);
-    const description =
-      item.fields?.find((field: any) => field.external_id === "job-description")
-        ?.values[0]?.value || "No description provided";
-    return {
-      id: item.app_item_id,
-      title,
-      pay: estimatedSalary
-        ? `${estimatedSalary.currency} ${parseFloat(
-            estimatedSalary.value
-          ).toFixed(2)} / hr`
-        : "Not provided",
-      url: isApp
-        ? `/app/jobs/v/${urlFriendlyTitle}`
-        : `/talent/find-work/${urlFriendlyTitle}`,
-      //"https://podio.com/webforms/29994876/2499223"
-      createdAt: item.created_on,
-      postedBy: item.created_by.name,
-      description,
-    };
-  });
-
-  return {
-    success: true,
-    items: formattedData,
-    total: data?.filtered || 0,
-    all: data?.total || 0,
-  };
 };
 
-export const fetchJob = async (
-  accessToken: string,
-  appId: string,
-  appItemId: string
-): Promise<FetchJobResponse> => {
-  const options = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `OAuth2 ${accessToken || "invalid"}`,
-    },
-  };
-
-  const url = `https://api.podio.com/app/${
-    appId || "invalid"
-  }/item/${appItemId}`;
-
-  const response: any = await fetch(url, options);
-
-  if (response?.error === "unauthorized") {
-    console.log("Request unauthorized - please gain new access token");
-    return {
-      success: false,
-      item: null,
-    };
-  }
-
-  const data = await response.json();
-
-  const title =
-    data.fields?.find((field: any) => field.external_id === "title")?.values[0]
-      ?.value || "N/A";
-
-  const description =
-    data.fields?.find((field: any) => field.external_id === "job-description")
-      ?.values[0]?.value || "No description provided";
-
-  const estimatedSalary = data.fields?.find(
-    (field: any) => field.external_id === "estimated-salary"
-  )?.values[0];
-  const item = {
-    id: data.app_item_id,
-    title,
-    pay: estimatedSalary
-      ? `${estimatedSalary.currency} ${parseFloat(
-          estimatedSalary.value
-        ).toFixed(2)} / hr`
-      : "Not provided",
-    url: "https://podio.com/webforms/29994876/2499223",
-    createdAt: data.created_on,
-    postedBy: data.created_by.name,
-    description,
-  };
-
-  return {
-    success: true,
-    item,
-  };
-};
-
-export const getJobs = async (
-  config: FetchJobListingsConfig,
-  search?: string,
-  isApp?: boolean
-): Promise<FetchJobListingsResponse | null> => {
-  const newAccessToken = await gainRefreshedAccessToken("jobs");
-
-  if (!newAccessToken) {
-    return null;
-  }
-  const response = await fetchJobListings(
-    newAccessToken,
-    process.env.NEXT_PODIO_JOBLISTING_APP_ID?.toString() || "",
-    config,
-    isApp
-  );
-  let jobListing: IJobListing[] = [];
-
-  if (search) {
-    jobListing = response.items.filter((job) => {
-      const regex = new RegExp(search, "i");
-      return regex.test(job.title) || regex.test(job.description || "");
-    });
-
-    return {
-      ...response,
-      items: jobListing,
-    };
-  } else {
-    return response;
-  }
-};
-
+/**
+ * Single job fetching - EXACT replacement for your Podio getJobPost
+ * Handles both ID and slug-based lookups
+ */
 export const getJobPost = async (
   id: string
 ): Promise<FetchJobResponse | null> => {
-  console.log(" ID", id);
-  const newAccessToken = await gainRefreshedAccessToken("jobs");
+  try {
+    let jobResult;
 
-  if (!newAccessToken) {
-    return null;
+    // Handle different ID formats
+    if (id.includes("-")) {
+      // Looks like a slug format "123-job-title", extract ID
+      const parts = id.split("-");
+      const numericId = parseInt(parts[0]);
+
+      if (!isNaN(numericId)) {
+        jobResult = await getJobByIdFromDB(numericId);
+      } else {
+        // Try as full slug
+        jobResult = await getJobBySlugFromDB(id);
+      }
+    } else {
+      // Direct numeric ID
+      const numericId = parseInt(id);
+      if (!isNaN(numericId)) {
+        jobResult = await getJobByIdFromDB(numericId);
+      } else {
+        return { success: false, item: null };
+      }
+    }
+
+    if (!jobResult.ok || !jobResult.data) {
+      return { success: false, item: null };
+    }
+
+    return {
+      success: true,
+      item: formatJobForFrontend(jobResult.data),
+    };
+  } catch (error) {
+    log("Error in getJobPost service:", "error", error);
+    return { success: false, item: null };
   }
-
-  const finalId = getJobId(id);
-  console.log("Final ID", finalId);
-  if (!finalId) {
-    console.error("Invalid job ID");
-    return null;
-  }
-
-  return fetchJob(
-    newAccessToken,
-    process.env.NEXT_PODIO_JOBLISTING_APP_ID?.toString() || "",
-    finalId
-  );
 };
 
+/**
+ * Job application with details - EXACT replacement for your existing function
+ */
 export const getJobApplicationWithJobDetails = async (
   jobApplicationId: string
 ): Promise<IJobApplication | null> => {
-  const fetchedJobApplication = await getJobApplicationById(jobApplicationId);
-  if (!fetchedJobApplication || !fetchedJobApplication.ok) {
-    console.error("Invalid job application");
+  try {
+    // Get the job application first
+    const applicationResult = await getJobApplicationById(jobApplicationId);
+
+    if (
+      !applicationResult ||
+      !applicationResult.ok ||
+      !applicationResult.application
+    ) {
+      log("Job application not found:", "error", jobApplicationId);
+      return null;
+    }
+
+    const application = applicationResult.application;
+
+    // Get the job details
+    const jobResult = await getJobByIdFromDB(application.jobId);
+
+    if (!jobResult.ok || !jobResult.data) {
+      log("Job not found for application:", "error", application.jobId);
+      return null;
+    }
+
+    // Format the combined response
+    return {
+      id: application.id,
+      applicationPublicId: application.applicationPublicId,
+      userId: application.userId,
+      profileId: application.profileId,
+      jobId: application.jobId,
+      status: application.status,
+      progress: application.progress,
+      submittedAt: application.submittedAt,
+      job: formatJobForFrontend(jobResult.data),
+    };
+  } catch (error) {
+    log("Error in getJobApplicationWithJobDetails:", "error", error);
     return null;
   }
-  const newAccessToken = await gainRefreshedAccessToken("jobs");
+};
 
-  if (!newAccessToken) {
+export const getJobsFromUrl = async (
+  searchParams: URLSearchParams,
+  isApp?: boolean
+): Promise<FetchJobListingsResponse | null> => {
+  try {
+    console.log(
+      "🚀 getJobsFromUrl called with params:",
+      Object.fromEntries(searchParams.entries())
+    );
+
+    // Parse filters
+    const filters = parseUrlSearchParams(searchParams);
+
+    // Parse pagination
+    const limit = parseInt(searchParams.get("limit") || "20");
+    const offset = parseInt(searchParams.get("offset") || "0");
+
+    // Parse sorting - this is the key addition!
+    const sortBy = searchParams.get("sortBy") || "createdAt";
+    const sortDesc = searchParams.get("sortDesc") !== "false"; // defaults to true
+
+    console.log("📊 Sort parameters:", { sortBy, sortDesc });
+
+    const queryConfig = {
+      filters,
+      limit,
+      offset,
+      sortBy: sortBy as "createdAt" | "title" | "salaryAmount",
+      sortDesc,
+    };
+
+    console.log("🎯 Final query config:", queryConfig);
+
+    const [jobsResult, totalCountResult] = await Promise.all([
+      getJobsFromDB(queryConfig),
+      getTotalJobsCount(queryConfig.filters),
+    ]);
+
+    if (!jobsResult.ok) {
+      console.error("❌ Jobs query failed:", jobsResult.message);
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
+
+    const formattedJobs = jobsResult.data.map((job) =>
+      formatJobForFrontend(job, isApp)
+    );
+
+    const totalCount = totalCountResult.ok ? totalCountResult.data : 0;
+
+    console.log("✅ Query successful:", {
+      itemsReturned: formattedJobs.length,
+      totalCount,
+      sortBy,
+      sortDesc,
+    });
+
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: totalCount,
+      pagination: {
+        currentPage: Math.floor(offset / limit) + 1,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNext: offset + limit < totalCount,
+        hasPrev: offset > 0,
+      },
+    };
+  } catch (error) {
+    console.error("❌ Error in getJobsFromUrl:", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};
+/**
+ * Frontend filter state to jobs - Perfect for your filter component
+ */
+export const getJobsFromFilters = async (
+  filterState: FrontendFilterState,
+  isApp?: boolean,
+  limit: number = 20,
+  offset: number = 0
+): Promise<FetchJobListingsResponse | null> => {
+  try {
+    // Convert to URL params format
+    const searchParams = new URLSearchParams();
+
+    if (filterState.query) searchParams.set("q", filterState.query);
+    if (filterState.jobType.length > 0)
+      searchParams.set("jobType", filterState.jobType.join(","));
+    if (filterState.jobCategory.length > 0)
+      searchParams.set("jobCategory", filterState.jobCategory.join(","));
+    if (filterState.salaryRange)
+      searchParams.set("salary", filterState.salaryRange);
+    if (filterState.remote) searchParams.set("remote", "true");
+    searchParams.set("limit", limit.toString());
+    searchParams.set("offset", offset.toString());
+
+    return await getJobsFromUrl(searchParams, isApp);
+  } catch (error) {
+    log("Error in getJobsFromFilters:", "error", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};
+
+/**
+ * Simple search function
+ */
+export const searchJobs = async (
+  query: string,
+  limit: number = 20,
+  isApp?: boolean
+): Promise<FetchJobListingsResponse | null> => {
+  try {
+    const result = await searchJobsFromDB(query, {}, limit);
+
+    if (!result.ok) {
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
+
+    const formattedJobs = result.data.map((job) =>
+      formatJobForFrontend(job, isApp)
+    );
+
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: formattedJobs.length,
+    };
+  } catch (error) {
+    log("Error in searchJobs:", "error", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};
+
+/**
+ * Get recent jobs (for homepage, etc.)
+ */
+export const getRecentJobs = async (
+  limit: number = 10,
+  isApp?: boolean
+): Promise<FetchJobListingsResponse | null> => {
+  const config: FetchJobListingsConfig = {
+    sort_by: "created_on",
+    sort_desc: true,
+    limit,
+    offset: 0,
+  };
+
+  return await getJobs(config, undefined, isApp);
+};
+
+/**
+ * Get jobs by recruiter
+ */
+export const getJobsByRecruiter = async (
+  recruiterId: string,
+  limit: number = 50,
+  isApp?: boolean
+): Promise<FetchJobListingsResponse | null> => {
+  try {
+    const result = await getJobsByRecruiterFromDB(recruiterId, limit);
+
+    if (!result.ok) {
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
+
+    const formattedJobs = result.data.map((job) =>
+      formatJobForFrontend(job, isApp)
+    );
+
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: formattedJobs.length,
+    };
+  } catch (error) {
+    log("Error in getJobsByRecruiter:", "error", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};
+
+// JOB MANAGEMENT FUNCTIONS (for recruiters)
+
+/**
+ * Create a new job posting
+ */
+export const createJobPost = async (
+  jobData: CreateJobData
+): Promise<IJobListing | null> => {
+  try {
+    const result = await createJobInDB(jobData);
+
+    if (!result.ok || !result.data) {
+      log("Failed to create job:", "error", result.message);
+      return null;
+    }
+
+    return formatJobForFrontend(result.data);
+  } catch (error) {
+    log("Error in createJobPost:", "error", error);
     return null;
   }
+};
 
-  const finalId = getJobId(fetchedJobApplication.application?.jobId || "");
-  console.log("Final ID", finalId);
-  if (!finalId) {
-    console.error("Invalid job ID");
+/**
+ * Update an existing job posting
+ */
+export const updateJobPost = async (
+  jobData: UpdateJobData
+): Promise<IJobListing | null> => {
+  try {
+    const result = await updateJobInDB(jobData);
+
+    if (!result.ok || !result.data) {
+      log("Failed to update job:", "error", result.message);
+      return null;
+    }
+
+    return formatJobForFrontend(result.data);
+  } catch (error) {
+    log("Error in updateJobPost:", "error", error);
     return null;
   }
+};
 
-  const response = await fetchJob(
-    newAccessToken,
-    process.env.NEXT_PODIO_JOBLISTING_APP_ID?.toString() || "",
-    finalId
-  );
+/**
+ * Delete a job posting
+ */
+export const deleteJobPost = async (id: number): Promise<boolean> => {
+  try {
+    const result = await deleteJobFromDB(id);
+    return result.ok;
+  } catch (error) {
+    log("Error in deleteJobPost:", "error", error);
+    return false;
+  }
+};
 
-  if (!response.success || !response.item) {
-    return null;
+// UTILITY FUNCTIONS
+
+/**
+ * Format job data for frontend consumption
+ */
+function formatJobForFrontend(job: IJobListing, isApp?: boolean): IJobListing {
+  return {
+    ...job,
+    // Ensure proper URL format
+    url: generateJobURL(job.id, job.slug, isApp),
+    // Ensure pay is formatted
+    pay:
+      job.pay ||
+      formatSalaryDisplay(job.salaryAmount, job.salaryCurrency, job.salaryType),
+  };
+}
+
+/**
+ * Generate job URL
+ */
+function generateJobURL(id: number, slug: string, isApp?: boolean): string {
+  const urlFriendlyTitle = `${id}-${slug}`;
+
+  return isApp
+    ? `/app/jobs/v/${urlFriendlyTitle}`
+    : `/talent/find-work/${urlFriendlyTitle}`;
+}
+
+/**
+ * Format salary for display
+ */
+function formatSalaryDisplay(
+  amount: number | null,
+  currency: string,
+  type: string
+): string {
+  if (!amount) return "Not provided";
+
+  const formatted = `${currency} ${amount.toFixed(2)}`;
+  const suffix =
+    type === "hourly" ? " / hr" : type === "monthly" ? " / month" : " / year";
+
+  return formatted + suffix;
+}
+
+/**
+ * Validate job data
+ */
+export const validateJobData = (
+  jobData: Partial<CreateJobData>
+): { valid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+
+  if (!jobData.title || jobData.title.trim().length < 3) {
+    errors.push("Job title must be at least 3 characters long");
+  }
+
+  if (!jobData.description || jobData.description.trim().length < 10) {
+    errors.push("Job description must be at least 10 characters long");
+  }
+
+  if (jobData.salaryAmount && jobData.salaryAmount < 0) {
+    errors.push("Salary amount cannot be negative");
+  }
+
+  if (!jobData.postedById) {
+    errors.push("Posted by user ID is required");
   }
 
   return {
-    id: fetchedJobApplication?.application?.id ?? 0,
-    status: "on_going",
-    progress: "in_review",
-    submittedAt: fetchedJobApplication?.application?.submittedAt ?? new Date(),
-    job: response.item,
-    applicationPublicId: response.item.id.toString(),
+    valid: errors.length === 0,
+    errors,
   };
 };
+
+/**
+ * Get job statistics (bonus feature)
+ */
+export const getJobStats = async (jobId: number) => {
+  try {
+    const jobResult = await getJobByIdFromDB(jobId);
+
+    if (!jobResult.ok || !jobResult.data) {
+      return null;
+    }
+
+    const job = jobResult.data;
+    const daysActive = Math.floor(
+      (Date.now() - job.createdAt.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
+    return {
+      title: job.title,
+      status: job.status,
+      daysActive,
+      postedBy: job.postedByName,
+      createdAt: job.createdAt,
+    };
+  } catch (error) {
+    log("Error getting job stats:", "error", error);
+    return null;
+  }
+};
+
+// MIGRATION HELPERS (temporary - for transition period)
+
+/**
+ * Parse legacy Podio ID from current job applications
+ * This helps during the migration period
+ */
+export const parseLegacyJobId = (podioId: string): number | null => {
+  // If it's already a number, return it
+  const numericId = parseInt(podioId);
+  if (!isNaN(numericId)) {
+    return numericId;
+  }
+
+  // Handle any legacy Podio ID format here
+  return null;
+};
+
+// EXPORT VALIDATION CONSTANTS
+
+export const JOB_TYPES: FrontendJobType[] = [
+  "Freelance",
+  "Full-time",
+  "Part-time",
+  "Contract",
+];
+
+export const JOB_CATEGORIES: FrontendJobCategory[] = [
+  "Office & Administration",
+  "Marketing & Sales",
+  "Graphics & Multimedia",
+  "Web Design & Development",
+  "Software Development / Programming",
+  "Customer Service & Admin Support",
+  "Professional Services",
+  "Writing",
+];
+
+export const SALARY_RANGES: FrontendSalaryRange[] = [
+  "Less than $3",
+  "$3 - $4.99",
+  "$5 - $7.99",
+  "$8 - $9.99",
+  "More than $10",
+];

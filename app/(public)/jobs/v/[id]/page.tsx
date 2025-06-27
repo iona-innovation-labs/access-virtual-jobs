@@ -69,7 +69,7 @@ export default async function ViewJob({
   const job = post.item;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background mt-12">
       {/* Job Header */}
       <div className="bg-background">
         <div className="max-w-6xl mx-auto px-6 py-8">
@@ -264,53 +264,16 @@ export default async function ViewJob({
                           your dream job.
                         </p>
 
-                        {!session?.user?.isEmailVerified ? (
-                          <div className="bg-warning/10 border border-warning/20 rounded-md p-3 mb-4">
-                            <div className="flex items-start justify-center gap-2">
-                              <AlertTriangle
-                                size={16}
-                                className="text-warning mt-0.5 flex-shrink-0"
-                              />
-                              <div>
-                                <p className="font-body text-xs text-warning/80">
-                                  Please verify your email address before
-                                  applying for jobs.
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          <LinkButton
-                            className={`w-full text-white ${
-                              session?.user?.isEmailVerified
-                                ? "bg-brand hover:bg-brand-dark cursor-pointer"
-                                : "bg-muted text-muted-foreground cursor-not-allowed"
-                            }`}
-                            navLink={{
-                              title: "Apply for This Job",
-                              url: session?.user?.isEmailVerified
-                                ? `/app/jobs/v/${resolvedParams?.id}/apply`
-                                : "#",
-                              follow: false,
-                            }}
-                          />
-                        )}
+                        <LinkButton
+                          className="w-full text-white bg-brand hover:bg-brand-dark cursor-pointer"
+                          navLink={{
+                            title: "Apply for This Job",
+                            url: `/register`,
+                            follow: false,
+                          }}
+                        />
                       </div>
                     )}
-                  </div>
-
-                  <Separator className="mb-4" />
-
-                  {/* Additional Bookmark Button in Sidebar */}
-                  <div className="mb-4">
-                    <BookmarkButton
-                      jobId={job?.id || 0}
-                      userId={session?.user?.id}
-                      variant="ghost"
-                      size="sm"
-                      showText={true}
-                      className="w-full justify-center"
-                    />
                   </div>
 
                   <Separator className="mb-4" />

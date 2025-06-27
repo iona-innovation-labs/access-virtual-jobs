@@ -49,7 +49,7 @@ export default function JobHeader(props: Props) {
   }
 
   return (
-    <div className="px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto py-4 sm:py-6 lg:py-10">
+    <div className="px-3 sm:px-4 lg:px-8 max-w-7xl mx-auto py-4 sm:py-4 lg:py-4 mt-4">
       <div className="flex flex-col gap-4 sm:gap-6">
         {/* Main Header Section */}
         <div className="flex items-start sm:items-center gap-3 sm:gap-4">

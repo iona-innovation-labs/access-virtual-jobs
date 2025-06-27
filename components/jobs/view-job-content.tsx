@@ -24,7 +24,7 @@ export const ViewJobContent = (props: ViewJobContentProps) => {
                 <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-brand/10 flex items-center justify-center">
                   <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-brand" />
                 </div>
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight ">
                   {heading}
                 </h2>
               </div>

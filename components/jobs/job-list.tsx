@@ -14,8 +14,8 @@ export const JobList = ({ positions, isPublic = false }: Props) => {
       className="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-2 sm:py-3 md:py-4 lg:py-6"
     >
       {positions.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 sm:py-16 md:py-20 lg:py-24">
-          <div className="bg-card/90 backdrop-blur-sm border border-border/60 rounded-xl sm:rounded-2xl p-8 sm:p-10 lg:p-12 shadow-lg shadow-border/40 max-w-md mx-auto text-center">
+        <div className="flex flex-col items-center justify-center py-12 sm:py-12 md:py-16 lg:py-20">
+          <div className="bg-background rounded-xl sm:rounded-2xl p-8 sm:p-10 lg:p-12 max-w-md mx-auto text-center">
             <div className="mb-6">
               <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto bg-muted rounded-full flex items-center justify-center mb-4">
                 <Briefcase className="w-8 h-8 sm:w-10 sm:h-10 text-muted-foreground" />
@@ -29,14 +29,6 @@ export const JobList = ({ positions, isPublic = false }: Props) => {
                   : "No job listings available at the moment. Check back later for new opportunities."}
               </p>
             </div>
-
-            {isPublic && (
-              <div className="pt-4 border-t border-border">
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  💡 Try using broader search terms or removing some filters
-                </p>
-              </div>
-            )}
           </div>
         </div>
       ) : (

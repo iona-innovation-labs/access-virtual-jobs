@@ -1,67 +1,99 @@
 import { Metadata } from "next";
-import { getJobs } from "@/lib/api/jobs";
-import { JobList } from "@/components/jobs/job-list";
-import JobHeader from "@/components/jobs/job-header";
-import JobFilter from "@/components/jobs/job-filter";
+import { Suspense } from "react";
+
+import { ISearchParams } from "@/types/jobs";
+import { getJobsFromUrl } from "@/lib/api/jobs";
 import { JobListPaginationContainer } from "@/components/jobs/joblist-pagination-container";
-import Cta from "@/components/landing/cta";
+import { JobList } from "@/components/jobs/job-list";
+import JobFilter from "@/components/jobs/job-filter";
+import JobHeader from "@/components/jobs/job-header";
+import { FilterDebugger } from "./debugger";
+import { JobListSkeleton } from "@/components/jobs/job-list-skeleton";
 
 export const metadata: Metadata = {
   title: "Explore Jobs",
   description: "Explore and apply for jobs through Applicant portal",
 };
 
-interface PageSearchParams {
-  q?: string;
-  [key: string]: string | string[] | undefined;
-}
+// Separate component for the job content to enable Suspense
+async function JobContent({ searchParams }: { searchParams: ISearchParams }) {
+  // Convert searchParams to URLSearchParams for the API
+  const urlSearchParams = new URLSearchParams();
 
-export default async function PublicJobsPage({
-  searchParams,
-}: {
-  searchParams: Promise<PageSearchParams>;
-}) {
-  const resolvedSearchParams = await searchParams;
-  const page = parseInt(resolvedSearchParams?.page as string, 10) || 1;
-  const positions = await getJobs(
-    {
-      offset: (parseInt(resolvedSearchParams.page as string) - 1) * 10,
-      sort_by: "created_on",
-      sort_desc: true,
-      limit: 10,
-      filters: { "job-posting-status": 3 },
-    },
-    resolvedSearchParams.q || ""
+  // Add all search parameters to URLSearchParams
+  Object.entries(searchParams).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      urlSearchParams.set(key, value.toString());
+    }
+  });
+
+  // Set pagination
+  const page = parseInt(searchParams?.page as string, 10) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  urlSearchParams.set("limit", limit.toString());
+  urlSearchParams.set("offset", offset.toString());
+
+  console.log(
+    "🔍 Fetching jobs with params:",
+    Object.fromEntries(urlSearchParams.entries())
   );
 
-  const hasSearch = !!resolvedSearchParams?.q;
-  const actualItemsCount = positions?.items?.length || 0;
+  // Use the URL-based job fetching function that handles all filters
+  const positions = await getJobsFromUrl(urlSearchParams, true);
+
+  console.log("📊 Jobs fetched:", {
+    success: positions?.success,
+    itemCount: positions?.items?.length,
+    total: positions?.total,
+  });
 
   let totalFilteredCount = 0;
-  if (positions?.success) {
-    if (hasSearch && page === 1 && actualItemsCount < 10) {
-      totalFilteredCount = actualItemsCount;
-    } else {
-      totalFilteredCount = positions.total;
-    }
+  if (positions?.success && positions.pagination) {
+    totalFilteredCount = positions.all;
+  } else if (positions?.success) {
+    totalFilteredCount = positions.total;
   } else {
     totalFilteredCount = 0;
   }
 
   return (
-    <div className="mx-auto pt-8">
-      {/* Header */}
-      <JobHeader
-        heading="Latest Job Listings"
-        description="Find the latest job listings here"
-      />
-      <JobFilter isPublic={true} />
+    <>
       <JobList positions={positions?.items || []} isPublic={true} />
       <JobListPaginationContainer
         totalCount={totalFilteredCount}
-        pageSize={10}
+        siblingCount={1}
+        pageSize={limit}
       />
-      <Cta />
-    </div>
+    </>
+  );
+}
+
+export default async function Jobs({
+  searchParams,
+}: {
+  searchParams: Promise<ISearchParams>;
+}) {
+  const resolvedSearchParams = await searchParams;
+
+  return (
+    <main className="w-full mx-auto bg-background overflow-hidden">
+      <JobHeader
+        heading="Explore Jobs"
+        description="Explore and apply for jobs"
+        isPublic={true}
+      />
+      <FilterDebugger />
+      <JobFilter isPublic={true} />
+
+      {/* Wrap job content in Suspense for loading state */}
+      <Suspense
+        key={JSON.stringify(resolvedSearchParams)}
+        fallback={<JobListSkeleton />}
+      >
+        <JobContent searchParams={resolvedSearchParams} />
+      </Suspense>
+    </main>
   );
 }
