@@ -1,3 +1,19 @@
+export type DatabaseJobType =
+  | "freelance"
+  | "full-time"
+  | "part-time"
+  | "contract";
+
+export type DatabaseJobCategory =
+  | "office_administration"
+  | "marketing_sales"
+  | "graphics_multimedia"
+  | "web_design_development"
+  | "software_development_programming"
+  | "customer_service_admin_support"
+  | "professional_services"
+  | "writing";
+
 export type FrontendJobType =
   | "Freelance"
   | "Full-time"
@@ -47,6 +63,7 @@ export interface IJobListing {
   // Relationships
   postedById: string;
   postedByName: string;
+  postedBy?: string;
 
   // Timestamps
   createdAt: Date;

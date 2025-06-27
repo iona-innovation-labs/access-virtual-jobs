@@ -65,12 +65,12 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     <div className="group relative">
       <Link
         href={notification.link || "#"}
-        className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 hover:border-gray-300 hover:shadow-sm transition-all duration-200"
+        className="flex items-start space-x-4 p-4 border border-border rounded-lg cursor-pointer hover:bg-muted hover:border-border hover:shadow-sm transition-all duration-200"
         target={isExternalLink ? "_blank" : "_self"}
         rel={isExternalLink ? "noopener noreferrer" : undefined}
       >
         <div className="flex-shrink-0 mt-0.5">
-          <div className="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:bg-white group-hover:border-gray-300 transition-colors">
+          <div className="w-10 h-10 rounded-full bg-gray-50 border border-border flex items-center justify-center group-hover:bg-muted group-hover:border-border transition-colors">
             {getNotificationIcon(
               notification.type ? notification.type : "default"
             )}
@@ -79,16 +79,16 @@ export function NotificationCard({ notification }: NotificationCardProps) {
 
         <div className="flex-1 min-w-0 space-y-3">
           <div className="flex items-start justify-between gap-3">
-            <p className="text-sm font-medium leading-relaxed text-gray-900 group-hover:text-gray-700 transition-colors">
+            <p className="text-sm font-medium leading-relaxed text-foreground/80 group-hover:text-foreground transition-colors">
               {notification.message}
             </p>
             {isExternalLink && (
-              <ExternalLink className="h-4 w-4 text-gray-400 flex-shrink-0 mt-0.5 group-hover:text-gray-500 transition-colors" />
+              <ExternalLink className="h-4 w-4 text-foreground flex-shrink-0 mt-0.5 group-hover:text-foreground transition-colors" />
             )}
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
+            <div className="flex items-center space-x-2 text-xs text-foreground">
               <Clock className="w-3 h-3" />
               <time
                 dateTime={
@@ -111,7 +111,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                 className={`text-xs font-medium ${
                   notificationTypeBadges[
                     notification.type as keyof typeof notificationTypeBadges
-                  ] || "bg-gray-50 text-gray-700 border-gray-200"
+                  ] || "bg-gray-50 text-foreground/70 border-border"
                 }`}
               >
                 {notificationTypeLabels[

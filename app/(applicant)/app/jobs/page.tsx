@@ -94,8 +94,8 @@ async function SavedJobsContent({
     userId,
     limit,
     offset,
-    search,
-    sortBy,
+    Array.isArray(search) ? search[0] : search,
+    Array.isArray(sortBy) ? sortBy[0] : sortBy,
     sortDesc
   );
 
@@ -156,7 +156,7 @@ export default async function Jobs({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <JobsTabs
-          currentTab={currentTab}
+          currentTab={currentTab as string}
           bookmarkCount={bookmarkCount}
           isLoggedIn={!!session?.user?.id}
         />

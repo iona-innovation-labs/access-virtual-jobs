@@ -5,13 +5,11 @@ import {
   MapPin,
   CheckCircle2,
   ExternalLink,
-  AlertTriangle,
   MenuIcon,
   Users,
   Tag,
   Share2,
   Briefcase,
-  Clock,
   Globe,
 } from "lucide-react";
 import { notFound } from "next/navigation";
@@ -24,9 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { getJobPost } from "@/lib/api/jobs";
 import { ViewJobContent } from "@/components/jobs/view-job-content";
 import { getJobApplicationByJobId } from "@/database/queries/job_applications";
-import { auth } from "@/auth";
 import Logo from "@/components/logo";
-import { BookmarkButton } from "@/components/bookmarks/bookmark-button";
 
 export async function generateMetadata({
   params,
@@ -60,7 +56,6 @@ export default async function ViewJob({
     resolvedParams?.id || ""
   );
   const alreadyApplied = jobApplication.ok && jobApplication.application;
-  const session = await auth();
 
   if (!post) {
     return notFound();

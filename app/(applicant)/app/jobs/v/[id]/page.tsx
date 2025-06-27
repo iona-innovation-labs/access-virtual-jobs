@@ -11,7 +11,6 @@ import {
   Tag,
   Share2,
   Briefcase,
-  Clock,
   Globe,
 } from "lucide-react";
 import { notFound } from "next/navigation";

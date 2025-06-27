@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Search, ArrowUp, ArrowDown } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,15 +69,6 @@ export function SavedJobsFilter() {
       search: searchTerm,
       sortBy: newSortBy !== "createdAt" ? newSortBy : "",
       sortDesc: newSortDesc ? "" : "false",
-    });
-  };
-
-  const clearSearch = () => {
-    setSearchTerm("");
-    updateURL({
-      search: "",
-      sortBy: sortBy !== "createdAt" ? sortBy : "",
-      sortDesc: sortDesc ? "" : "false",
     });
   };
 

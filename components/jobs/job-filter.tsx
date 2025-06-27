@@ -10,7 +10,6 @@ import {
   Briefcase,
   DollarSign,
   FolderOpen,
-  ArrowUpDown,
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
@@ -213,9 +212,6 @@ export default function JobFilter({
     filters.remote;
 
   const currentSortValue = `${filters.sortBy}-${filters.sortDesc ? "desc" : "asc"}`;
-  const currentSortLabel =
-    sortOptions.find((opt) => opt.value === currentSortValue)?.label ||
-    "Date Posted: Newest";
 
   return (
     <div className="w-full bg-background border-b border-border/50">

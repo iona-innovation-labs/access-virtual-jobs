@@ -6,7 +6,6 @@ import { users } from "@/database/schema/users";
 import { log } from "@/lib/logs";
 import { auth } from "@/auth";
 
-//export async function GET(req: NextRequest) {
 export async function GET() {
   try {
     const session = await auth();
@@ -34,6 +33,7 @@ export async function GET() {
     return NextResponse.json({
       jobRecommendation: user.jobRecommendationNotifPref === "enabled",
       jobSubmission: user.jobSubmissionNotifPref === "enabled",
+      jobApplication: user.jobApplicationUpdatePref === "enabled",
       ok: true,
     });
   } catch (error: any) {
@@ -83,6 +83,8 @@ export async function POST(req: NextRequest) {
           ? "enabled"
           : "disabled",
         jobSubmissionNotifPref: body.jobSubmission ? "enabled" : "disabled",
+        jobApplicationUpdatePref: body.jobApplication ? "enabled" : "disabled",
+        accountUpdatePref: body.accountUpdatePref ? "enabled" : "disabled"
       })
       .where(eq(users.id, user.id));
 
@@ -99,6 +101,7 @@ export async function POST(req: NextRequest) {
         jobRecommendation:
           updatedUser?.jobRecommendationNotifPref === "enabled",
         jobSubmission: updatedUser?.jobSubmissionNotifPref === "enabled",
+        jobApplication: updatedUser?.jobApplicationUpdatePref === "enabled",
       },
     });
   } catch (error: any) {

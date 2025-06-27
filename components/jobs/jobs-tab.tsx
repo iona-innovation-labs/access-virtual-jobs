@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Search, Bookmark } from "lucide-react";
@@ -17,7 +17,6 @@ export function JobsTabs({
   isLoggedIn,
 }: JobsTabsProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleTabChange = (value: string) => {
     const params = new URLSearchParams();

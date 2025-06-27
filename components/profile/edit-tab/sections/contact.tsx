@@ -33,13 +33,6 @@ import { useToast } from "@/hooks/use-toast";
 const ContactInformationSchema = z.object({
   address: z.string().min(1, "Address is required"),
   whatsappId: z.string().min(1, "Whatsapp ID is required"),
-  dateOfBirth: z
-    .string()
-    .min(1, "Date of birth is required")
-    .transform((dateStr) => {
-      // Convert YYYY-MM-DD to ISO datetime format
-      return new Date(dateStr + "T00:00:00.000Z").toISOString();
-    }),
   phones: z.array(
     z.object({
       number: z.string().min(1, "Phone number is required"),
@@ -109,14 +102,6 @@ export const ContactInformationSection = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Helper function to convert date input to the format expected by initialData
-  const formatInitialDate = (dateString: string | Date) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "";
-    return date.toISOString().split("T")[0];
-  };
-
   const defaultValues = useMemo(
     (): ContactInformationFormData => ({
       address: "",
@@ -124,9 +109,6 @@ export const ContactInformationSection = ({
       phones: [{ number: "", type: "mobile" }],
       emails: [{ address: "", type: "personal" }],
       ...initialData,
-      dateOfBirth: initialData.dateOfBirth
-        ? formatInitialDate(initialData.dateOfBirth)
-        : "",
     }),
     [initialData]
   );
@@ -175,6 +157,7 @@ export const ContactInformationSection = ({
 
   // Submit function using the API route
   const onSubmit: SubmitHandler<ContactInformationFormData> = async (data) => {
+    console.log("saving...");
     setIsSubmitting(true);
     try {
       // Filter out empty phone numbers and emails
@@ -183,6 +166,8 @@ export const ContactInformationSection = ({
         phones: data.phones.filter((item) => item.number.trim() !== ""),
         emails: data.emails.filter((item) => item.address.trim() !== ""),
       };
+
+      console.log(cleanedData);
 
       const response = await fetch("/api/profile/edit-profile", {
         method: "POST",

@@ -1,30 +1,21 @@
 "use client";
 
 import React from "react";
-import { Card } from "@/components/ui/card";
-
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { JobPreferencesSection } from "./sections/job-preferences";
-import {
-  ProfessionalProfileSection,
-  ProfessionalProfileFormData,
-} from "./sections/professional-information";
 import { useProfile } from "@/hooks/use-profile";
+import { Card } from "@/components/ui/card";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+
+// Import all sections (excluding job preferences)
+import { UserProfileSection } from "./sections/user-detail";
 import { ProfileDescriptionSection } from "./sections/profile-description";
+import { ProfessionalProfileSection, ProfessionalProfileFormData } from "./sections/professional-information";
+import { ContactInformationSection } from "./sections/contact";
 import { PrescreeningQuestionsSection } from "./sections/prescreening-questions";
 import { AssessmentContentSection } from "./sections/assessment";
 import { TechnicalSetupSection } from "./sections/technical";
 import { AdditionalInformationSection } from "./sections/additional";
-import { UserProfileSection } from "./sections/user-detail";
-import { ContactInformationSection } from "./sections/contact";
-import {
-  JOB_CATEGORIES,
-  JOB_SEARCH_STATUS,
-  JOB_TYPES,
-  SALARY_UNIT,
-} from "@/lib/constants";
 
-export default function EditProfile() {
+export default function ApplicationProfileForm() {
   const { profile, professionalProfile, loading, error } = useProfile();
 
   if (error) {
@@ -50,48 +41,33 @@ export default function EditProfile() {
 
   return (
     <div className="w-full mx-auto space-y-8">
-      {/* Professional Information */}
-      <div id="job_preference_section">
-        <JobPreferencesSection
-          initialData={{
-            isPublicSalary: profile?.isPublicSalary,
-            jobSearchStatus:
-              (profile?.jobSearchStatus as (typeof JOB_SEARCH_STATUS)[number]) ??
-              "ready_for_interview",
-            jobType:
-              (profile?.jobType as (typeof JOB_TYPES)[number]) ?? "contract",
-            jobCategory:
-              (profile?.jobCategory as (typeof JOB_CATEGORIES)[number]) ??
-              "office_administration",
-            salaryUnit:
-              (profile?.salaryUnit as (typeof SALARY_UNIT)[number]) ?? "PHP",
-            desiredSalary: parseFloat(profile?.desiredSalary ?? "0"),
-          }}
-          loading={false}
-        />
-      </div>
-
-      <div id="contact_section">
+      {/* Section 1: User Profile Section */}
+      <div id="user_profile_section">
         <UserProfileSection />
       </div>
 
-      <ProfileDescriptionSection
-        initialData={{
-          profileDescription: profile?.profileDescription || "",
-        }}
-        loading={loading}
-      />
+      {/* Section 2: Profile Description Section */}
+      <div id="profile_description_section">
+        <ProfileDescriptionSection
+          initialData={{
+            profileDescription: profile?.profileDescription || "",
+          }}
+          loading={loading}
+        />
+      </div>
 
+      {/* Section 3: Professional Profile Section */}
       <div id="professional_profile_section">
         <ProfessionalProfileSection
           initialData={
             (professionalProfile ?? {}) as Partial<ProfessionalProfileFormData>
           }
-          loading={false}
+          loading={loading}
         />
       </div>
 
-      <div id="contact_section">
+      {/* Section 4: Contact Information Section */}
+      <div id="contact_information_section">
         <ContactInformationSection
           loading={loading}
           initialData={{
@@ -103,7 +79,8 @@ export default function EditProfile() {
         />
       </div>
 
-      <div id="pre_screening_section">
+      {/* Section 5: Pre-screening Questions Section */}
+      <div id="prescreening_questions_section">
         <PrescreeningQuestionsSection
           initialData={{
             whyFit: profile?.whyFit || "",
@@ -113,7 +90,9 @@ export default function EditProfile() {
           loading={loading}
         />
       </div>
-      <div id="assessment_section">
+
+      {/* Section 6: Assessment & Content Section */}
+      <div id="assessment_content_section">
         <AssessmentContentSection
           initialData={{
             assessmentTests: profile?.assessmentTests || [{ link: "" }],
@@ -123,6 +102,7 @@ export default function EditProfile() {
         />
       </div>
 
+      {/* Section 7: Technical Setup Section */}
       <div id="technical_setup_section">
         <TechnicalSetupSection
           initialData={{
@@ -135,7 +115,8 @@ export default function EditProfile() {
         />
       </div>
 
-      <div id="additional_info_section">
+      {/* Section 8: Additional Information Section */}
+      <div id="additional_information_section">
         <AdditionalInformationSection
           initialData={{
             numberOfChildren: profile?.numberOfChildren || "0",

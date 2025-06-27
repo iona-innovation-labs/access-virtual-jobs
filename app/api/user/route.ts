@@ -40,6 +40,8 @@ export async function GET() {
         createdAt: user.createdAt,
         jobRecommendationNotifPref: user.jobRecommendationNotifPref,
         jobSubmissionNotifPref: user.jobSubmissionNotifPref,
+        accountUpdatePref: user.accountUpdatePref,
+        jobApplicationUpdatePref: user.jobApplicationUpdatePref,
         isNewUser: user.isNewUser,
         jobSearchStatus: user.jobSearchStatus,
         isEmailVerified: user.isEmailVerified,

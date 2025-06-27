@@ -10,7 +10,6 @@ import {
   deleteJob as deleteJobFromDB,
   searchJobs as searchJobsFromDB,
   getJobsByRecruiter as getJobsByRecruiterFromDB,
-  getJobsFromUrl as getJobsFromUrlFromDB,
   convertFrontendFilters,
   parseUrlSearchParams,
 } from "@/database/queries/jobs";
@@ -131,7 +130,7 @@ export const getJobs = async (
  */
 export const getJobPost = async (
   id: string
-): Promise<FetchJobResponse | null> => {
+): Promise<{ success: boolean; item: any | null } | null> => {
   try {
     let jobResult;
 
@@ -209,7 +208,7 @@ export const getJobApplicationWithJobDetails = async (
       jobId: application.jobId,
       status: application.status,
       progress: application.progress,
-      submittedAt: application.submittedAt,
+      submittedAt: application.submittedAt || new Date(),
       job: formatJobForFrontend(jobResult.data),
     };
   } catch (error) {

@@ -1,6 +1,5 @@
 import ProfileTabs from "@/components/profile/tabs";
 import { ProfileTabProvider } from "@/context/profile-tab-context";
-import ProfileHeader from "@/components/profile/profile-header";
 import { ProfileFilesProvider } from "@/context/profile-files-context";
 import { ProfileDetailsProvider } from "@/context/profile-details-context";
 import { auth } from "@/auth";
@@ -48,7 +47,6 @@ export default async function EditProfileLayout({ children }: LayoutProps) {
                   <ProfileTabs />
                 </div>
               </section>
-              <ProfileHeader />
               <section id="joblist_header" className="relative px-[5%] pt-4">
                 <div className="container">{children}</div>
               </section>

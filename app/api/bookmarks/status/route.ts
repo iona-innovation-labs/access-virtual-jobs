@@ -69,7 +69,10 @@ export async function GET(request: NextRequest) {
         });
       } catch (parseError) {
         return NextResponse.json(
-          { success: false, message: "Invalid jobIds format" },
+          {
+            success: false,
+            message: parseError?.internalMessage || "Invalid jobIds format",
+          },
           { status: 400 }
         );
       }

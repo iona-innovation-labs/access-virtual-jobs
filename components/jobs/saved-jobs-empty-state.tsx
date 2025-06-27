@@ -1,7 +1,5 @@
-import { Bookmark, Search, Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Bookmark } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import Link from "next/link";
 
 export function SavedJobsEmptyState() {
   return (
