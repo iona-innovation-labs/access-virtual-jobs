@@ -600,13 +600,30 @@ export async function createJob(jobData: CreateJobData) {
         salaryCurrency: jobData.salaryCurrency || "USD",
         salaryType: jobData.salaryType || "hourly",
         location: jobData.location?.trim() ?? null,
-        jobType: dbJobType,
-        jobCategory: dbJobCategory,
+        jobType: dbJobType as
+          | "freelance"
+          | "full-time"
+          | "part-time"
+          | "contract"
+          | null,
+        jobCategory: dbJobCategory as
+          | "office_administration"
+          | "marketing_sales"
+          | "graphics_multimedia"
+          | "web_design_development"
+          | "software_development_programming"
+          | "customer_service_admin_support"
+          | "professional_services"
+          | "writing"
+          | null,
         remoteAllowed: jobData.remoteAllowed || false,
         slug,
         status: "active",
         postedById: jobData.postedById,
-      })
+        numberOfTalents: jobData.numberOfTalents || 1,
+        tags: jobData.tags || [],
+        alsoPostedOn: jobData.alsoPostedOn || [],
+      } satisfies typeof jobs.$inferInsert)
       .returning();
 
     return {
