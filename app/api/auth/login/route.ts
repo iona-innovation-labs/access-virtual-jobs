@@ -8,6 +8,7 @@ import { z } from "zod";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
+  expectedRole: z.enum(["job_seeker", "recruiter"]).optional(), // Add optional role validation
 });
 
 export async function POST(request: Request) {
@@ -38,11 +39,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, password } = validationResult.data;
-
-    console.log("Processing login for:", email);
-
-    // Find user by email
+    const { email, password, expectedRole } = validationResult.data;
     const user = await db.query.users.findFirst({
       where: eq(users.email, email),
     });
@@ -91,23 +88,29 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if email is verified (optional - remove if you want to allow unverified login)
-    if (!user.isEmailVerified) {
+    if (expectedRole && user.role !== expectedRole) {
+      const roleMessages = {
+        job_seeker:
+          "This account is registered as a recruiter. Please use the recruiter login.",
+        recruiter:
+          "This account is registered as a job seeker. Please use the job seeker login.",
+      };
+
       return NextResponse.json(
         {
-          error: "Email not verified",
-          message: "Please verify your email before logging in.",
+          error: "Wrong account type",
+          message: roleMessages[expectedRole],
           fieldErrors: {
-            email: "Please verify your email first",
+            email: `Account type mismatch. Expected ${expectedRole}, but user is ${user.role}`,
           },
-          requiresVerification: true,
-          userId: user.id,
+          userRole: user.role,
+          expectedRole: expectedRole,
+          wrongAccountType: true,
         },
         { status: 403 }
       );
     }
 
-    // Return success - Auth.js will handle the actual session creation
     return NextResponse.json({
       success: true,
       message: "Credentials validated successfully",
@@ -119,6 +122,7 @@ export async function POST(request: Request) {
         lastName: user.lastName,
         image: user.image,
         isEmailVerified: user.isEmailVerified,
+        role: user.role, // ✅ NOW INCLUDES ROLE
       },
     });
   } catch (error) {

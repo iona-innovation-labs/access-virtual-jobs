@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { desc, eq, sql, and } from "drizzle-orm";
+import { desc, asc, eq, sql, and } from "drizzle-orm";
 
 import { db } from "@/database";
 import { notifications } from "@/database/schema/notifications";
@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
     const page = Number(url.searchParams.get("page")) || 1;
     const limit = Number(url.searchParams.get("limit")) || 10;
     const filter = url.searchParams.get("filter") || "all";
+    const sortBy = url.searchParams.get("sortBy") || "newest";
     const readStatus = url.searchParams.get("read"); // "true", "false", or null for all
     const offset = (page - 1) * limit;
 
@@ -54,6 +55,18 @@ export async function GET(req: NextRequest) {
       whereConditions = and(whereConditions, eq(notifications.isRead, false))!;
     }
 
+    // Determine sort order
+    let orderBy;
+    switch (sortBy) {
+      case "oldest":
+        orderBy = asc(notifications.createdAt);
+        break;
+      case "newest":
+      default:
+        orderBy = desc(notifications.createdAt);
+        break;
+    }
+
     const userNotifications = await db
       .select({
         id: notifications.id,
@@ -62,11 +75,11 @@ export async function GET(req: NextRequest) {
         createdAt: notifications.createdAt,
         type: notifications.type,
         link: notifications.linkTo,
-        isRead: notifications.isRead, // Include isRead field
+        isRead: notifications.isRead,
       })
       .from(notifications)
       .where(whereConditions)
-      .orderBy(desc(notifications.createdAt))
+      .orderBy(orderBy)
       .limit(limit)
       .offset(offset);
 
@@ -76,7 +89,7 @@ export async function GET(req: NextRequest) {
       .from(notifications)
       .where(whereConditions);
 
-    // Get unread count for the user
+    // Get unread count for the user (always for all notifications, not filtered)
     const unreadCountResult = await db
       .select({ count: sql<number>`count(*)` })
       .from(notifications)
@@ -87,6 +100,7 @@ export async function GET(req: NextRequest) {
     console.log("NOTIFICATIONS: ", userNotifications);
     console.log("USER ID: ", userId);
     console.log("FILTER: ", filter);
+    console.log("SORT BY: ", sortBy);
 
     return NextResponse.json({
       ok: true,
@@ -94,6 +108,9 @@ export async function GET(req: NextRequest) {
       total: totalCountResult[0].count,
       unreadCount: unreadCountResult[0].count,
       filter: filter,
+      sortBy: sortBy,
+      page: page,
+      limit: limit,
     });
   } catch (error: any) {
     console.error("Notifications API Error:", error);

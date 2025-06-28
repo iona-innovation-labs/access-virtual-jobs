@@ -48,6 +48,7 @@ export default {
           name: existingUser.name,
           image: existingUser.profileImage,
           isEmailVerified: existingUser.isEmailVerified,
+          role: existingUser.role,
         };
       },
     }),

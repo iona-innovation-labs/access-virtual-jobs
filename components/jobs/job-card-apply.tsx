@@ -14,7 +14,7 @@ export default function JobCardApply({
 }) {
   const handleApply = () => {
     if (isPublic) {
-      redirect(`/register`);
+      redirect(`/jobs/v/${id}`);
     } else {
       redirect(url || `/app/jobs/v/${id}/apply`);
     }

@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "account_update_pref" varchar DEFAULT 'enabled' NOT NULL;--> statement-breakpoint
+ALTER TABLE "users" ADD COLUMN "job_application_update_pref" varchar DEFAULT 'enabled' NOT NULL;

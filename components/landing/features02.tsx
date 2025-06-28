@@ -24,7 +24,7 @@ export default function Features02() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="mx-auto max-w-3xl text-center pb-12 md:pb-16">
-            <h2 className="font-archivo text-2xl md:text-4xl font-bold text-black">
+            <h2 className="font-archivo text-2xl md:text-4xl font-bold text-foreground">
               {landingPage.services.title}
             </h2>
           </div>
@@ -109,7 +109,7 @@ function ContentBlock({
 }) {
   return (
     <div>
-      <h3 className="font-archivo text-xl md:text-3xl font-bold text-black mb-3">
+      <h3 className="font-archivo text-xl md:text-3xl font-bold text-foreground mb-3">
         {title}
       </h3>
       {description && (

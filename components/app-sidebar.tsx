@@ -53,7 +53,7 @@ const data = {
       icon: IconSettings,
     },
     {
-      title: "Submissions",
+      title: "My Applications",
       url: "/app/submissions",
       icon: IconFile,
     },

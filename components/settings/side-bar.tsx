@@ -10,7 +10,6 @@ import {
   Bell,
   Trash2,
   ChevronRight,
-  Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -32,16 +31,10 @@ const menuItems = [
     description: "Personal information and profile",
   },
   {
-    name: "Email",
-    href: "/app/settings/email",
-    icon: Mail,
-    description: "Email settings",
-  },
-  {
     name: "Authentication",
     href: "/app/settings/authentication",
     icon: Key,
-    description: "Password and security settings",
+    description: "Password and email settings",
   },
   {
     name: "Notifications",
@@ -77,7 +70,7 @@ export default function SettingsSidebar() {
               "group flex items-center space-x-3 p-4 rounded-lg transition-all duration-200",
               isActive
                 ? "bg-brand text-white shadow-sm"
-                : "hover:bg-accent text-foreground",
+                : "hover:bg-muted text-foreground",
               item.className && !isActive ? item.className : "",
               isMobile ? "w-full" : ""
             )}

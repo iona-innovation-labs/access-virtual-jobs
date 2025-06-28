@@ -6,6 +6,7 @@ import { fetchApi } from "@/services/fetch-api";
 import PublicProfileHeader from "@/components/profile/public/profile-header";
 import PublicProfileOverview from "@/components/profile/public/overview";
 import ProfileDetailsContainer from "@/components/profile/public/details-container";
+import { Profile } from "@/types/profiles";
 
 interface User {
   id: string;
@@ -16,46 +17,6 @@ interface User {
   firstName?: string;
   lastName?: string;
   countryOfResidednce?: string;
-}
-
-interface Profile {
-  userId: string;
-  jobTitle?: string;
-  address?: string;
-  whatsappId?: string;
-  jobSearchStatus?: string;
-  desiredSalary?: string;
-  jobType?: string;
-  linkedInLink?: string;
-  numberOfExperience?: string;
-  whyFit?: string;
-  whatStrengths?: string;
-  whatNeedImprovement?: string;
-  profileDescription?: string;
-  instagramLink?: string;
-  xLink?: string;
-  educationStatus?: string;
-
-  // Related data arrays
-  portfolioLinks: Array<any>;
-  skills: Array<any>;
-  emails: Array<any>;
-  contentLinks: Array<any>;
-  assessmentTests: Array<any>;
-  workSamples: Array<any>;
-  workHistory: Array<any>;
-  certifications: Array<any>;
-  education: Array<any>;
-
-  dateOfBirth: undefined;
-  numberOfChildren: undefined;
-  hasPaypal: undefined;
-  internetProvider: undefined;
-  numberOfMonitors: undefined;
-  howHear: undefined;
-  referrer: undefined;
-  phones: Array<never>; // Empty array
-  fileUploads: Array<never>; // Empty array
 }
 
 interface Completeness {

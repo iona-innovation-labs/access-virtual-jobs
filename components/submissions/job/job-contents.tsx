@@ -13,7 +13,9 @@ type JobContentProps = {
 
 const JobContent = ({ jobApplicationDetails }: JobContentProps) => {
   const jobDetails = jobApplicationDetails.job;
-
+  if (!jobDetails) {
+    return <div>Loading job details...</div>;
+  }
   return (
     <div className="mt-6">
       <Card className="shadow-sm border-0">
@@ -84,7 +86,7 @@ const JobContent = ({ jobApplicationDetails }: JobContentProps) => {
 
             <TabsContent value="description" className="mt-0">
               <ApplicationDescription
-                title={jobDetails.title}
+                title={jobDetails.title!}
                 description={jobDetails.description ?? "Not specified"}
                 pay={jobDetails.pay ?? "Not specified"}
                 location="Remote"

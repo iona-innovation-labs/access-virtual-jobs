@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
 
     const mergedApplications = await Promise.all(
       applications.map(async (application) => {
-        const jobDetails = await getJobPost(application.jobId ?? "");
+        const jobDetails = await getJobPost(String(application.jobId ?? ""));
         return {
           ...application,
           job: {

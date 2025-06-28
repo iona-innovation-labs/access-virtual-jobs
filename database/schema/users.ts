@@ -9,6 +9,10 @@ import {
 } from "drizzle-orm/pg-core";
 import { AdapterAccountType } from "@auth/core/adapters";
 
+// Define role enum type
+export const userRoles = ["job_seeker", "recruiter"] as const;
+export type UserRole = (typeof userRoles)[number];
+
 export const users = pgTable("users", {
   id: text("id")
     .primaryKey()
@@ -26,12 +30,19 @@ export const users = pgTable("users", {
     mode: "date",
   }),
   name: text("name"),
+  role: text("role").$type<UserRole>().default("job_seeker").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   provider: text("provider"),
   jobRecommendationNotifPref: varchar("job_recommendation_notif_pref")
     .default("enabled")
     .notNull(),
   jobSubmissionNotifPref: varchar("job_submission_notif_pref")
+    .default("enabled")
+    .notNull(),
+  accountUpdatePref: varchar("account_update_pref")
+    .default("enabled")
+    .notNull(),
+  jobApplicationUpdatePref: varchar("job_application_update_pref")
     .default("enabled")
     .notNull(),
   apiToken: text("api_token"),

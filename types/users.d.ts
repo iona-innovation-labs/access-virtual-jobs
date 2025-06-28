@@ -5,6 +5,7 @@ export interface IUserResponse {
     id: string;
     firstName: string;
     lastName: string;
+    role: string;
   };
 }
 
@@ -19,6 +20,8 @@ export interface IUserInfo {
   createdAt: Date;
   jobRecommendationNotifPref: string;
   jobSubmissionNotifPref: string;
+  jobApplicationUpdatePref: string;
+  accountUpdatePref: strin;
   jobSearchStatus: string;
   isNewUser: boolean;
   isEmailVerified: boolean;

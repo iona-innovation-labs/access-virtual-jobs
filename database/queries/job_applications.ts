@@ -19,6 +19,11 @@ export async function getJobApplicationByJobId(jobId: string) {
       throw new Error("User ID not found");
     }
 
+    const numericJobId = parseInt(jobId, 10);
+    if (isNaN(numericJobId)) {
+      return { ok: false, message: "Invalid Job ID format", application: null };
+    }
+
     const currentUser = await db
       .select()
       .from(users)
@@ -34,7 +39,7 @@ export async function getJobApplicationByJobId(jobId: string) {
       .from(jobApplications)
       .where(
         and(
-          eq(jobApplications.jobId, jobId),
+          eq(jobApplications.jobId, numericJobId),
           eq(jobApplications.userId, currentUser[0].id)
         )
       )

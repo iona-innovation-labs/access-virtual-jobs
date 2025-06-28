@@ -176,56 +176,21 @@ export default function EmailSettings() {
 
   return (
     <div className="w-full mx-auto space-y-6">
+      {/* Update Email Form */}
       <Card className="shadow-sm border-border">
-        <CardHeader className="pb-4">
+        <CardHeader>
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
-              <Mail className="w-4 h-4 text-brand" />
+            <div className="w-6 h-6 rounded-full bg-warning/10 flex items-center justify-center">
+              <Settings className="w-3 h-3 text-warning" />
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-foreground">
-                Email Settings
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Manage your email address and verification status
-              </p>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
-
-      <Card className="shadow-sm border-border bg-card">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-muted-foreground" />
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-1">
-                Security & Privacy
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                Your email address is used for account recovery and important
-                notifications. Keep it secure and up to date.
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Current Email Status */}
-      <Card className="shadow-sm border-border">
-        <CardHeader className="pb-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-success/10 flex items-center justify-center">
-              <Mail className="w-3 h-3 text-success" />
-            </div>
-            <h3 className="font-semibold text-foreground">Current Email</h3>
+            <h3 className="font-semibold text-foreground">
+              Update Email Address
+            </h3>
           </div>
         </CardHeader>
 
         <CardContent>
-          <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
+          <div className="flex items-center justify-between p-4 mb-4 bg-muted rounded-lg">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 rounded-full bg-brand/10 flex items-center justify-center">
                 <Mail className="w-5 h-5 text-brand" />
@@ -254,7 +219,7 @@ export default function EmailSettings() {
           </div>
 
           {!userInfo?.isEmailVerified && (
-            <Alert className="mt-4" variant="destructive">
+            <Alert className="mb-4" variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 Your email address is not verified. Some features may be limited
@@ -262,23 +227,6 @@ export default function EmailSettings() {
               </AlertDescription>
             </Alert>
           )}
-        </CardContent>
-      </Card>
-
-      {/* Update Email Form */}
-      <Card className="shadow-sm border-border">
-        <CardHeader className="pb-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-6 h-6 rounded-full bg-warning/10 flex items-center justify-center">
-              <Settings className="w-3 h-3 text-warning" />
-            </div>
-            <h3 className="font-semibold text-foreground">
-              Update Email Address
-            </h3>
-          </div>
-        </CardHeader>
-
-        <CardContent>
           <Alert className="mb-6">
             <Shield className="h-4 w-4" />
             <AlertDescription>
@@ -318,7 +266,7 @@ export default function EmailSettings() {
           </Form>
         </CardContent>
 
-        <CardFooter className="pt-6">
+        <CardFooter>
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <AlertDialogTrigger asChild>
               <Button

@@ -1,0 +1,325 @@
+# How to Add a Blog Post
+
+This guide explains how to add new blog posts to the AVJ blog system.
+
+## Quick Start
+
+1. Create a new `.mdx` file in `content/blogs/`
+2. Add proper frontmatter with required fields
+3. Write your content in Markdown
+4. Restart the dev server
+5. Your blog will appear at `/blogs`
+
+## File Structure
+
+```
+content/
+└── blogs/
+    ├── your-blog-post-slug.mdx
+    ├── another-post.mdx
+    └── existing-posts.mdx
+```
+
+## File Naming
+
+- Use kebab-case (lowercase with dashes)
+- Keep names descriptive but concise
+- Examples: `remote-work-tips.mdx`, `freelancing-guide.mdx`
+
+## Frontmatter Template
+
+Copy this template for new blog posts:
+
+```mdx
+---
+title: "Your Blog Post Title"
+excerpt: "A brief description of your blog post that appears in listings and meta descriptions."
+author: "author-key"
+publishedAt: "2024-12-25"
+updatedAt: "2024-12-25"
+tags: ["Tag1", "Tag2", "Tag3"]
+featured: false
+status: "published"
+readTime: 5
+coverImage: "/images/blog/your-image.jpg"
+seo:
+  metaTitle: "SEO Title - Include Keywords | AVJ"
+  metaDescription: "SEO description with keywords for search engines."
+  keywords: ["keyword1", "keyword2", "keyword3"]
+---
+
+# Your Blog Post Title
+
+Your blog content starts here...
+```
+
+## Required Fields
+
+| Field | Type | Description | Example |
+|-------|------|-------------|---------|
+| `title` | string | Blog post title | "Getting Started with Remote Work" |
+| `excerpt` | string | Short description (150-200 chars) | "Essential tips for remote work success" |
+| `author` | string | Author key from config | "sarah-chen" |
+| `publishedAt` | string | Publication date (YYYY-MM-DD) | "2024-12-25" |
+| `tags` | array | Category tags | ["Remote Work", "Tips"] |
+| `status` | string | Publication status | "published" or "draft" |
+| `readTime` | number | Reading time in minutes | 5 |
+| `coverImage` | string | Cover image path | "/images/blog/cover.jpg" |
+
+## Optional Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `updatedAt` | string | Last update date |
+| `featured` | boolean | Show in featured section |
+| `seo.metaTitle` | string | Custom SEO title |
+| `seo.metaDescription` | string | Custom SEO description |
+| `seo.keywords` | array | SEO keywords |
+
+## Available Authors
+
+Use these author keys in the `author` field:
+
+- `"avj-team"` - AVJ Team (default)
+- `"sarah-chen"` - Sarah Chen (Remote Work Specialist)
+- `"mike-rodriguez"` - Mike Rodriguez (Career Coach)
+- `"emma-thompson"` - Emma Thompson (HR Technology Expert)
+
+## Writing Content
+
+### Headings
+
+```markdown
+# H1 - Main Title (auto-generated from frontmatter)
+## H2 - Major Sections
+### H3 - Subsections
+#### H4 - Minor Sections
+```
+
+### Text Formatting
+
+```markdown
+**Bold text**
+*Italic text*
+`Inline code`
+[Link text](https://example.com)
+```
+
+### Lists
+
+```markdown
+- Unordered list item
+- Another item
+
+1. Ordered list item
+2. Another item
+```
+
+### Code Blocks
+
+```markdown
+```javascript
+function example() {
+  return "Hello World";
+}
+```
+```
+
+### Blockquotes
+
+```markdown
+> This is a blockquote for important information or quotes.
+```
+
+### Images
+
+```markdown
+![Alt text](/images/blog/image-name.jpg)
+```
+
+## Image Requirements
+
+### Cover Images
+- **Size**: 800x400px recommended
+- **Format**: JPG or PNG
+- **Location**: `/public/images/blog/`
+- **Naming**: Use descriptive names matching your post
+
+### Content Images
+- **Size**: 600-800px wide recommended
+- **Format**: JPG, PNG, or WebP
+- **Location**: `/public/images/blog/`
+
+## Tags Guidelines
+
+### Available Tags
+Use consistent tags from this list:
+
+- Remote Work
+- Career Advice
+- Job Search
+- Productivity
+- Work-Life Balance
+- Technology
+- Interviews
+- Freelancing
+- Digital Nomad
+- Team Management
+- Skills Development
+- Industry Insights
+
+### Tag Rules
+- Use 2-4 tags per post
+- Keep tags relevant to content
+- Use existing tags when possible
+- Capitalize each word
+
+## SEO Best Practices
+
+### Meta Title
+- 50-60 characters
+- Include main keyword
+- End with "| AVJ" for branding
+
+### Meta Description
+- 150-160 characters
+- Include target keywords
+- Make it compelling for clicks
+
+### Keywords
+- 3-5 relevant keywords
+- Include in meta title and description
+- Use naturally in content
+
+## Publishing Workflow
+
+### 1. Draft Creation
+```mdx
+status: "draft"
+```
+
+### 2. Review Process
+- Check content for accuracy
+- Verify all links work
+- Ensure proper formatting
+- Test on dev server
+
+### 3. Publishing
+```mdx
+status: "published"
+publishedAt: "2024-12-25"
+```
+
+### 4. Updates
+```mdx
+updatedAt: "2024-12-26"
+```
+
+## Featured Posts
+
+To feature a post on the homepage:
+
+```mdx
+featured: true
+```
+
+**Guidelines:**
+- Limit 2-3 featured posts
+- Choose high-quality, evergreen content
+- Update featured posts regularly
+
+## Example Blog Post
+
+```mdx
+---
+title: "5 Essential Tools for Remote Workers"
+excerpt: "Discover the must-have tools that successful remote workers use to stay productive and connected."
+author: "sarah-chen"
+publishedAt: "2024-12-25"
+tags: ["Remote Work", "Productivity", "Technology"]
+featured: false
+status: "published"
+readTime: 6
+coverImage: "/images/blog/remote-tools.jpg"
+seo:
+  metaTitle: "5 Essential Remote Work Tools for Productivity | AVJ"
+  metaDescription: "Discover must-have tools for remote work success. Boost productivity with these essential apps and services."
+  keywords: ["remote work tools", "productivity apps", "remote work software"]
+---
+
+# 5 Essential Tools for Remote Workers
+
+Working remotely requires the right set of tools to stay productive and connected with your team. Here are five essential tools every remote worker should have in their toolkit.
+
+## 1. Communication Tools
+
+Effective communication is crucial for remote work success...
+
+### Slack
+- Real-time messaging
+- File sharing
+- Integration with other tools
+
+### Zoom
+- Video conferencing
+- Screen sharing
+- Recording capabilities
+
+## 2. Project Management
+
+Stay organized with these project management solutions...
+
+## Conclusion
+
+The right tools can make or break your remote work experience. Start with these essentials and gradually build your perfect remote work toolkit.
+
+---
+
+*Ready to find your perfect remote job? Browse our [job listings](/jobs) today.*
+```
+
+## Testing Your Blog Post
+
+1. **Save the file** in `content/blogs/`
+2. **Restart dev server**: `npm run dev`
+3. **Visit**: `http://localhost:3000/blogs`
+4. **Check**:
+   - Post appears in listing
+   - Cover image loads
+   - Content renders correctly
+   - SEO meta tags work
+
+## Common Issues
+
+### Post Not Appearing
+- Check frontmatter syntax
+- Ensure `status: "published"`
+- Verify file is in correct directory
+- Restart dev server
+
+### Image Not Loading
+- Check image path is correct
+- Ensure image exists in `/public/images/blog/`
+- Verify image file extension
+
+### Frontmatter Errors
+- Ensure proper YAML syntax
+- Check for missing quotes
+- Verify all required fields present
+
+## File Locations
+
+```
+├── content/blogs/           # Your MDX files go here
+├── public/images/blog/      # Cover images
+├── public/images/authors/   # Author avatars
+├── config/blog.config.ts    # Author definitions
+└── types/blog.ts           # Type definitions
+```
+
+## Need Help?
+
+- Check existing blog posts for examples
+- Verify your frontmatter matches the template
+- Test on development server before deploying
+- Keep content focused and valuable to readers

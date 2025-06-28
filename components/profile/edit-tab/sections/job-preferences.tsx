@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Briefcase, DollarSign, Clock, Eye, EyeOff } from "lucide-react";
+import { Briefcase, DollarSign, Clock, Eye, EyeOff, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,13 +16,12 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 
-// Zod Schema - Only the 4 requested fields
+// Zod Schema - Updated with jobCategory field
 const JobPreferencesSchema = z.object({
   jobSearchStatus: z.enum([
     "ready_for_interview",
-    "actively_looking",
-    "passively_looking",
-    "not_looking",
+    "open_to_offers",
+    "closed_to_offers",
   ]),
   desiredSalary: z.number().min(0, "Salary must be a positive number"),
   salaryUnit: z.enum(["PHP", "USD"]),
@@ -33,6 +32,16 @@ const JobPreferencesSchema = z.object({
     "contract",
     "freelance",
     "internship",
+  ]),
+  jobCategory: z.enum([
+    "office_administration",
+    "marketing_sales",
+    "graphics_multimedia",
+    "web_design_development",
+    "software_development",
+    "customer_service",
+    "professional_services",
+    "writing",
   ]),
 });
 
@@ -62,10 +71,23 @@ const InfoItem = ({ label, icon, children }: InfoItemProps) => (
 );
 
 const JobSearchStatusOptions = [
-  { value: "ready_for_interview", label: "Ready for Interview" },
-  { value: "actively_looking", label: "Actively Looking" },
-  { value: "passively_looking", label: "Passively Looking" },
-  { value: "not_looking", label: "Not Looking" },
+  {
+    value: "ready_for_interview",
+    label: "Ready for Interview",
+    description:
+      "Actively seeking opportunities and available to start immediately",
+  },
+  {
+    value: "open_to_offers",
+    label: "Open to Offers",
+    description:
+      "Currently employed but open to discussing exciting new opportunities",
+  },
+  {
+    value: "closed_to_offers",
+    label: "Closed to Offers",
+    description: "Not currently looking for new opportunities",
+  },
 ];
 
 const JobTypeOptions = [
@@ -73,7 +95,20 @@ const JobTypeOptions = [
   { value: "part_time", label: "Part Time" },
   { value: "contract", label: "Contract" },
   { value: "freelance", label: "Freelance" },
-  { value: "internship", label: "Internship" },
+];
+
+const JobCategoryOptions = [
+  { value: "office_administration", label: "Office & Administration" },
+  { value: "marketing_sales", label: "Marketing & Sales" },
+  { value: "graphics_multimedia", label: "Graphics & Multimedia" },
+  { value: "web_design_development", label: "Web Design & Development" },
+  {
+    value: "software_development",
+    label: "Software Development / Programming",
+  },
+  { value: "customer_service", label: "Customer Service & Admin Support" },
+  { value: "professional_services", label: "Professional Services" },
+  { value: "writing", label: "Writing" },
 ];
 
 const SalaryUnitOptions = [
@@ -94,11 +129,12 @@ export const JobPreferencesSection = ({
 
   const defaultValues = useMemo(
     (): JobPreferencesFormData => ({
-      jobSearchStatus: "not_looking",
+      jobSearchStatus: "closed_to_offers",
       desiredSalary: 0,
       salaryUnit: "PHP",
       isPublicSalary: true,
       jobType: "full_time",
+      jobCategory: "software_development", // Default category
       ...initialData,
     }),
     [initialData]
@@ -195,24 +231,43 @@ export const JobPreferencesSection = ({
               <Controller
                 name="jobSearchStatus"
                 control={control}
-                render={({ field }) => (
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    disabled={loading || isSubmitting}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select your job search status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {JobSearchStatusOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
+                render={({ field }) => {
+                  const selectedOption = JobSearchStatusOptions.find(
+                    (option) => option.value === field.value
+                  );
+
+                  return (
+                    <div className="space-y-3">
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        disabled={loading || isSubmitting}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select your job availability" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {JobSearchStatusOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              <div className="flex flex-col">
+                                <span className="font-medium">
+                                  {option.label}
+                                </span>
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {selectedOption && (
+                        <div className="bg-muted/50 bg-background rounded-sm p-1 text-foreground/50 px-2">
+                          <p className="text-xs text-muted-foreground">
+                            {selectedOption.description}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }}
               />
             </InfoItem>
 
@@ -245,8 +300,37 @@ export const JobPreferencesSection = ({
               />
             </InfoItem>
 
+            {/* Preferred Job Category */}
+            <InfoItem
+              label="Preferred Job Category"
+              icon={<Tag className="w-4 h-4 text-muted-foreground" />}
+            >
+              <Controller
+                name="jobCategory"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={loading || isSubmitting}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select preferred job category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {JobCategoryOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </InfoItem>
+
             {/* Desired Salary - Full width on mobile, spans both columns on large screens */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-1">
               <InfoItem
                 label="Desired Salary"
                 icon={<DollarSign className="w-4 h-4 text-muted-foreground" />}

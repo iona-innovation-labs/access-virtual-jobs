@@ -33,7 +33,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   Trash2,
@@ -48,9 +47,9 @@ import { fetchApi } from "@/services/fetch-api";
 import { useSession } from "next-auth/react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
-// Form schema for account deletion request
+// Form schema for account deletion request - reason is now required
 const deleteAccountSchema = z.object({
-  reason: z.string().optional(),
+  reason: z.string().min(1, "Please select a reason for deletion"),
   feedback: z
     .string()
     .max(1000, "Feedback must be less than 1000 characters")
@@ -180,6 +179,13 @@ export default function DeleteAccount() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmitClick = () => {
+    // Trigger form validation before opening dialog
+    form.handleSubmit(() => {
+      setIsDialogOpen(true);
+    })();
   };
 
   if (!user) {
@@ -395,6 +401,27 @@ export default function DeleteAccount() {
           </div>
         </CardHeader>
       </Card>
+      <Card className="shadow-sm border-0 bg-muted/50">
+        <CardContent className="p-4">
+          <div className="flex items-start space-x-3">
+            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-muted-foreground" />
+            </div>
+            <div>
+              <h4 className="text-sm font-medium text-foreground mb-1">
+                Privacy & Security
+              </h4>
+              <p className="text-sm text-muted-foreground">
+                We take your privacy seriously. Account deletion requests are
+                processed securely, and all personal data will be permanently
+                removed from our systems within 30 days. If you need help with
+                your account instead, contact us at{" "}
+                <strong>support@accessvirtualstaffing.com</strong>
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Alert variant="destructive">
         <AlertTriangle className="h-4 w-4" />
@@ -464,13 +491,16 @@ export default function DeleteAccount() {
                   name="reason"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Reason for deletion (optional)</FormLabel>
+                      <FormLabel>
+                        Reason for deletion{" "}
+                        <span className="text-red-500">*</span>
+                      </FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="w-full">
                             <SelectValue placeholder="Select a reason" />
                           </SelectTrigger>
                         </FormControl>
@@ -514,48 +544,15 @@ export default function DeleteAccount() {
                 />
 
                 <div className="flex gap-3 pt-4">
-                  <AlertDialog
-                    open={isDialogOpen}
-                    onOpenChange={setIsDialogOpen}
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="text-white"
+                    onClick={handleSubmitClick}
                   >
-                    <AlertDialogTrigger asChild>
-                      <Button variant="destructive" className="text-white">
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        Submit Deletion Request
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This will submit a request to permanently delete your
-                          account ({user.email}) and all associated data. Our
-                          support team will process this request within 2-3
-                          business days. This action cannot be undone once
-                          processed.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={form.handleSubmit(onSubmit)}
-                          disabled={loading}
-                          className="bg-red-600 hover:bg-red-700"
-                        >
-                          {loading ? (
-                            <>
-                              <LoadingSpinner size="sm" className="mr-2" />
-                              Submitting...
-                            </>
-                          ) : (
-                            "Yes, submit deletion request"
-                          )}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Submit Deletion Request
+                  </Button>
                 </div>
               </div>
             </Form>
@@ -563,27 +560,36 @@ export default function DeleteAccount() {
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm border-0 bg-muted/50">
-        <CardContent className="p-4">
-          <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-muted-foreground" />
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-1">
-                Privacy & Security
-              </h4>
-              <p className="text-sm text-muted-foreground">
-                We take your privacy seriously. Account deletion requests are
-                processed securely, and all personal data will be permanently
-                removed from our systems within 30 days. If you need help with
-                your account instead, contact us at{" "}
-                <strong>support@accessvirtualstaffing.com</strong>
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will submit a request to permanently delete your account (
+              {user.email}) and all associated data. Our support team will
+              process this request within 2-3 business days. This action cannot
+              be undone once processed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={form.handleSubmit(onSubmit)}
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              {loading ? (
+                <>
+                  <LoadingSpinner size="sm" className="mr-2" />
+                  Submitting...
+                </>
+              ) : (
+                "Yes, submit deletion request"
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

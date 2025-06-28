@@ -1,15 +1,8 @@
-import {
-  pgTable,
-  serial,
-  text,
-  integer,
-  date,
-  varchar,
-  timestamp,
-} from "drizzle-orm/pg-core";
+import { pgTable, serial, text, integer, timestamp } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { users } from "./users";
 import { profiles } from "./profiles";
+import { jobs } from "./jobs"; // Import the new jobs table
 
 export const jobApplications = pgTable("job_applications", {
   id: serial("id").primaryKey(),
@@ -22,8 +15,12 @@ export const jobApplications = pgTable("job_applications", {
     .notNull(),
   submittedAt: timestamp("submitted_at").defaultNow(),
   status: text("status").notNull(), // e.g., on_going, archived
-  progress: text("progress").notNull(), // e.g., in_review, reviewed, declined_initial_interview,initial_interview, for_client_interview, declined_after_interview, make_offer, hired_signed, endorsed,reserved_for_future_opening
-  jobId: text("job_id"), // jobId -> podio item id
+  progress: text("progress").notNull(), // e.g., in_review, reviewed, declined_initial_interview, etc.
+
+  // CHANGED: Now references jobs.id (integer) instead of Podio text ID
+  jobId: integer("job_id")
+    .references(() => jobs.id)
+    .notNull(),
 });
 
 export const jobApplicationsRelations = relations(
@@ -36,6 +33,11 @@ export const jobApplicationsRelations = relations(
     profile: one(profiles, {
       fields: [jobApplications.profileId],
       references: [profiles.id],
+    }),
+    // NEW: Add job relation
+    job: one(jobs, {
+      fields: [jobApplications.jobId],
+      references: [jobs.id],
     }),
   })
 );

@@ -20,7 +20,7 @@ export default async function ViewJobSubmission({
     <div className="h-fit overflow-auto p-6 bg-background rounded-lg w-full mx-auto">
       <JobHeader
         jobApplication={{
-          title: fetchedJobApplication.job.title,
+          title: fetchedJobApplication.job!.title ?? "Untitled Position",
           submittedAt: fetchedJobApplication.submittedAt,
         }}
       />

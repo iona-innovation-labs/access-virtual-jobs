@@ -9,14 +9,7 @@ import {
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { fetchApi } from "@/services/fetch-api";
-import {
-  User,
-  Upload,
-  Settings,
-  Camera,
-  AlertCircle,
-  CalendarDays,
-} from "lucide-react";
+import { User, Upload, Settings, Camera, AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { Country } from "country-state-city";
 
@@ -49,7 +42,6 @@ import {
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import Image from "next/image";
 import PlaceholderAvatar from "@/components/avatar";
-
 // Updated schema with new fields
 const generalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -76,8 +68,7 @@ const countries = Country.getAllCountries().map((country) => ({
 const genderOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-  { value: "prefer_not_to_say", label: "Prefer not to say" },
+  { value: "prefer_not_to_say", label: "Rather not specify" },
 ];
 
 export default function GeneralSettings() {
@@ -510,16 +501,13 @@ export default function GeneralSettings() {
                         Date of Birth
                       </FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input
-                            {...field}
-                            type="date"
-                            disabled={submitting}
-                            className="border-border focus:border-brand focus:ring-brand"
-                            max={new Date().toISOString().split("T")[0]}
-                          />
-                          <CalendarDays className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                        </div>
+                        <Input
+                          {...field}
+                          type="date"
+                          disabled={submitting}
+                          className="border-border focus:border-brand focus:ring-brand"
+                          max={new Date().toISOString().split("T")[0]}
+                        />
                       </FormControl>
                       <FormDescription>
                         Your date of birth for age verification

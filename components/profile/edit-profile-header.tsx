@@ -6,11 +6,13 @@ import { useProfile } from "@/hooks/use-profile";
 
 export default function ProfileNav() {
   const { completeness, loading } = useProfile();
+
   return (
     <div className="bg-background/95 px-[5%] w-full space-y-4 mb-8 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <ProfileCompletenessIndicator
         completeness={completeness}
         loading={loading}
+        // No need for onUpdateSection anymore!
       />
       <div className="container flex flex-col space-y-8 font-sans text-title">
         <div className="flex items-center gap-3">

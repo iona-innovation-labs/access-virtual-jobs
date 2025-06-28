@@ -4,24 +4,14 @@ import { useRouter } from "next/navigation";
 // @ts-ignore
 import "swiper/swiper.min.css";
 import { Card, CardContent, CardHeader } from "../ui/card";
-
-interface Job {
-  id: string;
-  title: string;
-  description?: string;
-  postedBy: string;
-  pay?: string;
-}
+import { IJobListing } from "@/types/jobs";
 
 interface JobCarouselClientProps {
-  jobs: Job[];
+  jobs: IJobListing[];
 }
 
-// Function to strip HTML tags and decode HTML entities
 const stripHtml = (html: string): string => {
   if (!html) return "";
-
-  // Create a temporary div to decode HTML entities and strip tags
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
   return tempDiv.textContent || tempDiv.innerText || "";
