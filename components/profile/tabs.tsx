@@ -38,7 +38,6 @@ const ProfileTabs = () => {
     isLoading,
   } = useProfileTabContext();
 
-  // Refresh step completion on mount
   useEffect(() => {
     refreshStepCompletion();
   }, [refreshStepCompletion]);
@@ -51,9 +50,8 @@ const ProfileTabs = () => {
   const currentStepIndex = getCurrentStepIndex();
 
   const handleTabClick = (tab: TabName, index: number) => {
-    console.log(index);
-    // Only allow clicking if it's accessible (current or previous completed steps)
     if (isStepAccessible(tab) && !isLoading) {
+      console.log(index);
       setCurrentTab(tab);
     }
   };

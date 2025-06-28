@@ -4,16 +4,17 @@ import { useProfileTabContext } from "@/context/profile-tab-context";
 import UploadFileForm from "@/components/profile/upload-files-form";
 import ApplicationProfileForm from "@/components/profile/edit-tab/application-profile-form";
 import { StepNavigation } from "@/components/profile/step-navigation";
+import { ReviewStep } from "@/components/profile/review-tab";
 import { useParams } from "next/navigation";
 
-// Verification/Submission Step Component
+// Verification Step Component
 const VerificationStep = () => {
   return (
     <div className="flex justify-center items-center min-h-[400px] mb-16">
       <div className="text-center max-w-md">
-        <div className="w-16 h-16 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center">
           <svg
-            className="w-8 h-8 text-green-600"
+            className="w-8 h-8 text-blue-600"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -26,19 +27,17 @@ const VerificationStep = () => {
             />
           </svg>
         </div>
-        <h2 className="text-xl font-semibold mb-4">
-          Ready to Submit Application
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">Verification Complete</h2>
         <p className="text-muted-foreground mb-6">
-          You&apos;ve completed all required steps. Click &quot;Submit
-          Application&quot; below to send your application to the employer.
+          All your information has been verified. You can now proceed to review
+          your complete application before submission.
         </p>
         <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
-          <p className="font-medium mb-2">✅ What you&apos;ve completed:</p>
+          <p className="font-medium mb-2">✅ Verification Status:</p>
           <ul className="text-left space-y-1">
-            <li>• Profile information</li>
-            <li>• Document uploads</li>
-            <li>• All required fields</li>
+            <li>• Profile information verified</li>
+            <li>• Documents validated</li>
+            <li>• Ready for final review</li>
           </ul>
         </div>
       </div>
@@ -48,6 +47,7 @@ const VerificationStep = () => {
 
 export default function ProfilePageClient() {
   const { currentTab } = useProfileTabContext();
+  const params = useParams();
 
   // Custom proceed logic for each step
   const handleProfileProceed = async (): Promise<boolean> => {
@@ -88,31 +88,45 @@ export default function ProfilePageClient() {
       return false;
     }
   };
-  const params = useParams();
-  const handleVerificationProceed = async (): Promise<boolean> => {
-    // For verification step, submit the job application directly
-    try {
-      const temp = params.id as string;
-      const jobId = temp.split("-")[0];
 
-      if (!jobId) {
+  // Add review proceed handler for job submission
+  const handleReviewProceed = async (): Promise<boolean> => {
+    // Review step submits the job application
+    try {
+      const fullJobId = params.id as string;
+      // Extract numeric ID from URL like "8-data-entry-specialist" -> "8"
+      const jobId = fullJobId ? fullJobId.split("-")[0] : null;
+
+      console.log("Full Job ID from URL:", fullJobId); // Debug log
+      console.log("Extracted Job ID:", jobId); // Debug log
+
+      if (!jobId || !fullJobId) {
         console.error("Job ID not found in URL params");
         return false;
       }
+
+      console.log("Submitting application for job:", jobId); // Debug log
 
       const response = await fetch("/api/submissions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ jobId }),
+        body: JSON.stringify({ jobId: parseInt(jobId) }), // Convert to integer
       });
 
+      console.log("Response status:", response.status); // Debug log
+
       const result = await response.json();
+      console.log("Response data:", result); // Debug log
 
       if (result.ok) {
-        // Success - redirect to job listing
-        window.location.href = `/app/jobs/v/${jobId}`;
+        // Success - redirect to job listing using full job ID
+        console.log(
+          "Application submitted successfully:",
+          result.applicationId
+        );
+        window.location.href = `/app/jobs/v/${fullJobId}`;
         return true;
       } else {
         // Handle error (like already applied)
@@ -125,6 +139,12 @@ export default function ProfilePageClient() {
     }
   };
 
+  const handleVerificationProceed = async (): Promise<boolean> => {
+    // Verification step just validates and moves to review
+    // No job submission happens here anymore
+    return true;
+  };
+
   const getStepProceedHandler = () => {
     switch (currentTab) {
       case "Profile":
@@ -133,6 +153,8 @@ export default function ProfilePageClient() {
         return handleFilesProceed;
       case "Verification":
         return handleVerificationProceed;
+      case "Review":
+        return handleReviewProceed;
       default:
         return undefined;
     }
@@ -145,6 +167,8 @@ export default function ProfilePageClient() {
       case "Files":
         return "Continue to Verification";
       case "Verification":
+        return "Continue to Review";
+      case "Review":
         return "Submit Application";
       default:
         return "Proceed";
@@ -161,7 +185,7 @@ export default function ProfilePageClient() {
           {currentTab === "Profile" && <ApplicationProfileForm />}
           {currentTab === "Files" && <UploadFileForm />}
           {currentTab === "Verification" && <VerificationStep />}
-          {/*currentTab === "Review" && <FinishSubmission />*/}
+          {currentTab === "Review" && <ReviewStep />}
         </div>
       </div>
 
@@ -170,11 +194,7 @@ export default function ProfilePageClient() {
         onProceed={getStepProceedHandler()}
         proceedText={getStepProceedText()}
         showCancel={true}
-        showProceed={
-          currentTab === "Profile" ||
-          currentTab === "Files" ||
-          currentTab === "Verification"
-        } // Hide proceed on Review since we submit from Verification
+        showProceed={true} // Show proceed on all steps
       />
     </div>
   );

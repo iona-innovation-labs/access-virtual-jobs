@@ -40,7 +40,7 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
   const jobId = params.id as string;
 
   const getNextStep = (current: TabName): TabName | null => {
-    const steps: TabName[] = ["Profile", "Files", "Verification"];
+    const steps: TabName[] = ["Profile", "Files", "Verification", "Review"];
     const currentIndex = steps.indexOf(current);
     return currentIndex < steps.length - 1 ? steps[currentIndex + 1] : null;
   };
@@ -58,19 +58,19 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
     setIsLoading(true);
 
     try {
-      // For Verification step, handle job submission directly without validation
-      if (currentTab === "Verification") {
+      // For Review step, handle job submission differently
+      if (currentTab === "Review") {
         if (onProceed) {
           const success = await onProceed();
           if (!success) {
             setShowUnsavedDialog(true);
           }
-          // Don't proceed to next step for verification - job submission handles redirect
+          // Don't proceed to next step for review - job submission handles redirect
         }
         return;
       }
 
-      // For other steps, follow normal validation flow
+      // For other steps, follow normal validation and proceed flow
       if (onProceed) {
         const canProceed = await onProceed();
         if (!canProceed) {
@@ -79,12 +79,14 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
         }
       }
 
-      // Validate current step completion
-      const isCurrentStepComplete = await validateStepCompletion(currentTab);
+      // Validate current step completion (skip for Verification step)
+      if (currentTab !== "Verification") {
+        const isCurrentStepComplete = await validateStepCompletion(currentTab);
 
-      if (!isCurrentStepComplete) {
-        setShowUnsavedDialog(true);
-        return;
+        if (!isCurrentStepComplete) {
+          setShowUnsavedDialog(true);
+          return;
+        }
       }
 
       // Refresh all step completion statuses
@@ -103,11 +105,6 @@ export const StepNavigation: React.FC<StepNavigationProps> = ({
     }
   };
 
-  /*
-  if (currentTab === "Review") {
-    return null;
-  }
-  */
   return (
     <>
       {/* Sticky Navigation Bar */}
