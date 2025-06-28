@@ -1,3 +1,13 @@
+import { JOB_SEARCH_STATUS } from "@/lib/constants";
+
+export interface Position {
+  title?: string;
+  createdAt: string | Date;
+  pay?: string;
+  url?: string;
+  description?: string;
+}
+
 export type DatabaseJobType =
   | "freelance"
   | "full-time"
@@ -74,6 +84,10 @@ export interface IJobListing {
   alsoPostedOn?: string[];
 }
 
+export interface PositionProps {
+  position: IJobListing;
+}
+
 export interface ISearchParams {
   [key: string]: string | string[] | undefined;
 }
@@ -101,6 +115,43 @@ export interface FetchJobResponse {
   job?: IJobListing; // Optional populated job details
 }
 
+export type JobSearchFilter = {
+  searchText: string;
+};
+
+export interface IJobApplicationDetails {
+  id: number;
+  resume: string;
+  salaryMin: number;
+  salaryMax: number;
+  salaryCurrency: string;
+  location: string;
+  jobEquity: string;
+  about: string;
+  responsibilities: string;
+  requirements: string;
+  relocation: boolean;
+  experience: string;
+}
+
+export type Status = "on_going" | "archived";
+export type Progress =
+  | "in_review"
+  | "reviewed"
+  | "declined_initial_interview"
+  | "initial_interview"
+  | "for_client_interview"
+  | "declined_after_interview"
+  | "make_offer"
+  | "hired_signed"
+  | "endorsed"
+  | "reserved_for_future_opening";
+
+export interface IJobApplicationHeaderDetails {
+  title: string;
+  submittedAt: Date;
+}
+
 // Updated job application interface
 export interface IJobApplication {
   id: number;
@@ -108,8 +159,8 @@ export interface IJobApplication {
   userId: string;
   profileId: number;
   jobId: number; // Now references jobs.id
-  status: string;
-  progress: string;
+  status: JOB_SEARCH_STATUS;
+  progress: Progress;
   submittedAt: Date;
   job?: IJobListing; // Optional populated job details
 }

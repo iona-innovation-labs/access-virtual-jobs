@@ -78,7 +78,7 @@ interface QueryConfig {
 }
 
 interface CreateJobData {
-  title: string;
+  title?: string;
   description?: string;
   salaryAmount?: number;
   salaryCurrency?: string;
@@ -594,7 +594,7 @@ export async function createJob(jobData: CreateJobData) {
     const result = await db
       .insert(jobs)
       .values({
-        title: jobData?.title?.trim(),
+        title: jobData?.title?.trim() || "Undefined Title",
         description: jobData.description?.trim() ?? null,
         salaryAmount: jobData.salaryAmount?.toString() ?? null,
         salaryCurrency: jobData.salaryCurrency || "USD",

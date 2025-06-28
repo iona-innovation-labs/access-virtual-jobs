@@ -1,5 +1,3 @@
-// @/lib/api/job-utils.ts - Utility functions for job operations
-
 import type {
   FrontendJobType,
   FrontendJobCategory,

@@ -16,16 +16,14 @@ import {
 import { getJobApplicationById } from "@/database/queries/job_applications";
 import type {
   FetchJobListingsResponse,
-  FetchJobResponse,
   IJobListing,
   IJobApplication,
   FrontendJobType,
   FrontendJobCategory,
   FrontendSalaryRange,
+  Progress,
 } from "@/types/jobs";
 import { log } from "@/lib/logs";
-
-// INTERFACES FOR BACKWARD COMPATIBILITY
 
 interface FetchJobListingsConfig {
   sort_by?: string;
@@ -207,7 +205,7 @@ export const getJobApplicationWithJobDetails = async (
       profileId: application.profileId,
       jobId: application.jobId,
       status: application.status,
-      progress: application.progress,
+      progress: (application?.progress || "in_review") as Progress,
       submittedAt: application.submittedAt || new Date(),
       job: formatJobForFrontend(jobResult.data),
     };

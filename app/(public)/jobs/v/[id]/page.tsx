@@ -148,7 +148,7 @@ export default async function ViewJob({
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {job.tags.map((tag, index) => (
+                      {job.tags.map((tag: string, index: number) => (
                         <Badge
                           key={index}
                           variant="secondary"
@@ -200,7 +200,7 @@ export default async function ViewJob({
                       </span>
                     </div>
                     <div className="space-y-2">
-                      {job.alsoPostedOn.map((link, index) => (
+                      {job.alsoPostedOn.map((link: string, index: number) => (
                         <div
                           key={index}
                           className="flex items-center space-x-2"

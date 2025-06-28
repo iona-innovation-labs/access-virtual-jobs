@@ -1,4 +1,4 @@
-import { and, eq, desc, count, sql, asc, or, ilike } from "drizzle-orm";
+import { and, eq, desc, count, sql, asc, or, ilike, SQL } from "drizzle-orm";
 
 import { db } from "@/database";
 import { userBookmarks } from "@/database/schema/user-bookmarks";
@@ -228,7 +228,38 @@ export async function getBookmarksByUser(
   sortDesc: boolean = true
 ): Promise<BookmarkResult> {
   try {
-    let query = db
+    const baseCondition = eq(userBookmarks.userId, userId);
+
+    let whereConditions;
+    if (search && search.trim()) {
+      whereConditions = and(
+        baseCondition,
+        or(
+          ilike(jobs.title, `%${search.trim()}%`),
+          ilike(jobs.description, `%${search.trim()}%`)
+        )
+      );
+    } else {
+      whereConditions = baseCondition;
+    }
+    // Add sorting
+    let orderBy;
+    switch (sortBy) {
+      case "title":
+        orderBy = sortDesc ? desc(jobs.title) : asc(jobs.title);
+        break;
+      case "salaryAmount":
+        orderBy = sortDesc ? desc(jobs.salaryAmount) : asc(jobs.salaryAmount);
+        break;
+      case "createdAt":
+      default:
+        orderBy = sortDesc
+          ? desc(userBookmarks.createdAt)
+          : asc(userBookmarks.createdAt);
+        break;
+    }
+
+    const result = await db
       .select({
         // Job fields
         id: jobs.id,
@@ -256,65 +287,35 @@ export async function getBookmarksByUser(
       .from(userBookmarks)
       .innerJoin(jobs, eq(userBookmarks.jobId, jobs.id))
       .leftJoin(users, eq(jobs.postedById, users.id))
-      .where(eq(userBookmarks.userId, userId));
+      .where(whereConditions)
+      .orderBy(orderBy)
+      .limit(limit)
+      .offset(offset);
 
-    // Add search condition if provided
-    if (search && search.trim()) {
-      query = query.where(
-        and(
-          eq(userBookmarks.userId, userId),
-          or(
-            ilike(jobs.title, `%${search.trim()}%`),
-            ilike(jobs.description, `%${search.trim()}%`)
-          )
-        )
-      );
-    }
-
-    // Add sorting
-    let orderBy;
-    switch (sortBy) {
-      case "title":
-        orderBy = sortDesc ? desc(jobs.title) : asc(jobs.title);
-        break;
-      case "salaryAmount":
-        orderBy = sortDesc ? desc(jobs.salaryAmount) : asc(jobs.salaryAmount);
-        break;
-      case "createdAt":
-      default:
-        orderBy = sortDesc
-          ? desc(userBookmarks.createdAt)
-          : asc(userBookmarks.createdAt);
-        break;
-    }
-
-    const result = await query.orderBy(orderBy).limit(limit).offset(offset);
-
-    // Format jobs for response (reuse existing formatting logic)
     const formattedJobs: BookmarkedJob[] = result.map((row) => ({
       id: row.id,
       title: row.title,
       description: row.description,
       salaryAmount: row.salaryAmount ? parseFloat(row.salaryAmount) : null,
-      salaryCurrency: row.salaryCurrency,
-      salaryType: row.salaryType,
+      salaryCurrency: row.salaryCurrency ?? "USD",
+      salaryType: row.salaryType ?? "hourly",
       pay: formatSalaryDisplay(
         row.salaryAmount ? parseFloat(row.salaryAmount) : null,
-        row.salaryCurrency,
-        row.salaryType
+        row.salaryCurrency ?? "USD",
+        row.salaryType ?? "hourly"
       ),
       location: row.location,
       jobType: row.jobType,
       jobCategory: row.jobCategory,
-      remoteAllowed: row.remoteAllowed,
-      slug: row.slug,
-      status: row.status,
-      url: generateJobURL(row.id, row.slug),
+      remoteAllowed: row.remoteAllowed ?? false,
+      slug: row.slug ?? `job-${row.id}`,
+      status: row.status ?? "active",
+      url: generateJobURL(row.id, row?.slug || `profile-${Date.now()}`),
       postedById: row.postedById,
       postedByName: row.postedByName || "Unknown",
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-      bookmarkedAt: row.bookmarkedAt,
+      createdAt: row.createdAt ?? new Date(),
+      updatedAt: row.updatedAt ?? new Date(),
+      bookmarkedAt: row.bookmarkedAt ?? new Date(),
       numberOfTalents: row.numberOfTalents,
       tags: row.tags,
       alsoPostedOn: row.alsoPostedOn,
@@ -334,7 +335,6 @@ export async function getBookmarksByUser(
     };
   }
 }
-
 /**
  * Get total count of user's bookmarks
  */
@@ -343,27 +343,29 @@ export async function getUserBookmarksCount(
   search?: string
 ): Promise<BookmarkResult> {
   try {
-    let query = db
-      .select({ count: count() })
-      .from(userBookmarks)
-      .innerJoin(jobs, eq(userBookmarks.jobId, jobs.id))
-      .where(and(eq(userBookmarks.userId, userId), eq(jobs.status, "active")));
+    // Build the base where conditions
+    let whereConditions = and(
+      eq(userBookmarks.userId, userId),
+      eq(jobs.status, "active")
+    );
 
-    // Add search condition if provided
+    // Add search conditions if provided
     if (search && search.trim()) {
-      query = query.where(
-        and(
-          eq(userBookmarks.userId, userId),
-          eq(jobs.status, "active"),
-          or(
-            ilike(jobs.title, `%${search.trim()}%`),
-            ilike(jobs.description, `%${search.trim()}%`)
-          )
+      whereConditions = and(
+        eq(userBookmarks.userId, userId),
+        eq(jobs.status, "active"),
+        or(
+          ilike(jobs.title, `%${search.trim()}%`),
+          ilike(jobs.description, `%${search.trim()}%`)
         )
       );
     }
 
-    const result = await query;
+    const result = await db
+      .select({ count: count() })
+      .from(userBookmarks)
+      .innerJoin(jobs, eq(userBookmarks.jobId, jobs.id))
+      .where(whereConditions);
 
     return {
       ok: true,
@@ -379,7 +381,6 @@ export async function getUserBookmarksCount(
     };
   }
 }
-
 /**
  * Get multiple bookmark statuses for jobs (for job list optimization)
  */
