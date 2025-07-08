@@ -264,7 +264,7 @@ export default function SkillsSection({
                                 className={`w-full h-full ${
                                   star <= (field.value || 0)
                                     ? "text-yellow-400 fill-current"
-                                    : "text-gray-300 hover:text-yellow-200"
+                                    : "text-zinc-300 hover:text-yellow-200"
                                 }`}
                               />
                             </button>
@@ -301,7 +301,7 @@ export default function SkillsSection({
                               className={`w-3 h-3 ${
                                 star <= dialogForm.watch("starRating")
                                   ? "text-yellow-400 fill-current"
-                                  : "text-gray-300"
+                                  : "text-zinc-300"
                               }`}
                             />
                           ))}
@@ -513,7 +513,7 @@ export default function SkillsSection({
                             className={`w-full h-full ${
                               star <= (field.value || 0)
                                 ? "text-yellow-400 fill-current"
-                                : "text-gray-300"
+                                : "text-zinc-300"
                             }`}
                           />
                         </button>
@@ -542,7 +542,7 @@ export default function SkillsSection({
                           className={`w-3 h-3 ${
                             star <= watchedValues.skills[index].starRating
                               ? "text-yellow-400 fill-current"
-                              : "text-gray-300"
+                              : "text-zinc-300"
                           }`}
                         />
                       ))}

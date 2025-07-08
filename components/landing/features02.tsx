@@ -73,14 +73,14 @@ export default function Features02() {
               <div className="absolute inset-0 flex items-center justify-between px-0">
                 <Button
                   variant="secondary"
-                  className=" bg-transparent h-full w-[60px] cursor-pointer text-gray-700 hover:bg-gradient-to-r  hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
+                  className=" bg-transparent h-full w-[60px] cursor-pointer text-zinc-700 hover:bg-gradient-to-r  hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
                   onClick={prevImage}
                 >
                   <ChevronLeft size={50} />
                 </Button>
                 <Button
                   variant="secondary"
-                  className=" bg-transparent h-full w-[60px] cursor-pointer text-gray-700 hover:bg-gradient-to-l hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
+                  className=" bg-transparent h-full w-[60px] cursor-pointer text-zinc-700 hover:bg-gradient-to-l hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
                   onClick={nextImage}
                 >
                   <ChevronRight size={50} />
@@ -113,7 +113,7 @@ function ContentBlock({
         {title}
       </h3>
       {description && (
-        <p className="mb-8 text-lg text-gray-500">{description}</p>
+        <p className="mb-8 text-lg text-zinc-500">{description}</p>
       )}
       <ul className="flex flex-col space-y-6">
         {items?.map((item, i) => (
@@ -123,7 +123,7 @@ function ContentBlock({
               <div className="mb-1 font-cabinet-grotesk text-lg font-bold">
                 {item.title}
               </div>
-              <div className="text-gray-500">{item.description}</div>
+              <div className="text-zinc-500">{item.description}</div>
             </div>
           </li>
         ))}

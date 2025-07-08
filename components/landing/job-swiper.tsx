@@ -33,9 +33,9 @@ export default function ClientsSwiper({ children }: ClientsProps) {
   }, []);
 
   return (
-    <section className="bg-gray-900" data-aos="fade-in">
+    <section className="bg-zinc-800" data-aos="fade-in">
       <div className="py-12 md:py-20">
-        <div className="clients-carousel swiper-container relative before:absolute before:inset-0 before:w-32 before:z-10 before:bg-gradient-to-r before:from-gray-900 after:absolute after:inset-0 after:left-auto after:w-32 after:z-10 after:bg-gradient-to-l after:from-gray-900">
+        <div className="clients-carousel swiper-container relative before:absolute before:inset-0 before:w-32 before:z-10 before:bg-gradient-to-r before:from-zinc-800 after:absolute after:inset-0 after:left-auto after:w-32 after:z-10 after:bg-gradient-to-l after:from-zinc-800">
           {children}
         </div>
       </div>

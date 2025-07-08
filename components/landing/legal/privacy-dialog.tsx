@@ -37,10 +37,10 @@ export default function PrivacyDialog({ children = "Privacy Policy" }) {
             {privacy.title}
           </DialogTitle>
           <div className="text-center space-y-1">
-            <p className="text-xs sm:text-sm text-gray-500">
+            <p className="text-xs sm:text-sm text-zinc-500">
               Effective Date: {privacy.effectiveDate}
             </p>
-            <p className="text-xs sm:text-sm md:text-base text-gray-600 max-w-prose mx-auto">
+            <p className="text-xs sm:text-sm md:text-base text-zinc-600 max-w-prose mx-auto">
               Your privacy is important to us. This policy explains how we
               collect, use, and protect your personal data.
             </p>
@@ -69,7 +69,7 @@ export default function PrivacyDialog({ children = "Privacy Policy" }) {
                 <h4 className="font-semibold text-blue-900 mb-1 sm:mb-2 text-xs sm:text-sm md:text-base">
                   {section.heading}
                 </h4>
-                <p className="text-gray-700 whitespace-pre-line leading-relaxed text-xs sm:text-sm md:text-base">
+                <p className="text-zinc-700 whitespace-pre-line leading-relaxed text-xs sm:text-sm md:text-base">
                   {section.body}
                 </p>
               </section>

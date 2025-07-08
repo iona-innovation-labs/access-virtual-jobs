@@ -195,10 +195,10 @@ export default function RecruiterLoginPage() {
               <Building2 className="h-8 w-8 text-blue-600" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-zinc-800 mb-2">
             Recruiter Login
           </h1>
-          <p className="text-gray-600">
+          <p className="text-zinc-600">
             Sign in to your account to manage your hiring process
           </p>
         </div>
@@ -266,7 +266,7 @@ export default function RecruiterLoginPage() {
                     <Label htmlFor="password">Password</Label>
                     <Link
                       href="/forgot-password"
-                      className="text-xs text-gray-700 underline-offset-4 hover:underline"
+                      className="text-xs text-zinc-700 underline-offset-4 hover:underline"
                     >
                       Forgot your password?
                     </Link>
@@ -296,9 +296,9 @@ export default function RecruiterLoginPage() {
                       disabled={!password}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-zinc-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-zinc-400" />
                       )}
                     </Button>
                   </div>
@@ -339,7 +339,7 @@ export default function RecruiterLoginPage() {
 
               {/* Switch Account Type */}
               <div className="text-center text-sm border-t pt-4">
-                <p className="text-gray-600 mb-2">Are you a job seeker?</p>
+                <p className="text-zinc-600 mb-2">Are you a job seeker?</p>
                 <Link
                   href="/login"
                   className="text-green-600 underline underline-offset-4 hover:text-green-700"
@@ -352,7 +352,7 @@ export default function RecruiterLoginPage() {
         </Card>
 
         {/* Terms Footer */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By clicking continue, you agree to our{" "}
             <TermsDialog>Terms of Service</TermsDialog> and{" "}

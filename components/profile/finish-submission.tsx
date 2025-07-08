@@ -25,7 +25,7 @@ const FinishSubmission = () => {
       <div className="flex items-center justify-center min-h-screen w-full p-4">
         <Card className="p-8 text-center shadow-sm border-0">
           <LoadingSpinner size="lg" />
-          <p className="text-gray-500 mt-4">Loading your information...</p>
+          <p className="text-zinc-500 mt-4">Loading your information...</p>
         </Card>
       </div>
     );
@@ -36,10 +36,10 @@ const FinishSubmission = () => {
       <div className="flex items-center justify-center min-h-screen w-full p-4">
         <Card className="p-8 text-center shadow-sm border-0 max-w-md">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <h3 className="text-lg font-semibold text-zinc-800 mb-2">
             Unable to Load
           </h3>
-          <p className="text-gray-600 mb-4">Error fetching user information.</p>
+          <p className="text-zinc-600 mb-4">Error fetching user information.</p>
           <Button onClick={() => window.location.reload()} variant="outline">
             Try Again
           </Button>
@@ -58,11 +58,11 @@ const FinishSubmission = () => {
               <CheckCircle2 className="w-10 h-10 text-white" />
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+            <h1 className="text-2xl sm:text-3xl font-bold text-zinc-800 mb-3">
               Application Submitted Successfully!
             </h1>
 
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-zinc-600">
               Great job,{" "}
               <span className="font-semibold text-brand">
                 {userInfo?.firstName || "there"}
@@ -80,10 +80,10 @@ const FinishSubmission = () => {
                 <FileCheck className="w-6 h-6 text-blue-600" />
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-2">
+                <h3 className="font-semibold text-zinc-800 mb-2">
                   What happens next?
                 </h3>
-                <div className="space-y-3 text-sm text-gray-600">
+                <div className="space-y-3 text-sm text-zinc-600">
                   <div className="flex items-center space-x-2">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                     <span>
@@ -119,10 +119,10 @@ const FinishSubmission = () => {
               <div className="w-12 h-12 rounded-lg bg-brand/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-brand/20 transition-colors">
                 <Eye className="w-6 h-6 text-brand" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+              <h3 className="font-semibold text-zinc-800 mb-2">
                 View Application
               </h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-zinc-500 mb-4">
                 See your submitted application details and track its progress
               </p>
               <Button
@@ -147,10 +147,10 @@ const FinishSubmission = () => {
               <div className="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
                 <Calendar className="w-6 h-6 text-green-600" />
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">
+              <h3 className="font-semibold text-zinc-800 mb-2">
                 Explore More Jobs
               </h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-zinc-500 mb-4">
                 Continue your job search and find more opportunities
               </p>
               <Button

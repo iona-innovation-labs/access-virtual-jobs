@@ -218,7 +218,7 @@ const SelectEditDialog = ({
         </DialogHeader>
         <div className="py-4">
           {description && (
-            <p className="text-xs text-gray-500 mb-3">{description}</p>
+            <p className="text-xs text-zinc-500 mb-3">{description}</p>
           )}
           <Select onValueChange={setValue} value={value} disabled={loading}>
             <SelectTrigger>

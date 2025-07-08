@@ -22,8 +22,10 @@ const buttonVariants = cva(
           "hover:bg-opacity-20 text-primaryBrightAqua hover:bg-primaryBrightAqua cursor-pointer",
         ghostPrimary:
           "hover:bg-opacity-20 hover:text-white text-deepBlue hover:bg-deepBlue/75 cursor-pointer",
-        primaryBlue: "bg-primaryBrightAqua hover:bg-deepBlue text-white cursor-pointer",
+        primaryBlue:
+          "bg-primaryBrightAqua hover:bg-deepBlue text-white cursor-pointer",
         primary: "bg-deepBlue hover:bg-deepBlue/75 text-white cursor-pointer",
+        blueButton: "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer",
         link: "text-primary underline-offset-4 hover:underline cursor-pointer",
       },
       size: {

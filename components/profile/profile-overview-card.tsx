@@ -63,25 +63,25 @@ const ProfileCard = ({ profile }: IProfileProps) => {
           height={150}
         />
         <h2 className="text-2xl font-bold mt-4">{profile.fullName}</h2>
-        <p className="text-gray-500">{profile.email}</p>
-        <p className="text-gray-500">{profile.phoneNumber}</p>
-        <p className="text-gray-500">{profile.address}</p>
-        <p className="text-gray-500">Whatsapp ID: {profile.whatsappId}</p>
+        <p className="text-zinc-500">{profile.email}</p>
+        <p className="text-zinc-500">{profile.phoneNumber}</p>
+        <p className="text-zinc-500">{profile.address}</p>
+        <p className="text-zinc-500">Whatsapp ID: {profile.whatsappId}</p>
 
         <Separator className="my-4" />
 
         <h3 className="text-lg font-semibold">Why You&apos;re a Good Fit</h3>
-        <p className="text-gray-700">{profile.whyFit}</p>
+        <p className="text-zinc-700">{profile.whyFit}</p>
 
         <h3 className="text-lg font-semibold mt-4">Strengths</h3>
-        <p className="text-gray-700">{profile.whatStrengths}</p>
+        <p className="text-zinc-700">{profile.whatStrengths}</p>
 
         <h3 className="text-lg font-semibold mt-4">Areas for Improvement</h3>
-        <p className="text-gray-700">{profile.whatNeedImprovement}</p>
+        <p className="text-zinc-700">{profile.whatNeedImprovement}</p>
 
         <Separator className="my-4" />
 
-        <div className="grid xl:grid-cols-2 grid-cols-1 gap-4 text-sm text-gray-700">
+        <div className="grid xl:grid-cols-2 grid-cols-1 gap-4 text-sm text-zinc-700">
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="font-medium">Date of Birth:</span>
@@ -115,7 +115,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
         <Separator className="my-4" />
 
         <h3 className="text-lg font-semibold">Salary Expectations</h3>
-        <p className="text-gray-700">
+        <p className="text-zinc-700">
           {profile.salaryUnit} {profile.desiredSalary}
         </p>
 

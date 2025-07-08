@@ -7,7 +7,7 @@ import Hero from "@/components/landing/hero";
 import JobCarousel from "@/components/landing/job-carousel";
 import Explainer from "@/components/landing/explainer";
 import Features01 from "@/components/landing/features01";
-import Features02 from "@/components/landing/features02";
+// import Features02 from "@/components/landing/features02";
 import Services from "@/components/landing/services";
 import FAQ from "@/components/landing/faqs";
 import Cta from "@/components/landing/cta";
@@ -15,60 +15,50 @@ import ClientsSwiper from "@/components/landing/job-swiper";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Find Remote Jobs | Global Remote Work Opportunities",
+  title: "Access Virtual Jobs | Find Remote Work Opportunities Worldwide",
   description:
-    "Discover verified remote job opportunities from top companies worldwide. Join thousands of professionals working remotely with flexible schedules and timezone-friendly roles.",
+    "Connect with top virtual job opportunities from leading companies. Join thousands of professionals building successful remote careers with flexible schedules and competitive compensation.",
   keywords: [
-    "remote jobs",
-    "work from home",
-    "remote work",
-    "global remote opportunities",
-    "flexible work",
-    "remote careers",
-    "digital nomad jobs",
-    "remote positions",
-    "online jobs",
-    "telecommute",
+    "virtual jobs",
+    "remote work opportunities",
+    "online employment",
+    "work from home careers",
+    "virtual assistant jobs",
+    "freelance opportunities",
+    "digital nomad positions",
+    "remote job board",
+    "virtual staffing",
+    "online job platform",
+    "flexible work arrangements",
+    "remote employment solutions",
   ],
-  authors: [{ name: "Your Company Name" }],
-  creator: "Your Company Name",
-  publisher: "Your Company Name",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://accessvirtualstaffing.com"),
+  metadataBase: new URL("https://accessvirtualjobs.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Find Remote Jobs | Global Remote Work Opportunities",
+    title: "Access Virtual Jobs | Premium Remote Work Platform",
     description:
-      "Discover verified remote job opportunities from top companies worldwide. Join thousands of professionals working remotely.",
-    url: "https://accessvirtualstaffing.com",
-    siteName: "Your Company Name",
+      "Discover verified virtual job opportunities from top companies worldwide. Build your remote career with confidence on our trusted platform.",
+    url: "https://accessvirtualjobs.com",
+    siteName: "Access Virtual Jobs",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Remote Jobs Platform - Find Your Perfect Remote Career",
+        alt: "Access Virtual Jobs - Your Gateway to Premium Remote Work",
       },
     ],
     locale: "en_US",
     type: "website",
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
+  twitter: {
+    card: "summary_large_image",
+    title: "Access Virtual Jobs | Find Your Perfect Remote Career",
+    description:
+      "Connect with premium virtual job opportunities from leading companies worldwide.",
+    images: ["/og-image.jpg"],
   },
 };
 
@@ -88,7 +78,7 @@ export default async function LandingPage() {
       </ClientsSwiper>
       <Explainer />
       <Features01 />
-      <Features02 />
+      {/* <Features02 /> */}
       <Services />
       <FAQ />
       <Cta />

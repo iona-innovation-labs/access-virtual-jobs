@@ -82,7 +82,7 @@ export const PersonalInfoSection = ({
       lowerStatus?.includes("not") ||
       lowerStatus?.includes("unavailable")
     ) {
-      return "text-gray-600 bg-gray-50 border-gray-200";
+      return "text-zinc-600 bg-gray-50 border-gray-200";
     }
     return "text-blue-700 bg-blue-50 border-blue-200";
   };

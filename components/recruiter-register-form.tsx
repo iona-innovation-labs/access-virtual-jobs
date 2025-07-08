@@ -242,10 +242,10 @@ export default function RecruiterRegisterForm() {
               <Building2 className="h-8 w-8 text-blue-600" />
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-zinc-800 mb-2">
             Create a Recruiter account
           </h1>
-          <p className="text-gray-600">
+          <p className="text-zinc-600">
             Find and hire the best Filipino talent for your organization
           </p>
         </div>
@@ -263,7 +263,7 @@ export default function RecruiterRegisterForm() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Users className="h-4 w-4 text-blue-600" />
-                  <Label className="text-sm font-medium text-gray-700">
+                  <Label className="text-sm font-medium text-zinc-700">
                     Personal Information
                   </Label>
                 </div>
@@ -316,7 +316,7 @@ export default function RecruiterRegisterForm() {
                   {fieldErrors.email && (
                     <p className="text-sm text-red-500">{fieldErrors.email}</p>
                   )}
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-zinc-500">
                     Please use your business email address
                   </p>
                 </div>
@@ -326,7 +326,7 @@ export default function RecruiterRegisterForm() {
               <div className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Briefcase className="h-4 w-4 text-blue-600" />
-                  <Label className="text-sm font-medium text-gray-700">
+                  <Label className="text-sm font-medium text-zinc-700">
                     Company Information
                   </Label>
                 </div>
@@ -453,9 +453,9 @@ export default function RecruiterRegisterForm() {
                       disabled={!password}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-zinc-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-zinc-400" />
                       )}
                     </Button>
                   </div>
@@ -515,9 +515,9 @@ export default function RecruiterRegisterForm() {
                       disabled={!confirmPassword}
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-zinc-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-zinc-400" />
                       )}
                     </Button>
                   </div>
@@ -553,7 +553,7 @@ export default function RecruiterRegisterForm() {
                       />
                       <Label
                         htmlFor="authorizedToHire"
-                        className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                        className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                       >
                         I am authorized to hire employees for my organization
                         and have the necessary permissions to post job
@@ -585,7 +585,7 @@ export default function RecruiterRegisterForm() {
                       />
                       <Label
                         htmlFor="validBusinessEmail"
-                        className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                        className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                       >
                         I am using a valid business email address and represent
                         a legitimate organization.
@@ -616,7 +616,7 @@ export default function RecruiterRegisterForm() {
                       />
                       <Label
                         htmlFor="noMultipleAccounts"
-                        className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                        className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                       >
                         I do not have any other recruiter accounts. I
                         acknowledge that multiple accounts are not allowed.
@@ -647,7 +647,7 @@ export default function RecruiterRegisterForm() {
                       />
                       <Label
                         htmlFor="agreeToTerms"
-                        className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                        className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                       >
                         I agree to the{" "}
                         <TermsDialog>Terms of Service</TermsDialog> and{" "}
@@ -733,7 +733,7 @@ export default function RecruiterRegisterForm() {
         </Card>
 
         {/* Additional Info */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By creating a recruiter account, you&apos;re joining a platform
             dedicated to connecting businesses with the best Filipino talent.

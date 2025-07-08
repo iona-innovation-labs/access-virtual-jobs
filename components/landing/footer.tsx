@@ -1,183 +1,118 @@
 import Link from "next/link";
+import Logo from "../logo";
 
 export default function Footer() {
   return (
-    <footer className="relative">
-      <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Blocks */}
-        <div className="grid sm:grid-cols-12 lg:grid-cols-10 gap-8 py-8 border-t border-blue-500">
-          {/* 1st block */}
-          <div className="sm:col-span-12 lg:col-span-2 lg:max-w-xs">
-            {/* Logo */}
-            <Link className="block group" href="/" aria-label="Cruip">
-              <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  className="fill-blue-100 group-hover:fill-white transform duration-150 ease-in-out"
-                  d="M12 6v24C5.373 30 0 24.627 0 18S5.373 6 12 6Z"
-                />
-                <path
-                  className="fill-sky-400 group-hover:fill-sky-300 transform duration-150 ease-in-out"
-                  d="M10.807 6.059A10.003 10.003 0 0 1 20 0c5.523 0 10 4.477 10 10 0 4.123-2.496 7.664-6.059 9.193.04-.392.059-.79.059-1.193 0-6.627-5.373-12-12-12-.403 0-.8.02-1.193.059Z"
-                />
-              </svg>
-            </Link>
+    <footer className="bg-white border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Main Footer Content */}
+        <div className="grid md:grid-cols-4 gap-8 py-12">
+          {/* Logo and Company Info */}
+          <div className="md:col-span-1">
+            <div
+              className="flex items-center gap-3 font-bold mb-6"
+              aria-label="AVJ"
+            >
+              <Logo size="sm" href="/" priority={true} isWhite={false} />
+              <p className="text-2xl font-bold text-blue-900">AVJ</p>
+            </div>
+            <p className="text-zinc-600 text-lg leading-relaxed">
+              Connect with premium virtual job opportunities from leading
+              companies worldwide.
+            </p>
           </div>
 
-          <div></div>
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-xs text-gray-100 font-bold uppercase mb-3">
-              Company
-            </h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  About us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/contact"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/faq"
-                >
-                  FAQs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="#0"
-                >
-                  Blog
-                </Link>
-              </li>
-            </ul>
-          </div>
+          {/* Navigation Links */}
+          <div className="md:col-span-3 grid sm:grid-cols-3 gap-8">
+            {/* Jobs & Opportunities */}
+            <div className="space-y-4">
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/jobs"
+              >
+                Remote Jobs
+              </Link>
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/register"
+              >
+                Create Account
+              </Link>
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/login"
+              >
+                Sign in
+              </Link>
+            </div>
 
-          {/* 4th block */}
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-xs text-gray-100 font-bold uppercase mb-3">
-              Tools
-            </h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/register"
-                >
-                  For Talents
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/jobs"
-                >
-                  Remote Jobs
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/login"
-                >
-                  Application Portal
-                </Link>
-              </li>
-            </ul>
-          </div>
+            {/* Support */}
+            <div className="space-y-4">
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/contact"
+              >
+                Contact Us
+              </Link>
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/faq"
+              >
+                FAQs
+              </Link>
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/blogs"
+              >
+                Blog
+              </Link>
+            </div>
 
-          {/* 5th block */}
-          <div className="sm:col-span-6 md:col-span-3 lg:col-span-2">
-            <h6 className="text-xs text-gray-100 font-bold uppercase mb-3">
-              Resources
-            </h6>
-            <ul className="text-sm space-y-2">
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/legal/terms-of-services"
-                >
-                  Terms of service
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                  href="/legal/privacy-policy"
-                >
-                  Privacy policy
-                </Link>
-              </li>
-            </ul>
+            {/* Legal */}
+            <div className="space-y-4">
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/legal/terms-of-services"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                className="block text-zinc-700 hover:text-blue-600 font-medium text-lg transition-colors"
+                href="/legal/privacy-policy"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Bottom area */}
-        <div className="md:flex md:items-center md:justify-between pb-4 md:pb-8">
-          {/* Social links */}
-          <ul className="flex mb-4 md:order-1 md:ml-4 md:mb-0">
-            <li>
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-200 py-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            {/* Copyright */}
+            <div className="text-zinc-600 text-lg">
+              © 2024 - 2025 Access Virtual Staffing. All rights reserved.
+            </div>
+
+            {/* Social Links - Commented out for now */}
+            {/*
+            <div className="flex space-x-4">
               <Link
-                className="flex justify-center items-center text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                href="#0"
+                className="text-zinc-400 hover:text-blue-600 transition-colors"
+                href="#"
                 aria-label="Twitter"
               >
-                <svg
-                  className="w-8 h-8 fill-current"
-                  viewBox="0 0 32 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="m13.063 9 3.495 4.475L20.601 9h2.454l-5.359 5.931L24 23h-4.938l-3.866-4.893L10.771 23H8.316l5.735-6.342L8 9h5.063Zm-.74 1.347h-1.457l8.875 11.232h1.36l-8.778-11.232Z" />
-                </svg>
+                <TwitterIcon className="w-6 h-6" />
               </Link>
-            </li>
-            <li className="ml-2">
               <Link
-                className="flex justify-center items-center text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                href="#0"
-                aria-label="Github"
+                className="text-zinc-400 hover:text-blue-600 transition-colors"
+                href="#"
+                aria-label="LinkedIn"
               >
-                <svg
-                  className="w-8 h-8 fill-current"
-                  viewBox="0 0 32 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z" />
-                </svg>
+                <LinkedInIcon className="w-6 h-6" />
               </Link>
-            </li>
-            <li className="ml-2">
-              <Link
-                className="flex justify-center items-center text-blue-300 hover:text-white transition duration-150 ease-in-out"
-                href="#0"
-                aria-label="Telegram"
-              >
-                <svg
-                  className="w-8 h-8 fill-current"
-                  viewBox="0 0 32 32"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M22.968 10.276a.338.338 0 0 0-.232-.253 1.192 1.192 0 0 0-.63.045s-14.019 5.038-14.82 5.596c-.172.121-.23.19-.259.272-.138.4.293.573.293.573l3.613 1.177a.388.388 0 0 0 .183-.011c.822-.519 8.27-5.222 8.7-5.38.068-.02.118 0 .1.049-.172.6-6.606 6.319-6.64 6.354a.138.138 0 0 0-.05.118l-.337 3.528s-.142 1.1.956 0a30.66 30.66 0 0 1 1.9-1.738c1.242.858 2.58 1.806 3.156 2.3a1 1 0 0 0 .732.283.825.825 0 0 0 .7-.622s2.561-10.275 2.646-11.658c.008-.135.021-.217.021-.317a1.177 1.177 0 0 0-.032-.316Z" />
-                </svg>
-              </Link>
-            </li>
-          </ul>
-
-          {/* Copyrights */}
-          <div className="text-sm text-blue-300">
-            © 2024 - 2025 Access Virtual Staffing. All rights reserved.
+            </div>
+            */}
           </div>
         </div>
       </div>

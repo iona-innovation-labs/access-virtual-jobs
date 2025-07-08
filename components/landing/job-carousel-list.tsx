@@ -41,25 +41,28 @@ export default function JobCarouselClient({ jobs }: JobCarouselClientProps) {
         <div
           key={job.id}
           onClick={handleJobClick}
-          className="swiper-slide w-80! h-72 bg-gray-800 rounded-2xl p-4 text-white hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
+          className="swiper-slide w-96! h-80 bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer border border-gray-100"
         >
-          <Card className="bg-gradient-to-br h-full from-gray-800 to-gray-900 text-white border-none shadow-md hover:shadow-lg transition-shadow duration-200 flex flex-col">
-            <CardHeader className="pb-3 flex-shrink-0">
-              <h3 className="text-xl font-semibold tracking-tight line-clamp-2 leading-tight">
+          <Card className="bg-white h-full border-none shadow-none flex flex-col">
+            <CardHeader className="pb-4 flex-shrink-0">
+              <h3 className="text-2xl font-bold tracking-tight line-clamp-2 leading-tight text-zinc-800">
                 {job.title}
               </h3>
             </CardHeader>
             <CardContent className="flex-1 flex flex-col justify-between space-y-4">
               <div className="flex-1">
-                <p className="text-sm text-gray-300 leading-relaxed line-clamp-4">
+                <p className="text-lg text-zinc-600 leading-relaxed line-clamp-4">
                   {truncateDescription(job.description || "")}
                 </p>
               </div>
-              <div className="flex flex-col gap-2 text-sm text-gray-400 flex-shrink-0">
+              <div className="flex flex-col gap-3 text-base flex-shrink-0">
                 <p className="truncate">
-                  <span className="font-medium">
-                    {job.pay || "Not specified"}
+                  <span className="font-semibold text-blue-600 text-lg">
+                    {job.pay || "Competitive Salary"}
                   </span>
+                </p>
+                <p className="text-sm font-medium text-zinc-500 uppercase tracking-wide">
+                  Remote Position
                 </p>
               </div>
             </CardContent>

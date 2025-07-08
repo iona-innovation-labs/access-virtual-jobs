@@ -134,7 +134,7 @@ const getHowHearInfo = (howHear: string | null) => {
     other: {
       label: "Other Source",
       description: "Alternative discovery method",
-      badgeColor: "bg-gray-100 text-gray-700",
+      badgeColor: "bg-gray-100 text-zinc-700",
     },
   };
 
@@ -142,7 +142,7 @@ const getHowHearInfo = (howHear: string | null) => {
     sourceMap[howHear] || {
       label: howHear,
       description: "Custom source",
-      badgeColor: "bg-gray-100 text-gray-700",
+      badgeColor: "bg-gray-100 text-zinc-700",
     }
   );
 };

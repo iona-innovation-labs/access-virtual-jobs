@@ -35,25 +35,18 @@ export default function Features01() {
   }, []);
 
   return (
-    <section className="relative">
-      <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
-        <Image
-          className="w-full h-full object-cover"
-          src={landingPage.features.bgImage}
-          alt="Illustration"
-        />
-      </div>
+    <section className="relative bg-brand">
+      <div className="absolute inset-0 bg-gray-50 -z-10" aria-hidden="true" />
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <div className="py-12 md:py-20">
-          <div className="max-w-3xl pb-12 md:pb-16" data-aos="fade-in">
-            <h2 className="font-archivo text-2xl md:text-4xl font-bold text-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="py-20 md:py-28">
+          <div className="w-full pb-16 md:pb-20" data-aos="fade-up">
+            <h2 className="font-archivo text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
               {landingPage.features.title}
             </h2>
           </div>
 
-          <div className="pb-12 md:pb-16" data-aos="fade-in">
+          <div className="pb-12 md:pb-16" data-aos="fade-up">
             <div className="carousel swiper-container mx-auto max-w-sm sm:max-w-none">
               <div className="swiper-wrapper">
                 {landingPage.features.images.map((image, index) => (
@@ -72,7 +65,7 @@ export default function Features01() {
             </div>
 
             <div className="mt-12 flex justify-end space-x-3">
-              <button className="carousel-prev relative z-20 flex h-11 w-11 items-center justify-center rounded-full bg-gray-900">
+              <button className="carousel-prev relative z-20 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800">
                 <span className="sr-only">Previous</span>
                 <svg
                   className="fill-blue-500 transition duration-150 ease-in-out group-hover:fill-white"
@@ -84,7 +77,7 @@ export default function Features01() {
                   <path d="m3.914 5 3.5-3.5L6 .086 1.086 5H1v.086L.086 6 1 6.914V7h.086L6 11.914 7.414 10.5 3.914 7H13V5z" />
                 </svg>
               </button>
-              <button className="carousel-next relative z-20 flex h-11 w-11 items-center justify-center rounded-full bg-gray-900">
+              <button className="carousel-next relative z-20 flex h-11 w-11 items-center justify-center rounded-full bg-zinc-800">
                 <span className="sr-only">Next</span>
                 <svg
                   className="fill-blue-500 transition duration-150 ease-in-out group-hover:fill-white"
@@ -106,7 +99,7 @@ export default function Features01() {
             {landingPage.features.items.map((item, i) => (
               <Card
                 key={i}
-                className="group relative overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm h-full text-white p-6 rounded-lg transition-all duration-300 ease-out hover:border-white/20 hover:bg-white/10 hover:shadow-lg hover:shadow-black/25 hover:-translate-y-1"
+                className="group relative overflow-hidden border border-zic-300 bg-zinc-800 cursor-pointer backdrop-blur-sm h-full text-white p-6 rounded-lg transition-all duration-300 ease-out hover:border-white/20 hover:bg-zinc-700 hover:shadow-lg hover:shadow-black/25 hover:-translate-y-1"
               >
                 <CardHeader className="p-0 mb-4">
                   <div className="transition-transform duration-300 ease-out group-hover:scale-110">
@@ -114,11 +107,11 @@ export default function Features01() {
                   </div>
                 </CardHeader>
 
-                <CardTitle className="text-xl font-cabinet-grotesk font-bold mb-3 leading-tight">
+                <CardTitle className="text-2xl font-cabinet-grotesk font-bold mb-3 leading-tight">
                   {item.title}
                 </CardTitle>
 
-                <CardContent className="text-white/70 p-0 text-sm leading-relaxed group-hover:text-white/85 transition-colors duration-300">
+                <CardContent className="text-white p-0 text-xl leading-relaxed group-hover:text-zinc-200 transition-colors duration-300">
                   {item.description}
                 </CardContent>
 

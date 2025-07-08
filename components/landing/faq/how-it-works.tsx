@@ -43,7 +43,7 @@ export default function HowItWorks() {
             How It Works
           </h2>
           <p
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg text-zinc-600 max-w-2xl mx-auto"
             style={{ fontFamily: "Archivo, sans-serif" }}
           >
             At Access Virtual Jobs, we&apos;ll help you explore online job
@@ -83,7 +83,7 @@ export default function HowItWorks() {
                 </h3>
 
                 <p
-                  className="text-gray-600 text-sm leading-relaxed"
+                  className="text-zinc-600 text-sm leading-relaxed"
                   style={{ fontFamily: "Archivo, sans-serif" }}
                 >
                   {step.description}

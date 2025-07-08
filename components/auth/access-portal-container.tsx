@@ -25,7 +25,7 @@ export const AccessPortalContainer = (props: AuthContainerProps) => {
   };
 
   if (isLoading)
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return <div className="text-center text-zinc-500">Loading...</div>;
   if (error)
     return <div className="text-center text-red-500">{error.message}</div>;
 

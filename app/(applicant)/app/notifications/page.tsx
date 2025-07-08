@@ -130,7 +130,7 @@ export default function NotificationsPage() {
             <div className="pb-6 flex flex-col sm:flex-row gap-4">
               {/*
               <div className="flex-1">
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-zinc-500 mb-1">
                   Filter by type
                 </label>
                 <Select value={filterType} onValueChange={handleFilterChange}>
@@ -205,12 +205,12 @@ export default function NotificationsPage() {
               ) : notifications.length === 0 && !loading ? (
                 <div className="text-center py-16">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Bell className="w-10 h-10 text-gray-400" />
+                    <Bell className="w-10 h-10 text-zinc-400" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-zinc-800 mb-2">
                     No notifications
                   </h3>
-                  <p className="text-gray-600 max-w-md mx-auto">
+                  <p className="text-zinc-600 max-w-md mx-auto">
                     {filterType === "all"
                       ? "You're all caught up! Check back later for new updates."
                       : `No ${notificationTypeLabels[filterType as keyof typeof notificationTypeLabels].toLowerCase()} found. Try selecting a different filter.`}

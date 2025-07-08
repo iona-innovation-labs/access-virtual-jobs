@@ -10,10 +10,10 @@ export default function TermsPage() {
         <h1 className="text-4xl font-extrabold tracking-tight text-blue-800 sm:text-5xl">
           {tos.title}
         </h1>
-        <p className="mt-4 text-sm text-gray-500">
+        <p className="mt-4 text-sm text-zinc-500">
           Effective Date: {tos.effectiveDate}
         </p>
-        <p className="mt-2 text-base text-gray-600 max-w-2xl mx-auto">
+        <p className="mt-2 text-base text-zinc-600 max-w-2xl mx-auto">
           Please read our Terms carefully. By using our platform, you agree to
           be bound by them.
         </p>
@@ -26,7 +26,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-blue-900">
               {section.heading}
             </h2>
-            <p className="mt-2 text-gray-700 whitespace-pre-line leading-relaxed text-sm sm:text-base">
+            <p className="mt-2 text-zinc-700 whitespace-pre-line leading-relaxed text-sm sm:text-base">
               {section.body}
             </p>
           </section>

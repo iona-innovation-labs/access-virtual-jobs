@@ -1,4 +1,4 @@
-import Header from "@/components/landing/header";
+import SiteNavigation from "@/components/landing/site-navigation";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function PublicProfileLayout({
 }) {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <SiteNavigation />
       <div className="container mx-auto px-4 py-8 max-w-7xl">{children}</div>
     </div>
   );

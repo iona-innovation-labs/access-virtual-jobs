@@ -15,16 +15,16 @@ import Link from "next/link";
 const notificationIcons = {
   job_submissions: <Briefcase className="w-5 h-5 text-brand-light" />,
   jobs: <FileText className="w-5 h-5 text-brand" />,
-  info: <Info className="w-5 h-5 text-gray-600" />,
+  info: <Info className="w-5 h-5 text-zinc-600" />,
   success: <CheckCircle className="w-5 h-5 text-brand-light" />,
   error: <XCircle className="w-5 h-5 text-danger" />,
-  default: <Info className="w-5 h-5 text-gray-600" />,
+  default: <Info className="w-5 h-5 text-zinc-600" />,
 };
 
 const notificationTypeBadges = {
   job_submissions: "bg-brand-light/10 text-brand-light border-brand-light/20",
   jobs: "bg-brand/10 text-brand border-brand/20",
-  info: "bg-gray-50 text-gray-700 border-gray-200",
+  info: "bg-gray-50 text-zinc-700 border-gray-200",
   success: "bg-brand-light/10 text-brand-light border-brand-light/20",
   error: "bg-danger/10 text-danger border-danger/20",
 };

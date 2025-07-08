@@ -229,7 +229,7 @@ export default function JobSeekerLoginPage() {
                     <Label htmlFor="password">Password</Label>
                     <Link
                       href="/forgot-password"
-                      className="text-xs text-gray-700 underline-offset-4 hover:underline"
+                      className="text-xs text-zinc-700 underline-offset-4 hover:underline"
                     >
                       Forgot your password?
                     </Link>
@@ -259,9 +259,9 @@ export default function JobSeekerLoginPage() {
                       disabled={!password}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-zinc-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-zinc-400" />
                       )}
                     </Button>
                   </div>
@@ -313,7 +313,7 @@ export default function JobSeekerLoginPage() {
         </Card>
 
         {/* Terms Footer */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By clicking continue, you agree to our{" "}
             <TermsDialog>Terms of Service</TermsDialog> and{" "}

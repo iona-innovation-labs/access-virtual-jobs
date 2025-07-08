@@ -1,6 +1,6 @@
 //must export images, contents, and other data for the landing page
 
-import { BadgeDollarSign, Clock, Globe, Laptop, Shield } from "lucide-react";
+import { Clock, Globe, Laptop, Shield } from "lucide-react";
 
 import HeroImage from "../public/images/landing/hero-blur.svg";
 
@@ -18,10 +18,30 @@ import Scale5 from "../public/images/landing-feature/5.jpg";
 
 export const landingPage = {
   hero: {
-    title: "Your Career, Your Way – Work from Anywhere",
+    title: "The Job Board for Virtual Workers in the Philippines",
     subtitle:
-      "Discover roles with US-based startups and companies and find the flexibility to work on your terms from anywhere in the world.",
+      "Discover work-from-home jobs designed for Filipino virtual assistants and freelancers",
     image: HeroImage,
+    options: [
+      {
+        title: "Looking for Talent?",
+        description: "Find skilled professionals for your business",
+        cta: {
+          label: "Find Talents",
+          url: "https://www.accessvirtualstaffing.com/",
+          external: true,
+        },
+      },
+      {
+        title: "Looking for Work?",
+        description: "Search for your next opportunity",
+        cta: {
+          type: "search",
+          placeholder: "Search for jobs...",
+          redirectPath: "/jobs",
+        },
+      },
+    ],
   },
   explainer: {
     title: "Empowering businesses with remote-ready professionals.",
@@ -164,7 +184,7 @@ export const landingPage = {
     ],
   },
   scale: {
-    title: "Popular Remote Job Categories",
+    title: "Popular Virtual Job Categories",
     items: [
       { image: Scale1, alt: "Virtual Assistant", label: "Virtual Assistant" },
       {

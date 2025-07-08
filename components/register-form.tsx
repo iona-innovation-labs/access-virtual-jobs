@@ -279,9 +279,9 @@ export default function JobSeekerRegisterForm() {
                     disabled={!password}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>
@@ -337,9 +337,9 @@ export default function JobSeekerRegisterForm() {
                     disabled={!confirmPassword}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>
@@ -374,7 +374,7 @@ export default function JobSeekerRegisterForm() {
                         />
                         <Label
                           htmlFor={checkbox.id}
-                          className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                          className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                         >
                           {checkbox.id === "agreeToTerms" ? (
                             <>
@@ -435,7 +435,7 @@ export default function JobSeekerRegisterForm() {
         </Card>
 
         {/* Additional Info */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By creating an account, you&apos;re joining a community of Filipino
             workers dedicated to finding meaningful employment opportunities.

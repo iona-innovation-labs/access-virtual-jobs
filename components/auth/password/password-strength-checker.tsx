@@ -82,7 +82,7 @@ export function PasswordStrengthChecker({
       )}
     >
       <div className="space-y-2">
-        <p className="text-xs font-medium text-gray-600">
+        <p className="text-xs font-medium text-zinc-600">
           Password Requirements:
         </p>
 
@@ -97,13 +97,13 @@ export function PasswordStrengthChecker({
               {req.satisfied ? (
                 <Check className="w-3 h-3 text-green-600" />
               ) : (
-                <X className="w-3 h-3 text-gray-400" />
+                <X className="w-3 h-3 text-zinc-400" />
               )}
             </div>
             <span
               className={cn(
                 "text-xs",
-                req.satisfied ? "text-green-700" : "text-gray-500"
+                req.satisfied ? "text-green-700" : "text-zinc-500"
               )}
             >
               {req.label}
@@ -123,13 +123,13 @@ export function PasswordStrengthChecker({
                 {isOverallValid ? (
                   <Check className="w-3 h-3 text-green-600" />
                 ) : (
-                  <X className="w-3 h-3 text-gray-400" />
+                  <X className="w-3 h-3 text-zinc-400" />
                 )}
               </div>
               <span
                 className={cn(
                   "text-xs font-medium",
-                  isOverallValid ? "text-green-700" : "text-gray-500"
+                  isOverallValid ? "text-green-700" : "text-zinc-500"
                 )}
               >
                 {overallStatusLabel} ({satisfiedCount}/{requirements.length})

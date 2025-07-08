@@ -84,7 +84,7 @@ export default function PublicProfilePage() {
   if (!profileData?.profile) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <div className="text-gray-600 text-lg">Profile not found</div>
+        <div className="text-zinc-600 text-lg">Profile not found</div>
       </div>
     );
   }

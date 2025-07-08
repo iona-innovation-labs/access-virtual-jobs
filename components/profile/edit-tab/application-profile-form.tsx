@@ -8,7 +8,10 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 // Import all sections (excluding job preferences)
 import { UserProfileSection } from "./sections/user-detail";
 import { ProfileDescriptionSection } from "./sections/profile-description";
-import { ProfessionalProfileSection, ProfessionalProfileFormData } from "./sections/professional-information";
+import {
+  ProfessionalProfileSection,
+  ProfessionalProfileFormData,
+} from "./sections/professional-information";
 import { ContactInformationSection } from "./sections/contact";
 import { PrescreeningQuestionsSection } from "./sections/prescreening-questions";
 import { AssessmentContentSection } from "./sections/assessment";
@@ -24,7 +27,7 @@ export default function ApplicationProfileForm() {
         <h2 className="text-lg font-semibold text-red-600 dark:text-red-400 mb-2">
           Error Loading Profile
         </h2>
-        <p className="text-gray-600 dark:text-gray-200">
+        <p className="text-zinc-600 dark:text-zinc-200">
           Failed to load profile data. Please refresh the page.
         </p>
       </Card>
