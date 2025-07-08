@@ -10,20 +10,22 @@ interface JobCarouselClientProps {
   jobs: IJobListing[];
 }
 
-const stripHtml = (html: string): string => {
-  if (!html) return "";
-  const tempDiv = document.createElement("div");
-  tempDiv.innerHTML = html;
-  return tempDiv.textContent || tempDiv.innerText || "";
-};
+// Utility function to safely truncate text and remove HTML
+const truncateDescription = (text: string, maxLength: number = 120): string => {
+  if (!text) return "No description available";
 
-// Function to truncate text safely
-const truncateText = (text: string, maxLength: number): string => {
-  if (!text) return "";
-  const cleanText = stripHtml(text);
-  return cleanText.length > maxLength
-    ? cleanText.slice(0, maxLength).trim() + "..."
-    : cleanText;
+  // Simple HTML tag removal using regex
+  const cleanText = text.replace(/<[^>]*>/g, "").trim();
+
+  if (cleanText.length <= maxLength) return cleanText;
+
+  // Truncate and ensure we don't cut off in the middle of a word
+  const truncated = cleanText.slice(0, maxLength);
+  const lastSpaceIndex = truncated.lastIndexOf(" ");
+
+  return lastSpaceIndex > maxLength * 0.8
+    ? truncated.slice(0, lastSpaceIndex) + "..."
+    : truncated + "...";
 };
 
 export default function JobCarouselClient({ jobs }: JobCarouselClientProps) {
@@ -49,20 +51,12 @@ export default function JobCarouselClient({ jobs }: JobCarouselClientProps) {
             </CardHeader>
             <CardContent className="flex-1 flex flex-col justify-between space-y-4">
               <div className="flex-1">
-                <p className="text-sm text-gray-300 leading-relaxed line-clamp-3">
-                  {truncateText(
-                    job.description || "No description available",
-                    120
-                  )}
+                <p className="text-sm text-gray-300 leading-relaxed line-clamp-4">
+                  {truncateDescription(job.description || "")}
                 </p>
               </div>
               <div className="flex flex-col gap-2 text-sm text-gray-400 flex-shrink-0">
                 <p className="truncate">
-                  <span className="font-medium text-gray-200">Posted by:</span>{" "}
-                  <span className="text-gray-300">{job.postedBy}</span>
-                </p>
-                <p className="truncate">
-                  <span className="font-medium text-gray-200">Pay:</span>{" "}
                   <span className="font-medium">
                     {job.pay || "Not specified"}
                   </span>
