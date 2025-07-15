@@ -219,28 +219,29 @@ export const landingPage = {
     title: "Frequently Asked Questions",
     items: [
       {
+        title: "How do I get started with Access Virtual Jobs?",
+        description:
+          "Getting started is simple! Create your profile, upload your documents for verification, and start browsing job opportunities. Our step-by-step process guides you through everything you need to know.",
+      },
+      {
         title: "What types of jobs are available?",
         description:
-          "We offer full-time, part-time, and freelance remote roles across various industries.",
+          "We offer a wide variety of remote positions including customer service, data entry, virtual assistance, content writing, graphic design, programming, and many other skills-based roles across different industries.",
       },
       {
-        title: "Is there a cost to post a job?",
+        title: "How does the verification process work?",
         description:
-          "Basic job postings are free, with premium upgrades available for increased visibility.",
+          "Our verification process involves uploading a valid government ID and completing skill assessments. This builds your IDProof score, which helps employers trust your credentials and increases your chances of getting hired.",
       },
       {
-        title: "How do you screen remote candidates?",
+        title: "Do I need to pay any fees to use the platform?",
         description:
-          "Each candidate is reviewed for skills, experience, and remote readiness using our vetting process.",
+          "Creating your profile and browsing jobs is completely free. We only charge a small service fee when you successfully get hired through our platform, ensuring we're aligned with your success.",
       },
       {
-        title: "Can I hire someone from a specific timezone?",
-        description: "Yes, you can filter candidates by timezone availability.",
-      },
-      {
-        title: "Do you offer onboarding help?",
+        title: "How much can I earn working remotely?",
         description:
-          "Absolutely. We provide onboarding templates and optional services to help you onboard faster.",
+          "Earnings vary based on your skills, experience, and the type of work you do. Our platform features jobs ranging from entry-level positions to high-skill roles with competitive compensation packages.",
       },
     ],
   },

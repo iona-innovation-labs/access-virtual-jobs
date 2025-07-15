@@ -4,7 +4,7 @@ const faqs = landingPage.faqs.items;
 
 export default function Faqs() {
   return (
-    <section>
+    <section className="bg-white">
       <div
         className="max-w-6xl mx-auto px-4 sm:px-6 mt-12"
         data-aos="fade-right"
