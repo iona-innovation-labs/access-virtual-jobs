@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Explainer() {
   return (
-    <section className="bg-gray-50">
+    <section className="bg-gray-50" id="how-it-works">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-20 md:py-28">
           <div className="max-w-4xl mx-auto text-center pb-16 md:pb-20">
