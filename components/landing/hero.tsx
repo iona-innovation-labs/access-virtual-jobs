@@ -25,10 +25,10 @@ export default function Hero() {
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center">
       <div
-        className="absolute inset-0 bg-brand/80 pointer-events-none -z-10"
+        className="absolute inset-0 bg-brand  pointer-events-none -z-10"
         aria-hidden="true"
       />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-20 h-full w-full">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
         <Image
           className="w-full h-full object-cover "
           src={landingPage.features.bgImage}
@@ -68,9 +68,7 @@ export default function Hero() {
                 <h3 className="text-xl lg:text-2xl font-bold text-white">
                   {landingPage.hero.options[0].title}
                 </h3>
-                <p className="text-white text-lg">
-                  {landingPage.hero.options[0].description}
-                </p>
+
                 <a
                   href={landingPage.hero.options[0].cta.url}
                   target="_blank"
@@ -87,9 +85,7 @@ export default function Hero() {
                 <h3 className="text-xl lg:text-2xl font-bold text-white">
                   {landingPage.hero.options[1].title}
                 </h3>
-                <p className="text-white text-lg">
-                  {landingPage.hero.options[1].description}
-                </p>
+
                 <form onSubmit={handleSearch} className="space-y-4">
                   <div className="flex gap-2">
                     <Input

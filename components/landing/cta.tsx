@@ -7,8 +7,8 @@ import Link from "next/link";
 export default function Cta() {
   return (
     <section className="relative overflow-hidden ">
-      <div className="absolute inset-0 bg-brand/90 -z-10" aria-hidden="true" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-20 h-full w-full">
+      <div className="absolute inset-0 bg-brand -z-10" aria-hidden="true" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
         <Image
           className="w-full h-full object-cover"
           src={Illustration}

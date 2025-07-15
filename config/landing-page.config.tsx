@@ -25,7 +25,7 @@ export const landingPage = {
     options: [
       {
         title: "Looking for Talent?",
-        description: "Find skilled professionals for your business",
+
         cta: {
           label: "Find Talents",
           url: "https://www.accessvirtualstaffing.com/",
@@ -34,7 +34,7 @@ export const landingPage = {
       },
       {
         title: "Looking for Work?",
-        description: "Search for your next opportunity",
+
         cta: {
           type: "search",
           placeholder: "Search for jobs...",

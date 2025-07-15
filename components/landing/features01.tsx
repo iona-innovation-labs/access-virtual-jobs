@@ -35,8 +35,18 @@ export default function Features01() {
   }, []);
 
   return (
-    <section className="relative bg-brand">
-      <div className="absolute inset-0 bg-gray-50 -z-10" aria-hidden="true" />
+    <section className="relative ">
+      <div
+        className="absolute inset-0 bg-brand  pointer-events-none -z-10"
+        aria-hidden="true"
+      />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none overflow-hidden -z-10 h-full w-full">
+        <Image
+          className="w-full h-full object-cover "
+          src={landingPage.features.bgImage}
+          alt="Illustration"
+        />
+      </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-20 md:py-28">
