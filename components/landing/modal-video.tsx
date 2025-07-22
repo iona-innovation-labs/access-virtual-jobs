@@ -43,7 +43,7 @@ export default function ModalVideo({
             alt={thumbAlt}
           />
           <button
-            className="absolute z-10 inline-flex h-10 items-center rounded bg-white px-4 text-sm font-medium text-gray-900 shadow hover:bg-blue-50"
+            className="absolute z-10 inline-flex h-10 items-center rounded bg-white px-4 text-sm font-medium text-zinc-800 shadow hover:bg-blue-50"
             aria-label="Watch the video"
           >
             <span className="mr-2 text-blue-500">

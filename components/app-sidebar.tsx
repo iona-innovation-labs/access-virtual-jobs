@@ -53,7 +53,7 @@ const data = {
       icon: IconSettings,
     },
     {
-      title: "Submissions",
+      title: "My Applications",
       url: "/app/submissions",
       icon: IconFile,
     },
@@ -74,7 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href={"/overview"}>
-                <Logo size="md" />
+                <Logo size="sm" />
                 <span className="text-base font-semibold">AVJ</span>
               </Link>
             </SidebarMenuButton>

@@ -8,18 +8,14 @@ import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import PrivacyDialog from "./landing/legal/privacy-dialog";
+import TermsDialog from "./landing/legal/term-dialog";
 
-export default function LoginPage() {
+export default function JobSeekerLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -68,44 +64,95 @@ export default function LoginPage() {
     }
 
     setLoading(true);
+    setFieldErrors({});
 
     try {
-      const res = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
+      // First, validate credentials with our API
+      const validateResponse = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          expectedRole: "job_seeker", // Keep role validation
+        }),
       });
 
-      if (res?.ok) {
-        toast({
-          title: "Welcome Back!",
-          description: "You have been successfully logged in.",
-          variant: "success",
-        });
-        router.push("/app/overview");
-      } else {
-        // Handle different error scenarios
-        if (res?.error === "CredentialsSignin") {
-          setFieldErrors({
-            email: "Invalid email or password",
-            password: "Invalid email or password",
-          });
+      const validateData = await validateResponse.json();
+
+      if (!validateResponse.ok) {
+        // Handle validation errors
+        if (validateData.fieldErrors) {
+          setFieldErrors(validateData.fieldErrors);
+        }
+
+        if (validateData.wrongAccountType) {
           toast({
-            title: "Login Failed",
+            title: "Wrong Account Type",
+            description: validateData.message,
+            variant: "destructive",
+          });
+        } else if (validateData.requiresVerification) {
+          toast({
+            title: "Email Verification Required",
             description:
-              "Invalid email or password. Please check your credentials and try again.",
+              validateData.message ||
+              "Please verify your email before logging in.",
+            variant: "destructive",
+          });
+        } else if (validateData.suggestGoogle) {
+          toast({
+            title: "No Password Set",
+            description:
+              validateData.message +
+              " You can also use the Google login button above.",
             variant: "destructive",
           });
         } else {
           toast({
             title: "Login Failed",
-            description: "Something went wrong. Please try again.",
+            description: validateData.message || "Invalid email or password.",
             variant: "destructive",
           });
         }
+        return;
       }
-    } catch (error: any) {
+
+      // If validation passes, use Auth.js signIn
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.ok && !result.error) {
+        toast({
+          title: "Welcome Back!",
+          description: "You have been successfully logged in.",
+          variant: "default",
+        });
+
+        // Direct redirect to job seeker area
+        router.push("/app/overview");
+      } else {
+        // This shouldn't happen if our validation worked, but just in case
+        setFieldErrors({
+          email: "Authentication failed",
+          password: "Authentication failed",
+        });
+
+        toast({
+          title: "Authentication Failed",
+          description:
+            "Something went wrong during authentication. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       console.error("Login error:", error);
+
       toast({
         title: "Network Error",
         description:
@@ -120,31 +167,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back
-          </h1>
-          <p className="text-gray-600">
-            Sign in to your account to continue your job search
-          </p>
-        </div>
-
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Welcome back</CardTitle>
-            <CardDescription>Login with your Google account</CardDescription>
+            <CardTitle className="text-xl">Log in to Your Account</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6">
-              {/* Google Login */}
+              {/*
               <Button
                 variant="outline"
                 className="w-full"
                 type="button"
-                onClick={() =>
-                  signIn("google", { callbackUrl: "/app/overview" })
-                }
+                onClick={handleGoogleLogin}
                 disabled={loading}
               >
                 <svg
@@ -160,13 +194,13 @@ export default function LoginPage() {
                 Login with Google
               </Button>
 
-              {/* Divider */}
+             Divider 
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
-                  Or continue with
+                  Or continue with email
                 </span>
               </div>
-
+              */}
               {/* Login Form */}
               <form onSubmit={handleCredentialsLogin} className="space-y-6">
                 {/* Email Field */}
@@ -195,7 +229,7 @@ export default function LoginPage() {
                     <Label htmlFor="password">Password</Label>
                     <Link
                       href="/forgot-password"
-                      className="text-xs text-gray-700 underline-offset-4 hover:underline"
+                      className="text-xs text-zinc-700 underline-offset-4 hover:underline"
                     >
                       Forgot your password?
                     </Link>
@@ -225,9 +259,9 @@ export default function LoginPage() {
                       disabled={!password}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400" />
+                        <EyeOff className="h-4 w-4 text-zinc-400" />
                       ) : (
-                        <Eye className="h-4 w-4 text-gray-400" />
+                        <Eye className="h-4 w-4 text-zinc-400" />
                       )}
                     </Button>
                   </div>
@@ -250,19 +284,28 @@ export default function LoginPage() {
                       Logging in...
                     </div>
                   ) : (
-                    "Login"
+                    "Submit"
                   )}
                 </Button>
               </form>
 
               {/* Sign Up Link */}
               <div className="text-center text-sm">
-                Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
-                  className="text-brand underline underline-offset-4 hover:text-brand-dark"
+                  className="text-brand hover:text-brand-dark"
                 >
-                  Sign up
+                  Create a Free Account.
+                </Link>
+              </div>
+
+              {/* Switch Account Type */}
+              <div className="text-center text-sm border-t pt-4">
+                <Link
+                  href="/login/recruiter"
+                  className="text-foreground/50 hover:text-brand-dark"
+                >
+                  Are you a recruiter?
                 </Link>
               </div>
             </div>
@@ -270,23 +313,11 @@ export default function LoginPage() {
         </Card>
 
         {/* Terms Footer */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By clicking continue, you agree to our{" "}
-            <Link
-              href="/legal/terms-of-service"
-              className="text-blue-600 hover:text-blue-800 underline underline-offset-4"
-            >
-              Terms of Service
-            </Link>{" "}
-            and{" "}
-            <Link
-              href="/legal/privacy-policy"
-              className="text-blue-600 hover:text-blue-800 underline underline-offset-4"
-            >
-              Privacy Policy
-            </Link>
-            .
+            <TermsDialog>Terms of Service</TermsDialog> and{" "}
+            <PrivacyDialog>Privacy Policy</PrivacyDialog>.
           </p>
         </div>
       </div>

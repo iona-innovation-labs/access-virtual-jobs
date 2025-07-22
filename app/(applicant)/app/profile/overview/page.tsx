@@ -11,6 +11,7 @@ import PrescreeningQuestionsView from "@/components/profile/overview-tab/pre-scr
 import AssessmentContentView from "@/components/profile/overview-tab/assessment";
 import TechnicalSetupView from "@/components/profile/overview-tab/technical";
 import AdditionalInformationView from "@/components/profile/overview-tab/additional-information";
+import ViewFilesForm from "@/components/profile/view-files";
 
 const PersonalInfoSkeleton = () => (
   <Card className="p-6 animate-pulse">
@@ -81,11 +82,6 @@ export default function ProfilePage() {
       </div>
 
       <div className="lg:col-span-4 flex flex-col space-y-4">
-        <ProfileDescriptionView
-          data={{
-            profileDescription: profile?.profileDescription || "",
-          }}
-        />
         <JobPreferencesView
           data={{
             jobSearchStatus: profile?.jobSearchStatus,
@@ -95,6 +91,12 @@ export default function ProfilePage() {
             desiredSalary: parseFloat(profile?.desiredSalary || "0"),
           }}
         />
+        <ProfileDescriptionView
+          data={{
+            profileDescription: profile?.profileDescription || "",
+          }}
+        />
+
         <ProfessionalProfileView data={professionalProfile} />
         <PrescreeningQuestionsView
           data={{
@@ -129,6 +131,7 @@ export default function ProfilePage() {
               : null
           }
         />
+        <ViewFilesForm />
       </div>
     </div>
   );

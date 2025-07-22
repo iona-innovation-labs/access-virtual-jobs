@@ -376,6 +376,20 @@ export const AssessmentContentSection = ({
             </InfoItem>
           </div>
 
+          <div className="mt-6 p-4 bg-muted/50 rounded-md">
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p className="font-medium">📋 Assessment & Content Tips:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <p>• Complete DISC assessment for better job matching</p>
+                <p>• Upload clear, professional English recordings</p>
+                <p>• Use public sharing links (Google Drive, YouTube)</p>
+                <p>• Test links before submitting to ensure access</p>
+                <p>• Keep recordings under 5 minutes for best results</p>
+                <p>• Assessment results help employers understand you</p>
+              </div>
+            </div>
+          </div>
+
           {/* Action Buttons */}
           {hasChanges && (
             <div className="flex flex-col sm:flex-row justify-end gap-3 pt-8 border-t border-border mt-8">

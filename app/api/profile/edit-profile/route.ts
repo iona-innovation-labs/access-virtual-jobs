@@ -20,6 +20,14 @@ import { users } from "@/database/schema/users";
 import { log } from "@/lib/logs";
 import { auth } from "@/auth";
 import { REQUIRED_FILE_TYPES } from "@/config/file-upload";
+import {
+  EDUCATION_STATUS,
+  JOB_CATEGORIES,
+  JOB_SEARCH_STATUS,
+  JOB_TYPES,
+  SALARY_UNIT,
+  ALLOWED_PROFILE_FIELDS,
+} from "@/lib/constants";
 
 interface ProfileSection {
   name: string;
@@ -28,35 +36,6 @@ interface ProfileSection {
   total: number;
   percentage?: number;
 }
-
-// Define allowed profile fields that can be updated
-const ALLOWED_PROFILE_FIELDS = [
-  "jobTitle",
-  "whyFit",
-  "whatStrengths",
-  "whatNeedImprovement",
-  "address",
-  "skypeId",
-  "dateOfBirth",
-  "hasPaypal",
-  "numberOfChildren",
-  "internetProvider",
-  "numberOfMonitors",
-  "numberOfExperience",
-  "salaryUnit",
-  "desiredSalary",
-  "isPublicSalary",
-  "howHear",
-  "referrer",
-  "jobType",
-  "availability",
-  "jobSearchStatus",
-  "educationStatus",
-  "linkedInLink",
-  "instagramLink",
-  "xLink",
-  "profileDescription",
-] as const;
 
 // Schema for portfolio links
 const PortfolioLinkSchema = z.object({
@@ -151,33 +130,27 @@ const ProfileUpdateSchema = z.object({
   whatStrengths: z.string().optional(),
   whatNeedImprovement: z.string().optional(),
   address: z.string().optional(),
-  skypeId: z.string().optional(),
+  whatsappId: z.string().optional(),
   dateOfBirth: z.string().datetime().optional().nullable(),
   hasPaypal: z.string().optional(),
   numberOfChildren: z.string().optional(),
   internetProvider: z.string().optional(),
   numberOfMonitors: z.string().optional(),
   numberOfExperience: z.string().optional(),
-  salaryUnit: z.enum(["PHP", "USD"]).optional(),
+  salaryUnit: z.enum(SALARY_UNIT).optional(),
   desiredSalary: z.union([z.string(), z.number()]).optional(),
   isPublicSalary: z.boolean().optional(),
   howHear: z.string().optional().nullable(),
   referrer: z.string().optional().nullable(),
-  jobType: z
-    .enum(["full_time", "part_time", "contract", "freelance", "internship"])
+  jobType: z.enum(JOB_TYPES).optional(),
+  jobCategory: z // ← ADD THIS
+    .enum(JOB_CATEGORIES)
     .optional(),
   availability: z.string().optional(),
-  jobSearchStatus: z
-    .enum([
-      "ready_for_interview",
-      "actively_looking",
-      "passively_looking",
-      "not_looking",
-    ])
+  jobSearchStatus: z // ← UPDATE THIS
+    .enum(JOB_SEARCH_STATUS)
     .optional(),
-  educationStatus: z
-    .enum(["high_school", "associate", "bachelor", "master", "phd", "other"])
-    .optional(),
+  educationStatus: z.enum(EDUCATION_STATUS).optional(),
   linkedInLink: z.string().url().optional().nullable(),
   instagramLink: z.string().url().optional().nullable(),
   xLink: z.string().url().optional().nullable(),
@@ -284,7 +257,7 @@ export async function POST(req: NextRequest) {
         whatStrengths: "",
         whatNeedImprovement: "",
         address: "",
-        skypeId: "",
+        whatsappId: "",
         hasPaypal: "no",
         numberOfChildren: "0",
         internetProvider: "",
@@ -582,45 +555,6 @@ export async function GET() {
       }));
 
       const sections: Record<string, ProfileSection> = {
-        basicInfo: {
-          name: "Basic Information",
-          fields: [
-            { key: "jobTitle", label: "Job Title", value: profile.jobTitle },
-            { key: "address", label: "Address", value: profile.address },
-            {
-              key: "dateOfBirth",
-              label: "Date of Birth",
-              value: profile.dateOfBirth,
-            },
-            {
-              key: "numberOfChildren",
-              label: "Number of Children",
-              value: profile.numberOfChildren,
-            },
-          ],
-          completed: 0,
-          total: 4,
-        },
-
-        contact: {
-          name: "Contact Information",
-          fields: [
-            {
-              key: "phones",
-              label: "Phone Numbers",
-              value: profile.phones?.length > 0,
-            },
-            {
-              key: "emails",
-              label: "Email Addresses",
-              value: profile.emails?.length > 0,
-            },
-            { key: "skypeId", label: "Skype ID", value: profile.skypeId },
-          ],
-          completed: 0,
-          total: 3,
-        },
-
         jobPreferences: {
           name: "Job Preferences",
           fields: [
@@ -635,6 +569,33 @@ export async function GET() {
               value: profile.desiredSalary && profile.desiredSalary !== "0",
             },
             { key: "jobType", label: "Job Type", value: profile.jobType },
+            {
+              key: "jobCategory",
+              label: "Job Category",
+              value: profile.jobCategory,
+            },
+          ],
+          completed: 0,
+          total: 4,
+        },
+        contact: {
+          name: "Contact Information",
+          fields: [
+            {
+              key: "phones",
+              label: "Phone Numbers",
+              value: profile.phones?.length > 0,
+            },
+            {
+              key: "emails",
+              label: "Email Addresses",
+              value: profile.emails?.length > 0,
+            },
+            {
+              key: "whatsappId",
+              label: "Whatsapp ID",
+              value: profile.whatsappId,
+            },
           ],
           completed: 0,
           total: 3,

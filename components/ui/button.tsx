@@ -10,21 +10,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+          "bg-primary text-primary-foreground shadow hover:bg-primary/90 cursor-pointer",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 cursor-pointer",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+          "border border-input bg-white shadow-sm hover:bg-accent hover:text-accent-foreground cursor-pointer",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 cursor-pointer",
+        ghost: "hover:bg-accent hover:text-accent-foreground cursor-pointer",
         ghostBlue:
-          "hover:bg-opacity-20 text-primaryBrightAqua hover:bg-primaryBrightAqua",
+          "hover:bg-opacity-20 text-primaryBrightAqua hover:bg-primaryBrightAqua cursor-pointer",
         ghostPrimary:
-          "hover:bg-opacity-20 hover:text-white text-deepBlue hover:bg-deepBlue/75",
-        primaryBlue: "bg-primaryBrightAqua hover:bg-deepBlue text-white",
-        primary: "bg-deepBlue hover:bg-deepBlue/75 text-white",
-        link: "text-primary underline-offset-4 hover:underline",
+          "hover:bg-opacity-20 hover:text-white text-deepBlue hover:bg-deepBlue/75 cursor-pointer",
+        primaryBlue:
+          "bg-primaryBrightAqua hover:bg-deepBlue text-white cursor-pointer",
+        primary: "bg-deepBlue hover:bg-deepBlue/75 text-white cursor-pointer",
+        blueButton: "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer",
+        link: "text-primary underline-offset-4 hover:underline cursor-pointer",
       },
       size: {
         default: "h-9 px-4 py-2",

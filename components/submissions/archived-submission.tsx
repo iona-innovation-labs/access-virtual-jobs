@@ -15,9 +15,9 @@ const ArchivedSubmissions = () => {
         <JobApplicationCard jobApplication={j} key={j.applicationPublicId} />
       ))}
       {jobApplications.length === 0 && !loading && (
-        <p className="text-center text-gray-500">No archived submissions</p>
+        <p className="text-center text-zinc-500">No archived submissions</p>
       )}
-      {loading && <p className="text-center text-gray-500">Loading...</p>}
+      {loading && <p className="text-center text-zinc-500">Loading...</p>}
       {hasMore && !loading && (
         <div className="mt-4 flex justify-center">
           <Button variant="ghost" onClick={loadMore} disabled={loading}>

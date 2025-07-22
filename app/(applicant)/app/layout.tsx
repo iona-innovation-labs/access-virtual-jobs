@@ -4,6 +4,7 @@ import ApplicationShell from "@/components/layout/app-shell";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { OnboardingModal } from "@/components/on-boarding/on-boarding-modal";
+import { requireJobSeeker } from "@/lib/auth-utils";
 
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,7 @@ export default async function AppRootLayout({
   if (!session?.user) {
     redirect("/login");
   }
+  await requireJobSeeker();
   return (
     <>
       <ApplicationShell>{children}</ApplicationShell>

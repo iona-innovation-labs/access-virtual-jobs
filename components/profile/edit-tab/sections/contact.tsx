@@ -12,7 +12,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Calendar,
   MessageCircle,
   Plus,
   Trash2,
@@ -33,14 +32,7 @@ import { useToast } from "@/hooks/use-toast";
 // Zod Schema
 const ContactInformationSchema = z.object({
   address: z.string().min(1, "Address is required"),
-  skypeId: z.string().min(1, "Skype ID is required"),
-  dateOfBirth: z
-    .string()
-    .min(1, "Date of birth is required")
-    .transform((dateStr) => {
-      // Convert YYYY-MM-DD to ISO datetime format
-      return new Date(dateStr + "T00:00:00.000Z").toISOString();
-    }),
+  whatsappId: z.string().min(1, "Whatsapp ID is required"),
   phones: z.array(
     z.object({
       number: z.string().min(1, "Phone number is required"),
@@ -110,24 +102,13 @@ export const ContactInformationSection = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  // Helper function to convert date input to the format expected by initialData
-  const formatInitialDate = (dateString: string | Date) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "";
-    return date.toISOString().split("T")[0];
-  };
-
   const defaultValues = useMemo(
     (): ContactInformationFormData => ({
       address: "",
-      skypeId: "",
+      whatsappId: "",
       phones: [{ number: "", type: "mobile" }],
       emails: [{ address: "", type: "personal" }],
       ...initialData,
-      dateOfBirth: initialData.dateOfBirth
-        ? formatInitialDate(initialData.dateOfBirth)
-        : "",
     }),
     [initialData]
   );
@@ -176,6 +157,7 @@ export const ContactInformationSection = ({
 
   // Submit function using the API route
   const onSubmit: SubmitHandler<ContactInformationFormData> = async (data) => {
+    console.log("saving...");
     setIsSubmitting(true);
     try {
       // Filter out empty phone numbers and emails
@@ -184,6 +166,8 @@ export const ContactInformationSection = ({
         phones: data.phones.filter((item) => item.number.trim() !== ""),
         emails: data.emails.filter((item) => item.address.trim() !== ""),
       };
+
+      console.log(cleanedData);
 
       const response = await fetch("/api/profile/edit-profile", {
         method: "POST",
@@ -221,14 +205,6 @@ export const ContactInformationSection = ({
     setHasChanges(false);
   };
 
-  // Helper function to format date for input
-  const formatDateForInput = (dateString: string) => {
-    if (!dateString) return "";
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "";
-    return date.toISOString().split("T")[0];
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <Card className="w-full">
@@ -254,7 +230,7 @@ export const ContactInformationSection = ({
               <InfoItem
                 label="Address"
                 icon={<MapPin className="w-4 h-4 text-muted-foreground" />}
-                description="Your current residential address"
+                description="Your current residential address "
               >
                 <Controller
                   name="address"
@@ -267,6 +243,12 @@ export const ContactInformationSection = ({
                         disabled={loading || isSubmitting}
                         className={errors.address ? "border-red-500" : ""}
                       />
+                      <div className="bg-muted/50 mt-2 bg-background rounded-sm p-1 text-foreground/50 px-2">
+                        <p className="text-xs text-muted-foreground">
+                          it needs to be similar to the Address Verification
+                          image you are going to upload
+                        </p>
+                      </div>
                       {errors.address && (
                         <p className="text-red-500 text-xs mt-1">
                           {errors.address.message}
@@ -277,16 +259,16 @@ export const ContactInformationSection = ({
                 />
               </InfoItem>
 
-              {/* Skype ID */}
+              {/* Whatsapp ID */}
               <InfoItem
-                label="Skype ID"
+                label="Whatsapp ID"
                 icon={
                   <MessageCircle className="w-4 h-4 text-muted-foreground" />
                 }
-                description="Your Skype username for video calls"
+                description="Your Whatsapp username for video calls"
               >
                 <Controller
-                  name="skypeId"
+                  name="whatsappId"
                   control={control}
                   render={({ field }) => (
                     <div>
@@ -294,11 +276,11 @@ export const ContactInformationSection = ({
                         {...field}
                         placeholder="e.g., john.smith.skype"
                         disabled={loading || isSubmitting}
-                        className={errors.skypeId ? "border-red-500" : ""}
+                        className={errors.whatsappId ? "border-red-500" : ""}
                       />
-                      {errors.skypeId && (
+                      {errors.whatsappId && (
                         <p className="text-red-500 text-xs mt-1">
-                          {errors.skypeId.message}
+                          {errors.whatsappId.message}
                         </p>
                       )}
                     </div>
@@ -306,34 +288,6 @@ export const ContactInformationSection = ({
                 />
               </InfoItem>
             </div>
-
-            {/* Date of Birth (Full Width) */}
-            <InfoItem
-              label="Date of Birth"
-              icon={<Calendar className="w-4 h-4 text-muted-foreground" />}
-              description="Your date of birth (for age verification purposes)"
-            >
-              <Controller
-                name="dateOfBirth"
-                control={control}
-                render={({ field }) => (
-                  <div>
-                    <Input
-                      {...field}
-                      type="date"
-                      disabled={loading || isSubmitting}
-                      className={errors.dateOfBirth ? "border-red-500" : ""}
-                      value={formatDateForInput(field.value)}
-                    />
-                    {errors.dateOfBirth && (
-                      <p className="text-red-500 text-xs mt-1">
-                        {errors.dateOfBirth.message}
-                      </p>
-                    )}
-                  </div>
-                )}
-              />
-            </InfoItem>
 
             {/* Phone Numbers */}
             <InfoItem
@@ -536,7 +490,7 @@ export const ContactInformationSection = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <p>• Use international format for phone numbers</p>
                 <p>• Add multiple contact methods for flexibility</p>
-                <p>• Ensure Skype ID is active and accessible</p>
+                <p>• Ensure Whatsapp ID is active and accessible</p>
                 <p>• Primary email should be professional</p>
               </div>
             </div>

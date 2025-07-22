@@ -33,6 +33,7 @@ import {
   defaultPasswordRequirements,
 } from "@/components/auth/password/password-strength-checker";
 import { passwordSchema } from "@/lib/validation/password-validation";
+import EmailSettings from "@/components/settings/email-update";
 
 const changePasswordFormSchema = z
   .object({
@@ -143,17 +144,17 @@ export default function ChangePassword() {
   return (
     <div className="w-full mx-auto space-y-6">
       <Card className="shadow-sm border-border">
-        <CardHeader className="pb-4">
+        <CardHeader>
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <Key className="w-4 h-4 text-brand" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-foreground">
-                Password Settings
+                Account Settings
               </h2>
               <p className="text-sm text-muted-foreground">
-                Manage your account security
+                Update your email address and password
               </p>
             </div>
           </div>
@@ -163,22 +164,25 @@ export default function ChangePassword() {
       <Card className="shadow-sm border-border bg-card">
         <CardContent className="p-4">
           <div className="flex items-start space-x-3">
-            <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center flex-shrink-0 mt-0.5">
-              <Shield className="w-3 h-3 text-muted-foreground" />
+            <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <Shield className="w-3 h-3 text-blue-600" />
             </div>
             <div>
               <h4 className="text-sm font-medium text-foreground mb-1">
-                Security Notice
+                Security & Privacy
               </h4>
               <p className="text-sm text-muted-foreground">
-                For your security, you&apos;ll be logged out of all devices
-                after changing your password. This ensures only you have access
-                to your account with the new credentials.
+                When updating your email, you&apos;ll receive a verification
+                link to confirm the change. After changing your password,
+                you&apos;ll be logged out of all devices to ensure only you have
+                access with the new credentials.
               </p>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <EmailSettings />
 
       <Alert className="border-brand/20 bg-brand/5">
         <CheckCircle className="h-4 w-4 text-brand" />

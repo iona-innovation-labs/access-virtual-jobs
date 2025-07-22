@@ -76,7 +76,7 @@ export const JobListItemPosition = ({ position }: PositionProps) => {
             <h3 className="font-semibold text-base lg:text-lg text-zinc-800">
               {position.title}
             </h3>
-            <p className="text-sm text-gray-600">Access Virtual Staffing</p>
+            <p className="text-sm text-zinc-600">Access Virtual Staffing</p>
           </div>
         </CardTitle>
         <CardDescription>

@@ -70,7 +70,7 @@ const JobCard = async ({
         <div className="flex items-center justify-between sm:justify-start sm:flex-1 sm:space-x-4">
           <div className="flex items-center text-muted-foreground text-xs sm:text-sm">
             <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
-            <span>{formatDate(job.createdAt)}</span>
+            <span>{formatDate(job.createdAt.toISOString())}</span>
           </div>
           <div className="text-base sm:text-lg font-semibold text-foreground sm:order-2">
             {job.pay}
@@ -78,7 +78,7 @@ const JobCard = async ({
         </div>
 
         {/* Apply Button */}
-        <JobCardApply isPublic={isPublic} id={job.id} url={job.url} />
+        <JobCardApply isPublic={isPublic} id={String(job.id)} url={job.url} />
       </div>
     </div>
   );

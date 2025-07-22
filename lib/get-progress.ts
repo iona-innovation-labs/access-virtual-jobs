@@ -26,8 +26,8 @@ export function getProgressColor(progress: string): string {
     make_offer: "text-green-600",
     hired_signed: "text-green-700",
     endorsed: "text-blue-400",
-    reserved_for_future_opening: "text-gray-500",
+    reserved_for_future_opening: "text-zinc-500",
   };
 
-  return colorMap[progress] || "text-gray-700";
+  return colorMap[progress] || "text-zinc-700";
 }

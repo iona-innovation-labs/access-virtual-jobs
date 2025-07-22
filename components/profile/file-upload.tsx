@@ -43,7 +43,7 @@ const FileUpload = ({
 
   return (
     <div className="flex flex-col space-y-1 px-4">
-      <Label htmlFor={fieldName} className="text-gray-600">
+      <Label htmlFor={fieldName} className="text-zinc-600">
         {label}
       </Label>
 
@@ -63,11 +63,11 @@ const FileUpload = ({
         </Button>
 
         {value && (
-          <div className="flex items-center space-x-2 text-xs text-gray-600 truncate">
+          <div className="flex items-center space-x-2 text-xs text-zinc-600 truncate">
             <span className="max-w-[500px] truncate">{value.name}</span>
             <button
               onClick={() => onChange(null)}
-              className="text-gray-500 hover:text-red-500 transition"
+              className="text-zinc-500 hover:text-red-500 transition"
             >
               <X size={12} />
             </button>

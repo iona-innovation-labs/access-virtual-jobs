@@ -16,7 +16,7 @@ export default function CtaButton(props: Props) {
   return (
     <Button
       asChild
-      className={`bg-gray-900 text-white hover:bg-gray-800 group rounded-full ${className}`}
+      className={`bg-zinc-800 text-white hover:bg-gray-800 group rounded-full ${className}`}
     >
       <Link href={link} className="inline-flex items-center">
         {label}

@@ -106,10 +106,10 @@ export const OnboardingModal = () => {
             <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-2xl text-white font-bold">AVS</span>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-zinc-800 mb-2">
               Welcome to Access Virtual Staffing!
             </h2>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-zinc-600">
               Let&apos;s get you started in just a few steps
             </p>
           </div>
@@ -125,7 +125,7 @@ export const OnboardingModal = () => {
                     ? "bg-blue-600 text-white scale-110 shadow-lg"
                     : activeStep > step.id
                       ? "bg-green-500 text-white"
-                      : "bg-gray-200 text-gray-500"
+                      : "bg-gray-200 text-zinc-500"
                 }`}
               >
                 {activeStep > step.id ? "✓" : step.id}
@@ -149,10 +149,10 @@ export const OnboardingModal = () => {
                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <currentStep.icon className="w-6 h-6 text-blue-600" />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      <h3 className="text-lg font-semibold text-zinc-800 mb-2">
                         {currentStep.title}
                       </h3>
-                      <p className="text-gray-600">{currentStep.description}</p>
+                      <p className="text-zinc-600">{currentStep.description}</p>
                     </>
                   )}
                 </CardContent>
@@ -205,7 +205,7 @@ export const OnboardingModal = () => {
                 }}
               />
             </div>
-            <p className="text-xs text-gray-500 text-center mt-2">
+            <p className="text-xs text-zinc-500 text-center mt-2">
               Step {activeStep} of {onboardingSteps.length}
             </p>
           </div>

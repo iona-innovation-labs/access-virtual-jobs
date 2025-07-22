@@ -6,7 +6,8 @@ import { useNotifications } from "@/hooks/use-notifications";
 import { INotification } from "@/types/notification";
 
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Select,
@@ -16,8 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { NotificationCard } from "@/components/notifications/notification-card"; // Import the new component
-import { Bell, Filter } from "lucide-react";
+import { NotificationCard } from "@/components/notifications/notification-card";
+import { Bell, SortAsc, SortDesc, Loader2 } from "lucide-react";
 
 const notificationTypeLabels = {
   all: "All Notifications",
@@ -28,10 +29,15 @@ const notificationTypeLabels = {
   error: "Error",
 };
 
+const sortOptions = {
+  newest: "Newest First",
+  oldest: "Oldest First",
+};
+
 // Loading skeleton for notification cards
 function NotificationCardSkeleton() {
   return (
-    <div className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg">
+    <div className="flex items-start space-x-4 p-4 border border-border rounded-lg">
       <div className="flex-shrink-0">
         <Skeleton className="w-10 h-10 rounded-full" />
       </div>
@@ -51,11 +57,22 @@ function NotificationCardSkeleton() {
 
 export default function NotificationsPage() {
   const { status } = useSession();
-  const [filterType, setFilterType] = useState("all");
+  const filterType = "all";
+  const [sortBy, setSortBy] = useState("newest");
 
-  const { notifications, loading, error } = useNotifications({
-    filter: filterType,
-  });
+  const { notifications, loading, error, loadingMore, hasMore, loadMore } =
+    useNotifications({
+      filter: filterType,
+      sortBy: sortBy,
+    });
+
+  const handleLoadMore = () => {
+    loadMore();
+  };
+
+  const handleSortChange = (newSort: string) => {
+    setSortBy(newSort);
+  };
 
   if (status === "loading") {
     return (
@@ -89,7 +106,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="h-[calc(100vh-4.5rem)] overflow-auto">
+    <div className="min-h-[calc(100vh-4.5rem)]">
       <div className="w-full mx-auto px-6 py-8">
         {/* Header */}
         <div className="mb-8">
@@ -97,49 +114,72 @@ export default function NotificationsPage() {
             <div className="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center">
               <Bell className="w-4 h-4 text-brand" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
               Notifications
             </h1>
           </div>
-          <p className="text-gray-600">
+          <p className="text-foreground/50">
             Stay updated with your latest activities
           </p>
         </div>
 
         {/* Main Content Card */}
         <Card className="shadow-sm border-0">
-          {/* Filters Section */}
-          <div className="border-b border-gray-200 px-6 pt-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2">
-                <Filter className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">
-                  Filter by:
-                </span>
+          {/* Filters and Sort Section */}
+          <div className="border-b border-border px-6 pt-6">
+            <div className="pb-6 flex flex-col sm:flex-row gap-4">
+              {/*
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-zinc-500 mb-1">
+                  Filter by type
+                </label>
+                <Select value={filterType} onValueChange={handleFilterChange}>
+                  <SelectTrigger className="bg-gray-50 border-gray-200">
+                    <SelectValue placeholder="Select notification type" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white">
+                    {Object.entries(notificationTypeLabels).map(
+                      ([value, label]) => (
+                        <SelectItem key={value} value={value}>
+                          {label}
+                        </SelectItem>
+                      )
+                    )}
+                  </SelectContent>
+                </Select>
               </div>
-              {notifications.length > 0 && (
-                <Badge variant="secondary" className="bg-brand/10 text-brand">
-                  {notifications.length} notification
-                  {notifications.length !== 1 ? "s" : ""}
-                </Badge>
-              )}
-            </div>
-
-            <div className="pb-6">
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-full max-w-xs bg-gray-100 border-gray-200">
-                  <SelectValue placeholder="Select notification type" />
-                </SelectTrigger>
-                <SelectContent className="bg-white">
-                  {Object.entries(notificationTypeLabels).map(
-                    ([value, label]) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
+*/}
+              {/* Sort Dropdown */}
+              <div className="flex-1">
+                <label className="block text-xs font-medium text-foreground/80 mb-1">
+                  Sort by
+                </label>
+                <Select value={sortBy} onValueChange={handleSortChange}>
+                  <SelectTrigger className="bg-card border-border">
+                    <div className="flex items-center space-x-2">
+                      {sortBy === "oldest" ? (
+                        <SortAsc className="w-4 h-4 text-foreground/80" />
+                      ) : (
+                        <SortDesc className="w-4 h-4 text-foreground/80" />
+                      )}
+                      <SelectValue placeholder="Sort notifications" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent className="bg-card">
+                    {Object.entries(sortOptions).map(([value, label]) => (
+                      <SelectItem
+                        key={value}
+                        value={value}
+                        className="hover:bg-muted"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <span>{label}</span>
+                        </div>
                       </SelectItem>
-                    )
-                  )}
-                </SelectContent>
-              </Select>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -165,26 +205,58 @@ export default function NotificationsPage() {
               ) : notifications.length === 0 && !loading ? (
                 <div className="text-center py-16">
                   <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Bell className="w-10 h-10 text-gray-400" />
+                    <Bell className="w-10 h-10 text-zinc-400" />
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-zinc-800 mb-2">
                     No notifications
                   </h3>
-                  <p className="text-gray-600 max-w-md mx-auto">
+                  <p className="text-zinc-600 max-w-md mx-auto">
                     {filterType === "all"
                       ? "You're all caught up! Check back later for new updates."
                       : `No ${notificationTypeLabels[filterType as keyof typeof notificationTypeLabels].toLowerCase()} found. Try selecting a different filter.`}
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {notifications.map((notification: INotification) => (
-                    <NotificationCard
-                      key={notification.id}
-                      notification={notification}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="space-y-3">
+                    {notifications.map((notification: INotification) => (
+                      <NotificationCard
+                        key={notification.id}
+                        notification={notification}
+                      />
+                    ))}
+                  </div>
+
+                  {/* Load More Button */}
+                  {hasMore && (
+                    <div className="flex justify-center pt-6">
+                      <Button
+                        onClick={handleLoadMore}
+                        disabled={loadingMore}
+                        variant="outline"
+                        className="min-w-[120px]"
+                      >
+                        {loadingMore ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            Loading...
+                          </>
+                        ) : (
+                          "Load More"
+                        )}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Show loading skeleton while loading more */}
+                  {loadingMore && (
+                    <div className="space-y-4 pt-4">
+                      {Array.from({ length: 2 }).map((_, i) => (
+                        <NotificationCardSkeleton key={`loading-${i}`} />
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

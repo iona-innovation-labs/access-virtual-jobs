@@ -5,7 +5,6 @@ import { users } from "@/database/schema/users";
 import { log } from "@/lib/logs";
 import { auth } from "@/auth";
 
-//export async function GET(req: NextRequest) {
 export async function GET() {
   try {
     const session = await auth();
@@ -37,9 +36,12 @@ export async function GET() {
         username: user.name,
         profileImage: user.profileImage,
         image: user.image,
+        role: user.role,
         createdAt: user.createdAt,
         jobRecommendationNotifPref: user.jobRecommendationNotifPref,
         jobSubmissionNotifPref: user.jobSubmissionNotifPref,
+        accountUpdatePref: user.accountUpdatePref,
+        jobApplicationUpdatePref: user.jobApplicationUpdatePref,
         isNewUser: user.isNewUser,
         jobSearchStatus: user.jobSearchStatus,
         isEmailVerified: user.isEmailVerified,

@@ -1,4 +1,5 @@
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { UserRole } from "@/database/schema/users";
 
 declare module "next-auth" {
   interface Session {
@@ -7,6 +8,7 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
+      role: UserRole;
     } & DefaultSession["user"];
   }
 
@@ -16,5 +18,12 @@ declare module "next-auth" {
     email?: string | null;
     image?: string | null;
     isEmailVerified?: boolean | null;
+    role: UserRole;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role: UserRole;
   }
 }

@@ -6,11 +6,12 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { User, MapPin, Briefcase, Edit3 } from "lucide-react";
+import { MapPin, Briefcase, Edit3 } from "lucide-react";
 import { useUserInfo } from "@/hooks/use-user-info";
 import { IProfileResponse } from "@/types/profiles";
 import { AppError } from "@/utils/app-error";
 import { fetchApi } from "@/services/fetch-api";
+import PlaceholderAvatar from "../avatar";
 
 const Profile = () => {
   const router = useRouter();
@@ -54,9 +55,11 @@ const Profile = () => {
                   height={64}
                 />
               ) : (
-                <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border-2 border-primary/20">
-                  <User className="w-7 h-7 text-primary" />
-                </div>
+                <PlaceholderAvatar
+                  name={fullName}
+                  size="xl"
+                  className="border-2 border-border"
+                />
               )}
             </div>
 

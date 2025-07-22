@@ -10,9 +10,9 @@ import {
   Instagram,
   Twitter,
   Globe,
-  Star,
   Plus,
   Trash2,
+  Info,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,12 +24,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+
 import { useToast } from "@/hooks/use-toast";
 import { SubmitHandler } from "react-hook-form";
 import { Resolver } from "react-hook-form";
+import { EDUCATION_STATUS, MAX_SKILL_COUNT } from "@/lib/constants";
+import SkillsSection from "./skills-dialog";
 
-// Zod Schemas
+const MAX_SKILLS = MAX_SKILL_COUNT;
+
 const PortfolioLinkSchema = z.object({
   title: z.string().min(1, "Title is required"),
   url: z.string().url("Please enter a valid URL"),
@@ -47,14 +50,7 @@ const SkillSchema = z.object({
 const ProfessionalProfileSchema = z.object({
   jobTitle: z.string().min(1, "Job title is required"),
   numberOfExperience: z.string().min(1, "Experience is required"),
-  educationStatus: z.enum([
-    "high_school",
-    "associate",
-    "bachelor",
-    "master",
-    "phd",
-    "other",
-  ]),
+  educationStatus: z.enum(EDUCATION_STATUS),
   linkedInLink: z
     .string()
     .url("Please enter a valid LinkedIn URL")
@@ -71,7 +67,10 @@ const ProfessionalProfileSchema = z.object({
     .optional()
     .or(z.literal("")),
   portfolioLinks: z.array(PortfolioLinkSchema).default([]),
-  skills: z.array(SkillSchema).default([]),
+  skills: z
+    .array(SkillSchema)
+    .max(MAX_SKILLS, `Maximum ${MAX_SKILLS} skills allowed`)
+    .default([]),
 });
 
 export type ProfessionalProfileFormData = z.infer<
@@ -108,6 +107,10 @@ const InfoItem = ({ label, icon, children, description }: InfoItemProps) => (
 );
 
 const EducationStatusOptions = [
+  {
+    value: "did_not_graduate_high_school",
+    label: "I did not graduate from High School",
+  },
   { value: "high_school", label: "High School" },
   { value: "associate", label: "Associate Degree" },
   { value: "bachelor", label: "Bachelor's Degree" },
@@ -135,37 +138,47 @@ const CategoryOptions = [
   { value: "other", label: "Other" },
 ];
 
-const StarRating = ({
-  rating,
-  onRatingChange,
-  disabled = false,
-}: {
-  rating?: number;
-  onRatingChange: (rating: number) => void;
-  disabled?: boolean;
-}) => {
+// Skills Counter Component
+const SkillsCounter = ({ current, max }: { current: number; max: number }) => {
+  const percentage = (current / max) * 100;
+  const isNearLimit = current >= max * 0.8; // 80% of max
+  const isAtLimit = current >= max;
+
   return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <button
-          key={star}
-          type="button"
-          disabled={disabled}
-          onClick={() => onRatingChange(star)}
-          className={`w-6 h-6 transition-colors ${disabled ? "cursor-not-allowed" : "cursor-pointer hover:scale-110"}`}
+    <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        <span
+          className={`text-sm font-medium ${
+            isAtLimit
+              ? "text-red-600"
+              : isNearLimit
+                ? "text-yellow-600"
+                : "text-muted-foreground"
+          }`}
         >
-          <Star
-            className={`w-full h-full ${
-              star <= (rating || 0)
-                ? "text-yellow-400 fill-current"
-                : "text-gray-300"
-            }`}
+          {current}/{max} skills
+        </span>
+        {isNearLimit && (
+          <Info
+            className={`w-4 h-4 ${isAtLimit ? "text-red-500" : "text-yellow-500"}`}
           />
-        </button>
-      ))}
-      <span className="text-sm text-muted-foreground ml-2">
-        {rating ? `${rating}/5` : "Not rated"}
-      </span>
+        )}
+      </div>
+
+      <div className="flex-1 max-w-32">
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div
+            className={`h-2 rounded-full transition-all duration-300 ${
+              isAtLimit
+                ? "bg-red-500"
+                : isNearLimit
+                  ? "bg-yellow-500"
+                  : "bg-green-500"
+            }`}
+            style={{ width: `${Math.min(percentage, 100)}%` }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -195,6 +208,7 @@ export const ProfessionalProfileSection = ({
     }),
     [initialData]
   );
+
   const {
     control,
     handleSubmit,
@@ -226,8 +240,9 @@ export const ProfessionalProfileSection = ({
     name: "skills",
   });
 
-  // Watch all form values to detect changes
   const watchedValues = watch();
+  const currentSkillsCount = watchedValues.skills?.length || 0;
+  const isSkillLimitReached = currentSkillsCount >= MAX_SKILLS;
 
   useEffect(() => {
     setOriginalData(defaultValues);
@@ -239,8 +254,16 @@ export const ProfessionalProfileSection = ({
     setHasChanges(hasFormChanges);
   }, [watchedValues, originalData]);
 
-  // Submit function using the API route
   const onSubmit = async (data: ProfessionalProfileFormData) => {
+    if (data.skills.length > MAX_SKILLS) {
+      toast({
+        title: "Too Many Skills",
+        description: `You can only add up to ${MAX_SKILLS} skills. Please remove ${data.skills.length - MAX_SKILLS} skill(s).`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       // Clean up empty URLs
@@ -293,13 +316,25 @@ export const ProfessionalProfileSection = ({
     appendPortfolio({ title: "", url: "", description: "", category: "" });
   };
 
-  const addSkill = () => {
-    appendSkill({
+  const addSkill = (skillData?: any) => {
+    if (isSkillLimitReached) {
+      toast({
+        title: "Skill Limit Reached",
+        description: `You can only add up to ${MAX_SKILLS} skills. Please remove a skill before adding a new one.`,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // If skillData is provided (from dialog), use it; otherwise use default values
+    const newSkill = skillData || {
       name: "",
       category: "",
       starRating: 1,
       yearsOfExperience: 0,
-    });
+    };
+
+    appendSkill(newSkill);
   };
 
   return (
@@ -634,224 +669,54 @@ export const ProfessionalProfileSection = ({
                   </div>
                 )}
               </div>
+              <div className="mt-6 p-4 bg-muted/50 rounded-md">
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <p className="font-medium">🔗 Portfolio Links Tips:</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <p>• Add your GitHub profile to showcase code projects</p>
+                    <p>
+                      • Include your personal website or professional portfolio
+                    </p>
+                    <p>
+                      • Link to bio sites like LinkTree, Linktree, or About.me
+                    </p>
+                    <p>• Add Behance, Dribbble for design portfolios</p>
+                    <p>
+                      • Include LinkedIn profile for professional networking
+                    </p>
+                    <p>• Keep links active and regularly updated</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Skills */}
-            <div className="space-y-6">
-              <div className="flex items-center justify-between">
-                <h3 className="text-base font-medium text-foreground flex items-center gap-2">
-                  <Star className="w-4 h-4" />
-                  Skills & Expertise
-                </h3>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={addSkill}
-                  disabled={loading || isSubmitting}
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Skill
-                </Button>
-              </div>
+            <SkillsSection
+              currentSkillsCount={currentSkillsCount}
+              MAX_SKILLS={MAX_SKILLS}
+              skillFields={skillFields}
+              addSkill={addSkill}
+              removeSkill={removeSkill}
+              loading={loading}
+              isSubmitting={isSubmitting}
+              isSkillLimitReached={isSkillLimitReached}
+              control={control}
+              errors={errors}
+              watchedValues={watchedValues}
+              CategoryOptions={CategoryOptions}
+              SkillsCounter={SkillsCounter}
+            />
+          </div>
 
-              <div className="space-y-4">
-                {skillFields.map((field, index) => (
-                  <div
-                    key={field.id}
-                    className="p-6 border border-border rounded-lg bg-card"
-                  >
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                          <Star className="w-3 h-3 text-primary" />
-                        </div>
-                        <h4 className="text-sm font-medium">
-                          Skill {index + 1}
-                        </h4>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => removeSkill(index)}
-                        disabled={loading || isSubmitting}
-                        className="text-muted-foreground hover:text-destructive"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <Controller
-                        name={`skills.${index}.name`}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                              Skill Name *
-                            </label>
-                            <Input
-                              {...field}
-                              placeholder="e.g., React, JavaScript, Design"
-                              disabled={loading || isSubmitting}
-                              className={
-                                errors.skills?.[index]?.name
-                                  ? "border-red-500"
-                                  : ""
-                              }
-                            />
-                            {errors.skills?.[index]?.name && (
-                              <p className="text-red-500 text-xs mt-1">
-                                {errors.skills[index]?.name?.message}
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      />
-
-                      <Controller
-                        name={`skills.${index}.category`}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                              Category
-                            </label>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={field.value}
-                              disabled={loading || isSubmitting}
-                            >
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select category" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {CategoryOptions.map((option) => (
-                                  <SelectItem
-                                    key={option.value}
-                                    value={option.value}
-                                  >
-                                    {option.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        )}
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <Controller
-                        name={`skills.${index}.starRating`}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                              Skill Rating
-                            </label>
-                            <StarRating
-                              rating={field.value}
-                              onRatingChange={field.onChange}
-                              disabled={loading || isSubmitting}
-                            />
-                          </div>
-                        )}
-                      />
-
-                      <Controller
-                        name={`skills.${index}.yearsOfExperience`}
-                        control={control}
-                        render={({ field }) => (
-                          <div>
-                            <label className="text-xs font-medium text-muted-foreground mb-1 block">
-                              Years of Experience
-                            </label>
-                            <Input
-                              {...field}
-                              type="number"
-                              placeholder="0"
-                              min="0"
-                              max="50"
-                              disabled={loading || isSubmitting}
-                              onChange={(e) =>
-                                field.onChange(parseInt(e.target.value) || 0)
-                              }
-                              className={
-                                errors.skills?.[index]?.yearsOfExperience
-                                  ? "border-red-500"
-                                  : ""
-                              }
-                            />
-                            {errors.skills?.[index]?.yearsOfExperience && (
-                              <p className="text-red-500 text-xs mt-1">
-                                {
-                                  errors.skills[index]?.yearsOfExperience
-                                    ?.message
-                                }
-                              </p>
-                            )}
-                          </div>
-                        )}
-                      />
-                    </div>
-
-                    {/* Skill Preview */}
-                    {watchedValues && watchedValues.skills?.[index]?.name && (
-                      <div className="mt-4 pt-3 border-t border-border">
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="font-medium">Preview:</span>
-                          <Badge variant="outline" className="font-medium">
-                            {watchedValues.skills[index].name}
-                          </Badge>
-                          {watchedValues.skills[index].starRating && (
-                            <div className="flex items-center gap-1">
-                              {[1, 2, 3, 4, 5].map((star) => (
-                                <Star
-                                  key={star}
-                                  className={`w-3 h-3 ${
-                                    star <=
-                                    watchedValues.skills[index].starRating
-                                      ? "text-yellow-400 fill-current"
-                                      : "text-gray-300"
-                                  }`}
-                                />
-                              ))}
-                              <span className="text-xs text-muted-foreground">
-                                ({watchedValues.skills[index].starRating}/5)
-                              </span>
-                            </div>
-                          )}
-                          {(watchedValues?.skills?.[index]?.yearsOfExperience ??
-                            0) > 0 && (
-                            <span className="text-muted-foreground text-xs">
-                              {
-                                watchedValues?.skills?.[index]
-                                  ?.yearsOfExperience
-                              }{" "}
-                              year
-                              {watchedValues?.skills?.[index]
-                                ?.yearsOfExperience !== 1
-                                ? "s"
-                                : ""}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-
-                {skillFields.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Star className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                    <p>
-                      No skills added yet. Click &ldquo;Add Skill&ldquo; to
-                      showcase your expertise.
-                    </p>
-                  </div>
-                )}
+          <div className="mt-6 p-4 bg-muted/50 rounded-md">
+            <div className="text-xs text-muted-foreground space-y-1">
+              <p className="font-medium">💼 Professional Profile Tips:</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <p>• Use a clear, descriptive job title</p>
+                <p>• Link to active social media profiles</p>
+                <p>• Showcase your best work in portfolio links</p>
+                <p>• Rate skills honestly for better matches</p>
+                <p>• Keep skills relevant to your field</p>
+                <p>• Maximum 10 skills for focused expertise</p>
               </div>
             </div>
           </div>

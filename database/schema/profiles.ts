@@ -23,7 +23,7 @@ export const profiles = pgTable("profiles", {
   whatStrengths: text("what_strengths").notNull(),
   whatNeedImprovement: text("what_need_improvement").notNull(),
   address: text("address").notNull(),
-  skypeId: text("skype_id").notNull(),
+  whatsappId: text("whatsapp_id").notNull(),
   dateOfBirth: date("date_of_birth", { mode: "date" }),
   hasPaypal: text("has_paypal").notNull(),
   numberOfChildren: text("number_of_children").notNull(),
@@ -36,6 +36,7 @@ export const profiles = pgTable("profiles", {
   howHear: text("how_hear"),
   referrer: text("referrer"),
   jobType: text("job_type"),
+  jobCategory: text("job_category"),
   availability: text("availability"),
   jobSearchStatus: text("job_search_status")
     .default("ready_to_interview")

@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
 
     const mergedApplications = await Promise.all(
       applications.map(async (application) => {
-        const jobDetails = await getJobPost(application.jobId ?? "");
+        const jobDetails = await getJobPost(String(application.jobId ?? ""));
         return {
           ...application,
           job: {
@@ -212,7 +212,7 @@ export async function POST(req: NextRequest) {
         message:
           "Cheers! We received your application. Please wait for the recruiter to reach out.",
         footer:
-          "If you have any questions, feel free to reach out 👉 support@accessvirtualstaffing.com",
+          "If you have any questions, feel free to reach out 👉 support@accessvirtualjobs.com",
       });
     }
 

@@ -35,7 +35,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === "credentials") {
         token.credentials = true;
       }
+
+      if (user?.role) {
+        token.role = user.role;
+      }
+
       return token;
+    },
+    async session({ session, token }) {
+      try {
+        if (
+          session &&
+          session.user &&
+          token &&
+          typeof token.role === "string"
+        ) {
+          session.user.role = token.role;
+        }
+      } catch (error) {
+        console.warn("Error adding role to session:", error);
+      }
+      return session;
     },
   },
   jwt: {

@@ -39,7 +39,7 @@ export const editProfileSchema = z.object({
       })
     )
     .min(1, "At least one email address is required"),
-  skypeId: z.string().min(1, "This field is required"),
+  whatsappId: z.string().min(1, "This field is required"),
   dateOfBirth: z.coerce.date().refine(
     (date) => {
       const today = new Date();

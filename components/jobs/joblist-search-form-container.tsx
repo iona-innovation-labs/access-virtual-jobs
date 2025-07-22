@@ -63,7 +63,7 @@ export const JobListSearchFormContainer = ({
                   reset({ searchText: "" });
                   clearFilters();
                 }}
-                className="text-gray-500 hover:text-gray-700 ml-2"
+                className="text-zinc-500 hover:text-zinc-700 ml-2"
               >
                 <XIcon />
               </button>

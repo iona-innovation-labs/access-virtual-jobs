@@ -1,18 +1,20 @@
 import Image from "next/image";
 import { landingPage } from "@/config/landing-page.config";
-import CtaButton from "./cta-button";
+// import CtaButton from "./cta-button";
 import Link from "next/link";
+import { Button } from "../ui/button";
+import { ArrowRight } from "lucide-react";
 
 const services = landingPage.scale.items;
 
 export default function Services() {
   return (
-    <section className="bg-gray-900">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section className="bg-zinc-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="relative">
-            <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-              <h2 className="font-archivo text-xl md:text-3xl font-bold text-white">
+            <div className="w-full mx-auto text-center pb-12 md:pb-16">
+              <h2 className="font-archivo text-5xl md:text-6xl lg:text-7xl font-bold text-white">
                 {landingPage.scale.title}
               </h2>
             </div>
@@ -39,7 +41,7 @@ export default function Services() {
                   </div>
                   <div className="grow text-center">
                     <Link
-                      className="font-monstserrat text-xs text-gray-100 hover:text-blue-500 transition duration-150 ease-in-out"
+                      className="font-monstserrat text-xs text-zinc-100 hover:text-blue-500 transition duration-150 ease-in-out"
                       href="#0"
                     >
                       {service.label}
@@ -50,14 +52,20 @@ export default function Services() {
             </div>
 
             <div
-              className="flex justify-center items-center absolute bottom-0 w-full h-48 bg-gradient-to-t from-gray-900 to-transparent"
+              className="flex justify-center items-center absolute bottom-0 w-full h-48 bg-gradient-to-t from-zinc-800 to-transparent"
               data-aos="fade-in"
             >
-              <CtaButton
-                className="bg-brand"
-                link="/jobs"
-                label="Browse Jobs"
-              />
+              <Button
+                asChild
+                variant="blueButton"
+                size="xl"
+                className=" font-semibold"
+              >
+                <Link href="/jobs">
+                  Explore Virtual Jobs{" "}
+                  <ArrowRight className="ml-2 transition-transform group-hover:translate-x-1 text-blue-500" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>

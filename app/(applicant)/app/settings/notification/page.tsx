@@ -50,6 +50,8 @@ export default function NotificationSettings() {
     defaultValues: {
       jobRecommendation: false,
       jobSubmission: false,
+      jobApplication: false,
+      accountUpdatePref: false,
     },
   });
 
@@ -58,6 +60,8 @@ export default function NotificationSettings() {
       form.reset({
         jobRecommendation: userInfo.jobRecommendationNotifPref === "enabled",
         jobSubmission: userInfo.jobSubmissionNotifPref === "enabled",
+        jobApplication: userInfo.jobApplicationUpdatePref === "enabled",
+        accountUpdatePref: userInfo.accountUpdatePref === "enabled",
       });
     }
   }, [userInfo, form]);
@@ -165,106 +169,211 @@ export default function NotificationSettings() {
       </Card>
 
       {/* Main Settings Card */}
-      <Card className="shadow-sm border-border">
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardHeader className="pb-4">
-            <div className="flex items-center space-x-3">
-              <div className="w-6 h-6 rounded-full bg-brand/10 flex items-center justify-center">
-                <Briefcase className="w-3 h-3 text-brand" />
-              </div>
-              <h3 className="font-semibold text-foreground">
-                Job Notifications
-              </h3>
-            </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              Choose which job-related notifications you&apos;d like to receive
-            </p>
-          </CardHeader>
+      <Card className="shadow-none border-none bg-background">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <Form {...form}>
+            {/* Job Settings Card */}
+            <Card className="shadow-sm border-border">
+              <CardHeader className="pb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-brand/10 flex items-center justify-center">
+                    <Briefcase className="w-3 h-3 text-brand" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">
+                    Job Notifications
+                  </h3>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Choose which job-related notifications you&apos;d like to
+                  receive
+                </p>
+              </CardHeader>
 
-          <CardContent className="space-y-6">
-            <Form {...form}>
-              {/* Job Recommendation Setting */}
-              <FormField
-                control={form.control}
-                name="jobRecommendation"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-accent transition-colors">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center flex-shrink-0">
-                          <BellRing className="w-5 h-5 text-success" />
-                        </div>
-                        <div className="flex-1">
-                          <FormLabel className="text-base font-medium text-foreground cursor-pointer">
-                            Job Recommendations
-                          </FormLabel>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Get notified when we find jobs that match your
-                            profile and preferences
-                          </p>
-                          <div className="flex items-center space-x-1 mt-2">
-                            <Mail className="w-3 h-3 text-muted-foreground" />
-                            <span className="text-xs text-muted-foreground">
-                              Via email
-                            </span>
+              <CardContent className="space-y-6">
+                {/* Job Recommendation Setting */}
+                <FormField
+                  control={form.control}
+                  name="jobRecommendation"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center flex-shrink-0">
+                            <BellRing className="w-5 h-5 text-success" />
+                          </div>
+                          <div className="flex-1">
+                            <FormLabel className="text-base font-medium text-foreground cursor-pointer">
+                              Job Recommendations
+                            </FormLabel>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Get notified when we find jobs that match your
+                              profile and preferences
+                            </p>
+                            <div className="flex items-center space-x-1 mt-2">
+                              <Mail className="w-3 h-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">
+                                Via email
+                              </span>
+                            </div>
                           </div>
                         </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={submitting}
+                            className="data-[state=checked]:bg-brand"
+                          />
+                        </FormControl>
                       </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          disabled={submitting}
-                          className="data-[state=checked]:bg-brand"
-                        />
-                      </FormControl>
-                    </div>
-                    <FormMessage className="text-destructive text-sm" />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage className="text-destructive text-sm" />
+                    </FormItem>
+                  )}
+                />
 
-              {/* Job Submission Setting */}
-              <FormField
-                control={form.control}
-                name="jobSubmission"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-accent transition-colors">
-                      <div className="flex items-start space-x-4">
-                        <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-5 h-5 text-brand" />
-                        </div>
-                        <div className="flex-1">
-                          <FormLabel className="text-base font-medium text-foreground cursor-pointer">
-                            Application Updates
-                          </FormLabel>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Receive updates about your job applications and
-                            submission status
-                          </p>
-                          <div className="flex items-center space-x-1 mt-2">
-                            <Mail className="w-3 h-3 text-muted-foreground" />
-                            <span className="text-xs text-muted-foreground">
-                              Via email
-                            </span>
+                {/* Job Submission Setting */}
+                <FormField
+                  control={form.control}
+                  name="jobSubmission"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                            <FileText className="w-5 h-5 text-brand" />
+                          </div>
+                          <div className="flex-1">
+                            <FormLabel className="text-base font-medium text-foreground cursor-pointer">
+                              Application Updates
+                            </FormLabel>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Receive updates about your job applications and
+                              submission status
+                            </p>
+                            <div className="flex items-center space-x-1 mt-2">
+                              <Mail className="w-3 h-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">
+                                Via email
+                              </span>
+                            </div>
                           </div>
                         </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={submitting}
+                            className="data-[state=checked]:bg-brand"
+                          />
+                        </FormControl>
                       </div>
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                          disabled={submitting}
-                          className="data-[state=checked]:bg-brand"
-                        />
-                      </FormControl>
-                    </div>
-                    <FormMessage className="text-destructive text-sm" />
-                  </FormItem>
-                )}
-              />
-            </Form>
+                      <FormMessage className="text-destructive text-sm" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Job Application Setting */}
+                <FormField
+                  control={form.control}
+                  name="jobApplication"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center flex-shrink-0">
+                            <Briefcase className="w-5 h-5 text-warning" />
+                          </div>
+                          <div className="flex-1">
+                            <FormLabel className="text-base font-medium text-foreground cursor-pointer">
+                              Job Application Status
+                            </FormLabel>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Get notified about important updates regarding
+                              your job applications
+                            </p>
+                            <div className="flex items-center space-x-1 mt-2">
+                              <Mail className="w-3 h-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">
+                                Via email
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={submitting}
+                            className="data-[state=checked]:bg-brand"
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage className="text-destructive text-sm" />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Account Settings Card */}
+            <Card className="shadow-sm border-border">
+              <CardHeader className="pb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center">
+                    <Settings className="w-3 h-3 text-blue-500" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">
+                    Account Notifications
+                  </h3>
+                </div>
+                <p className="text-sm text-muted-foreground mt-2">
+                  Manage notifications about your account and security updates
+                </p>
+              </CardHeader>
+
+              <CardContent className="space-y-6">
+                {/* Account Update Setting */}
+                <FormField
+                  control={form.control}
+                  name="accountUpdatePref"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted transition-colors">
+                        <div className="flex items-start space-x-4">
+                          <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center flex-shrink-0">
+                            <Settings className="w-5 h-5 text-blue-500" />
+                          </div>
+                          <div className="flex-1">
+                            <FormLabel className="text-base font-medium text-foreground cursor-pointer">
+                              Account Updates
+                            </FormLabel>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Receive notifications about account changes,
+                              security updates, and important announcements
+                            </p>
+                            <div className="flex items-center space-x-1 mt-2">
+                              <Mail className="w-3 h-3 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">
+                                Via email
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                            disabled={submitting}
+                            className="data-[state=checked]:bg-brand"
+                          />
+                        </FormControl>
+                      </div>
+                      <FormMessage className="text-destructive text-sm" />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
 
             {/* Info Section */}
             <div className="bg-brand/5 border border-brand/20 rounded-lg p-4">
@@ -284,32 +393,35 @@ export default function NotificationSettings() {
                 </div>
               </div>
             </div>
-          </CardContent>
 
-          <CardFooter className="pt-6 bg-card">
-            <div className="flex items-center justify-between w-full">
-              <div className="text-sm text-muted-foreground">
-                Changes will take effect immediately
-              </div>
-              <Button
-                type="submit"
-                disabled={submitting}
-                className="bg-brand hover:bg-brand-dark text-white min-w-[180px]"
-              >
-                {submitting ? (
-                  <>
-                    <LoadingSpinner size="sm" className="mr-2" />
-                    Saving Changes...
-                  </>
-                ) : (
-                  <>
-                    <Bell className="w-4 h-4 mr-2" />
-                    Save Preferences
-                  </>
-                )}
-              </Button>
-            </div>
-          </CardFooter>
+            {/* Submit Button */}
+            <Card className="shadow-sm border-border">
+              <CardFooter className="pt-6 bg-card">
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-muted-foreground">
+                    Changes will take effect immediately
+                  </div>
+                  <Button
+                    type="submit"
+                    disabled={submitting}
+                    className="bg-brand hover:bg-brand-dark text-white min-w-[180px]"
+                  >
+                    {submitting ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Saving Changes...
+                      </>
+                    ) : (
+                      <>
+                        <Bell className="w-4 h-4 mr-2" />
+                        Save Preferences
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardFooter>
+            </Card>
+          </Form>
         </form>
       </Card>
     </div>

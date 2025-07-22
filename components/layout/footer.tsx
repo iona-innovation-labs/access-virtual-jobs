@@ -132,12 +132,12 @@ export const Footer11Defaults: Footer11Props = {
   },
   address: {
     icon: () => <MapPin className="text-white w-6 h-6" />,
-    value: "105 S. Narcissus Ave. Suite 512 West Palm Beach, FL 33401",
+    value: "2655 North Ocean Drive, suite 405 Singer Island, FL 33404",
   },
   contact: {
     icon: () => <Mail className="text-white w-6 h-6" />,
 
-    email: "support@accessvirtualstaffing.com",
+    email: "support@accessvirtualjobs.com",
   },
   columnLinks: [
     {
@@ -180,6 +180,6 @@ export const Footer11Defaults: Footer11Props = {
   footerText: `© 2024 - ${new Date().getFullYear()} Access Virtual Staffing. All rights reserved.`,
   footerLinks: [
     { title: "Privacy Policy", url: "/privacy-policy" },
-    { title: "Terms of Service", url: "/terms-of-service" },
+    { title: "Terms of Service", url: "/terms-of-services" },
   ],
 };

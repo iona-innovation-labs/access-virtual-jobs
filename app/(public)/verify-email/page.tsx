@@ -48,10 +48,10 @@ export default async function VerifyEmailPage({
               </div>
               <div className="absolute -inset-2 bg-gradient-to-br from-red-100 to-red-200 rounded-full blur-lg opacity-20"></div>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+            <h1 className="text-4xl font-bold text-zinc-800 mb-4 tracking-tight">
               Verification Failed
             </h1>
-            <p className="text-gray-600 text-xl leading-relaxed max-w-sm mx-auto">
+            <p className="text-zinc-600 text-xl leading-relaxed max-w-sm mx-auto">
               The verification link is invalid or has expired
             </p>
           </div>
@@ -89,7 +89,7 @@ export default async function VerifyEmailPage({
             <div className="flex flex-col space-y-4 max-w-xs mx-auto">
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
+                className="inline-flex items-center justify-center border-2 border-gray-300 text-zinc-700 px-8 py-4 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
               >
                 Back to Login
               </Link>
@@ -131,10 +131,10 @@ export default async function VerifyEmailPage({
             </div>
             <div className="absolute -inset-2 bg-gradient-to-br from-green-100 to-emerald-200 rounded-full blur-lg opacity-20"></div>
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-4xl font-bold text-zinc-800 mb-4 tracking-tight">
             Email Verified!
           </h1>
-          <p className="text-gray-600 text-xl leading-relaxed max-w-sm mx-auto">
+          <p className="text-zinc-600 text-xl leading-relaxed max-w-sm mx-auto">
             Your account is now ready to use
           </p>
         </div>

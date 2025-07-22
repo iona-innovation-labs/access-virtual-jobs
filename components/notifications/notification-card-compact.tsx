@@ -14,16 +14,16 @@ import Link from "next/link";
 const notificationIcons = {
   job_submissions: <Briefcase className="w-4 h-4 text-brand-light" />,
   jobs: <FileText className="w-4 h-4 text-brand" />,
-  info: <Info className="w-4 h-4 text-gray-600" />,
+  info: <Info className="w-4 h-4 text-zinc-600" />,
   success: <CheckCircle className="w-4 h-4 text-brand-light" />,
   error: <XCircle className="w-4 h-4 text-danger" />,
-  default: <Info className="w-4 h-4 text-gray-600" />,
+  default: <Info className="w-4 h-4 text-zinc-600" />,
 };
 
 const notificationTypeBadges = {
   job_submissions: "bg-brand-light/10 text-brand-light",
   jobs: "bg-brand/10 text-brand",
-  info: "bg-gray-100 text-gray-600",
+  info: "bg-gray-100 text-zinc-600",
   success: "bg-brand-light/10 text-brand-light",
   error: "bg-danger/10 text-danger",
 };
@@ -91,7 +91,7 @@ export function NotificationCardCompact({
               className={`text-xs h-5 px-2 ${
                 notificationTypeBadges[
                   notification.type as keyof typeof notificationTypeBadges
-                ] || "bg-gray-100 text-gray-600"
+                ] || "bg-gray-100 text-zinc-600"
               }`}
             >
               {notification.type === "job_submissions"

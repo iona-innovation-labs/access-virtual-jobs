@@ -249,9 +249,9 @@ export function ResetPasswordForm({
                     disabled={!password || isLoading}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>
@@ -307,9 +307,9 @@ export function ResetPasswordForm({
                     disabled={!confirmPassword || isLoading}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>

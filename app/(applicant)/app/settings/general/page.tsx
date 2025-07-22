@@ -2,21 +2,14 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useToast } from "@/hooks/use-toast";
 import {
   CldUploadWidget,
   CloudinaryUploadWidgetResults,
 } from "next-cloudinary";
 import { fetchApi } from "@/services/fetch-api";
-import {
-  User,
-  Upload,
-  Settings,
-  Camera,
-  AlertCircle,
-  CalendarDays,
-} from "lucide-react";
+import { User, Upload, Settings, Camera, AlertCircle } from "lucide-react";
 import { z } from "zod";
 import { Country } from "country-state-city";
 
@@ -48,7 +41,7 @@ import {
 } from "@/components/ui/select";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import Image from "next/image";
-
+import PlaceholderAvatar from "@/components/avatar";
 // Updated schema with new fields
 const generalSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -75,14 +68,17 @@ const countries = Country.getAllCountries().map((country) => ({
 const genderOptions = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
-  { value: "other", label: "Other" },
-  { value: "prefer_not_to_say", label: "Prefer not to say" },
+  { value: "prefer_not_to_say", label: "Rather not specify" },
 ];
 
 export default function GeneralSettings() {
   const [submitting, setSubmitting] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [formReady, setFormReady] = useState(false);
   const { toast } = useToast();
+
+  // Add ref to track if form has been initialized
+  const formInitialized = useRef(false);
 
   const { userInfo, error, isLoading } = useUserInfo();
 
@@ -98,9 +94,9 @@ export default function GeneralSettings() {
     },
   });
 
-  React.useEffect(() => {
-    if (userInfo) {
-      console.log(userInfo);
+  useEffect(() => {
+    if (userInfo && !formInitialized.current) {
+      console.log("Initializing form with USER: ", userInfo);
       const formData = {
         firstName: userInfo.firstName || "",
         lastName: userInfo.lastName || "",
@@ -111,7 +107,13 @@ export default function GeneralSettings() {
           ? new Date(userInfo.dateOfBirth).toISOString().split("T")[0]
           : "",
       };
+
       form.reset(formData);
+      formInitialized.current = true;
+
+      setTimeout(() => {
+        setFormReady(true);
+      }, 100);
     }
   }, [userInfo, form]);
 
@@ -206,9 +208,9 @@ export default function GeneralSettings() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || !formReady) {
     return (
-      <Card className="w-full max-w-2xl shadow-sm border-border">
+      <Card className="w-full shadow-none border-none">
         <CardContent className="p-8">
           <LoadingSpinner size="lg" />
           <p className="text-center text-muted-foreground mt-4">
@@ -261,9 +263,14 @@ export default function GeneralSettings() {
                   height={80}
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-brand/10 flex items-center justify-center border-2 border-brand/20">
-                  <User className="w-8 h-8 text-brand" />
-                </div>
+                <PlaceholderAvatar
+                  name={
+                    `${userInfo?.firstName || ""} ${userInfo?.lastName || ""}`.trim() ||
+                    "User"
+                  }
+                  size="xl"
+                  className="border-2 border-border"
+                />
               )}
               {uploadingAvatar && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
@@ -425,7 +432,7 @@ export default function GeneralSettings() {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value || ""}
                         disabled={submitting}
                       >
                         <FormControl>
@@ -458,7 +465,7 @@ export default function GeneralSettings() {
                       </FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value || ""}
                         disabled={submitting}
                       >
                         <FormControl>
@@ -494,16 +501,13 @@ export default function GeneralSettings() {
                         Date of Birth
                       </FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Input
-                            {...field}
-                            type="date"
-                            disabled={submitting}
-                            className="border-border focus:border-brand focus:ring-brand"
-                            max={new Date().toISOString().split("T")[0]}
-                          />
-                          <CalendarDays className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                        </div>
+                        <Input
+                          {...field}
+                          type="date"
+                          disabled={submitting}
+                          className="border-border focus:border-brand focus:ring-brand"
+                          max={new Date().toISOString().split("T")[0]}
+                        />
                       </FormControl>
                       <FormDescription>
                         Your date of birth for age verification

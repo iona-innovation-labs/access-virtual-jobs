@@ -6,16 +6,26 @@ import {
   CheckCircle2,
   ExternalLink,
   AlertTriangle,
+  MenuIcon,
+  Users,
+  Tag,
+  Share2,
+  Briefcase,
+  Globe,
 } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import LinkButton from "@/components/ui/link-button";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { getJobPost } from "@/lib/api/jobs";
 import { ViewJobContent } from "@/components/jobs/view-job-content";
 import { getJobApplicationByJobId } from "@/database/queries/job_applications";
 import { auth } from "@/auth";
+import Logo from "@/components/logo";
+import { BookmarkButton } from "@/components/bookmarks/bookmark-button";
 
 export async function generateMetadata({
   params,
@@ -42,6 +52,9 @@ export default async function ViewJob({
       ? resolvedParams?.id[0]
       : resolvedParams?.id || ""
   );
+
+  console.log(post);
+
   const jobApplication = await getJobApplicationByJobId(
     resolvedParams?.id || ""
   );
@@ -52,51 +65,108 @@ export default async function ViewJob({
     return notFound();
   }
 
+  const job = post.item;
+
   return (
     <main className="min-h-screen bg-background">
       {/* Job Header */}
-      <div className="bg-card border-b border-border">
+      <div className="bg-background">
         <div className="max-w-6xl mx-auto px-6 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Job Info */}
             <div className="lg:col-span-2">
               <div className="mb-6">
-                <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 leading-tight">
-                  {post?.item?.title || "Job Title"}
-                </h1>
+                {/* Job Title with Bookmark Button */}
+                <div className="flex items-start justify-between mb-4">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight flex-1 mr-4">
+                    {job?.title || "Job Title"}
+                  </h1>
+                </div>
 
-                {/* Job Details */}
-                <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
+                {/* Primary Job Details */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   <div className="flex items-center space-x-2">
                     <MapPin className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm">Remote</span>
+                    <span className="text-sm">
+                      {job?.location || "Location not specified"}
+                    </span>
                   </div>
+
                   <div className="flex items-center space-x-2">
                     <Banknote className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm font-medium text-success">
-                      {post?.item?.pay || "Salary not specified"}
+                      {job?.pay || "Salary not specified"}
                     </span>
                   </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Briefcase className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                      {job?.jobType || "Job type not specified"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <MenuIcon className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                      {job?.jobCategory || "Category not specified"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Globe className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                      {job?.remoteAllowed
+                        ? "Remote Work Available"
+                        : "On-site Work"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    <Users className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium text-foreground">
+                      {job?.numberOfTalents
+                        ? `${job.numberOfTalents} ${job.numberOfTalents === 1 ? "Position" : "Positions"}`
+                        : "1 Position"}
+                    </span>
+                  </div>
+
                   <div className="flex items-center space-x-2">
                     <Calendar className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm">
                       Posted{" "}
-                      {formatDistanceToNow(
-                        new Date(post?.item?.createdAt || ""),
-                        {
-                          addSuffix: true,
-                        }
-                      )}
+                      {formatDistanceToNow(new Date(job?.createdAt || ""), {
+                        addSuffix: true,
+                      })}
                     </span>
                   </div>
                 </div>
+
+                {/* Tags Section */}
+                {job?.tags && job.tags.length > 0 && (
+                  <div className="mb-6">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <Tag className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm font-medium text-foreground">
+                        Skills & Tags
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {job.tags.map((tag: string, index: number) => (
+                        <Badge key={index} variant="secondary">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
 
-              {/* Company Info */}
+              {/* Company Card */}
               <div className="bg-muted rounded-lg p-4 mb-6">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 rounded-lg bg-brand/10 flex items-center justify-center">
-                    <ExternalLink className="w-6 h-6 text-brand" />
+                  <div className="w-12 h-12 rounded-lg bg-brand/10 flex items-center justify-center p-1">
+                    <Logo size="lg" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground">
@@ -108,15 +178,48 @@ export default async function ViewJob({
                   </div>
                 </div>
               </div>
-              {/* Job Content */}
+
+              {/* Job Description */}
               <ViewJobContent heading="Job Overview">
                 <div
                   className="prose prose-gray max-w-none"
                   dangerouslySetInnerHTML={{
-                    __html: post?.item?.description || "",
+                    __html: job?.description || "",
                   }}
                 />
               </ViewJobContent>
+
+              {/* Also Posted On Section */}
+              {job?.alsoPostedOn && job.alsoPostedOn.length > 0 && (
+                <ViewJobContent heading="Also Posted On">
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2 mb-3">
+                      <Share2 className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-muted-foreground">
+                        This job is also available on other platforms:
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {job.alsoPostedOn.map((link: string, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-center space-x-2"
+                        >
+                          <ExternalLink className="w-3 h-3 text-muted-foreground" />
+                          <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-brand hover:text-brand-dark underline"
+                          >
+                            {new URL(link).hostname}
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </ViewJobContent>
+              )}
             </div>
 
             {/* Application Section */}
@@ -191,6 +294,77 @@ export default async function ViewJob({
                     )}
                   </div>
 
+                  <Separator className="mb-4" />
+
+                  {/* Additional Bookmark Button in Sidebar */}
+                  <div className="mb-4">
+                    <BookmarkButton
+                      jobId={job?.id || 0}
+                      userId={session?.user?.id}
+                      variant="ghost"
+                      size="sm"
+                      showText={true}
+                      className="w-full justify-center"
+                    />
+                  </div>
+
+                  <Separator className="mb-4" />
+
+                  {/* Job Summary Card */}
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-foreground text-sm mb-3">
+                      Job Summary
+                    </h4>
+
+                    <div className="space-y-2 text-xs">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Job Type:</span>
+                        <span className="font-medium">
+                          {job?.jobType || "Not specified"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Category:</span>
+                        <span className="font-medium text-right">
+                          {job?.jobCategory || "Not specified"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Location:</span>
+                        <span className="font-medium text-right">
+                          {job?.location || "Not specified"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Remote:</span>
+                        <span className="font-medium">
+                          {job?.remoteAllowed ? "Yes" : "No"}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">
+                          Positions:
+                        </span>
+                        <span className="font-medium">
+                          {job?.numberOfTalents || 1}
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Salary:</span>
+                        <span className="font-medium text-success text-right">
+                          {job?.pay || "Not provided"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Separator className="my-4" />
+
                   {/* Application Tips */}
                   <div className="bg-brand/5 border border-brand/20 rounded-lg p-4">
                     <h4 className="font-medium text-foreground mb-2 text-sm">
@@ -200,6 +374,8 @@ export default async function ViewJob({
                       <li>• Ensure your profile is complete</li>
                       <li>• Upload an updated resume</li>
                       <li>• Double-check all information</li>
+                      <li>• Highlight relevant skills from the tags</li>
+                      <li>• Save this job to apply later if needed</li>
                     </ul>
                   </div>
                 </div>

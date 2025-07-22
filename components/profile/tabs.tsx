@@ -1,32 +1,46 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { User, Upload, CheckCircle2 } from "lucide-react";
-import { useProfileTabContext } from "@/context/profile-tab-context";
+import { User, Upload, CheckCircle2, Shield } from "lucide-react";
+import { useProfileTabContext, TabName } from "@/context/profile-tab-context";
+import { useEffect } from "react";
 
 const tabs = [
   {
-    name: "Profile",
+    name: "Profile" as TabName,
     icon: User,
-    path: "/app/profile",
     description: "Personal details",
   },
   {
-    name: "Files",
+    name: "Files" as TabName,
     icon: Upload,
-    path: "/app/profile/files",
     description: "Upload documents",
   },
   {
-    name: "Complete",
+    name: "Verification" as TabName,
+    icon: Shield,
+    description: "Verify information",
+  },
+  {
+    name: "Review" as TabName,
     icon: CheckCircle2,
-    path: "/app/profile/finish",
     description: "Review & submit",
   },
 ];
 
 const ProfileTabs = () => {
-  const { currentTab } = useProfileTabContext();
+  const {
+    currentTab,
+    setCurrentTab,
+    stepCompletionStatus,
+    isStepAccessible,
+    refreshStepCompletion,
+    isLoading,
+  } = useProfileTabContext();
+
+  useEffect(() => {
+    refreshStepCompletion();
+  }, [refreshStepCompletion]);
 
   const getCurrentStepIndex = () => {
     const index = tabs.findIndex((tab) => tab.name === currentTab);
@@ -35,7 +49,12 @@ const ProfileTabs = () => {
 
   const currentStepIndex = getCurrentStepIndex();
 
-  if (currentTab === "Finish") return null;
+  const handleTabClick = (tab: TabName, index: number) => {
+    if (isStepAccessible(tab) && !isLoading) {
+      console.log(index);
+      setCurrentTab(tab);
+    }
+  };
 
   return (
     <div className="w-full max-w-4xl mx-auto py-4 sm:py-6 lg:py-8 px-3 sm:px-4 lg:px-6">
@@ -44,13 +63,22 @@ const ProfileTabs = () => {
         <div className="space-y-4">
           {tabs.map((tab, index) => {
             const isActive = currentTab === tab.name;
-            const isCompleted = index < currentStepIndex;
-            const isUpcoming = index > currentStepIndex;
+            const isCompleted = stepCompletionStatus[tab.name];
+            const isAccessible = isStepAccessible(tab.name);
+            const isFuture = index > currentStepIndex && !isCompleted;
 
             return (
-              <div key={tab.path} className="relative">
+              <div key={tab.name} className="relative">
                 {/* Step Row */}
-                <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => handleTabClick(tab.name, index)}
+                  disabled={!isAccessible || isLoading}
+                  className={`
+                    w-full flex items-center space-x-3 transition-all duration-300
+                    ${isAccessible && !isLoading ? "cursor-pointer hover:opacity-80" : "cursor-not-allowed"}
+                    ${isFuture ? "opacity-50" : "opacity-100"}
+                  `}
+                >
                   {/* Icon Circle */}
                   <div
                     className={`
@@ -60,8 +88,11 @@ const ProfileTabs = () => {
                           ? "bg-brand text-white shadow-md"
                           : isCompleted
                             ? "bg-success text-white shadow-sm"
-                            : "bg-muted text-muted-foreground"
+                            : isFuture
+                              ? "bg-muted/50 text-muted-foreground/50"
+                              : "bg-muted text-muted-foreground"
                       }
+                      ${isLoading ? "animate-pulse" : ""}
                     `}
                   >
                     {isCompleted ? (
@@ -84,7 +115,7 @@ const ProfileTabs = () => {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <div>
+                      <div className="text-left">
                         <h3
                           className={`
                             text-sm font-semibold
@@ -93,7 +124,9 @@ const ProfileTabs = () => {
                                 ? "text-brand"
                                 : isCompleted
                                   ? "text-success"
-                                  : "text-muted-foreground"
+                                  : isFuture
+                                    ? "text-muted-foreground/50"
+                                    : "text-muted-foreground"
                             }
                           `}
                         >
@@ -106,8 +139,10 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand/70"
                                 : isCompleted
-                                  ? "text-success"
-                                  : "text-muted-foreground"
+                                  ? "text-success/70"
+                                  : isFuture
+                                    ? "text-muted-foreground/40"
+                                    : "text-muted-foreground/70"
                             }
                           `}
                         >
@@ -127,15 +162,15 @@ const ProfileTabs = () => {
                             Current
                           </span>
                         )}
-                        {isUpcoming && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
-                            Pending
+                        {isFuture && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-muted/50 text-muted-foreground/50">
+                            Locked
                           </span>
                         )}
                       </div>
                     </div>
                   </div>
-                </div>
+                </button>
 
                 {/* Vertical Connector */}
                 {index < tabs.length - 1 && (
@@ -143,7 +178,7 @@ const ProfileTabs = () => {
                     <div
                       className={`
                         w-full h-4 transition-all duration-500
-                        ${index < currentStepIndex ? "bg-success" : "bg-border"}
+                        ${stepCompletionStatus[tab.name] ? "bg-success" : "bg-border"}
                       `}
                     />
                   </div>
@@ -160,15 +195,23 @@ const ProfileTabs = () => {
           <div className="flex items-center justify-between">
             {tabs.map((tab, index) => {
               const isActive = currentTab === tab.name;
-              const isCompleted = index < currentStepIndex;
+              const isCompleted = stepCompletionStatus[tab.name];
+              const isAccessible = isStepAccessible(tab.name);
+              const isFuture = index > currentStepIndex && !isCompleted;
 
               return (
-                <div key={tab.path} className="flex-1 relative">
+                <div key={tab.name} className="flex-1 relative">
                   {/* Step */}
                   <div className="flex flex-col items-center relative z-10 bg-card">
                     <Button
                       variant="ghost"
-                      className="flex flex-col items-center p-2 hover:bg-transparent group transition-all duration-200 w-full"
+                      onClick={() => handleTabClick(tab.name, index)}
+                      disabled={!isAccessible || isLoading}
+                      className={`
+                        flex flex-col items-center p-2 hover:bg-transparent group transition-all duration-200 w-full
+                        ${isAccessible && !isLoading ? "cursor-pointer" : "cursor-not-allowed"}
+                        ${isFuture ? "opacity-50" : "opacity-100"}
+                      `}
                     >
                       {/* Icon Circle */}
                       <div
@@ -179,8 +222,11 @@ const ProfileTabs = () => {
                               ? "bg-brand text-white shadow-md"
                               : isCompleted
                                 ? "bg-success text-white shadow-sm"
-                                : "bg-muted text-muted-foreground"
+                                : isFuture
+                                  ? "bg-muted/50 text-muted-foreground/50"
+                                  : "bg-muted text-muted-foreground"
                           }
+                          ${isLoading ? "animate-pulse" : ""}
                         `}
                       >
                         {isCompleted ? (
@@ -210,7 +256,9 @@ const ProfileTabs = () => {
                                 ? "text-brand"
                                 : isCompleted
                                   ? "text-success"
-                                  : "text-muted-foreground"
+                                  : isFuture
+                                    ? "text-muted-foreground/50"
+                                    : "text-muted-foreground"
                             }
                           `}
                         >
@@ -227,7 +275,7 @@ const ProfileTabs = () => {
                         className={`
                           h-full transition-all duration-500
                           ${
-                            index < currentStepIndex
+                            stepCompletionStatus[tab.name]
                               ? "bg-success"
                               : "bg-border"
                           }
@@ -248,15 +296,23 @@ const ProfileTabs = () => {
           <div className="flex items-center justify-between">
             {tabs.map((tab, index) => {
               const isActive = currentTab === tab.name;
-              const isCompleted = index < currentStepIndex;
+              const isCompleted = stepCompletionStatus[tab.name];
+              const isAccessible = isStepAccessible(tab.name);
+              const isFuture = index > currentStepIndex && !isCompleted;
 
               return (
-                <div key={tab.path} className="flex-1 relative bg-background">
+                <div key={tab.name} className="flex-1 relative bg-background">
                   {/* Step */}
                   <div className="flex flex-col items-center relative z-10 bg-background px-4">
                     <Button
                       variant="ghost"
-                      className="flex flex-col items-center p-0 hover:bg-transparent group transition-all duration-200 w-auto h-auto"
+                      onClick={() => handleTabClick(tab.name, index)}
+                      disabled={!isAccessible || isLoading}
+                      className={`
+                        flex flex-col items-center p-0 hover:bg-transparent group transition-all duration-200 w-auto h-auto
+                        ${isAccessible && !isLoading ? "cursor-pointer" : "cursor-not-allowed"}
+                        ${isFuture ? "opacity-50" : "opacity-100"}
+                      `}
                     >
                       {/* Icon Circle */}
                       <div
@@ -267,8 +323,11 @@ const ProfileTabs = () => {
                               ? "bg-brand text-white shadow-lg shadow-brand/25"
                               : isCompleted
                                 ? "bg-success text-white shadow-md"
-                                : "bg-muted text-muted-foreground"
+                                : isFuture
+                                  ? "bg-muted/50 text-muted-foreground/50"
+                                  : "bg-muted text-muted-foreground"
                           }
+                          ${isLoading ? "animate-pulse" : ""}
                         `}
                       >
                         {isCompleted ? (
@@ -298,7 +357,9 @@ const ProfileTabs = () => {
                                 ? "text-brand"
                                 : isCompleted
                                   ? "text-success"
-                                  : "text-muted-foreground"
+                                  : isFuture
+                                    ? "text-muted-foreground/50"
+                                    : "text-muted-foreground"
                             }
                           `}
                         >
@@ -311,8 +372,10 @@ const ProfileTabs = () => {
                               isActive
                                 ? "text-brand/70"
                                 : isCompleted
-                                  ? "text-success"
-                                  : "text-muted-foreground"
+                                  ? "text-success/70"
+                                  : isFuture
+                                    ? "text-muted-foreground/40"
+                                    : "text-muted-foreground/70"
                             }
                           `}
                         >
@@ -329,7 +392,7 @@ const ProfileTabs = () => {
                         className={`
                           h-full transition-all duration-500
                           ${
-                            index < currentStepIndex
+                            stepCompletionStatus[tab.name]
                               ? "bg-success"
                               : "bg-border"
                           }
@@ -363,6 +426,16 @@ const ProfileTabs = () => {
           </span>
         </div>
       </div>
+
+      {/* Loading Overlay */}
+      {isLoading && (
+        <div className="absolute inset-0 bg-background/50 backdrop-blur-sm flex items-center justify-center rounded-lg">
+          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+            <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin"></div>
+            <span>Validating steps...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

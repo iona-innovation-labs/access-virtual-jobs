@@ -8,7 +8,7 @@ export interface IProfileResponse {
     whatStrengths: string;
     whatNeedImprovement: string;
     address: string;
-    skypeId: string;
+    whatsappId: string;
     dateOfBirth: string;
     hasPaypal: string;
     numberOfChildren: string;
@@ -20,6 +20,7 @@ export interface IProfileResponse {
     howHear: string;
     referrer?: string;
     jobType?: string;
+    jobCategory?: string;
     availability?: string;
     education?: string;
     createdAt?: string;
@@ -39,4 +40,45 @@ export interface IProfileResponse {
     filename: string;
     createdAt: string; // ISO date string
   }[];
+}
+
+export interface Profile {
+  userId: string;
+  jobTitle?: string;
+  address?: string;
+  whatsappId?: string;
+  jobSearchStatus?: string;
+  desiredSalary?: string;
+  jobType?: string;
+  jobCategory?: string;
+  linkedInLink?: string;
+  numberOfExperience?: string;
+  whyFit?: string;
+  whatStrengths?: string;
+  whatNeedImprovement?: string;
+  profileDescription?: string;
+  instagramLink?: string;
+  xLink?: string;
+  educationStatus?: string;
+
+  // Related data arrays
+  portfolioLinks: Array<any>;
+  skills: Array<any>;
+  emails: Array<any>;
+  contentLinks: Array<any>;
+  assessmentTests: Array<any>;
+  workSamples: Array<any>;
+  workHistory: Array<any>;
+  certifications: Array<any>;
+  education: Array<any>;
+
+  dateOfBirth: undefined;
+  numberOfChildren: undefined;
+  hasPaypal: undefined;
+  internetProvider: undefined;
+  numberOfMonitors: undefined;
+  howHear: undefined;
+  referrer: undefined;
+  phones: Array<never>; // Empty array
+  fileUploads: Array<never>; // Empty array
 }

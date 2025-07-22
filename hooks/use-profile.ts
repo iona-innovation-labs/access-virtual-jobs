@@ -9,7 +9,7 @@ interface Profile {
   whatStrengths: string;
   whatNeedImprovement: string;
   address: string;
-  skypeId: string;
+  whatsappId: string;
   dateOfBirth: Date | null;
   hasPaypal: string;
   numberOfChildren: string;
@@ -22,6 +22,7 @@ interface Profile {
   howHear: string | null;
   referrer: string | null;
   jobType: string | null;
+  jobCategory: string;
   availability: string | null;
   jobSearchStatus: string;
   educationStatus: string;
@@ -203,13 +204,8 @@ interface JobPreferencesData {
   desiredSalary: number;
   salaryUnit: "PHP" | "USD";
   isPublicSalary: boolean;
-  jobType:
-    | "full_time"
-    | "part_time"
-    | "contract"
-    | "freelance"
-    | "internship"
-    | null;
+  jobType: "full_time" | "part_time" | "contract" | "freelance" | null;
+  jobCategory: string;
 }
 
 interface ProfessionalProfileData {
@@ -360,8 +356,8 @@ export const useProfile = (
           | "part_time"
           | "contract"
           | "freelance"
-          | "internship"
           | null,
+        jobCategory: profile.jobCategory,
       }
     : null;
 

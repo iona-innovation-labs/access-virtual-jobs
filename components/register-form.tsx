@@ -8,13 +8,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -26,6 +20,8 @@ import {
 } from "@/components/auth/password/password-strength-checker";
 import { passwordSchema } from "@/lib/validation/password-validation";
 import { registrationCheckboxes } from "@/config/register-terms.config";
+import PrivacyDialog from "./landing/legal/privacy-dialog";
+import TermsDialog from "./landing/legal/term-dialog";
 
 // Registration schema with confirm password added
 const registerSchema = z
@@ -35,9 +31,7 @@ const registerSchema = z
     email: z.string().email("Invalid email address"),
     password: passwordSchema,
     confirmPassword: z.string().min(1, "Please confirm your password"),
-    filipinoWorker: z.boolean().refine((val) => val === true, {
-      message: "You must confirm you are a Filipino worker",
-    }),
+    role: z.literal("job_seeker"),
     individualWorker: z.boolean().refine((val) => val === true, {
       message: "You must confirm you are an individual worker",
     }),
@@ -53,7 +47,7 @@ const registerSchema = z
     path: ["confirmPassword"],
   });
 
-export default function RegisterForm() {
+export default function JobSeekerRegisterForm() {
   const { toast } = useToast();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -65,7 +59,6 @@ export default function RegisterForm() {
     useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [checkboxes, setCheckboxes] = useState({
-    filipinoWorker: false,
     individualWorker: false,
     noMultipleAccounts: false,
     agreeToTerms: false,
@@ -97,6 +90,8 @@ export default function RegisterForm() {
     setFieldErrors({});
     setLoading(true);
 
+    console.log("clicked");
+
     // Get form data from DOM elements (preserving original functionality)
     const firstName =
       (document.getElementById("firstName") as HTMLInputElement)?.value || "";
@@ -104,18 +99,20 @@ export default function RegisterForm() {
       (document.getElementById("lastName") as HTMLInputElement)?.value || "";
     const email =
       (document.getElementById("email") as HTMLInputElement)?.value || "";
-
+    console.log("clicked2");
     const data = {
       email,
       password,
       confirmPassword,
       firstName,
       lastName,
+      role: "job_seeker" as const, // Explicitly set role to job_seeker
       ...checkboxes,
     };
-
-    // Validate with Zod
+    console.log("clicked3");
     const result = registerSchema.safeParse(data);
+    console.log("clicked4");
+    console.log(result);
     if (!result.success) {
       const errors: Record<string, string> = {};
       result.error.errors.forEach((error) => {
@@ -190,27 +187,18 @@ export default function RegisterForm() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-transparent py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-lg w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create a free Job seeker account
-          </h1>
-          <p className="text-gray-600">
-            Join thousands of Filipino workers finding their dream jobs
-          </p>
-        </div>
-
+      <div className="max-w-lg w-full space-y-4">
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Create an account</CardTitle>
-            <CardDescription>
-              Register with your email and password
-            </CardDescription>
+            <CardTitle className="text-xl mt-6">
+              Create a Free Job Seeker account
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-6">
-              {/* Name Fields */}
+              {error && (
+                <p className="text-sm text-red-500 text-center">{error}</p>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="grid gap-2">
                   <Label htmlFor="firstName">First Name</Label>
@@ -251,7 +239,7 @@ export default function RegisterForm() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="m@example.com"
+                  placeholder="email@example.com"
                   required
                   className={fieldErrors.email ? "border-red-500" : ""}
                 />
@@ -291,9 +279,9 @@ export default function RegisterForm() {
                     disabled={!password}
                   >
                     {showPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>
@@ -349,9 +337,9 @@ export default function RegisterForm() {
                     disabled={!confirmPassword}
                   >
                     {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4 text-gray-400" />
+                      <EyeOff className="h-4 w-4 text-zinc-400" />
                     ) : (
-                      <Eye className="h-4 w-4 text-gray-400" />
+                      <Eye className="h-4 w-4 text-zinc-400" />
                     )}
                   </Button>
                 </div>
@@ -364,9 +352,6 @@ export default function RegisterForm() {
 
               {/* Registration Checkboxes */}
               <div className="space-y-3">
-                <Label className="text-sm font-medium">
-                  Registration Requirements
-                </Label>
                 <div className="space-y-2">
                   {registrationCheckboxes.map((checkbox) => (
                     <div key={checkbox.id} className="space-y-1">
@@ -389,28 +374,13 @@ export default function RegisterForm() {
                         />
                         <Label
                           htmlFor={checkbox.id}
-                          className="text-xs font-normal text-gray-800 leading-relaxed cursor-pointer flex-1"
+                          className="text-xs font-normal text-zinc-800 leading-relaxed cursor-pointer flex-1"
                         >
                           {checkbox.id === "agreeToTerms" ? (
                             <>
                               I agree to the{" "}
-                              <Link
-                                href="/legal/terms-of-service"
-                                className="text-blue-600 hover:underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Terms of Service
-                              </Link>{" "}
-                              and{" "}
-                              <Link
-                                href="/legal/privacy-policy"
-                                className="text-blue-600 hover:underline"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                Privacy Policy
-                              </Link>
+                              <TermsDialog>Terms of Service</TermsDialog> and{" "}
+                              <PrivacyDialog>Privacy Policy</PrivacyDialog>
                             </>
                           ) : checkbox.id === "individualWorker" ? (
                             "I am an individual worker and I do not represent any agency or company."
@@ -431,10 +401,6 @@ export default function RegisterForm() {
                 </div>
               </div>
 
-              {error && (
-                <p className="text-sm text-red-500 text-center">{error}</p>
-              )}
-
               {/* Submit Button */}
               <Button
                 type="button"
@@ -442,47 +408,26 @@ export default function RegisterForm() {
                 className="w-full bg-brand cursor-pointer hover:bg-brand-dark text-white"
                 disabled={loading || !isFormValid}
               >
-                {loading ? "Creating account..." : "Sign up"}
-              </Button>
-
-              {/* Divider */}
-              <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                <span className="bg-card text-muted-foreground relative z-10 px-2">
-                  Or continue with
-                </span>
-              </div>
-
-              {/* Google Sign Up */}
-              <Button
-                variant="outline"
-                className="w-full"
-                type="button"
-                onClick={() =>
-                  signIn("google", { callbackUrl: "/app/overview" })
-                }
-                disabled={loading}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className="mr-2 h-5 w-5"
-                >
-                  <path
-                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Sign up with Google
+                {loading ? "Creating account..." : "Create Job Seeker Account"}
               </Button>
 
               {/* Login Link */}
               <div className="text-center text-sm">
-                Already have an account?{" "}
                 <Link
                   href="/login"
-                  className="text-brand underline underline-offset-4 hover:text-brand-dark"
+                  className="text-brand underline-none hover:text-brand-dark"
                 >
-                  Login
+                  Already have an account?
+                </Link>
+              </div>
+
+              {/* Switch to Recruiter */}
+              <div className="text-center text-sm">
+                <Link
+                  href="/register/recruiter"
+                  className="text-foreground/50 hover:text-brand-dark"
+                >
+                  Looking to hire talent? Click here
                 </Link>
               </div>
             </div>
@@ -490,7 +435,7 @@ export default function RegisterForm() {
         </Card>
 
         {/* Additional Info */}
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs text-zinc-500">
           <p>
             By creating an account, you&apos;re joining a community of Filipino
             workers dedicated to finding meaningful employment opportunities.

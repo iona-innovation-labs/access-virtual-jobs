@@ -238,7 +238,7 @@ export const AssessmentSection = ({
 
   const recordingDescription = (
     <div>
-      <div className="font-medium text-gray-800 mb-1 text-xs">
+      <div className="font-medium text-zinc-800 mb-1 text-xs">
         English Proficiency Recording <span className="text-red-500">*</span>
       </div>
       <div>

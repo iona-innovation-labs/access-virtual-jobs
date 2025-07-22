@@ -8,6 +8,11 @@ import { users } from "@/database/schema/users";
 import { log } from "@/lib/logs";
 import { sendEmailNotification } from "@/services/send-email-notif";
 import { auth } from "@/auth";
+import {
+  sendAccountUpdateNotification,
+  generateAccountUpdateEmailTemplate,
+  generateEmailChangeTemplates,
+} from "@/services/notification-service";
 
 // Email-only validation schema
 const emailOnlySchema = z.object({
@@ -147,32 +152,31 @@ export async function POST(req: NextRequest) {
         })
         .where(eq(users.id, session.user.id));
 
-      // Send email notifications
+      // Send notifications using notification service - to OLD email
+      const emailTemplates = generateEmailChangeTemplates(
+        currentUser.firstName || "User",
+        oldEmail,
+        email
+      );
+
+      // Send notification to old email (if notifications enabled)
+      await sendAccountUpdateNotification({
+        userId: session.user.id,
+        emailSubject: "Email Address Changed - AVS Applicant Portal",
+        emailMessage: emailTemplates.oldEmailTemplate,
+        emailFooter:
+          "If you didn't make this change, please contact support immediately.",
+        inAppTitle: "Email Address Changed",
+        inAppMessage: `Your email address has been changed from ${oldEmail} to ${email}. Please verify your new email address.`,
+        inAppType: "info",
+        inAppUrl: "/app/settings/general",
+      });
+
+      // Always send verification email to new address (regardless of notification settings)
       try {
-        // Notify old email about the change
-        await sendEmailNotification({
-          to: [oldEmail],
-          subject: "Email Address Changed - AVS Applicant Portal",
-          message: `Hi ${currentUser.firstName || "User"},
+        const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}" style="color: #0066cc; text-decoration: underline;">Click here to verify your new email address</a>`;
 
-Your email address has been changed from ${oldEmail} to ${email}.
-
-Changed on: ${new Date().toLocaleString()}
-
-If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.
-
-Future notifications will be sent to your new email address.`,
-          footer:
-            "If you didn't make this change, please contact support immediately.",
-        });
-
-        // Send verification email to new address
-        const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your new email address</a>`;
-
-        await sendEmailNotification({
-          to: [email],
-          subject: "Verify Your New Email Address - AVS Applicant Portal",
-          message: `Hi ${currentUser.firstName || "User"},
+        const newEmailMessage = `Hi ${currentUser.firstName || "User"},
 
 Your email address has been updated to this address (${email}).
 
@@ -180,28 +184,50 @@ Please verify your new email address by clicking the link below:
 
 ${verifyLink}
 
+Or copy and paste this URL into your browser:
+${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}
+
 Previous email: ${oldEmail}
 New email: ${email}
 Updated on: ${new Date().toLocaleString()}
 
-If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.`,
+If you did not make this change, please contact our support team immediately at support@accessvirtualjobs.com.
+
+This link will expire in 24 hours.`;
+
+        await sendEmailNotification({
+          to: [email],
+          subject: "Verify Your New Email Address - AVS Applicant Portal",
+          message: newEmailMessage,
           footer:
             "This link will expire in 24 hours. If you didn't make this change, please contact support immediately.",
         });
 
-        log("Email update notifications sent", "info", {
+        log("Email verification sent to new address", "info", {
           userId: session.user.id,
-          oldEmail,
           newEmail: email,
         });
       } catch (emailError) {
-        log("Failed to send email update notifications", "error", {
+        log("Failed to send email verification to new address", "error", {
           error: emailError,
           userId: session.user.id,
-          oldEmail,
           newEmail: email,
         });
       }
+
+      // ALSO send notification to NEW email (if notifications enabled)
+      // This sends the general "email changed" notification to the new email as well
+      await sendAccountUpdateNotification({
+        userId: session.user.id,
+        emailSubject: "Email Address Changed - AVS Applicant Portal",
+        emailMessage: emailTemplates.newEmailTemplate,
+        emailFooter:
+          "If you didn't make this change, please contact support immediately.",
+        inAppTitle: "Email Address Updated",
+        inAppMessage: `Your email address has been updated. Please verify your new email address.`,
+        inAppType: "info",
+        inAppUrl: "/app/settings/general",
+      });
 
       return NextResponse.json({
         message:
@@ -301,50 +327,24 @@ If you did not make this change, please contact our support team immediately at 
         .set(updateData)
         .where(eq(users.id, session.user.id));
 
-      // Send notification email about profile changes
-      try {
-        const emailSubject = "Profile Updated - AVS Applicant Portal";
-        const emailMessage = `Hi ${firstName},
+      // Send notification using notification service
+      const emailMessage = generateAccountUpdateEmailTemplate(
+        firstName,
+        "Profile",
+        changes
+      );
 
-Your AVS Applicant Portal profile has been successfully updated.
-
-Changes made:
-${changes.map((change) => `• ${change}`).join("\n")}
-
-Updated on: ${new Date().toLocaleString()}
-
-If you did not make these changes, please contact our support team immediately at support@accessvirtualstaffing.com.
-
-Thank you for keeping your profile up to date.`;
-
-        await sendEmailNotification({
-          to: [currentUser.email],
-          subject: emailSubject,
-          message: emailMessage,
-          footer:
-            "If you didn't make these changes, please contact support immediately.",
-        });
-
-        log("Profile update email notification sent", "info", {
-          userId: session.user.id,
-          changesCount: changes.length,
-          email: currentUser.email,
-          fieldsUpdated: {
-            firstName: firstName !== currentUser.firstName,
-            lastName: lastName !== currentUser.lastName,
-            username: username !== currentUser.name,
-            gender: gender !== currentUser.gender,
-            countryOfResidence:
-              countryOfResidence !== currentUser.countryOfResidence,
-            dateOfBirth: currentDateOfBirth !== newDateOfBirth,
-          },
-        });
-      } catch (emailError) {
-        log("Failed to send profile update email", "error", {
-          error: emailError,
-          userId: session.user.id,
-        });
-      }
+      await sendAccountUpdateNotification({
+        userId: session.user.id,
+        emailSubject: "Profile Updated - AVS Applicant Portal",
+        emailMessage,
+        emailFooter:
+          "If you didn't make these changes, please contact support immediately.",
+        inAppTitle: "Profile Updated",
+        inAppMessage: `Your profile has been updated with ${changes.length} change(s).`,
+        inAppType: "info",
+        inAppUrl: "/app/settings/general",
+      });
 
       return NextResponse.json({
         message: "Profile updated successfully!",

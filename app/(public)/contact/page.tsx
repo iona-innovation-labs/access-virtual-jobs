@@ -120,7 +120,7 @@ export default function ContactForm() {
               <h3 className="text-2xl font-bold mb-4 text-[#042e67] font-[Montserrat]">
                 Message Sent Successfully!
               </h3>
-              <p className="text-gray-600 font-[Archivo]">
+              <p className="text-zinc-600 font-[Archivo]">
                 Thank you for reaching out. We&apos;ll get back to you within 24
                 hours.
               </p>
@@ -147,7 +147,7 @@ export default function ContactForm() {
               <h1 className="text-5xl font-bold mb-6 text-[#042e67] font-[Archivo] leading-tight">
                 {contactConfig.title}
               </h1>
-              <p className="text-lg text-gray-600 leading-relaxed font-[Archivo]">
+              <p className="text-lg text-zinc-600 leading-relaxed font-[Archivo]">
                 {contactConfig.description}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default function ContactForm() {
                   <h3 className="font-semibold text-[#042e67] font-[Montserrat]">
                     Email
                   </h3>
-                  <p className="text-gray-600 font-[Archivo]">
+                  <p className="text-zinc-600 font-[Archivo]">
                     {contactConfig.email}
                   </p>
                 </div>
@@ -175,7 +175,7 @@ export default function ContactForm() {
                   <h3 className="font-semibold text-[#042e67] font-[Montserrat]">
                     Office
                   </h3>
-                  <p className="text-gray-600 font-[Archivo]">
+                  <p className="text-zinc-600 font-[Archivo]">
                     {contactConfig.office}
                   </p>
                 </div>
@@ -189,7 +189,7 @@ export default function ContactForm() {
               <CardTitle className="text-2xl font-semibold text-[#042e67] font-[Montserrat] leading-snug">
                 Send us a Message
               </CardTitle>
-              <CardDescription className="text-gray-600 font-[Archivo]">
+              <CardDescription className="text-zinc-600 font-[Archivo]">
                 Fill out the form below and we&apos;ll get back to you shortly.
               </CardDescription>
             </CardHeader>
@@ -204,7 +204,7 @@ export default function ContactForm() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium font-[Archivo]">
+                        <FormLabel className="text-zinc-700 font-medium font-[Archivo]">
                           Full Name
                         </FormLabel>
                         <FormControl>
@@ -225,7 +225,7 @@ export default function ContactForm() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium font-[Archivo]">
+                          <FormLabel className="text-zinc-700 font-medium font-[Archivo]">
                             Email
                           </FormLabel>
                           <FormControl>
@@ -246,7 +246,7 @@ export default function ContactForm() {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-gray-700 font-medium font-[Archivo]">
+                          <FormLabel className="text-zinc-700 font-medium font-[Archivo]">
                             Phone
                           </FormLabel>
                           <FormControl>
@@ -268,7 +268,7 @@ export default function ContactForm() {
                     name="subject"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium font-[Archivo]">
+                        <FormLabel className="text-zinc-700 font-medium font-[Archivo]">
                           Subject
                         </FormLabel>
                         <Select
@@ -301,7 +301,7 @@ export default function ContactForm() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-700 font-medium font-[Archivo]">
+                        <FormLabel className="text-zinc-700 font-medium font-[Archivo]">
                           Message
                         </FormLabel>
                         <FormControl>

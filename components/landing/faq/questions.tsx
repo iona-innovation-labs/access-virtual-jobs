@@ -16,10 +16,10 @@ export default function FAQ() {
     <section className="py-8 px-6 bg-gray-50">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4 text-title">
+          <h2 className="text-4xl font-bold text-foreground mb-4 text-title">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
             Find answers to common questions about getting started with remote
             work opportunities.
           </p>
@@ -35,14 +35,14 @@ export default function FAQ() {
                 className="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset rounded-lg"
                 aria-expanded={openItem === index}
               >
-                <h3 className="text-lg font-semibold text-gray-900 pr-4">
+                <h3 className="text-lg font-semibold text-zinc-800 pr-4">
                   {faq.question}
                 </h3>
                 <div className="flex-shrink-0">
                   {openItem === index ? (
                     <ChevronUp className="w-5 h-5 text-brand" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className="w-5 h-5 text-zinc-400" />
                   )}
                 </div>
               </button>
@@ -55,7 +55,7 @@ export default function FAQ() {
                 }`}
               >
                 <div className="px-6 pb-4">
-                  <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                  <p className="text-zinc-600 leading-relaxed">{faq.answer}</p>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@ export default function FAQ() {
 
         {/* CTA */}
         <div className="text-center mt-12">
-          <p className="text-gray-600 mb-4">
+          <p className="text-zinc-600 mb-4">
             Still have questions? We&apos;re here to help.
           </p>
           <Link

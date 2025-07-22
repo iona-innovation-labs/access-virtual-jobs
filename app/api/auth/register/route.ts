@@ -7,12 +7,21 @@ import { nanoid } from "nanoid";
 import { sendEmailNotification } from "@/services/send-email-notif";
 import { z } from "zod";
 import { passwordSchema } from "@/lib/validation/password-validation";
+import { userRoles } from "@/database/schema/users";
+import { createNotification } from "@/database/mutations/job_applicants";
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   password: passwordSchema,
+  role: z
+    .enum(userRoles, {
+      errorMap: () => ({
+        message: "Please select either Job Seeker or Recruiter",
+      }),
+    })
+    .default("job_seeker"),
 });
 
 export async function POST(request: Request) {
@@ -43,9 +52,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const { email, password, firstName, lastName } = validationResult.data;
+    const { email, password, firstName, lastName, role } =
+      validationResult.data;
 
-    console.log("Processing registration for:", email);
+    console.log("Processing registration for:", email, "with role:", role);
 
     const existingUser = await db.query.users.findFirst({
       where: eq(users.email, email),
@@ -61,33 +71,60 @@ export async function POST(request: Request) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const token = nanoid();
     const expires = new Date(Date.now() + 1000 * 60 * 60 * 24); // 24 hours
+    function generateRandomString(length = 6) {
+      const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
 
+    const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}_${generateRandomString(6)}`;
     const [newUser] = await db
       .insert(users)
       .values({
         email,
         password: hashedPassword,
-        username: email.split("@")[0],
+        username,
         firstName,
         lastName,
         name: `${firstName} ${lastName}`,
         provider: "credentials",
+        role, // Add role to user creation
         isEmailVerified: false,
         verificationCode: token,
         verificationCodeExpires: expires,
       })
       .returning();
 
-    console.log("New user created:", newUser.id);
+    console.log(
+      "New user created:",
+      newUser.username,
+      "with role:",
+      newUser.role
+    );
 
     // Create proper verification link
     const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
 
-    // Send verification email
+    // Send verification email with role-specific messaging
+    const roleMessage =
+      role === "job_seeker"
+        ? "You've registered as a Job Seeker. Start building your profile and apply for exciting opportunities!"
+        : "You've registered as a Recruiter. Get ready to find the best talent for your team!";
+
+    createNotification(
+      newUser.id,
+      "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
+      "info",
+      "#"
+    );
+
     await sendEmailNotification({
       to: [email],
       subject: "Verify your email for AVS Applicant Portal",
-      message: `Hi ${firstName},\n\nWelcome to AVS Applicant Portal! Please verify your email by clicking the link below:\n\n${verifyLink}`,
+      message: `Hi ${firstName},\n\nWelcome to AVS Applicant Portal! ${roleMessage}\n\nPlease verify your email by clicking the link below:\n\n${verifyLink}`,
       footer:
         "This link will expire in 24 hours. If you did not create an account, you can ignore this message.",
     });

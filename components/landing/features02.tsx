@@ -24,7 +24,7 @@ export default function Features02() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="py-12 md:py-20">
           <div className="mx-auto max-w-3xl text-center pb-12 md:pb-16">
-            <h2 className="font-archivo text-2xl md:text-4xl font-bold text-black">
+            <h2 className="font-archivo text-2xl md:text-4xl font-bold text-foreground">
               {landingPage.services.title}
             </h2>
           </div>
@@ -73,14 +73,14 @@ export default function Features02() {
               <div className="absolute inset-0 flex items-center justify-between px-0">
                 <Button
                   variant="secondary"
-                  className=" bg-transparent h-full w-[60px] cursor-pointer text-gray-700 hover:bg-gradient-to-r  hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
+                  className=" bg-transparent h-full w-[60px] cursor-pointer text-zinc-700 hover:bg-gradient-to-r  hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
                   onClick={prevImage}
                 >
                   <ChevronLeft size={50} />
                 </Button>
                 <Button
                   variant="secondary"
-                  className=" bg-transparent h-full w-[60px] cursor-pointer text-gray-700 hover:bg-gradient-to-l hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
+                  className=" bg-transparent h-full w-[60px] cursor-pointer text-zinc-700 hover:bg-gradient-to-l hover:from-black/30  hover:via-black/10  hover:to-transparent shadow-none text-white rounded-none"
                   onClick={nextImage}
                 >
                   <ChevronRight size={50} />
@@ -109,11 +109,11 @@ function ContentBlock({
 }) {
   return (
     <div>
-      <h3 className="font-archivo text-xl md:text-3xl font-bold text-black mb-3">
+      <h3 className="font-archivo text-xl md:text-3xl font-bold text-foreground mb-3">
         {title}
       </h3>
       {description && (
-        <p className="mb-8 text-lg text-gray-500">{description}</p>
+        <p className="mb-8 text-lg text-zinc-500">{description}</p>
       )}
       <ul className="flex flex-col space-y-6">
         {items?.map((item, i) => (
@@ -123,7 +123,7 @@ function ContentBlock({
               <div className="mb-1 font-cabinet-grotesk text-lg font-bold">
                 {item.title}
               </div>
-              <div className="text-gray-500">{item.description}</div>
+              <div className="text-zinc-500">{item.description}</div>
             </div>
           </li>
         ))}

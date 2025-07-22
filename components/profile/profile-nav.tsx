@@ -89,7 +89,7 @@ export const ProfileNav = ({ handleTabChange, activeTab }: ProfileProps) => {
                 className={`w-full text-left p-4 rounded-lg transition-all duration-200 group ${
                   isActive
                     ? "bg-brand text-white shadow-sm"
-                    : "hover:bg-accent text-foreground"
+                    : "hover:bg-muted text-foreground"
                 }`}
               >
                 <div className="flex items-start space-x-3">

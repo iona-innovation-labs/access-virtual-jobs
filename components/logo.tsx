@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logo from "@/public/images/logo/logo.png";
+import logoWhite from "@/public/images/logo/logo-white.png";
 import Link from "next/link";
 
 interface LogoProps {
@@ -12,6 +13,7 @@ interface LogoProps {
   alt?: string;
   onClick?: () => void;
   href?: string;
+  isWhite?: boolean;
 }
 
 const sizeMap = {
@@ -33,6 +35,7 @@ export default function Logo({
   alt = "Company Logo",
   onClick,
   href,
+  isWhite = false,
 }: LogoProps) {
   const dimensions =
     typeof size === "number" ? { width: size, height: size } : sizeMap[size];
@@ -58,14 +61,25 @@ export default function Logo({
 
   const logoElement = (
     <div className={containerClasses} style={containerStyle} onClick={onClick}>
-      <Image
-        src={logo}
-        alt={alt}
-        width={finalWidth}
-        height={finalHeight}
-        priority={priority}
-        className="object-contain"
-      />
+      {isWhite ? (
+        <Image
+          src={logoWhite}
+          alt={alt}
+          width={finalWidth}
+          height={finalHeight}
+          priority={priority}
+          className="object-contain"
+        />
+      ) : (
+        <Image
+          src={logo}
+          alt={alt}
+          width={finalWidth}
+          height={finalHeight}
+          priority={priority}
+          className="object-contain"
+        />
+      )}
     </div>
   );
 

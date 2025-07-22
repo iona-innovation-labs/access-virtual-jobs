@@ -1,6 +1,6 @@
 //must export images, contents, and other data for the landing page
 
-import { BadgeDollarSign, Clock, Globe, Laptop, Shield } from "lucide-react";
+import { Clock, Globe, Laptop, Shield } from "lucide-react";
 
 import HeroImage from "../public/images/landing/hero-blur.svg";
 
@@ -18,10 +18,30 @@ import Scale5 from "../public/images/landing-feature/5.jpg";
 
 export const landingPage = {
   hero: {
-    title: "Your Career, Your Way – Work from Anywhere",
+    title: "The Job Board for Virtual Workers in the Philippines",
     subtitle:
-      "Discover roles with US-based startups and companies and find the flexibility to work on your terms from anywhere in the world.",
+      "Discover work-from-home jobs designed for Filipino virtual assistants and freelancers",
     image: HeroImage,
+    options: [
+      {
+        title: "Looking for Talent?",
+
+        cta: {
+          label: "Find Talents",
+          url: "https://www.accessvirtualstaffing.com/",
+          external: true,
+        },
+      },
+      {
+        title: "Looking for Work?",
+
+        cta: {
+          type: "search",
+          placeholder: "Search for jobs...",
+          redirectPath: "/jobs",
+        },
+      },
+    ],
   },
   explainer: {
     title: "Empowering businesses with remote-ready professionals.",
@@ -164,7 +184,7 @@ export const landingPage = {
     ],
   },
   scale: {
-    title: "Popular Remote Job Categories",
+    title: "Popular Virtual Job Categories",
     items: [
       { image: Scale1, alt: "Virtual Assistant", label: "Virtual Assistant" },
       {
@@ -199,28 +219,29 @@ export const landingPage = {
     title: "Frequently Asked Questions",
     items: [
       {
+        title: "How do I get started with Access Virtual Jobs?",
+        description:
+          "Getting started is simple! Create your profile, upload your documents for verification, and start browsing job opportunities. Our step-by-step process guides you through everything you need to know.",
+      },
+      {
         title: "What types of jobs are available?",
         description:
-          "We offer full-time, part-time, and freelance remote roles across various industries.",
+          "We offer a wide variety of remote positions including customer service, data entry, virtual assistance, content writing, graphic design, programming, and many other skills-based roles across different industries.",
       },
       {
-        title: "Is there a cost to post a job?",
+        title: "How does the verification process work?",
         description:
-          "Basic job postings are free, with premium upgrades available for increased visibility.",
+          "Our verification process involves uploading a valid government ID and completing skill assessments. This builds your IDProof score, which helps employers trust your credentials and increases your chances of getting hired.",
       },
       {
-        title: "How do you screen remote candidates?",
+        title: "Do I need to pay any fees to use the platform?",
         description:
-          "Each candidate is reviewed for skills, experience, and remote readiness using our vetting process.",
+          "Creating your profile and browsing jobs is completely free. We only charge a small service fee when you successfully get hired through our platform, ensuring we're aligned with your success.",
       },
       {
-        title: "Can I hire someone from a specific timezone?",
-        description: "Yes, you can filter candidates by timezone availability.",
-      },
-      {
-        title: "Do you offer onboarding help?",
+        title: "How much can I earn working remotely?",
         description:
-          "Absolutely. We provide onboarding templates and optional services to help you onboard faster.",
+          "Earnings vary based on your skills, experience, and the type of work you do. Our platform features jobs ranging from entry-level positions to high-skill roles with competitive compensation packages.",
       },
     ],
   },

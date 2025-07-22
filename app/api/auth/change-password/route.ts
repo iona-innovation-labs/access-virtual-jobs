@@ -4,10 +4,13 @@ import { db } from "@/database";
 import { users } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
-import { sendEmailNotification } from "@/services/send-email-notif";
 import { z } from "zod";
 import { auth } from "@/auth";
 import { passwordSchema } from "@/lib/validation/password-validation";
+import {
+  sendAccountUpdateNotification,
+  generateAccountUpdateEmailTemplate,
+} from "@/services/notification-service";
 
 // Change password schema using centralized validation
 const changePasswordSchema = z
@@ -155,22 +158,36 @@ export async function POST(req: NextRequest) {
       })
       .where(eq(users.email, session.user.email));
 
-    // Send notification email
+    // Determine if this is first time password or password change
     const isFirstTimePassword = !hasExistingPassword;
-    const emailSubject = isFirstTimePassword
-      ? "Password Set - AVS Applicant Portal"
-      : "Password Changed - AVS Applicant Portal";
+    const changeType = isFirstTimePassword
+      ? "Password Set"
+      : "Password Changed";
+    const changeDescription = isFirstTimePassword
+      ? "You have successfully set a password for your AVS Applicant Portal account. You can now sign in using either your social account or your email and password."
+      : "Your password has been successfully changed for your AVS Applicant Portal account.";
 
-    const emailMessage = isFirstTimePassword
-      ? `Hi ${existingUser.firstName || "there"},\n\nYou have successfully set a password for your AVS Applicant Portal account.\n\nYou can now sign in using either your ${existingUser.provider} account or your email and password.\n\nFor your security, you have been logged out and will need to sign in again.`
-      : `Hi ${existingUser.firstName || "there"},\n\nYour password has been successfully changed for your AVS Applicant Portal account.\n\nIf you did not make this change, please contact our support team immediately.\n\nFor your security, you have been logged out of all devices and will need to sign in again.`;
+    // Send notification using notification service (respects user's accountUpdatePref)
+    const emailMessage = generateAccountUpdateEmailTemplate(
+      existingUser.firstName || "User",
+      changeType,
+      changeDescription
+    );
 
-    await sendEmailNotification({
-      to: [session.user.email],
-      subject: emailSubject,
-      message: emailMessage,
-      footer:
+    await sendAccountUpdateNotification({
+      userId: existingUser.id,
+      emailSubject: `${changeType} - AVS Applicant Portal`,
+      emailMessage:
+        emailMessage +
+        "\n\nFor your security, you have been logged out of all devices and will need to sign in again.",
+      emailFooter:
         "If you didn't make this change, please contact support immediately.",
+      inAppTitle: changeType,
+      inAppMessage: isFirstTimePassword
+        ? "You have successfully set a password for your account. You can now sign in with email and password."
+        : "Your password has been successfully changed. Please sign in with your new password.",
+      inAppType: "info",
+      inAppUrl: "/app/settings/authentication",
     });
 
     // Log the password change
@@ -185,6 +202,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: successMessage,
       ok: true,
+      changeType: isFirstTimePassword ? "set" : "changed",
     });
   } catch (error: any) {
     console.error("Change password error:", error);
