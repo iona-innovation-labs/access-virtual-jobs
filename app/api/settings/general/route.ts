@@ -191,7 +191,7 @@ Previous email: ${oldEmail}
 New email: ${email}
 Updated on: ${new Date().toLocaleString()}
 
-If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.
+If you did not make this change, please contact our support team immediately at support@accessvirtualjobs.com.
 
 This link will expire in 24 hours.`;
 

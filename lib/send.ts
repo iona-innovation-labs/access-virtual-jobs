@@ -12,9 +12,7 @@ export default async function submitForm(formData: ContactFormSchema) {
       from: `Access Virtual Staffing Website Visitor <${
         process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualstaffing.com"
       }>`,
-      to: [
-        process.env.NEXT_SUPPORT_EMAIL || "support@accessvirtualstaffing.com",
-      ],
+      to: [process.env.NEXT_SUPPORT_EMAIL || "support@accessvirtualjobs.com"],
       subject: `Website Contact Form | Sent by ${formData.email} | ${
         formData.subject || "General Inquiry (No Subject)"
       }`,

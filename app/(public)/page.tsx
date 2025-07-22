@@ -11,7 +11,7 @@ import Features01 from "@/components/landing/features01";
 import Services from "@/components/landing/services";
 import FAQ from "@/components/landing/faqs";
 import Cta from "@/components/landing/cta";
-import ClientsSwiper from "@/components/landing/job-swiper";
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -73,9 +73,7 @@ export default async function LandingPage() {
   return (
     <div>
       <Hero />
-      <ClientsSwiper>
-        <JobCarousel />
-      </ClientsSwiper>
+      <JobCarousel />
       <Explainer />
       <Features01 />
       {/* <Features02 /> */}

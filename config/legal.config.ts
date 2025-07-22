@@ -7,7 +7,7 @@ export const legalConfig = {
         heading: "Welcome",
         body: `Welcome to Access Virtual Staffing! These Terms of Service (“Terms”) govern your use of our platform, services, and website located at accessvirtualstaffing.com (collectively, the “Services”). By accessing or using the Services, you agree to these Terms. If you do not agree, please do not use the Services.
   
-  If you have any questions about these Terms, please contact us at support@accessvirtualstaffing.com.`,
+  If you have any questions about these Terms, please contact us at support@accessvirtualjobs.com.`,
       },
       {
         heading: "1. Eligibility",
@@ -67,7 +67,7 @@ export const legalConfig = {
       },
       {
         heading: "Contact",
-        body: `Email: support@accessvirtualstaffing.com
+        body: `Email: support@accessvirtualjobs.com
   Address: 105 S. Narcissus Ave. Suite 512, West Palm Beach, FL 33401`,
       },
     ],
@@ -126,7 +126,7 @@ export const legalConfig = {
   - Object to processing
   - Withdraw consent
   
-  Contact support@accessvirtualstaffing.com to make a request.`,
+  Contact support@accessvirtualjobs.com to make a request.`,
       },
       {
         heading: "7. Data Retention",
@@ -142,7 +142,7 @@ export const legalConfig = {
       },
       {
         heading: "Contact",
-        body: `Email: support@accessvirtualstaffing.com
+        body: `Email: support@accessvirtualjobs.com
   Address: 105 S. Narcissus Ave. Suite 512, West Palm Beach, FL 33401`,
       },
     ],

@@ -13,5 +13,9 @@ export default async function JobCarouselList() {
   );
 
   // Pass the data to the client component
-  return <JobCarouselClient jobs={positions?.items || []} />;
+  return (
+    <>
+      <JobCarouselClient jobs={positions?.items || []} />
+    </>
+  );
 }

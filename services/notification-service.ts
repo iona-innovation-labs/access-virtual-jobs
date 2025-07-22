@@ -30,7 +30,7 @@ export async function sendAccountUpdateNotification(
     userId,
     emailSubject,
     emailMessage,
-    emailFooter = "If you have any questions, feel free to reach out 👉 support@accessvirtualstaffing.com",
+    emailFooter = "If you have any questions, feel free to reach out 👉 support@accessvirtualjobs.com",
     inAppTitle,
     inAppMessage,
     inAppType = "info",
@@ -160,7 +160,7 @@ ${changesText}
 
 Updated on: ${new Date().toLocaleString()}
 
-If you did not make these changes, please contact our support team immediately at support@accessvirtualstaffing.com.
+If you did not make these changes, please contact our support team immediately at support@accessvirtualjobs.com.
 
 Thank you for keeping your profile up to date.`;
 }
@@ -184,7 +184,7 @@ Your email address has been changed from ${oldEmail} to ${newEmail}.
 
 Changed on: ${new Date().toLocaleString()}
 
-If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.
+If you did not make this change, please contact our support team immediately at support@accessvirtualjobs.com.
 
 Future notifications will be sent to your new email address.`,
 
@@ -198,6 +198,6 @@ Previous email: ${oldEmail}
 New email: ${newEmail}
 Updated on: ${new Date().toLocaleString()}
 
-If you did not make this change, please contact our support team immediately at support@accessvirtualstaffing.com.`,
+If you did not make this change, please contact our support team immediately at support@accessvirtualjobs.com.`,
   };
 }

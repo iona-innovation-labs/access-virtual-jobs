@@ -212,7 +212,7 @@ export async function POST(req: NextRequest) {
         message:
           "Cheers! We received your application. Please wait for the recruiter to reach out.",
         footer:
-          "If you have any questions, feel free to reach out 👉 support@accessvirtualstaffing.com",
+          "If you have any questions, feel free to reach out 👉 support@accessvirtualjobs.com",
       });
     }
 

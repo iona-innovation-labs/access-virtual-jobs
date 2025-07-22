@@ -370,7 +370,7 @@ export default function DeleteAccount() {
                 <p className="text-sm text-muted-foreground">
                   If you have questions about your deletion request or need to
                   make changes, contact our support team at{" "}
-                  <strong>support@accessvirtualstaffing.com</strong> with your
+                  <strong>support@accessvirtualjobs.com</strong> with your
                   request ID.
                 </p>
               </div>
@@ -416,7 +416,7 @@ export default function DeleteAccount() {
                 processed securely, and all personal data will be permanently
                 removed from our systems within 30 days. If you need help with
                 your account instead, contact us at{" "}
-                <strong>support@accessvirtualstaffing.com</strong>
+                <strong>support@accessvirtualjobs.com</strong>
               </p>
             </div>
           </div>

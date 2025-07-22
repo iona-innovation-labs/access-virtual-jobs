@@ -137,7 +137,7 @@ export const Footer11Defaults: Footer11Props = {
   contact: {
     icon: () => <Mail className="text-white w-6 h-6" />,
 
-    email: "support@accessvirtualstaffing.com",
+    email: "support@accessvirtualjobs.com",
   },
   columnLinks: [
     {

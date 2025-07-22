@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         message:
           "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
         footer:
-          "If you have any questions, feel free to reach out 👉 support@accessvirtualstaffing.com",
+          "If you have any questions, feel free to reach out 👉 support@accessvirtualjobs.com",
       });
     }
 
