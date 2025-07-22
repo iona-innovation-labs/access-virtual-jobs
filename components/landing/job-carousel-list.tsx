@@ -45,7 +45,7 @@ export default function JobCarouselClient({ jobs }: JobCarouselClientProps) {
             onClick={handleJobClick}
             className="swiper-slide flex-shrink-0 w-96! h-80  bg-white rounded-3xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out cursor-pointer border border-gray-100 border-none"
           >
-            <Card className="  flex flex-col h-80">
+            <Card className="  flex flex-col h-80 bg-white">
               <CardHeader className="pb-4 flex-shrink-0">
                 <h3 className="text-2xl font-bold tracking-tight line-clamp-2 leading-tight text-zinc-800">
                   {job.title}

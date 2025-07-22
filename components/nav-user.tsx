@@ -111,16 +111,16 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-zinc-100 text-zinc-900">
                 <Link
                   href="/app/profile/overview"
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2  "
                 >
                   <IconUserCircle />
                   Profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-zinc-100 text-zinc-900">
                 <Link
                   href="/app/notifications"
                   className="flex items-center gap-2"
@@ -129,7 +129,7 @@ export function NavUser({
                   Notifications
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-zinc-100 text-zinc-900">
                 <Link
                   href="/app/settings/general"
                   className="flex items-center gap-2"
@@ -140,7 +140,10 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut()}>
+            <DropdownMenuItem
+              className="hover:bg-zinc-100 text-zinc-900"
+              onClick={() => signOut()}
+            >
               <IconLogout />
               Log out
             </DropdownMenuItem>
