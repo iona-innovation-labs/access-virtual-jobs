@@ -29,7 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const activeThemeValue = cookieStore.get("activeTheme")?.value || "system";
+  const activeThemeValue = cookieStore.get("activeTheme")?.value || "light";
   const isScaled = activeThemeValue?.endsWith("-scaled");
 
   return (
@@ -41,7 +41,7 @@ export default async function RootLayout({
       <body
         className={cn(
           "bg-background overscroll-none font-sans antialiased",
-          activeThemeValue ? `theme-${activeThemeValue}` : "",
+          activeThemeValue ? `theme-${activeThemeValue}` : "theme-light",
           isScaled ? "theme-scaled" : ""
         )}
       >
