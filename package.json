@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run db:migrate && next build",
+    "build": "npm run drizzle:migrate && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
