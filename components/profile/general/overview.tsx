@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Calendar, Briefcase, User, Edit3 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { VerificationBadge } from "@/components/ui/verification-badge";
 
 interface OverviewSectionProps {
   userInfo: {
@@ -12,6 +13,7 @@ interface OverviewSectionProps {
     jobType?: string;
     availability?: string;
     education?: string;
+    isPhoneVerified?: boolean;
   };
   isEditable?: boolean;
 }
@@ -99,7 +101,12 @@ export const OverviewSection = ({
             <Briefcase className="w-5 h-5 text-brand" />
           </div>
           <div className="flex-1">
-            <h2 className="text-sm font-semibold text-foreground">Overview</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-semibold text-foreground">
+                Overview
+              </h2>
+              <VerificationBadge isVerified={userInfo?.isPhoneVerified} />
+            </div>
             <p className="text-xs text-muted-foreground mt-1">
               Key information about your profile and preferences
             </p>

@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     await sendEmailNotification({
       to: [email],
-      subject: "Resend: Verify your email for AVS Applicant Portal",
+      subject: "Resend: Verify your email for Access Virtual Jobs",
       message: `Hi ${firstName},\n\nHere’s your new verification link:\n\n${verifyLink}`,
       footer:
         "This link will expire in 24 hours. If you did not request this, you can ignore the message.",

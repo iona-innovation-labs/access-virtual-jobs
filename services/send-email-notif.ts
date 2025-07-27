@@ -17,9 +17,9 @@ export async function sendEmailNotification({
   footer?: string;
 }) {
   try {
-    const { data, error } = await resend.emails.send({
-      from: `Access Virtual Staffing <${
-        process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualstaffing.com"
+    const { error } = await resend.emails.send({
+      from: `Access Virtual Jobs <${
+        process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualjobs.com"
       }>`,
       to,
       subject,
@@ -41,10 +41,11 @@ export async function sendEmailNotification({
       errors: null,
       success: "Email sent successfully.",
     };
-  } catch (error) {
+  } catch (error: any) {
+    console.log(error);
     return {
       errors: {
-        message: "An unexpected error occurred. Could not send email.",
+        message: `An unexpected error occurred. Could not send email. ${error.message}`,
       },
       success: null,
     };

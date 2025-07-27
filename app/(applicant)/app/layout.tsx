@@ -8,25 +8,25 @@ import { requireJobSeeker } from "@/lib/auth-utils";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Applicant Portal - Access Virtual Staffing",
-    default: "Applicant Portal - Access Virtual Staffing",
+    template: "%s | Applicant Portal - Access Virtual Jobs",
+    default: "Applicant Portal - Access Virtual Jobs",
   },
   description:
-    "Applicant portal for job seekers that applies and manage job applications - Access Virtual Staffing",
+    "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
 
   openGraph: {
-    title: "Applicant Portal - Access Virtual Staffing",
+    title: "Applicant Portal - Access Virtual Jobs",
     description:
-      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Staffing",
+      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
     type: "website",
-    url: "https://www.accessvirtualstaffing.com", // Replace with your actua l URL
+    url: "https://www.accessvirtualJobs.com", // Replace with your actua l URL
     images: "/opengraph-image.jpg", // Replace with your actual image URL
   },
   twitter: {
     card: "summary_large_image",
-    title: "Applicant Portal - Access Virtual Staffing",
+    title: "Applicant Portal - Access Virtual Jobs",
     description:
-      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Staffing",
+      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
     images: "/twitter-image.jpg", // Replace with your actual image URL
   },
 };

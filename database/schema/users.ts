@@ -57,6 +57,12 @@ export const users = pgTable("users", {
   verificationCodeExpires: timestamp("verification_code_expires", {
     mode: "date",
   }),
+  phoneNumber: text("phone_number"),
+  isPhoneVerified: boolean("is_phone_verified").default(false).notNull(),
+  phoneVerificationCode: text("phone_verification_code"),
+  phoneVerificationExpires: timestamp("phone_verification_expires", {
+    mode: "date",
+  }),
 });
 
 export const accounts = pgTable(

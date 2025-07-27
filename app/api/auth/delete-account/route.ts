@@ -134,7 +134,7 @@ ${feedback ? `Additional feedback:\n${feedback}\n` : ""}
 Please process this account deletion request according to your data retention policies and GDPR/privacy regulations.
 
 ---
-This is an automated message from AVS Applicant Portal.
+This is an automated message from Access Virtual Jobs.
     `.trim();
 
     // Send email to support team
@@ -145,16 +145,16 @@ This is an automated message from AVS Applicant Portal.
       to: [supportEmail],
       subject: supportEmailSubject,
       message: supportEmailMessage,
-      footer: "Account deletion request from AVS Applicant Portal",
+      footer: "Account deletion request from Access Virtual Jobs",
     });
 
     // Send confirmation email to user
     const userEmailSubject =
-      "Account Deletion Request Received - AVS Applicant Portal";
+      "Account Deletion Request Received - Access Virtual Jobs";
 
     const userEmailMessage = `Hi ${userInfo.firstName || "there"},
 
-We have received your request to delete your AVS Applicant Portal account.
+We have received your request to delete your Access Virtual Jobs account.
 
 Your request details:
 - Request ID: ${newDeleteRequest[0].id}
@@ -170,7 +170,7 @@ What happens next:
 
 If you change your mind or have questions, please contact our support team at ${supportEmail}.
 
-Thank you for using AVS Applicant Portal.`;
+Thank you for using Access Virtual Jobs.`;
 
     await sendEmailNotification({
       to: [session.user.email],

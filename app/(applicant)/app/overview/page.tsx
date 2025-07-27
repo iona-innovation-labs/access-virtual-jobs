@@ -11,7 +11,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Overview",
   description:
-    "Here are the latest updates on the AVS applicant portal with recommended jobs",
+    "Here are the latest updates on the Access Virtual Jobs with recommended jobs",
 };
 
 export default async function Overview() {

@@ -91,7 +91,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             {/* Copyright */}
             <div className="text-zinc-600 text-lg">
-              © 2024 - 2025 Access Virtual Staffing. All rights reserved.
+              © 2024 - 2025 Access Virtual Jobs. All rights reserved.
             </div>
 
             {/* Social Links - Commented out for now */}

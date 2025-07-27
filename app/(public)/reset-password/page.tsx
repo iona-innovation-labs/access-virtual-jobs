@@ -45,6 +45,6 @@ export default function ResetPasswordPage() {
 }
 
 export const metadata = {
-  title: "Reset Password - AVS Applicant Portal",
-  description: "Set a new password for your AVS Applicant Portal account",
+  title: "Reset Password - Access Virtual Jobs",
+  description: "Set a new password for your Access Virtual Jobs account",
 };

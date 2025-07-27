@@ -1,1 +1,0 @@
-ALTER TABLE "users" ADD COLUMN "role" text DEFAULT 'job_seeker' NOT NULL;

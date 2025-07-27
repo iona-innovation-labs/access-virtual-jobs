@@ -15,7 +15,6 @@ interface EmailNotificationTemplateProps {
   message: string;
   footer?: string;
   settingsUrl?: string;
-  companyUrl?: string;
 }
 
 export const EmailNotificationTemplate = ({
@@ -23,7 +22,6 @@ export const EmailNotificationTemplate = ({
   message,
   footer,
   settingsUrl = "/app/settings/notification",
-  companyUrl = "https://accessvirtualstaffing.com",
 }: EmailNotificationTemplateProps) => {
   const previewText = `${title} - ${message.substring(0, 50)}...`;
 
@@ -68,7 +66,7 @@ export const EmailNotificationTemplate = ({
         <Container style={container}>
           {/* Simple header */}
           <Section style={headerSection}>
-            <Text style={companyName}>Access Virtual Staffing</Text>
+            <Text style={companyName}>Access Virtual Jobs</Text>
           </Section>
 
           {/* Main content */}
@@ -90,13 +88,9 @@ export const EmailNotificationTemplate = ({
                 Manage notification preferences
               </Link>
             </Text>
-            <Text style={settingsText}>
-              <Link href={companyUrl} style={linkStyle}>
-                Visit our website
-              </Link>
-            </Text>
+
             <Text style={copyrightText}>
-              © {new Date().getFullYear()} Access Virtual Staffing
+              © {new Date().getFullYear()} Access Virtual Jobs
             </Text>
           </Section>
         </Container>

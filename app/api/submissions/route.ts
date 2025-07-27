@@ -145,6 +145,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Check if user has verified phone number
+    if (!user[0].isPhoneVerified) {
+      return NextResponse.json(
+        {
+          message: "Phone verification required",
+          ok: false,
+          requiresVerification: true,
+          redirectTo: "/app/profile/edit?active=verification",
+        },
+        { status: 403 }
+      );
+    }
+
     const profile = await db
       .select()
       .from(profiles)

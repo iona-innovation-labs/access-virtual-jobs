@@ -9,8 +9,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export default async function submitForm(formData: ContactFormSchema) {
   try {
     const { error } = await resend.emails.send({
-      from: `Access Virtual Staffing Website Visitor <${
-        process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualstaffing.com"
+      from: `Access Virtual Jobs Website Visitor <${
+        process.env.NEXT_NO_REPLY_EMAIL || "no-reply@accessvirtualjobs.com"
       }>`,
       to: [process.env.NEXT_SUPPORT_EMAIL || "support@accessvirtualjobs.com"],
       subject: `Website Contact Form | Sent by ${formData.email} | ${
