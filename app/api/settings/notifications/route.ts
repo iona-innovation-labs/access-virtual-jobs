@@ -159,7 +159,7 @@ export async function POST(req: NextRequest) {
 
         await sendAccountUpdateNotification({
           userId: session.user.id,
-          emailSubject: "Notification Settings Updated - AVS Applicant Portal",
+          emailSubject: "Notification Settings Updated - Access Virtual Jobs",
           emailMessage,
           emailFooter:
             "If you didn't make these changes, please contact support immediately.",

@@ -154,15 +154,15 @@ export async function POST(request: Request) {
 
     createNotification(
       newUser.id,
-      "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
+      "Welcome to Access Virtual Jobs! Setup your profile and start exploring jobs.",
       "info",
       "#"
     );
 
     await sendEmailNotification({
       to: [email],
-      subject: "Verify your email for AVS Applicant Portal",
-      message: `Hi ${firstName},\n\nWelcome to AVS Applicant Portal! ${roleMessage}\n\nPlease verify your email by clicking the link below:\n\n${verifyLink}`,
+      subject: "Verify your email for Access Virtual Jobs",
+      message: `Hi ${firstName},\n\nWelcome to Access Virtual Jobs! ${roleMessage}\n\nPlease verify your email by clicking the link below:\n\n${verifyLink}`,
       footer:
         "This link will expire in 24 hours. If you did not create an account, you can ignore this message.",
     });

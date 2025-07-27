@@ -71,16 +71,16 @@ export async function POST(req: Request) {
 
       createNotification(
         user[0].username as string,
-        "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
+        "Welcome to Access Virtual Jobs! Setup your profile and start exploring jobs.",
         "info",
         "#"
       );
 
       sendEmailNotification({
         to: [email],
-        subject: "Welcome to AVS Applicant Portal",
+        subject: "Welcome to Access Virtual Jobs",
         message:
-          "Welcome to AVS Applicant Portal! Setup your profile and start exploring jobs.",
+          "Welcome to Access Virtual Jobs! Setup your profile and start exploring jobs.",
         footer:
           "If you have any questions, feel free to reach out 👉 support@accessvirtualjobs.com",
       });

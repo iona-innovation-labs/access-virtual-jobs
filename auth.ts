@@ -105,7 +105,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       await sendEmailNotification({
         to: [message.user.email!],
-        subject: "Verify your email for AVS Applicant Portal",
+        subject: "Verify your email for Access Virtual Jobs",
         message: `Hi ${firstName},\n\nPlease verify your email by clicking the link below:\n\n${verifyLink}`,
         footer:
           "This link will expire in 24 hours. If you did not sign in, you can ignore this message.",

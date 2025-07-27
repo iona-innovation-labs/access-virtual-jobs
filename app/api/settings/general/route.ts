@@ -162,7 +162,7 @@ export async function POST(req: NextRequest) {
       // Send notification to old email (if notifications enabled)
       await sendAccountUpdateNotification({
         userId: session.user.id,
-        emailSubject: "Email Address Changed - AVS Applicant Portal",
+        emailSubject: "Email Address Changed - Access Virtual Jobs",
         emailMessage: emailTemplates.oldEmailTemplate,
         emailFooter:
           "If you didn't make this change, please contact support immediately.",
@@ -197,7 +197,7 @@ This link will expire in 24 hours.`;
 
         await sendEmailNotification({
           to: [email],
-          subject: "Verify Your New Email Address - AVS Applicant Portal",
+          subject: "Verify Your New Email Address - Access Virtual Jobs",
           message: newEmailMessage,
           footer:
             "This link will expire in 24 hours. If you didn't make this change, please contact support immediately.",
@@ -219,7 +219,7 @@ This link will expire in 24 hours.`;
       // This sends the general "email changed" notification to the new email as well
       await sendAccountUpdateNotification({
         userId: session.user.id,
-        emailSubject: "Email Address Changed - AVS Applicant Portal",
+        emailSubject: "Email Address Changed - Access Virtual Jobs",
         emailMessage: emailTemplates.newEmailTemplate,
         emailFooter:
           "If you didn't make this change, please contact support immediately.",
@@ -336,7 +336,7 @@ This link will expire in 24 hours.`;
 
       await sendAccountUpdateNotification({
         userId: session.user.id,
-        emailSubject: "Profile Updated - AVS Applicant Portal",
+        emailSubject: "Profile Updated - Access Virtual Jobs",
         emailMessage,
         emailFooter:
           "If you didn't make these changes, please contact support immediately.",

@@ -153,7 +153,7 @@ export function generateAccountUpdateEmailTemplate(
 
   return `Hi ${userName},
 
-Your AVS Applicant Portal ${changeType.toLowerCase()} has been successfully updated.
+Your Access Virtual Jobs ${changeType.toLowerCase()} has been successfully updated.
 
 ${Array.isArray(changes) ? "Changes made:" : "Update:"}
 ${changesText}
