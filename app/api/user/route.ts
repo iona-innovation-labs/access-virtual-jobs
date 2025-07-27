@@ -45,6 +45,7 @@ export async function GET() {
         isNewUser: user.isNewUser,
         jobSearchStatus: user.jobSearchStatus,
         isEmailVerified: user.isEmailVerified,
+        isPhoneVerified: user.isPhoneVerified,
         dateOfBirth: user.dateOfBirth,
         countryOfResidence: user.countryOfResidence,
         gender: user.gender,

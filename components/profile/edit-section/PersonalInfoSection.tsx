@@ -4,6 +4,7 @@ import { Briefcase, MapPin, Calendar, Edit, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { VerificationBadge } from "@/components/ui/verification-badge";
 import Link from "next/link";
 
 interface ProfileHeaderProps {
@@ -168,7 +169,12 @@ export const PersonalInfoSection = ({
 
             {/* Name and Title */}
             <div className="text-center space-y-2">
-              <h1 className="text-3xl font-bold text-foreground">{fullName}</h1>
+              <div className="flex items-center justify-center gap-2">
+                <h1 className="text-3xl font-bold text-foreground">
+                  {fullName}
+                </h1>
+                <VerificationBadge isVerified={userInfo?.isPhoneVerified} />
+              </div>
               {jobTitle && (
                 <p className="text-lg text-muted-foreground font-medium">
                   {jobTitle}

@@ -12,6 +12,7 @@ import { IProfileResponse } from "@/types/profiles";
 import { AppError } from "@/utils/app-error";
 import { fetchApi } from "@/services/fetch-api";
 import PlaceholderAvatar from "../avatar";
+import { VerificationBadge } from "@/components/ui/verification-badge";
 
 const Profile = () => {
   const router = useRouter();
@@ -65,9 +66,12 @@ const Profile = () => {
 
             {/* User Details */}
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-foreground">
-                {fullName}
-              </h2>
+              <div className="flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-foreground">
+                  {fullName}
+                </h2>
+                <VerificationBadge isVerified={userInfo?.isPhoneVerified} />
+              </div>
 
               {data?.profile?.jobTitle && (
                 <div className="flex items-center space-x-1 text-sm text-muted-foreground">

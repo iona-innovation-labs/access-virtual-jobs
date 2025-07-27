@@ -246,7 +246,7 @@ export const AssessmentContentView = ({
               No assessments or content submitted
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Candidate hasn&apos;t completed the assessment requirements yet
+              You haven&apos;t completed the assessment requirements yet
             </p>
           </div>
         )}

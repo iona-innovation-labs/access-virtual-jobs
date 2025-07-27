@@ -25,6 +25,7 @@ export interface IUserInfo {
   jobSearchStatus: string;
   isNewUser: boolean;
   isEmailVerified: boolean;
+  isPhoneVerified: boolean;
   gender: string;
   countryOfResidence: string;
   dateOfBirth: Date;

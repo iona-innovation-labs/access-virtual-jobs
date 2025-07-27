@@ -416,7 +416,7 @@ export const ProfessionalProfileView = ({
                   No professional information provided
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Candidate hasn&apos;t completed their professional profile yet
+                  You haven&apos;t completed your professional profile yet
                 </p>
               </div>
             )}
@@ -432,8 +432,8 @@ export const ProfessionalProfileView = ({
               <div>
                 <p className="text-xs text-muted-foreground">
                   <strong>Note:</strong> Portfolio links and skill ratings are
-                  self-reported by the candidate. Consider reviewing their work
-                  samples and conducting technical evaluations.
+                  self-reported by you. Consider reviewing your work samples and
+                  conducting technical evaluations.
                 </p>
               </div>
             </div>

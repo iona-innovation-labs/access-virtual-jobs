@@ -176,7 +176,7 @@ export const AdditionalInformationView = ({
                 Additional Information
               </h2>
               <p className="text-sm text-muted-foreground">
-                Loading additional candidate details...
+                Loading additional your details...
               </p>
             </div>
           </div>
@@ -282,7 +282,7 @@ export const AdditionalInformationView = ({
                       </Badge>
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Candidate was referred by this person
+                      I was referred by this person
                     </p>
                   </>
                 ) : (
