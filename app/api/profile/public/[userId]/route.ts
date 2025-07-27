@@ -46,6 +46,19 @@ export async function GET(
       );
     }
 
+    // Check if user is email verified
+    if (!user.isEmailVerified) {
+      return NextResponse.json(
+        { 
+          error: "Profile not available", 
+          message: "This profile is not yet available for public viewing. Email verification is required.", 
+          ok: false,
+          requiresEmailVerification: true
+        },
+        { status: 403 }
+      );
+    }
+
     // Find profile with public-appropriate relations
     const profile = await db.query.profiles.findFirst({
       where: eq(profiles.userId, userId),
@@ -81,6 +94,43 @@ export async function GET(
           ok: true,
         },
         { status: 200 }
+      );
+    }
+
+    // Calculate completeness to check if profile is ready for public viewing
+    const calculateProfileReadiness = (profile: any) => {
+      const requiredFields = [
+        'jobTitle',
+        'address', 
+        'jobSearchStatus',
+        'desiredSalary',
+        'whyFit',
+        'whatStrengths',
+        'whatNeedImprovement'
+      ];
+
+      const hasRequiredFields = requiredFields.every(field => {
+        const value = profile[field];
+        return value && (typeof value === 'string' ? value.trim() !== '' : true);
+      });
+
+      const hasSkills = profile.skills && profile.skills.length > 0;
+      const hasWorkHistory = profile.workHistory && profile.workHistory.length > 0;
+
+      return hasRequiredFields && hasSkills && hasWorkHistory;
+    };
+
+    const isProfileReady = calculateProfileReadiness(profile);
+
+    if (!isProfileReady) {
+      return NextResponse.json(
+        {
+          error: "Profile not ready",
+          message: "This profile is not yet complete and ready for public viewing. Please complete all required information.",
+          ok: false,
+          requiresProfileCompletion: true
+        },
+        { status: 403 }
       );
     }
 
@@ -343,6 +393,7 @@ export async function GET(
       firstName: user?.firstName,
       lastName: user?.lastName,
       countryOfResidence: user?.countryOfResidence,
+      isPhoneVerified: user?.isPhoneVerified,
     };
 
     // Filter out sensitive profile data

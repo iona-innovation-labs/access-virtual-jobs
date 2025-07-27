@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { Briefcase, MapPin, Calendar, Shield, Mail } from "lucide-react";
+import { Briefcase, MapPin, Calendar, Mail } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { VerificationBadge } from "@/components/ui/verification-badge";
 
 interface User {
   id: string;
@@ -13,6 +14,7 @@ interface User {
   lastName?: string;
   firstName?: string;
   countryOfResidence?: string;
+  isPhoneVerified?: boolean;
 }
 
 interface Profile {
@@ -31,14 +33,12 @@ interface PublicProfileHeaderProps {
   user: User;
   profile: Profile;
   completeness: Completeness;
-  isVerified?: boolean;
   loading?: boolean;
 }
 
 export const PublicProfileHeader = ({
   user,
   profile,
-  isVerified = false,
   loading = false,
 }: PublicProfileHeaderProps) => {
   if (loading) {
@@ -134,12 +134,7 @@ export const PublicProfileHeader = ({
           />
           <div className="absolute inset-0 bg-primary/30"></div>          
             <div className="absolute top-4 right-4 space-x-2">
-              {isVerified && (
-                <Badge className="bg-emerald-500 hover:bg-emerald-500 text-white border-0 px-3 py-1.5">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Verified Professional <span className="text-xs">- TODO: this is static</span>
-                </Badge>
-              )}
+              <VerificationBadge isVerified={user?.isPhoneVerified} />
             </div>
         </div>
 
