@@ -5,7 +5,7 @@ import ProfileCompletenessIndicator from "../profile/profile-completeness";
 
 const Stepper = () => {
   const { completeness, loading } = useProfile();
-
+  console.log(completeness);
   return (
     <ProfileCompletenessIndicator
       completeness={completeness}

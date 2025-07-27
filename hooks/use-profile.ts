@@ -294,7 +294,7 @@ export const useProfile = (
       });
 
       const data: ProfileResponse | ProfileError = await response.json();
-
+      console.log(data);
       if (!response.ok) {
         throw new Error(
           data.message || `HTTP error! status: ${response.status}`

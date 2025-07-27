@@ -5,7 +5,7 @@ export const legalConfig = {
     content: [
       {
         heading: "Welcome",
-        body: `Welcome to Access Virtual Staffing! These Terms of Service (“Terms”) govern your use of our platform, services, and website located at accessvirtualstaffing.com (collectively, the “Services”). By accessing or using the Services, you agree to these Terms. If you do not agree, please do not use the Services.
+        body: `Welcome to Access Virtual Jobs! These Terms of Service (“Terms”) govern your use of our platform, services, and website located at accessvirtualJobs.com (collectively, the “Services”). By accessing or using the Services, you agree to these Terms. If you do not agree, please do not use the Services.
   
   If you have any questions about these Terms, please contact us at support@accessvirtualjobs.com.`,
       },
@@ -44,7 +44,7 @@ export const legalConfig = {
       },
       {
         heading: "6. Intellectual Property",
-        body: `All content, logos, and features belong to Access Virtual Staffing or licensors. You are granted a limited license to use the Services appropriately.`,
+        body: `All content, logos, and features belong to Access Virtual Jobs or licensors. You are granted a limited license to use the Services appropriately.`,
       },
       {
         heading: "7. Limitation of Liability",
@@ -68,7 +68,7 @@ export const legalConfig = {
       {
         heading: "Contact",
         body: `Email: support@accessvirtualjobs.com
-  Address: 105 S. Narcissus Ave. Suite 512, West Palm Beach, FL 33401`,
+  Address: 2655 North Ocean Drive, suite 405 Singer Island, FL 33404`,
       },
     ],
   },
@@ -79,13 +79,13 @@ export const legalConfig = {
     content: [
       {
         heading: "Welcome",
-        body: `Welcome to Access Virtual Staffing! This Privacy Policy explains how we collect, use, and protect your data when you interact with accessvirtualstaffing.com and our services.`,
+        body: `Welcome to Access Virtual Jobs! This Privacy Policy explains how we collect, use, and protect your data when you interact with accessvirtualJobs.com and our services.`,
       },
       {
         heading: "1. Information We Collect",
         body: `**1.1 Information You Provide**
   - Job Applicants: name, contact info, resume details
-  - Clients: company name, staffing requirements
+  - Clients: company name, Jobs requirements
   - Contact Forms: name, email, message
   
   **1.2 Automatically Collected Information**
@@ -95,7 +95,7 @@ export const legalConfig = {
         heading: "2. How We Use Your Information",
         body: `**2.1 Job Applicants**: Job matching, communication, record-keeping
   
-  **2.2 Clients**: Staffing support, updates, billing
+  **2.2 Clients**: Jobs support, updates, billing
   
   **2.3 General Uses**: Improve UX, support, legal compliance`,
       },
@@ -143,7 +143,7 @@ export const legalConfig = {
       {
         heading: "Contact",
         body: `Email: support@accessvirtualjobs.com
-  Address: 105 S. Narcissus Ave. Suite 512, West Palm Beach, FL 33401`,
+  Address: 2655 North Ocean Drive, suite 405 Singer Island, FL 33404`,
       },
     ],
   },

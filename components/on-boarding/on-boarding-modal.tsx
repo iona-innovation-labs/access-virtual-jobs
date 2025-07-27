@@ -107,7 +107,7 @@ export const OnboardingModal = () => {
               <span className="text-2xl text-white font-bold">AVS</span>
             </div>
             <h2 className="text-2xl font-bold text-zinc-800 mb-2">
-              Welcome to Access Virtual Staffing!
+              Welcome to Access Virtual Jobs!
             </h2>
             <p className="text-sm text-zinc-600">
               Let&apos;s get you started in just a few steps

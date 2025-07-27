@@ -1,5 +1,5 @@
 import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
+//import Google from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "./database";
 import {
@@ -8,15 +8,15 @@ import {
   sessions,
   verificationTokens,
 } from "./database/schema";
-import Credentials from "next-auth/providers/credentials";
-import { createNotification } from "./database/mutations/job_applicants";
+//import Credentials from "next-auth/providers/credentials";
+//import { createNotification } from "./database/mutations/job_applicants";
 import { sendEmailNotification } from "./services/send-email-notif";
 import { eq } from "drizzle-orm";
-import { getUserByUserId } from "./actions/user-actions";
+//import { getUserByUserId } from "./actions/user-actions";
 import { encode as defaultEncode } from "next-auth/jwt";
 import { v4 as uuid } from "uuid";
 import authConfig from "./auth.config";
-import { addHours } from "date-fns";
+//import { addHours } from "date-fns";
 import { nanoid } from "nanoid";
 
 const adapter = DrizzleAdapter(db, {

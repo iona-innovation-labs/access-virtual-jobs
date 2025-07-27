@@ -22,16 +22,15 @@ const JobApplicationCard = ({ jobApplication }: JobApplicationCardProps) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-2">
-                <Logo size="sm"/>
+                <Logo size="sm" />
                 <div className="min-w-0 flex-1">
-                  
                   <h3 className="font-semibold text-foreground truncate group-hover:text-brand transition-colors">
                     {jobApplication?.job?.title || "Job Title"}
                   </h3>
 
                   <div className="flex items-center space-x-1 mt-1 text-sm text-muted-foreground">
                     <Building2 className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate">Access Virtual Staffing</span>
+                    <span className="truncate">Access Virtual Jobs</span>
                   </div>
 
                   {/* Status Badge */}

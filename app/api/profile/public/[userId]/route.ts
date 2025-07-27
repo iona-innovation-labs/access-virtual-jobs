@@ -86,6 +86,28 @@ export async function GET(
 
     // Calculate public profile completeness
     const calculatePublicProfileCompleteness = (profile: any) => {
+      // Helper function to properly validate field completion
+      const isFieldCompleted = (value: any, fieldType: string = 'string'): boolean => {
+        if (value === null || value === undefined) return false;
+        
+        if (fieldType === 'string') {
+          // For strings, check if it's not empty and not just whitespace
+          return typeof value === 'string' && value.trim() !== '';
+        }
+        
+        if (fieldType === 'array') {
+          // For arrays, check if it has items
+          return Array.isArray(value) && value.length > 0;
+        }
+        
+        if (fieldType === 'boolean') {
+          return Boolean(value);
+        }
+        
+        // For other types, just check if truthy
+        return Boolean(value);
+      };
+
       const sections: Record<string, ProfileSection> = {
         basicInfo: {
           name: "Basic Information",
@@ -208,43 +230,23 @@ export async function GET(
           total: 3,
         },
 
-        workHistory: {
-          name: "Work Experience",
+        technicalSetup: {
+          name: "Technical Setup",
           fields: [
             {
-              key: "workHistory",
-              label: "Work History",
-              value: profile.workHistory?.length > 0,
+              key: "numberOfMonitors",
+              label: "Number of Monitors",
+              value:
+                profile.numberOfMonitors && profile.numberOfMonitors !== "1",
+            },
+            {
+              key: "hasPaypal",
+              label: "PayPal Account",
+              value: profile.hasPaypal === "yes",
             },
           ],
           completed: 0,
-          total: 1,
-        },
-
-        certifications: {
-          name: "Certifications",
-          fields: [
-            {
-              key: "certifications",
-              label: "Professional Certifications",
-              value: profile.certifications?.length > 0,
-            },
-          ],
-          completed: 0,
-          total: 1,
-        },
-
-        education: {
-          name: "Education",
-          fields: [
-            {
-              key: "education",
-              label: "Educational Background",
-              value: profile.education?.length > 0,
-            },
-          ],
-          completed: 0,
-          total: 1,
+          total: 2,
         },
 
         additionalInfo: {
@@ -276,7 +278,31 @@ export async function GET(
         const section = sections[sectionKey as keyof typeof sections];
 
         section.fields.forEach((field) => {
-          const isCompleted = Boolean(field.value);
+          // Use proper validation based on field type
+          let isCompleted = false;
+          
+          if (field.key === 'emails' || field.key === 'skills' || 
+              field.key === 'portfolioLinks' || field.key === 'assessmentTests' ||
+              field.key === 'contentLinks' || field.key === 'workSamples') {
+            // Array fields
+            isCompleted = isFieldCompleted(field.value, 'array');
+          } else if (field.key === 'desiredSalary' || field.key === 'numberOfExperience') {
+            // Numeric fields that should not be 0
+            isCompleted = field.value && field.value !== "0" && field.value !== 0;
+          } else if (field.key === 'numberOfMonitors') {
+            // Special case: should not be default "1"
+            isCompleted = field.value && field.value !== "1";
+          } else if (field.key === 'hasPaypal') {
+            // Boolean-like field
+            isCompleted = field.value === "yes";
+          } else if (field.key === 'socialLinks') {
+            // Special case: either Instagram or X link
+            isCompleted = Boolean(field.value);
+          } else {
+            // String fields - check for non-empty strings
+            isCompleted = isFieldCompleted(field.value, 'string');
+          }
+          
           if (isCompleted) {
             section.completed++;
             totalCompleted++;

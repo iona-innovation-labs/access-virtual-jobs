@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/database";
-import { users } from "@/database/schema";
+import { users, profiles } from "@/database/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
@@ -105,6 +105,44 @@ export async function POST(request: Request) {
       newUser.role
     );
 
+    // Create a profile for the new user with default values
+    // Only create profile for job_seeker role
+    if (role === "job_seeker") {
+      try {
+        const [newProfile] = await db
+          .insert(profiles)
+          .values({
+            jobTitle: "",
+            userId: newUser.id,
+            whyFit: "",
+            whatStrengths: "",
+            whatNeedImprovement: "",
+            address: "",
+            whatsappId: "",
+            hasPaypal: "no",
+            numberOfChildren: "0",
+            internetProvider: "",
+            numberOfMonitors: "1",
+            numberOfExperience: "0",
+            salaryUnit: "PHP",
+            desiredSalary: "0",
+            jobSearchStatus: "ready_to_interview",
+            educationStatus: "high_school",
+          })
+          .returning();
+
+        console.log(
+          "Profile created for user:",
+          newUser.id,
+          "Profile ID:",
+          newProfile.id
+        );
+      } catch (error) {
+        console.warn("Failed to create profile for user:", newUser.id, error);
+        // Profile might already exist, which is fine
+      }
+    }
+
     // Create proper verification link
     const verifyLink = `<a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}">Verify your email</a>`;
 
@@ -139,7 +177,7 @@ export async function POST(request: Request) {
         password: password, // For auto-login after registration
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Registration error:", error);
 
     // Handle Zod validation errors specifically
