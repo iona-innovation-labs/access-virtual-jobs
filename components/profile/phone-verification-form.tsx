@@ -68,6 +68,7 @@ interface VerificationStatus {
 const PhoneVerificationForm = () => {
   const [step, setStep] = useState<"phone" | "otp" | "success">("phone");
   const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [verificationStatus, setVerificationStatus] =
     useState<VerificationStatus | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -94,10 +95,16 @@ const PhoneVerificationForm = () => {
         setVerificationStatus(data.data);
         if (data.data.isPhoneVerified) {
           setStep("success");
+        } else if (data.data.phoneNumber && !data.data.hasExpiredCode) {
+          // User has a pending verification (phone number exists but not verified and code hasn't expired)
+          setPhoneNumber(data.data.phoneNumber);
+          setStep("otp");
         }
       }
     } catch {
       console.error("Error fetching verification status");
+    } finally {
+      setInitialLoading(false);
     }
   };
 
@@ -145,6 +152,30 @@ const PhoneVerificationForm = () => {
   const handleBackToPhone = () => {
     setStep("phone");
   };
+
+  // Show loading state while checking verification status
+  if (initialLoading) {
+    return (
+      <Card className="max-w-md mx-auto mt-8">
+        <CardHeader>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-brand/10 flex items-center justify-center">
+              <Phone className="w-5 h-5 text-brand" />
+            </div>
+            <div>
+              <CardTitle>Phone Verification</CardTitle>
+              <CardDescription>Checking verification status...</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (step === "success") {
     return (

@@ -61,20 +61,22 @@ export async function POST(req: NextRequest) {
 
     // Check if there's a recent verification attempt (rate limiting)
     const now = new Date();
-    const fiveMinutesAgo = addMinutes(now, -5);
+    const twoMinutesAgo = addMinutes(now, -2);
 
-    if (
-      user[0].phoneVerificationExpires &&
-      user[0].phoneVerificationExpires > fiveMinutesAgo
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "Please wait 5 minutes before requesting another verification code.",
-        },
-        { status: 429 }
-      );
+    // Calculate when the code was sent (expiration - 10 minutes)
+    if (user[0].phoneVerificationExpires) {
+      const codeSentAt = addMinutes(user[0].phoneVerificationExpires, -10);
+
+      if (codeSentAt > twoMinutesAgo) {
+        return NextResponse.json(
+          {
+            success: false,
+            message:
+              "Please wait 2 minutes before requesting another verification code.",
+          },
+          { status: 429 }
+        );
+      }
     }
 
     // Send verification code via Twilio

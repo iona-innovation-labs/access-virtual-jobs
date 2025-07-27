@@ -46,7 +46,6 @@ const OtpVerificationForm = ({
   onSuccess,
 }: OtpVerificationFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [countdown, setCountdown] = useState(300); // 5 minutes countdown
   const { toast } = useToast();
 
   const otpForm = useForm<OtpFormData>({
@@ -55,14 +54,6 @@ const OtpVerificationForm = ({
       otp: "",
     },
   });
-
-  // Countdown timer for resend
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [countdown]);
 
   // Focus OTP input on mount
   useEffect(() => {
@@ -113,8 +104,6 @@ const OtpVerificationForm = ({
   };
 
   const handleResendCode = async () => {
-    if (countdown > 0) return;
-
     setLoading(true);
     try {
       const response = await fetch("/api/verification/send-code", {
@@ -130,7 +119,6 @@ const OtpVerificationForm = ({
           title: "Code resent!",
           description: "Please check your SMS for the new verification code.",
         });
-        setCountdown(300);
         otpForm.reset({ otp: "" });
       } else {
         toast({
@@ -218,14 +206,12 @@ const OtpVerificationForm = ({
               </Button>
               <Button
                 type="button"
-                variant="outline"
+                variant="secondary"
                 onClick={handleResendCode}
-                disabled={loading || countdown > 0}
+                disabled={loading}
                 className="w-full h-12 text-sm"
               >
-                {countdown > 0
-                  ? `Resend in ${Math.floor(countdown / 60)}:${(countdown % 60).toString().padStart(2, "0")}`
-                  : "Resend Code"}
+                Resend Code
               </Button>
             </div>
           </form>
