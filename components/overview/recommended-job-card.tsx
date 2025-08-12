@@ -30,9 +30,7 @@ const RecommendedJobCard = ({ position }: PositionProps) => {
             >
               {position.title}
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Access Virtual Staffing
-            </p>
+            <p className="text-sm text-muted-foreground">Access Virtual Jobs</p>
           </div>
         </CardTitle>
         <CardDescription>

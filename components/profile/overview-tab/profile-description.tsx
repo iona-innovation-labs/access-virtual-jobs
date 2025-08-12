@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { FileText, ChevronDown, ChevronUp, Copy, Check } from "lucide-react";
+import {
+  FileText,
+  ChevronDown,
+  ChevronUp,
+  Copy,
+  Check,
+  NotepadText,
+} from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -111,6 +118,17 @@ export const ProfileDescriptionView = ({
   return (
     <Card className={`w-full shadow-sm ${className}`}>
       <CardContent className={showTitle ? "" : "p-6"}>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+            <NotepadText className="w-5 h-5 text-muted-foreground" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">
+              Profile Description
+            </h2>
+          </div>
+        </div>
+
         {hasContent ? (
           <div className="space-y-4">
             {/* Content Container */}
@@ -210,7 +228,7 @@ export const ProfileDescriptionView = ({
               No description available
             </h3>
             <p className="text-xs text-muted-foreground">
-              The candidate hasn&apos;t provided a profile description yet.
+              You haven&apos;t provided a profile description yet.
             </p>
           </div>
         )}

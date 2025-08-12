@@ -9,8 +9,8 @@ import {
   varchar,
   pgEnum,
 } from "drizzle-orm/pg-core";
-import { relations, sql } from "drizzle-orm";
-import { users } from "./users";
+import { sql } from "drizzle-orm";
+// import { users } from "./users";
 
 // Enums to match your frontend component exactly
 export const jobStatusEnum = pgEnum("job_status", [
@@ -64,9 +64,7 @@ export const jobs = pgTable("jobs", {
   slug: varchar("slug", { length: 300 }).unique(),
 
   // Relationships
-  postedById: text("posted_by_id")
-    .references(() => users.id)
-    .notNull(),
+  postedById: text("company_id"),
 
   // Timestamps
   createdAt: timestamp("created_at").defaultNow(),
@@ -82,9 +80,9 @@ export const jobs = pgTable("jobs", {
 });
 
 // Relations
-export const jobsRelations = relations(jobs, ({ one }) => ({
-  postedBy: one(users, {
-    fields: [jobs.postedById],
-    references: [users.id],
-  }),
-}));
+// export const jobsRelations = relations(jobs, ({ one }) => ({
+//   postedBy: one(users, {
+//     fields: [jobs.postedById],
+//     references: [users.id],
+//   }),
+// }));

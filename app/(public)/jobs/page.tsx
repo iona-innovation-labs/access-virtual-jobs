@@ -7,7 +7,7 @@ import { JobListPaginationContainer } from "@/components/jobs/joblist-pagination
 import { JobList } from "@/components/jobs/job-list";
 import JobFilter from "@/components/jobs/job-filter";
 import JobHeader from "@/components/jobs/job-header";
-import { FilterDebugger } from "./debugger";
+
 import { JobListSkeleton } from "@/components/jobs/job-list-skeleton";
 
 export const metadata: Metadata = {
@@ -84,7 +84,6 @@ export default async function Jobs({
         description="Explore and apply for jobs"
         isPublic={true}
       />
-      <FilterDebugger />
       <JobFilter isPublic={true} />
 
       {/* Wrap job content in Suspense for loading state */}

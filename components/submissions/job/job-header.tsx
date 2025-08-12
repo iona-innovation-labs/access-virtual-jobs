@@ -25,9 +25,7 @@ const JobHeader = ({ jobApplication }: JobHeaderProps) => {
 
             <div className="flex items-center space-x-2 text-muted-foreground">
               <Building2 className="w-4 h-4" />
-              <span className="text-sm font-medium">
-                Access Virtual Staffing
-              </span>
+              <span className="text-sm font-medium">Access Virtual Jobs</span>
             </div>
           </div>
 

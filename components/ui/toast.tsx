@@ -32,6 +32,7 @@ const toastVariants = cva(
         default: "bg-white text-zinc-900",
         success: "bg-green-300  text-zinc-800",
         destructive: "bg-red-300 text-zinc-800",
+        warning: "bg-yellow-300 text-zinc-800",
       },
     },
     defaultVariants: {

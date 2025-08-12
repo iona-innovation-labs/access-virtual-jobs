@@ -15,6 +15,10 @@ interface ProfileCompletenessIndicatorProps {
 
 // Move the mapping inside the component
 const sectionMapping = {
+  basicInfo: {
+    route: "/app/profile/edit",
+    sectionId: "basic_info_section",
+  },
   contact: {
     route: "/app/profile/edit",
     sectionId: "contact_section",
@@ -52,6 +56,7 @@ const sectionMapping = {
 const getSectionDescription = (sectionKey: string, percentage: number) => {
   if (percentage === 0) {
     const descriptions = {
+      basicInfo: "Add your basic personal information to get started",
       contact: "Add your contact details so employers can reach you",
       jobPreferences: "Tell us about your ideal job to get better matches",
       professionalProfile:

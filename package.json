@@ -4,10 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run drizzle:migrate && next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "drizzle:migrate": "drizzle-kit migrate",
+    "drizzle:generate": "drizzle-kit generate",
+    "drizzle:studio": "drizzle-kit studio",
+    "drizzle:push": "drizzle-kit push",
+    "drizzle:pull": "drizzle-kit pull",
+    "drizzle:reset": "drizzle-kit reset"
   },
   "dependencies": {
     "@auth/core": "^0.39.1",
@@ -92,6 +98,7 @@
     "swiper": "^8.4.7",
     "swr": "^2.3.3",
     "tailwind-merge": "^3.3.0",
+    "twilio": "^5.8.0",
     "uuid": "^11.1.0",
     "vaul": "^1.1.2",
     "zod": "^3.25.20"

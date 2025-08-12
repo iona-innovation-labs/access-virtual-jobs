@@ -545,6 +545,31 @@ export async function GET() {
         );
       };
 
+      // Helper function to properly validate field completion
+      const isFieldCompleted = (
+        value: any,
+        fieldType: string = "string"
+      ): boolean => {
+        if (value === null || value === undefined) return false;
+
+        if (fieldType === "string") {
+          // For strings, check if it's not empty and not just whitespace
+          return typeof value === "string" && value.trim() !== "";
+        }
+
+        if (fieldType === "array") {
+          // For arrays, check if it has items
+          return Array.isArray(value) && value.length > 0;
+        }
+
+        if (fieldType === "boolean") {
+          return Boolean(value);
+        }
+
+        // For other types, just check if truthy
+        return Boolean(value);
+      };
+
       // Generate file upload fields dynamically from config
       const fileUploadFields = REQUIRED_FILE_TYPES.filter(
         (file) => file.required
@@ -555,6 +580,34 @@ export async function GET() {
       }));
 
       const sections: Record<string, ProfileSection> = {
+        basicInfo: {
+          name: "Basic Information",
+          fields: [
+            {
+              key: "jobTitle",
+              label: "Job Title",
+              value: profile.jobTitle,
+            },
+            {
+              key: "address",
+              label: "Address",
+              value: profile.address,
+            },
+            {
+              key: "dateOfBirth",
+              label: "Date of Birth",
+              value: profile.dateOfBirth,
+            },
+            {
+              key: "numberOfChildren",
+              label: "Number of Children",
+              value:
+                profile.numberOfChildren && profile.numberOfChildren !== "0",
+            },
+          ],
+          completed: 0,
+          total: 4,
+        },
         jobPreferences: {
           name: "Job Preferences",
           fields: [
@@ -742,7 +795,41 @@ export async function GET() {
         const section = sections[sectionKey as keyof typeof sections];
 
         section.fields.forEach((field) => {
-          const isCompleted = Boolean(field.value);
+          // Use proper validation based on field type
+          let isCompleted = false;
+
+          if (
+            field.key === "phones" ||
+            field.key === "emails" ||
+            field.key === "skills" ||
+            field.key === "portfolioLinks" ||
+            field.key === "assessmentTests" ||
+            field.key === "contentLinks" ||
+            field.key === "workSamples"
+          ) {
+            // Array fields
+            isCompleted = isFieldCompleted(field.value, "array");
+          } else if (
+            field.key === "desiredSalary" ||
+            field.key === "numberOfExperience"
+          ) {
+            // Numeric fields that should not be 0
+            isCompleted =
+              field.value && field.value !== "0" && field.value !== 0;
+          } else if (field.key === "numberOfMonitors") {
+            // Special case: should not be default "1"
+            isCompleted = field.value && field.value !== "1";
+          } else if (field.key === "hasPaypal") {
+            // Boolean-like field
+            isCompleted = field.value === "yes";
+          } else if (field.key === "socialLinks") {
+            // Special case: either Instagram or X link
+            isCompleted = Boolean(field.value);
+          } else {
+            // String fields - check for non-empty strings
+            isCompleted = isFieldCompleted(field.value, "string");
+          }
+
           if (isCompleted) {
             section.completed++;
             totalCompleted++;

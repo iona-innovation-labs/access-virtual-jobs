@@ -135,7 +135,7 @@ export const JobPreferencesView = ({
                 Job Preferences
               </h2>
               <p className="text-sm text-muted-foreground">
-                Loading candidate preferences...
+                Loading your job preferences...
               </p>
             </div>
           </div>
@@ -180,7 +180,7 @@ export const JobPreferencesView = ({
               Job Preferences
             </h2>
             <p className="text-sm text-muted-foreground">
-              Candidate availability and compensation expectations
+              Your availability and compensation expectations
             </p>
           </div>
         </div>

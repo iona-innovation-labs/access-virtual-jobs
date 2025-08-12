@@ -58,7 +58,7 @@ export const JobListHeaderDefaults: Props = {
   tagline: "For Talents",
   heading: "Your Career, Your Way – Work from Anywhere",
   description:
-    "Access Virtual Staffing connects you with freelance and full-time remote opportunities tailored for developers, designers, marketers, product managers, project managers, virtual assistants, and more. Discover roles with US-based startups and companies and find the flexibility to work on your terms from anywhere in the world.",
+    "Access Virtual Jobs connects you with freelance and full-time remote opportunities tailored for developers, designers, marketers, product managers, project managers, virtual assistants, and more. Discover roles with US-based startups and companies and find the flexibility to work on your terms from anywhere in the world.",
   buttons: [
     {
       navLink: {

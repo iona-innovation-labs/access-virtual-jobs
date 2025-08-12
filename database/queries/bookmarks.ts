@@ -1,4 +1,4 @@
-import { and, eq, desc, count, sql, asc, or, ilike, SQL } from "drizzle-orm";
+import { and, eq, desc, count, sql, asc, or, ilike } from "drizzle-orm";
 
 import { db } from "@/database";
 import { userBookmarks } from "@/database/schema/user-bookmarks";
@@ -28,7 +28,7 @@ interface BookmarkedJob {
   slug: string;
   status: "active" | "inactive" | "closed";
   url: string;
-  postedById: string;
+  postedById: string | null;
   postedByName: string;
   createdAt: Date;
   updatedAt: Date;

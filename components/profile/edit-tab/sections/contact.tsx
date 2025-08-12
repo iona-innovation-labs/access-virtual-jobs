@@ -243,7 +243,7 @@ export const ContactInformationSection = ({
                         disabled={loading || isSubmitting}
                         className={errors.address ? "border-red-500" : ""}
                       />
-                      <div className="bg-muted/50 mt-2 bg-background rounded-sm p-1 text-foreground/50 px-2">
+                      <div className="bg-muted/50 mt-2  rounded-sm p-1 text-foreground/50 px-2">
                         <p className="text-xs text-muted-foreground">
                           it needs to be similar to the Address Verification
                           image you are going to upload

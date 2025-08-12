@@ -13,6 +13,6 @@ export default function ForgotPasswordPage() {
 }
 
 export const metadata = {
-  title: "Forgot Password - AVS Applicant Portal",
-  description: "Reset your password for AVS Applicant Portal",
+  title: "Forgot Password - Access Virtual Jobs",
+  description: "Reset your password for Access Virtual Jobs",
 };

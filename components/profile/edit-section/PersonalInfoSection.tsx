@@ -4,6 +4,8 @@ import { Briefcase, MapPin, Calendar, Edit, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { VerificationBadge } from "@/components/ui/verification-badge";
+import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
 interface ProfileHeaderProps {
@@ -18,6 +20,47 @@ export const PersonalInfoSection = ({
   profileData,
   isUserLoading,
 }: ProfileHeaderProps) => {
+  const { toast } = useToast();
+
+  const handlePublicViewClick = () => {
+    // Check if user is email verified
+    if (!userInfo?.isEmailVerified) {
+      toast({
+        title: "Profile Not Available",
+        description:
+          "Your profile requires email verification before it can be viewed publicly. Please verify your email address first.",
+        variant: "default",
+      });
+      return;
+    }
+
+    // Check if profile is complete enough for public viewing
+    const hasRequiredFields =
+      profileData?.jobTitle &&
+      profileData?.address &&
+      profileData?.jobSearchStatus &&
+      profileData?.desiredSalary &&
+      profileData?.whyFit &&
+      profileData?.whatStrengths &&
+      profileData?.whatNeedImprovement;
+
+    const hasSkills = profileData?.skills && profileData.skills.length > 0;
+    const hasWorkHistory =
+      profileData?.workHistory && profileData.workHistory.length > 0;
+
+    if (!hasRequiredFields || !hasSkills || !hasWorkHistory) {
+      toast({
+        title: "Profile Not Ready",
+        description:
+          "Your profile is not yet complete and ready for public viewing. Please complete all required information including skills and work history.",
+        variant: "warning",
+      });
+      return;
+    }
+
+    // If all checks pass, open the public view
+    window.open(`/profile/${userInfo.id}`, "_blank");
+  };
   if (isUserLoading) {
     return (
       <Card className="w-full animate-pulse border-border py-0">
@@ -131,15 +174,14 @@ export const PersonalInfoSection = ({
               </Link>
               Edit Profile
             </Button>
-            <Button size="sm" variant="outline" className="hover:bg-background">
-              <Link
-                href={`/profile/${userInfo.id}`}
-                target="_blank"
-                className=" flex items-center hover:bg-background"
-              >
-                <Eye className="w-4 h-4 mr-2" />
-                Public View
-              </Link>
+            <Button
+              size="sm"
+              variant="outline"
+              className="hover:bg-background"
+              onClick={handlePublicViewClick}
+            >
+              <Eye className="w-4 h-4 mr-2" />
+              Public View
             </Button>
           </div>
         </div>
@@ -168,7 +210,12 @@ export const PersonalInfoSection = ({
 
             {/* Name and Title */}
             <div className="text-center space-y-2">
-              <h1 className="text-3xl font-bold text-foreground">{fullName}</h1>
+              <div className="flex items-center justify-center gap-2">
+                <h1 className="text-3xl font-bold text-foreground">
+                  {fullName}
+                </h1>
+                <VerificationBadge isVerified={userInfo?.isPhoneVerified} />
+              </div>
               {jobTitle && (
                 <p className="text-lg text-muted-foreground font-medium">
                   {jobTitle}

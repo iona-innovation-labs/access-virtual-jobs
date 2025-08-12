@@ -59,7 +59,7 @@ export async function POST(request: Request) {
     // Send reset email
     await sendEmailNotification({
       to: [email],
-      subject: "Reset your password - AVS Applicant Portal",
+      subject: "Reset your password - Access Virtual Jobs",
       message: `Hi ${existingUser.firstName || "there"},\n\nYou requested a password reset for your account. Please click the link below to reset your password:\n\n${resetLink}`,
       footer:
         "This link will expire in 1 hour. If you didn't request this, you can ignore this email.",

@@ -129,7 +129,15 @@ export default function ProfilePageClient() {
         window.location.href = `/app/jobs/v/${fullJobId}`;
         return true;
       } else {
-        // Handle error (like already applied)
+        // Handle verification requirement
+        if (result.requiresVerification) {
+          console.log("Phone verification required");
+          window.location.href =
+            result.redirectTo || "/app/profile/edit?active=verification";
+          return false;
+        }
+
+        // Handle other errors (like already applied)
         console.error("Application submission failed:", result.message);
         return false;
       }

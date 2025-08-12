@@ -475,7 +475,7 @@ const UploadFilesForm = () => {
 
       {/* Completion Message */}
       {allRequiredUploaded && (
-        <Card className="shadow-sm border-border bg-success/5 border-success/20">
+        <Card className="shadow-sm bg-success/5">
           <CardContent className="p-6 text-center">
             <CheckCircle2 className="w-12 h-12 text-success mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">

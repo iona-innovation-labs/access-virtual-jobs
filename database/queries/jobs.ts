@@ -87,7 +87,7 @@ interface CreateJobData {
   jobType?: FrontendJobType;
   jobCategory?: FrontendJobCategory;
   remoteAllowed?: boolean;
-  postedById: string;
+  postedById: string | null;
   numberOfTalents?: number;
   tags?: string[];
   alsoPostedOn?: string[];
@@ -255,7 +255,7 @@ async function generateUniqueSlug(
   title: string,
   excludeId?: number
 ): Promise<string> {
-  let baseSlug = generateSlug(title);
+  const baseSlug = generateSlug(title);
   let slug = baseSlug;
   let counter = 1;
 

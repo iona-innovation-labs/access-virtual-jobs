@@ -164,8 +164,8 @@ export async function POST(req: NextRequest) {
       ? "Password Set"
       : "Password Changed";
     const changeDescription = isFirstTimePassword
-      ? "You have successfully set a password for your AVS Applicant Portal account. You can now sign in using either your social account or your email and password."
-      : "Your password has been successfully changed for your AVS Applicant Portal account.";
+      ? "You have successfully set a password for your Access Virtual Jobs account. You can now sign in using either your social account or your email and password."
+      : "Your password has been successfully changed for your Access Virtual Jobs account.";
 
     // Send notification using notification service (respects user's accountUpdatePref)
     const emailMessage = generateAccountUpdateEmailTemplate(
@@ -176,7 +176,7 @@ export async function POST(req: NextRequest) {
 
     await sendAccountUpdateNotification({
       userId: existingUser.id,
-      emailSubject: `${changeType} - AVS Applicant Portal`,
+      emailSubject: `${changeType} - Access Virtual Jobs`,
       emailMessage:
         emailMessage +
         "\n\nFor your security, you have been logged out of all devices and will need to sign in again.",

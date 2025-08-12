@@ -17,6 +17,8 @@ interface User {
   firstName?: string;
   lastName?: string;
   countryOfResidednce?: string;
+  isEmailVerified?: boolean;
+  isPhoneVerified?: boolean;
 }
 
 interface Completeness {
@@ -76,7 +78,18 @@ export default function PublicProfilePage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <div className="text-red-600 text-lg">Error: {error}</div>
+        <div className="text-center space-y-4">
+          <div className="text-red-600 text-lg font-semibold">
+            Profile Not Available
+          </div>
+          <div className="text-muted-foreground max-w-md">
+            {error.includes("Email verification")
+              ? "This profile requires email verification before it can be viewed publicly."
+              : error.includes("not yet complete")
+                ? "This profile is not yet complete and ready for public viewing. Please complete all required information."
+                : error}
+          </div>
+        </div>
       </div>
     );
   }
@@ -96,7 +109,6 @@ export default function PublicProfilePage() {
         user={profileData.user}
         profile={profileData.profile}
         completeness={profileData.completeness}
-        isVerified={true} // TODO
       />
 
       {/* Main Content Grid */}

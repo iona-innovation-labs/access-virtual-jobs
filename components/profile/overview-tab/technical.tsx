@@ -284,7 +284,7 @@ export const TechnicalSetupView = ({
               No technical setup information provided
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Candidate hasn&apos;t completed their technical profile yet
+              You haven&apos;t completed your technical profile yet
             </p>
           </div>
         )}

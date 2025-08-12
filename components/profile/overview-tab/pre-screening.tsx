@@ -74,7 +74,7 @@ export const PrescreeningQuestionsView = ({
                 Prescreening Questions
               </h2>
               <p className="text-sm text-muted-foreground">
-                Loading candidate responses...
+                Loading your responses...
               </p>
             </div>
           </div>
@@ -123,7 +123,7 @@ export const PrescreeningQuestionsView = ({
               Prescreening Questions
             </h2>
             <p className="text-sm text-muted-foreground">
-              Key insights into candidate qualifications and self-awareness
+              Key insights into your qualifications and self-awareness
             </p>
           </div>
         </div>
@@ -134,21 +134,21 @@ export const PrescreeningQuestionsView = ({
             label="Why are you a good fit for this role?"
             icon={<Target className="w-4 h-4 text-muted-foreground" />}
             answer={data.whyFit}
-            placeholder="Candidate hasn't provided an answer to this question"
+            placeholder="You haven't provided an answer to this question"
           />
 
           <QuestionItem
             label="What are your key strengths?"
             icon={<Zap className="w-4 h-4 text-muted-foreground" />}
             answer={data.whatStrengths}
-            placeholder="Candidate hasn't described their strengths yet"
+            placeholder="You haven't described your strengths yet"
           />
 
           <QuestionItem
             label="What areas would you like to improve?"
             icon={<TrendingUp className="w-4 h-4 text-muted-foreground" />}
             answer={data.whatNeedImprovement}
-            placeholder="Candidate hasn't identified improvement areas"
+            placeholder="You haven't identified improvement areas"
           />
         </div>
 
@@ -160,7 +160,7 @@ export const PrescreeningQuestionsView = ({
               No prescreening questions answered
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Candidate hasn&apos;t completed the prescreening questionnaire yet
+              You haven&apos;t completed the prescreening questionnaire yet
             </p>
           </div>
         )}

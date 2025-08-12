@@ -344,7 +344,7 @@ export function ResetPasswordForm({
 
       <div className="text-muted-foreground text-center text-xs text-balance">
         Secure password reset for{" "}
-        <span className="font-medium">AVS Applicant Portal</span>
+        <span className="font-medium">Access Virtual Jobs</span>
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ export interface IJobListing {
   url: string; // Generated URL
 
   // Relationships
-  postedById: string;
+  postedById: string | null;
   postedByName: string;
   postedBy?: string;
 

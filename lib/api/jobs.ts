@@ -52,7 +52,7 @@ interface CreateJobData {
   jobType?: FrontendJobType;
   jobCategory?: FrontendJobCategory;
   remoteAllowed?: boolean;
-  postedById: string;
+  postedById: string | null;
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {

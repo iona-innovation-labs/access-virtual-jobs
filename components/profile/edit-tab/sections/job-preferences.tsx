@@ -259,7 +259,7 @@ export const JobPreferencesSection = ({
                         </SelectContent>
                       </Select>
                       {selectedOption && (
-                        <div className="bg-muted/50 bg-background rounded-sm p-1 text-foreground/50 px-2">
+                        <div className="bg-muted/50 rounded-sm p-1 text-foreground/50 px-2">
                           <p className="text-xs text-muted-foreground">
                             {selectedOption.description}
                           </p>

@@ -46,18 +46,17 @@ const formSchema = z.object({
 type ContactFormSchema = z.infer<typeof formSchema>;
 
 const subjectOptions = [
+  { value: "first-choice", label: "General support request" },
   {
-    value: "first-choice",
-    label: "I am an existing client and I have a concern",
-  },
-  { value: "second-choice", label: "Payment or Invoicing concern" },
-  { value: "third-choice", label: "General support request" },
-  { value: "fourth-choice", label: "I have a unique staffing requirements" },
-  {
-    value: "fifth-choice",
+    value: "second-choice",
     label: "I am looking for a job and I have questions",
   },
-  { value: "sixth-choice", label: "Others" },
+  { value: "third-choice", label: "I can't login" },
+  {
+    value: "fourth-choice",
+    label: "I can't reset or recover my password/account",
+  },
+  { value: "fifth-choice", label: "Others" },
 ];
 
 export default function ContactForm() {

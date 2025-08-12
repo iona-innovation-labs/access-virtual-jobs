@@ -137,6 +137,7 @@ export default function OverviewTab({
     jobType: data?.profile?.jobType,
     availability: data?.profile?.availability,
     education: data?.profile?.education, // Add this when you have education data
+    isPhoneVerified: userInfo?.isPhoneVerified,
   };
 
   if (!data) return null;
