@@ -87,7 +87,7 @@ interface CreateJobData {
   jobType?: FrontendJobType;
   jobCategory?: FrontendJobCategory;
   remoteAllowed?: boolean;
-  postedById: string;
+  postedById: string | null;
   numberOfTalents?: number;
   tags?: string[];
   alsoPostedOn?: string[];
