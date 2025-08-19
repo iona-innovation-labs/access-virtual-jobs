@@ -109,9 +109,10 @@ export const fetchJob = async (
     },
   };
 
-  const url = `https://api.podio.com/app/${
-    appId || "invalid"
-  }/item/${appItemId}`;
+  // const url = `https://api.podio.com/app/${
+  //   appId || "invalid"
+  // }/item/${appItemId}`;
+  const url = `https://api.podio.com/item/${appItemId}`;
 
   const response: any = await fetch(url, options);
 
@@ -124,29 +125,29 @@ export const fetchJob = async (
   }
 
   const data = await response.json();
-
+  console.log("DATA", data);
   const title =
-    data.fields?.find((field: any) => field.external_id === "title")?.values[0]
-      ?.value || "N/A";
+    data?.fields?.find((field: any) => field?.external_id === "title")
+      ?.values[0]?.value || "N/A";
 
   const description =
-    data.fields?.find((field: any) => field.external_id === "job-description")
+    data?.fields?.find((field: any) => field?.external_id === "job-description")
       ?.values[0]?.value || "No description provided";
 
-  const estimatedSalary = data.fields?.find(
-    (field: any) => field.external_id === "estimated-salary"
+  const estimatedSalary = data?.fields?.find(
+    (field: any) => field?.external_id === "estimated-salary"
   )?.values[0];
   const item = {
-    id: data.app_item_id,
+    id: data?.app_item_id,
     title,
     pay: estimatedSalary
-      ? `${estimatedSalary.currency} ${parseFloat(
-          estimatedSalary.value
+      ? `${estimatedSalary?.currency} ${parseFloat(
+          estimatedSalary?.value
         ).toFixed(2)} / hr`
       : "Not provided",
     url: "https://podio.com/webforms/29994876/2499223",
-    createdAt: data.created_on,
-    postedBy: data.created_by.name,
+    createdAt: data?.created_on,
+    postedBy: data?.created_by?.name || "N/A",
     description,
   };
 
@@ -210,5 +211,22 @@ export const getJobPost = async (
     newAccessToken,
     process.env.NEXT_PODIO_JOBLISTING_APP_ID?.toString() || "",
     finalId
+  );
+};
+
+export const getJobPostFromPodio = async (
+  item_id: string
+): Promise<FetchJobResponse | null> => {
+  console.log("Item ID", item_id);
+  const newAccessToken = await gainRefreshedAccessToken("jobs");
+
+  if (!newAccessToken) {
+    return null;
+  }
+
+  return fetchJob(
+    newAccessToken,
+    process.env.NEXT_PODIO_JOBLISTING_APP_ID?.toString() || "",
+    item_id
   );
 };

@@ -282,12 +282,17 @@ async function generateUniqueSlug(
 
 // CORE QUERY FUNCTIONS
 
-export async function getJobs(config: QueryConfig = {}) {
+export async function getJobs(config: QueryConfig = {}, isAdmin = false) {
   try {
-    const conditions: (SQL | undefined)[] = [eq(jobs.status, "active")];
+    const conditions: (SQL | undefined)[] = [
+      isAdmin
+        ? inArray(jobs.status, ["active", "inactive", "closed"])
+        : eq(jobs.status, "active"),
+    ];
 
     if (config.filters) {
       const { filters } = config;
+      console.log("FILTERS", filters);
       if (filters.status) {
         conditions[0] = eq(jobs.status, filters.status);
       }

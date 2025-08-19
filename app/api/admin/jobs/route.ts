@@ -3,7 +3,8 @@ import { getAdminJobs } from "@/lib/api/jobs";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
-  const status = searchParams.get("status") || "all";
+  const status = searchParams.get("status") || "";
+  console.log("STATUS", status);
   const search = searchParams.get("search") || "";
   const sortBy = searchParams.get("sortBy") || "createdAt";
   const sortDesc = searchParams.get("sortDesc") !== "false";

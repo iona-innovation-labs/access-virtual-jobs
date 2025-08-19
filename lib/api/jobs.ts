@@ -643,7 +643,7 @@ export const SALARY_RANGES: FrontendSalaryRange[] = [
  * Fetch jobs for the admin portal with status and search filters
  */
 export const getAdminJobs = async ({
-  status = "all",
+  status,
   search = "",
   sortBy = "createdAt",
   sortDesc = true,
@@ -659,7 +659,7 @@ export const getAdminJobs = async ({
 }): Promise<FetchJobListingsResponse | null> => {
   try {
     const filters: Record<string, any> = {};
-    if (status && status !== "all") {
+    if (status) {
       filters.status = status;
     }
     if (search) {
@@ -674,7 +674,7 @@ export const getAdminJobs = async ({
       sortDesc,
     };
     const [jobsResult, totalCountResult] = await Promise.all([
-      getJobsFromDB(queryConfig),
+      getJobsFromDB(queryConfig, true),
       getTotalJobsCount(queryConfig.filters),
     ]);
     if (!jobsResult.ok) {
@@ -701,7 +701,8 @@ export const getAdminJobs = async ({
         hasPrev: offset > 0,
       },
     };
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Error in getAdminJobs:", error);
     return {
       success: false,
       items: [],

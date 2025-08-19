@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getJobsFromUrl } from "@/lib/api/jobs";
+import { getAdminJobs } from "@/lib/api/jobs";
 import AdminJobListClient from "@/components/admin/components/admin-job-list-client";
 import { ISearchParams } from "@/types/jobs";
 
@@ -19,7 +19,7 @@ function getStringParam(
 
 function getQueryParams(searchParams: ISearchParams) {
   const urlSearchParams = new URLSearchParams();
-  const status = getStringParam(searchParams.status, "all");
+  const status = getStringParam(searchParams.status, "");
   const search = getStringParam(searchParams.search, "");
   const sortBy = getStringParam(searchParams.sortBy, "createdAt");
   const sortDescRaw = getStringParam(searchParams.sortDesc, "true");
@@ -29,7 +29,7 @@ function getQueryParams(searchParams: ISearchParams) {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  if (status && status !== "all") {
+  if (status) {
     urlSearchParams.set("status", status);
   }
   if (search) {
@@ -47,11 +47,25 @@ function getQueryParams(searchParams: ISearchParams) {
 export default async function AdminJobsPage({
   searchParams,
 }: {
-  searchParams: ISearchParams;
+  searchParams: Promise<ISearchParams>;
 }) {
-  const { urlSearchParams, page, limit, status, search, sortBy, sortDesc } =
-    getQueryParams(searchParams);
-  const jobsData = await getJobsFromUrl(urlSearchParams, false);
+  const { page, limit, status, search, sortBy, sortDesc } = getQueryParams(
+    await searchParams
+  );
+  console.log("STATUS", status);
+  console.log("SEARCH", search);
+  console.log("SORT BY", sortBy);
+  console.log("SORT DESC", sortDesc);
+  console.log("PAGE", page);
+  console.log("LIMIT", limit);
+  const jobsData = await getAdminJobs({
+    status,
+    search,
+    sortBy,
+    sortDesc,
+    page,
+    limit,
+  });
   const jobs = jobsData?.items || [];
   const total = jobsData?.all || 0;
 
