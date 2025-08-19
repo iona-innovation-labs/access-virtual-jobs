@@ -638,3 +638,75 @@ export const SALARY_RANGES: FrontendSalaryRange[] = [
   "$8 - $9.99",
   "More than $10",
 ];
+
+/**
+ * Fetch jobs for the admin portal with status and search filters
+ */
+export const getAdminJobs = async ({
+  status = "all",
+  search = "",
+  sortBy = "createdAt",
+  sortDesc = true,
+  page = 1,
+  limit = 10,
+}: {
+  status?: string;
+  search?: string;
+  sortBy?: string;
+  sortDesc?: boolean;
+  page?: number;
+  limit?: number;
+}): Promise<FetchJobListingsResponse | null> => {
+  try {
+    const filters: Record<string, any> = {};
+    if (status && status !== "all") {
+      filters.status = status;
+    }
+    if (search) {
+      filters.search = search;
+    }
+    const offset = (page - 1) * limit;
+    const queryConfig = {
+      filters,
+      limit,
+      offset,
+      sortBy: sortBy as "createdAt" | "title" | "salaryAmount",
+      sortDesc,
+    };
+    const [jobsResult, totalCountResult] = await Promise.all([
+      getJobsFromDB(queryConfig),
+      getTotalJobsCount(queryConfig.filters),
+    ]);
+    if (!jobsResult.ok) {
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
+    const formattedJobs = jobsResult.data.map((job) =>
+      formatJobForFrontend(job, false)
+    );
+    const totalCount = totalCountResult.ok ? totalCountResult.data : 0;
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: totalCount,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNext: offset + limit < totalCount,
+        hasPrev: offset > 0,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};

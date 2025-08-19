@@ -47,6 +47,16 @@ export type FrontendSalaryRange =
   | "$8 - $9.99"
   | "More than $10";
 
+export interface IPodioJobListing {
+  id: string;
+  title: string;
+  pay: string;
+  url: string;
+  createdAt: string;
+  postedBy: string;
+  description: string;
+}
+
 // Basic job listing interface
 export interface IJobListing {
   id: number; // serial ID from database

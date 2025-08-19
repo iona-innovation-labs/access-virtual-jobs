@@ -184,8 +184,14 @@ export default async function ViewJob({
 
               {/* Job Description */}
               <ViewJobContent heading="Job Overview">
-                <div
+                {/* <div
                   className="prose prose-gray max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: job?.description || "",
+                  }}
+                /> */}
+                <div
+                  className="text-base whitespace-pre-wrap text-zinc-800 "
                   dangerouslySetInnerHTML={{
                     __html: job?.description || "",
                   }}

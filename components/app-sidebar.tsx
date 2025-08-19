@@ -73,7 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href={"/overview"}>
+              <Link href={"/app/overview"}>
                 <Logo size="sm" />
                 <span className="text-base font-semibold">AVJ</span>
               </Link>
