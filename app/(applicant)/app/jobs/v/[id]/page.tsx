@@ -135,9 +135,12 @@ export default async function ViewJob({
                     <Calendar className="w-4 h-4 text-muted-foreground" />
                     <span className="text-sm">
                       Posted{" "}
-                      {formatDistanceToNow(new Date(job?.createdAt || ""), {
-                        addSuffix: true,
-                      })}
+                      {formatDistanceToNow(
+                        job?.createdAt ? new Date(job?.createdAt) : new Date(),
+                        {
+                          addSuffix: true,
+                        }
+                      )}
                     </span>
                   </div>
                 </div>
