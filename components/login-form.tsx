@@ -298,16 +298,6 @@ export default function JobSeekerLoginPage() {
                   Create a Free Account.
                 </Link>
               </div>
-
-              {/* Switch Account Type */}
-              <div className="text-center text-sm border-t pt-4">
-                <Link
-                  href="/login/recruiter"
-                  className="text-foreground/50 hover:text-brand-dark"
-                >
-                  Are you a recruiter?
-                </Link>
-              </div>
             </div>
           </CardContent>
         </Card>

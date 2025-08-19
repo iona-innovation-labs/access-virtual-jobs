@@ -8,7 +8,7 @@ import { z } from "zod";
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
-  expectedRole: z.enum(["job_seeker", "recruiter"]).optional(), // Add optional role validation
+  expectedRole: z.enum(["job_seeker", "recruiter", "admin"]).optional(), // Add optional role validation
 });
 
 export async function POST(request: Request) {
@@ -94,6 +94,8 @@ export async function POST(request: Request) {
           "This account is registered as a recruiter. Please use the recruiter login.",
         recruiter:
           "This account is registered as a job seeker. Please use the job seeker login.",
+        admin:
+          "This account is not an admin. Please use the correct login portal.",
       };
 
       return NextResponse.json(

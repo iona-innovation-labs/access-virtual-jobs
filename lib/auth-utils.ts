@@ -24,6 +24,8 @@ export async function requireRole(allowedRoles: UserRole | UserRole[]) {
       redirect("/app");
     } else if (user.role === "recruiter") {
       redirect("/recruiter");
+    } else if (user.role === "admin") {
+      redirect("/admin/app");
     } else {
       redirect("/login");
     }
@@ -34,6 +36,10 @@ export async function requireRole(allowedRoles: UserRole | UserRole[]) {
 
 export async function requireJobSeeker() {
   return await requireRole("job_seeker");
+}
+
+export async function requireAdmin() {
+  return await requireRole("admin");
 }
 
 export async function requireRecruiter() {
