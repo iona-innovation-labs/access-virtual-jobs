@@ -1,3 +1,5 @@
+"use client";
+
 import { formatDistanceToNow } from "date-fns";
 import {
   Banknote,
@@ -11,18 +13,20 @@ import {
   Globe,
   ExternalLink,
   ArrowLeft,
+  Edit,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { IJobListing } from "@/types/jobs";
+import { useRouter } from "next/navigation";
 
 interface AdminJobViewProps {
   job: IJobListing | null;
 }
 
 const AdminJobView: React.FC<AdminJobViewProps> = ({ job }) => {
+  const router = useRouter();
   if (!job) {
     return (
       <div className="p-8 text-center text-red-600 font-semibold">
@@ -35,16 +39,24 @@ const AdminJobView: React.FC<AdminJobViewProps> = ({ job }) => {
       <div className="bg-background">
         <div className="max-w-6xl mx-auto px-6 py-8">
           {/* Back Button */}
-          <div className="mb-6">
-            <Link href="/admin/app/jobs" passHref legacyBehavior>
-              <Button
-                variant="outline"
-                className="inline-flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back to All Jobs
-              </Button>
-            </Link>
+          <div className="mb-6 flex justify-end gap-5">
+            <Button
+              onClick={() => router.push("/admin/app/jobs")}
+              variant="outline"
+              className="inline-flex items-center gap-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to All Jobs
+            </Button>
+
+            <Button
+              onClick={() => router.push(`/admin/app/jobs/v/${job.id}/edit`)}
+              variant="outline"
+              className="inline-flex items-center gap-2"
+            >
+              <Edit className="w-4 h-4" />
+              Edit
+            </Button>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Job Info */}
