@@ -24,6 +24,10 @@ import type {
   Progress,
 } from "@/types/jobs";
 import { log } from "@/lib/logs";
+import { eq, and, ilike, desc, count } from "drizzle-orm";
+import { jobApplications } from "@/database/schema/job-applications";
+import { jobs } from "@/database/schema/jobs";
+import { db } from "@/database";
 
 interface FetchJobListingsConfig {
   sort_by?: string;
@@ -708,6 +712,127 @@ export const getAdminJobs = async ({
       items: [],
       total: 0,
       all: 0,
+    };
+  }
+};
+
+/**
+ * Fetch all job applications for admin, with job details and pagination
+ */
+export const getAdminJobApplications = async ({
+  page = 1,
+  limit = 20,
+  status,
+  search,
+}: {
+  page?: number;
+  limit?: number;
+  status?: string;
+  search?: string;
+}): Promise<{
+  success: boolean;
+  items: IJobApplication[];
+  total: number;
+  all: number;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}> => {
+  try {
+    const offset = (page - 1) * limit;
+    const filters: any[] = [];
+    if (status) filters.push(eq(jobApplications.status, status));
+    if (search) filters.push(ilike(jobs.title, `%${search}%`));
+
+    // Join jobApplications with jobs
+    const query = db
+      .select({ jobApplication: jobApplications, job: jobs })
+      .from(jobApplications)
+      .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+      .where(filters.length ? and(...filters) : undefined)
+      .orderBy(desc(jobApplications.submittedAt))
+      .limit(limit)
+      .offset(offset);
+
+    const [applications, totalCountRows] = await Promise.all([
+      query,
+      db
+        .select({ count: count() })
+        .from(jobApplications)
+        .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+        .where(filters.length ? and(...filters) : undefined),
+    ]);
+    const totalCount = Number(totalCountRows[0]?.count || 0);
+
+    // Format for frontend
+    const items: IJobApplication[] = applications.map((row: any) => {
+      const app = row.jobApplication;
+      const job = row.job;
+      return {
+        id: app.id,
+        applicationPublicId: app.applicationPublicId,
+        userId: app.userId,
+        profileId: app.profileId,
+        jobId: app.jobId,
+        status: app.status,
+        progress: app.progress,
+        submittedAt: app.submittedAt,
+        job: job
+          ? {
+              id: job.id,
+              title: job.title,
+              description: job.description,
+              salaryAmount: job.salaryAmount,
+              salaryCurrency: job.salaryCurrency,
+              salaryType: job.salaryType,
+              pay: job.pay,
+              location: job.location,
+              jobType: job.jobType,
+              jobCategory: job.jobCategory,
+              remoteAllowed: job.remoteAllowed,
+              slug: job.slug,
+              status: job.status,
+              url: job.url,
+              postedById: job.postedById,
+              postedByName: job.postedByName,
+              createdAt: job.createdAt,
+              updatedAt: job.updatedAt,
+              numberOfTalents: job.numberOfTalents,
+              tags: job.tags,
+              alsoPostedOn: job.alsoPostedOn,
+            }
+          : undefined,
+      };
+    });
+
+    return {
+      success: true,
+      items,
+      total: items.length,
+      all: totalCount,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNext: offset + limit < totalCount,
+        hasPrev: offset > 0,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getAdminJobApplications:", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+      pagination: {
+        currentPage: page,
+        totalPages: 0,
+        hasNext: false,
+        hasPrev: false,
+      },
     };
   }
 };
