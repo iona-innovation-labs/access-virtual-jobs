@@ -81,7 +81,7 @@ interface CreateJobData {
   title?: string;
   description?: string;
   salaryAmount?: number;
-  salaryCurrency?: string;
+  salaryCurrency?: "PHP" | "USD";
   salaryType?: "hourly" | "monthly" | "yearly";
   location?: string;
   jobType?: FrontendJobType;
@@ -90,7 +90,6 @@ interface CreateJobData {
   postedById: string | null;
   numberOfTalents?: number;
   tags?: string[];
-  alsoPostedOn?: string[];
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {
@@ -366,7 +365,6 @@ export async function getJobs(config: QueryConfig = {}, isAdmin = false) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -415,7 +413,6 @@ export async function getJobById(id: number) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -467,7 +464,6 @@ export async function getJobBySlug(slug: string) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -627,7 +623,6 @@ export async function createJob(jobData: CreateJobData) {
         postedById: jobData.postedById,
         numberOfTalents: jobData.numberOfTalents || 1,
         tags: jobData.tags || [],
-        alsoPostedOn: jobData.alsoPostedOn || [],
       } satisfies typeof jobs.$inferInsert)
       .returning();
 

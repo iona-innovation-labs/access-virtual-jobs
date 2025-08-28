@@ -8,10 +8,8 @@ import {
   MenuIcon,
   Users,
   Tag,
-  Share2,
   Briefcase,
   Globe,
-  ExternalLink,
   ArrowLeft,
   Edit,
 } from "lucide-react";
@@ -175,37 +173,6 @@ const AdminJobView: React.FC<AdminJobViewProps> = ({ job }) => {
                   />
                 </div>
               </Card>
-              {/* Also Posted On Section */}
-              {job?.alsoPostedOn && job.alsoPostedOn.length > 0 && (
-                <Card className="shadow-sm border-0 py-0 mx-0 sm:mx-0 mb-6">
-                  <div className="p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center space-x-3 mb-4 sm:mb-6">
-                      <Share2 className="w-4 h-4 text-muted-foreground" />
-                      <h2 className="text-xl sm:text-2xl font-bold text-foreground leading-tight ">
-                        Also Posted On
-                      </h2>
-                    </div>
-                    <div className="space-y-2">
-                      {job.alsoPostedOn.map((link: string, index: number) => (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-2"
-                        >
-                          <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                          <a
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-brand hover:text-brand-dark underline"
-                          >
-                            {link}
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Card>
-              )}
             </div>
             {/* Sidebar (empty for admin) */}
             <div className="lg:col-span-1" />

@@ -129,7 +129,7 @@ export const JobPreferencesSection = ({
 
   const defaultValues = useMemo(
     (): JobPreferencesFormData => ({
-      jobSearchStatus: "closed_to_offers",
+      jobSearchStatus: "ready_for_interview",
       desiredSalary: 0,
       salaryUnit: "PHP",
       isPublicSalary: true,

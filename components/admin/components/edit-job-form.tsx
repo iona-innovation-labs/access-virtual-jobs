@@ -50,7 +50,6 @@ const jobFormSchema = z.object({
   status: z.enum(["active", "inactive", "closed"]),
   numberOfTalents: z.coerce.number().min(1, "At least 1 talent required"),
   tags: z.string().optional(), // comma separated
-  alsoPostedOn: z.string().optional(), // comma separated
 });
 
 type JobFormValues = z.infer<typeof jobFormSchema>;
@@ -75,7 +74,6 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
       status: job.status || "active",
       numberOfTalents: job.numberOfTalents ?? 1,
       tags: job.tags?.join(", ") || "",
-      alsoPostedOn: job.alsoPostedOn?.join(", ") || "",
     },
   });
 
@@ -356,20 +354,6 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                 <Input placeholder="Comma separated" {...field} />
               </FormControl>
               <FormDescription>Comma separated tags</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="alsoPostedOn"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Also Posted On</FormLabel>
-              <FormControl>
-                <Input placeholder="Comma separated" {...field} />
-              </FormControl>
-              <FormDescription>Comma separated platforms</FormDescription>
               <FormMessage />
             </FormItem>
           )}

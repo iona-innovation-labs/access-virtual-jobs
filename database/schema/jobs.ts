@@ -40,6 +40,8 @@ export const salaryTypeEnum = pgEnum("salary_type", [
   "yearly",
 ]);
 
+export const salaryCurrencyEnum = pgEnum("salary_currency", ["PHP", "USD"]);
+
 // Main jobs table
 export const jobs = pgTable("jobs", {
   id: serial("id").primaryKey(),
@@ -50,14 +52,14 @@ export const jobs = pgTable("jobs", {
 
   // Salary information
   salaryAmount: decimal("salary_amount", { precision: 10, scale: 2 }),
-  salaryCurrency: varchar("salary_currency", { length: 3 }).default("USD"),
+  salaryCurrency: salaryCurrencyEnum("salary_currency").default("USD"),
   salaryType: salaryTypeEnum("salary_type").default("hourly"),
 
   // Job filtering fields (to match your frontend component)
-  location: varchar("location", { length: 255 }),
+  location: varchar("location", { length: 255 }).default("Remote"),
   jobType: jobTypeEnum("job_type"),
   jobCategory: jobCategoryEnum("job_category"),
-  remoteAllowed: boolean("remote_allowed").default(false),
+  remoteAllowed: boolean("remote_allowed").default(true),
 
   // Status and meta
   status: jobStatusEnum("status").default("active"),
@@ -72,9 +74,6 @@ export const jobs = pgTable("jobs", {
 
   numberOfTalents: integer("number_of_talents").default(1),
   tags: text("tags")
-    .array()
-    .default(sql`'{}'`),
-  alsoPostedOn: text("also_posted_on")
     .array()
     .default(sql`'{}'`),
 });

@@ -117,7 +117,6 @@ export async function POST(req: NextRequest) {
         updatedAt: new Date(),
         numberOfTalents: 1,
         tags: [] as string[],
-        alsoPostedOn: [] as string[],
       };
       const inserted = await db.insert(jobs).values(newJob).returning();
       console.log("[Webhook] Inserted job:", inserted[0]);

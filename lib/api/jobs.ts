@@ -802,7 +802,6 @@ export const getAdminJobApplications = async ({
               updatedAt: job.updatedAt,
               numberOfTalents: job.numberOfTalents,
               tags: job.tags,
-              alsoPostedOn: job.alsoPostedOn,
             }
           : undefined,
       };

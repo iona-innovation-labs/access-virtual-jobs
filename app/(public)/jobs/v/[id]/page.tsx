@@ -8,7 +8,6 @@ import {
   MenuIcon,
   Users,
   Tag,
-  Share2,
   Briefcase,
   Globe,
 } from "lucide-react";
@@ -189,38 +188,6 @@ export default async function ViewJob({
                   }}
                 />
               </ViewJobContent>
-
-              {/* Also Posted On Section */}
-              {job?.alsoPostedOn && job.alsoPostedOn.length > 0 && (
-                <ViewJobContent heading="Also Posted On">
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2 mb-3">
-                      <Share2 className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-muted-foreground">
-                        This job is also available on other platforms:
-                      </span>
-                    </div>
-                    <div className="space-y-2">
-                      {job.alsoPostedOn.map((link: string, index: number) => (
-                        <div
-                          key={index}
-                          className="flex items-center space-x-2"
-                        >
-                          <ExternalLink className="w-3 h-3 text-muted-foreground" />
-                          <a
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-brand hover:text-brand-dark underline"
-                          >
-                            {new URL(link).hostname}
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </ViewJobContent>
-              )}
             </div>
 
             {/* Application Section */}

@@ -91,7 +91,6 @@ export interface IJobListing {
 
   numberOfTalents?: number;
   tags?: string[];
-  alsoPostedOn?: string[];
 }
 
 export interface PositionProps {
