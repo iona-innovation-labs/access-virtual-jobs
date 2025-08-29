@@ -177,12 +177,11 @@ export default function AdminJobListClient({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>ID</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Type</TableHead>
             <TableHead>Category</TableHead>
-            <TableHead>Posted</TableHead>
+            <TableHead>Created At</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -199,7 +198,6 @@ export default function AdminJobListClient({
           ) : (
             jobs.map((job) => (
               <TableRow key={job.id}>
-                <TableCell>{job.id}</TableCell>
                 <TableCell>{job.title}</TableCell>
                 <TableCell>{job.status}</TableCell>
                 <TableCell>{job.jobType || "-"}</TableCell>
@@ -209,13 +207,28 @@ export default function AdminJobListClient({
                     ? new Date(job.createdAt).toLocaleDateString()
                     : "-"}
                 </TableCell>
-                <TableCell>
+                <TableCell className="flex items-center gap-2">
                   <Link
                     href={`/admin/app/jobs/v/${job.id}`}
                     className="text-blue-600 hover:underline text-xs"
                   >
                     View
                   </Link>
+                  <Link
+                    href={`/admin/app/jobs/v/${job.id}/edit`}
+                    className="text-blue-600 hover:underline text-xs"
+                  >
+                    Edit
+                  </Link>
+                  {job.status === "active" && (
+                    <Link
+                      href={`/jobs/v/${job.slug}`}
+                      className="text-blue-600 hover:underline text-xs"
+                      target="_blank"
+                    >
+                      Public View
+                    </Link>
+                  )}
                 </TableCell>
               </TableRow>
             ))

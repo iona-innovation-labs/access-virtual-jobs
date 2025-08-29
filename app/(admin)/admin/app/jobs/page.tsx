@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { getAdminJobs } from "@/lib/api/jobs";
 import AdminJobListClient from "@/components/admin/components/admin-job-list-client";
 import { ISearchParams } from "@/types/jobs";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Admin - Jobs",
@@ -71,7 +72,15 @@ export default async function AdminJobsPage({
 
   return (
     <main className="w-full  mx-auto p-8 bg-white min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">Remote Jobs</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">My Jobs</h1>
+        <Link
+          href="/admin/app/jobs/create"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+        >
+          Create New Job
+        </Link>
+      </div>
       <AdminJobListClient
         initialJobs={jobs}
         initialTotal={total}

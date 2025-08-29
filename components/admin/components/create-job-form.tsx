@@ -23,14 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IJobListing } from "@/types/jobs";
 import { JobRichTextEditor } from "./job-rich-text-editor";
 import { TagsInput } from "./tags-input";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { fetchApi } from "@/services/fetch-api";
+import { useToast } from "@/hooks/use-toast";
 
 const jobFormSchema = z.object({
   title: z.string().min(3, "Title is required"),
@@ -41,24 +40,23 @@ const jobFormSchema = z.object({
   location: z.string().min(2, "Location required"),
   jobType: z.enum(["Freelance", "Full-time", "Part-time", "Contract"]),
   jobCategory: z.enum([
-    "Office & Administration",
-    "Marketing & Sales",
-    "Graphics & Multimedia",
-    "Web Design & Development",
-    "Software Development / Programming",
-    "Customer Service & Admin Support",
-    "Professional Services",
-    "Writing",
+    "office_administration",
+    "marketing_sales",
+    "graphics_multimedia",
+    "web_design_development",
+    "software_development_programming",
+    "customer_service_admin_support",
+    "professional_services",
+    "writing",
   ]),
   remoteAllowed: z.boolean(),
-  status: z.enum(["active", "inactive", "closed"]),
   numberOfTalents: z.coerce.number().min(1, "At least 1 talent required"),
   tags: z.array(z.string()),
 });
 
 type JobFormValues = z.infer<typeof jobFormSchema>;
 
-export default function EditJobForm({ job }: { job: IJobListing }) {
+export default function CreateJobForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -66,52 +64,54 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
   const form = useForm<JobFormValues>({
     resolver: zodResolver(jobFormSchema),
     defaultValues: {
-      title: job.title || "",
-      description: job.description || "",
-      salaryAmount: job.salaryAmount ?? 0,
-      salaryCurrency: (job.salaryCurrency as "USD" | "PHP") || "USD",
-      salaryType: job.salaryType || "hourly",
-      location: job.location || "Remote",
-      jobType: job.jobType || "Freelance",
-      jobCategory: job.jobCategory || "Office & Administration",
-      remoteAllowed: job.remoteAllowed ?? true,
-      status: job.status || "active",
-      numberOfTalents: job.numberOfTalents ?? 1,
-      tags: job.tags || [],
+      title: undefined,
+      description: "",
+      salaryAmount: 0,
+      salaryCurrency: undefined,
+      salaryType: undefined,
+      location: undefined,
+      jobType: undefined,
+      jobCategory: undefined,
+      remoteAllowed: undefined,
+      numberOfTalents: undefined,
+      tags: undefined,
     },
   });
 
-  async function onSubmit(values: JobFormValues) {
+  async function onSubmit(values: JobFormValues, action: "publish" | "draft") {
     setLoading(true);
-    console.log("Form submitted with values:", values);
-    console.log("Job ID:", job.id);
 
     try {
-      const updatedJob = await fetchApi(`/admin/jobs/${job.id}`, {
-        method: "PUT",
-        body: JSON.stringify(values),
+      const job = await fetchApi<{ id: number }>("/admin/jobs", {
+        method: "POST",
+        body: JSON.stringify({
+          ...values,
+          status: action === "publish" ? "active" : "inactive",
+        }),
       });
-
-      console.log("Job updated successfully:", updatedJob);
+      console.log("Job response:", job);
 
       toast({
         title: "Success!",
-        description: "Job updated successfully",
+        description: `Job ${action === "publish" ? "created and published" : "saved as draft"} successfully`,
         variant: "success",
       });
 
-      // Redirect to the job view page
       router.push(`/admin/app/jobs/v/${job.id}`);
-    } catch (error) {
-      console.error("Error updating job:", error);
+    } catch (error: any) {
+      console.error("Error creating job:", error);
       toast({
         title: "Error",
-        description: `Failed to update job: ${error instanceof Error ? error.message : "Unknown error"}`,
+        description: `Failed to create job: ${error.message ?? error.publicMessage}`,
         variant: "destructive",
       });
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleCancel() {
+    router.push("/admin/app/jobs");
   }
 
   return (
@@ -129,12 +129,14 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
 
       <div className="bg-white rounded-lg shadow-sm border p-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Edit Job</h1>
-          <p className="text-gray-600 mt-2">Update the job details below.</p>
+          <h1 className="text-3xl font-bold text-gray-900">Create New Job</h1>
+          <p className="text-gray-600 mt-2">
+            Fill in the details below to create a new job posting.
+          </p>
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
             <FormField
               control={form.control}
               name="title"
@@ -337,34 +339,34 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                       <SelectContent>
                         {[
                           {
-                            value: "Office & Administration",
+                            value: "office_administration",
                             label: "Office & Administration",
                           },
                           {
-                            value: "Marketing & Sales",
+                            value: "marketing_sales",
                             label: "Marketing & Sales",
                           },
                           {
-                            value: "Graphics & Multimedia",
+                            value: "graphics_multimedia",
                             label: "Graphics & Multimedia",
                           },
                           {
-                            value: "Web Design & Development",
+                            value: "web_design_development",
                             label: "Web Design & Development",
                           },
                           {
-                            value: "Software Development / Programming",
+                            value: "software_development_programming",
                             label: "Software Development / Programming",
                           },
                           {
-                            value: "Customer Service & Admin Support",
+                            value: "customer_service_admin_support",
                             label: "Customer Service & Admin Support",
                           },
                           {
-                            value: "Professional Services",
+                            value: "professional_services",
                             label: "Professional Services",
                           },
-                          { value: "Writing", label: "Writing" },
+                          { value: "writing", label: "Writing" },
                         ].map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -379,39 +381,6 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Status</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                      disabled={loading}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="border-border w-full focus:border-brand focus:ring-brand">
-                          <SelectValue placeholder="Select Status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {[
-                          { value: "active", label: "Active" },
-                          { value: "inactive", label: "Inactive" },
-                          { value: "closed", label: "Closed" },
-                        ].map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="numberOfTalents"
@@ -454,9 +423,39 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
               )}
             />
 
-            <Button type="submit" disabled={loading}>
-              Save Changes
-            </Button>
+            {/* Action Buttons */}
+            <div className="flex items-center gap-4 pt-6 border-t">
+              <Button
+                type="button"
+                onClick={() =>
+                  form.handleSubmit((values) => onSubmit(values, "publish"))()
+                }
+                disabled={loading}
+                className="bg-green-600 hover:bg-green-700"
+              >
+                Save and Publish
+              </Button>
+
+              <Button
+                type="button"
+                onClick={() =>
+                  form.handleSubmit((values) => onSubmit(values, "draft"))()
+                }
+                disabled={loading}
+                variant="outline"
+              >
+                Save as Draft
+              </Button>
+
+              <Button
+                type="button"
+                onClick={handleCancel}
+                disabled={loading}
+                variant="ghost"
+              >
+                Cancel
+              </Button>
+            </div>
           </form>
         </Form>
       </div>

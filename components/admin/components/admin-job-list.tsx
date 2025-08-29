@@ -90,12 +90,11 @@ const AdminJobList: React.FC<AdminJobListProps> = ({
         <table className="min-w-full bg-white">
           <thead>
             <tr className="bg-gray-100 text-left">
-              <th className="p-3 text-xs font-semibold">ID</th>
               <th className="p-3 text-xs font-semibold">Title</th>
               <th className="p-3 text-xs font-semibold">Status</th>
               <th className="p-3 text-xs font-semibold">Type</th>
               <th className="p-3 text-xs font-semibold">Category</th>
-              <th className="p-3 text-xs font-semibold">Posted</th>
+              <th className="p-3 text-xs font-semibold">Created At</th>
               <th className="p-3 text-xs font-semibold">Actions</th>
             </tr>
           </thead>

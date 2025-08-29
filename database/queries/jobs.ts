@@ -90,6 +90,7 @@ interface CreateJobData {
   postedById: string | null;
   numberOfTalents?: number;
   tags?: string[];
+  status?: "active" | "inactive" | "closed";
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {
@@ -547,6 +548,7 @@ export async function getTotalJobsCount(filters?: DatabaseFilters) {
 }
 
 export async function createJob(jobData: CreateJobData) {
+  console.log(jobData);
   try {
     const session = await auth();
     if (!session?.user) {
@@ -619,7 +621,7 @@ export async function createJob(jobData: CreateJobData) {
           | null,
         remoteAllowed: jobData.remoteAllowed || false,
         slug,
-        status: "active",
+        status: jobData.status || "active",
         postedById: jobData.postedById,
         numberOfTalents: jobData.numberOfTalents || 1,
         tags: jobData.tags || [],
@@ -643,8 +645,13 @@ export async function createJob(jobData: CreateJobData) {
 
 export async function updateJob(jobData: UpdateJobData) {
   try {
+    console.log("updateJob called with:", jobData);
+
     const session = await auth();
+    console.log("Session in updateJob:", session?.user?.id);
+
     if (!session?.user) {
+      console.log("No session in updateJob");
       return {
         ok: false,
         message: "Authentication required",
@@ -654,6 +661,7 @@ export async function updateJob(jobData: UpdateJobData) {
 
     const updateData: any = { ...jobData };
     delete updateData.id;
+    console.log("Update data before processing:", updateData);
 
     if (jobData.title) {
       updateData.slug = await generateUniqueSlug(jobData.title, jobData.id);
@@ -673,14 +681,27 @@ export async function updateJob(jobData: UpdateJobData) {
     }
 
     if (jobData.jobType) {
+      console.log(
+        "Mapping jobType:",
+        jobData.jobType,
+        "to:",
+        JOB_TYPE_MAPPING[jobData.jobType]
+      );
       updateData.jobType = JOB_TYPE_MAPPING[jobData.jobType];
     }
 
     if (jobData.jobCategory) {
+      console.log(
+        "Mapping jobCategory:",
+        jobData.jobCategory,
+        "to:",
+        JOB_CATEGORY_MAPPING[jobData.jobCategory]
+      );
       updateData.jobCategory = JOB_CATEGORY_MAPPING[jobData.jobCategory];
     }
 
     updateData.updatedAt = new Date();
+    console.log("Final update data:", updateData);
 
     const result = await db
       .update(jobs)
@@ -688,7 +709,10 @@ export async function updateJob(jobData: UpdateJobData) {
       .where(eq(jobs.id, jobData.id))
       .returning();
 
+    console.log("Database update result:", result);
+
     if (result.length === 0) {
+      console.log("No rows updated");
       return {
         ok: false,
         message: "Job not found",
@@ -696,12 +720,16 @@ export async function updateJob(jobData: UpdateJobData) {
       };
     }
 
+    const formatted = formatJobForResponse(result[0]);
+    console.log("Formatted response:", formatted);
+
     return {
       ok: true,
       message: "Job updated successfully",
-      data: formatJobForResponse(result[0]),
+      data: formatted,
     };
   } catch (error) {
+    console.error("Error in updateJob:", error);
     log("Error updating job:", "error", error);
     return {
       ok: false,

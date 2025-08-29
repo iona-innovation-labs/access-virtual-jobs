@@ -65,7 +65,7 @@ export interface IJobListing {
 
   // Salary
   salaryAmount: number | null;
-  salaryCurrency: string;
+  salaryCurrency: "USD" | "PHP";
   salaryType: "hourly" | "monthly" | "yearly";
   pay: string; // Formatted display string
 
@@ -133,7 +133,7 @@ export interface IJobApplicationDetails {
   resume: string;
   salaryMin: number;
   salaryMax: number;
-  salaryCurrency: string;
+  salaryCurrency: "USD" | "PHP";
   location: string;
   jobEquity: string;
   about: string;

@@ -47,16 +47,19 @@ interface FrontendFilterState {
 }
 
 interface CreateJobData {
-  title: string;
+  title?: string;
   description?: string;
   salaryAmount?: number;
-  salaryCurrency?: string;
+  salaryCurrency?: "USD" | "PHP";
   salaryType?: "hourly" | "monthly" | "yearly";
   location?: string;
   jobType?: FrontendJobType;
   jobCategory?: FrontendJobCategory;
   remoteAllowed?: boolean;
   postedById: string | null;
+  numberOfTalents?: number;
+  tags?: string[];
+  status?: "active" | "inactive" | "closed";
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {
@@ -460,6 +463,9 @@ export const createJobPost = async (
   }
 };
 
+// Export createJob for direct use
+export const createAdminJobPost = createJobInDB;
+
 /**
  * Update an existing job posting
  */
@@ -467,15 +473,22 @@ export const updateJobPost = async (
   jobData: UpdateJobData
 ): Promise<IJobListing | null> => {
   try {
+    console.log("updateJobPost called with:", jobData);
+
     const result = await updateJobInDB(jobData);
+    console.log("updateJobInDB result:", result);
 
     if (!result.ok || !result.data) {
+      console.log("updateJobInDB failed:", result.message);
       log("Failed to update job:", "error", result.message);
       return null;
     }
 
-    return formatJobForFrontend(result.data);
+    const formatted = formatJobForFrontend(result.data);
+    console.log("Formatted result:", formatted);
+    return formatted;
   } catch (error) {
+    console.error("Error in updateJobPost:", error);
     log("Error in updateJobPost:", "error", error);
     return null;
   }
