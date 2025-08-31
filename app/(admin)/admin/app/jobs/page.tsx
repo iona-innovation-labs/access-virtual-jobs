@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { getAdminJobs } from "@/lib/api/jobs";
 import AdminJobListClient from "@/components/admin/components/admin-job-list-client";
 import { ISearchParams } from "@/types/jobs";
-import Link from "next/link";
+import LinkButton from "@/components/ui/link-button";
 
 export const metadata: Metadata = {
   title: "Admin - Jobs",
@@ -74,12 +74,14 @@ export default async function AdminJobsPage({
     <main className="w-full  mx-auto p-8 bg-white min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">My Jobs</h1>
-        <Link
-          href="/admin/app/jobs/create"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          Create New Job
-        </Link>
+        <LinkButton
+          navLink={{
+            title: "Create New Job",
+            url: "/admin/app/jobs/create",
+            follow: false,
+          }}
+          variant="primary"
+        />
       </div>
       <AdminJobListClient
         initialJobs={jobs}

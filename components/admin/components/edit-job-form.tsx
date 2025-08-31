@@ -31,28 +31,40 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { fetchApi } from "@/services/fetch-api";
+import {
+  PUBLIC_JOB_CATEGORIES,
+  PUBLIC_JOB_TYPES,
+  PUBLIC_CURRENCY,
+  PUBLIC_SALARY_TYPES,
+} from "@/lib/constants";
 
 const jobFormSchema = z.object({
-  title: z.string().min(3, "Title is required"),
-  description: z.string().min(10, "Description is required"),
-  salaryAmount: z.coerce.number().min(0, "Salary must be positive"),
-  salaryCurrency: z.enum(["USD", "PHP"]),
-  salaryType: z.enum(["hourly", "monthly", "yearly"]),
-  location: z.string().min(2, "Location required"),
-  jobType: z.enum(["Freelance", "Full-time", "Part-time", "Contract"]),
-  jobCategory: z.enum([
-    "Office & Administration",
-    "Marketing & Sales",
-    "Graphics & Multimedia",
-    "Web Design & Development",
-    "Software Development / Programming",
-    "Customer Service & Admin Support",
-    "Professional Services",
-    "Writing",
-  ]),
+  title: z.string().min(3, "Please enter a job title (at least 3 characters)"),
+  description: z
+    .string()
+    .min(
+      10,
+      "Please provide a detailed job description (at least 10 characters)"
+    ),
+  salaryAmount: z.coerce.number().min(0, "Please enter a valid salary amount"),
+  salaryCurrency: z.enum(PUBLIC_CURRENCY, {
+    required_error: "Please select a currency",
+    invalid_type_error: "Please select either USD or PHP",
+  }),
+  salaryType: z.enum(PUBLIC_SALARY_TYPES, {
+    required_error: "Please select how the salary is paid",
+    invalid_type_error: "Please select hourly, monthly, or yearly",
+  }),
+  location: z
+    .string()
+    .min(2, "Please enter a location (at least 2 characters)"),
+  jobType: z.string().min(1, "Please select a job type"),
+  jobCategory: z.string().min(1, "Please select a job category"),
   remoteAllowed: z.boolean(),
   status: z.enum(["active", "inactive", "closed"]),
-  numberOfTalents: z.coerce.number().min(1, "At least 1 talent required"),
+  numberOfTalents: z.coerce
+    .number()
+    .min(1, "Please specify how many people you need for this role"),
   tags: z.array(z.string()),
 });
 
@@ -72,8 +84,8 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
       salaryCurrency: (job.salaryCurrency as "USD" | "PHP") || "USD",
       salaryType: job.salaryType || "hourly",
       location: job.location || "Remote",
-      jobType: job.jobType || "Freelance",
-      jobCategory: job.jobCategory || "Office & Administration",
+      jobType: job.jobType || PUBLIC_JOB_TYPES[0].label,
+      jobCategory: job.jobCategory || PUBLIC_JOB_CATEGORIES[0].label,
       remoteAllowed: job.remoteAllowed ?? true,
       status: job.status || "active",
       numberOfTalents: job.numberOfTalents ?? 1,
@@ -206,8 +218,11 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="PHP">PHP</SelectItem>
+                        {PUBLIC_CURRENCY.map((currency, idx) => (
+                          <SelectItem key={idx} value={currency}>
+                            {currency}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -232,13 +247,9 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {[
-                          { value: "hourly", label: "Hourly" },
-                          { value: "monthly", label: "Monthly" },
-                          { value: "yearly", label: "Yearly" },
-                        ].map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                        {PUBLIC_SALARY_TYPES.map((salaryType, idx) => (
+                          <SelectItem key={idx} value={salaryType}>
+                            {salaryType}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -301,13 +312,8 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {[
-                          { value: "Freelance", label: "Freelance" },
-                          { value: "Full-time", label: "Full-time" },
-                          { value: "Part-time", label: "Part-time" },
-                          { value: "Contract", label: "Contract" },
-                        ].map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
+                        {PUBLIC_JOB_TYPES.map((option, idx) => (
+                          <SelectItem key={idx} value={option.label}>
                             {option.label}
                           </SelectItem>
                         ))}
@@ -335,38 +341,8 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {[
-                          {
-                            value: "Office & Administration",
-                            label: "Office & Administration",
-                          },
-                          {
-                            value: "Marketing & Sales",
-                            label: "Marketing & Sales",
-                          },
-                          {
-                            value: "Graphics & Multimedia",
-                            label: "Graphics & Multimedia",
-                          },
-                          {
-                            value: "Web Design & Development",
-                            label: "Web Design & Development",
-                          },
-                          {
-                            value: "Software Development / Programming",
-                            label: "Software Development / Programming",
-                          },
-                          {
-                            value: "Customer Service & Admin Support",
-                            label: "Customer Service & Admin Support",
-                          },
-                          {
-                            value: "Professional Services",
-                            label: "Professional Services",
-                          },
-                          { value: "Writing", label: "Writing" },
-                        ].map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
+                        {PUBLIC_JOB_CATEGORIES.map((option, idx) => (
+                          <SelectItem key={idx} value={option.key}>
                             {option.label}
                           </SelectItem>
                         ))}

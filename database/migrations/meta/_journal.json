@@ -22,6 +22,27 @@
       "when": 1756496235085,
       "tag": "0002_dazzling_black_knight",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1756673846648,
+      "tag": "0003_superb_captain_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756674165136,
+      "tag": "0004_broken_argent",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1756674265832,
+      "tag": "0005_sharp_lucky_pierre",
+      "breakpoints": true
     }
   ]
 }

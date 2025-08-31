@@ -5,26 +5,16 @@ import type {
   DatabaseJobType,
   DatabaseJobCategory,
 } from "@/types/jobs";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 // CONSTANTS
 
-export const FRONTEND_JOB_TYPES: FrontendJobType[] = [
-  "Freelance",
-  "Full-time",
-  "Part-time",
-  "Contract",
-];
+export const FRONTEND_JOB_TYPES: FrontendJobType[] = PUBLIC_JOB_TYPES.map(
+  (type) => type.label
+);
 
-export const FRONTEND_JOB_CATEGORIES: FrontendJobCategory[] = [
-  "Office & Administration",
-  "Marketing & Sales",
-  "Graphics & Multimedia",
-  "Web Design & Development",
-  "Software Development / Programming",
-  "Customer Service & Admin Support",
-  "Professional Services",
-  "Writing",
-];
+export const FRONTEND_JOB_CATEGORIES: FrontendJobCategory[] =
+  PUBLIC_JOB_CATEGORIES.map((category) => category.label);
 
 export const FRONTEND_SALARY_RANGES: FrontendSalaryRange[] = [
   "Less than $3",
@@ -43,19 +33,11 @@ export const JOB_TYPE_MAPPING: Record<FrontendJobType, DatabaseJobType> = {
   Contract: "contract",
 };
 
-export const JOB_CATEGORY_MAPPING: Record<
-  FrontendJobCategory,
-  DatabaseJobCategory
-> = {
-  "Office & Administration": "office_administration",
-  "Marketing & Sales": "marketing_sales",
-  "Graphics & Multimedia": "graphics_multimedia",
-  "Web Design & Development": "web_design_development",
-  "Software Development / Programming": "software_development_programming",
-  "Customer Service & Admin Support": "customer_service_admin_support",
-  "Professional Services": "professional_services",
-  Writing: "writing",
-};
+// Updated job category mapping using constants
+export const JOB_CATEGORY_MAPPING: Record<string, string> = {};
+PUBLIC_JOB_CATEGORIES.forEach((category) => {
+  JOB_CATEGORY_MAPPING[category.label] = category.key;
+});
 
 // Reverse mappings
 export const DB_TO_FRONTEND_JOB_TYPE: Record<DatabaseJobType, FrontendJobType> =
@@ -94,7 +76,11 @@ export function dbToFrontendJobType(dbType: DatabaseJobType): FrontendJobType {
 export function frontendToDbJobCategory(
   frontendCategory: FrontendJobCategory
 ): DatabaseJobCategory {
-  return JOB_CATEGORY_MAPPING[frontendCategory];
+  // Ensure we have a valid mapping by checking if the category exists
+  if (!(frontendCategory in JOB_CATEGORY_MAPPING)) {
+    throw new Error(`Invalid job category: ${frontendCategory}`);
+  }
+  return JOB_CATEGORY_MAPPING[frontendCategory] as DatabaseJobCategory;
 }
 
 /**

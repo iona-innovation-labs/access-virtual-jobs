@@ -28,6 +28,7 @@ import { eq, and, ilike, desc, count } from "drizzle-orm";
 import { jobApplications } from "@/database/schema/job-applications";
 import { jobs } from "@/database/schema/jobs";
 import { db } from "@/database";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 interface FetchJobListingsConfig {
   sort_by?: string;
@@ -630,23 +631,13 @@ export const parseLegacyJobId = (podioId: string): number | null => {
 
 // EXPORT VALIDATION CONSTANTS
 
-export const JOB_TYPES: FrontendJobType[] = [
-  "Freelance",
-  "Full-time",
-  "Part-time",
-  "Contract",
-];
+export const JOB_TYPES: FrontendJobType[] = PUBLIC_JOB_TYPES.map(
+  (type) => type.label
+);
 
-export const JOB_CATEGORIES: FrontendJobCategory[] = [
-  "Office & Administration",
-  "Marketing & Sales",
-  "Graphics & Multimedia",
-  "Web Design & Development",
-  "Software Development / Programming",
-  "Customer Service & Admin Support",
-  "Professional Services",
-  "Writing",
-];
+export const JOB_CATEGORIES: FrontendJobCategory[] = PUBLIC_JOB_CATEGORIES.map(
+  (category) => category.label
+);
 
 export const SALARY_RANGES: FrontendSalaryRange[] = [
   "Less than $3",

@@ -8,19 +8,21 @@ const linkButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primaryBlue text-neutralLightZinc hover:bg-primaryBlue/80",
+        default: "bg-primary text-primary-foreground hover:bg-primary/80",
         defaultOutline:
-          "border border-primaryBlue bg-transparent hover:bg-primaryBrightAqua text-primaryBlue",
-        primary:
-          "bg-primaryBrightAqua text-deepZinc hover:bg-deepBlue hover:text-white",
-        secondary: "bg-deepBlue text-neutralLightZinc hover:bg-oceanBlue",
+          "border border-primary bg-transparent hover:bg-primary text-primary-foreground",
+        primary: "bg-brand text-white hover:bg-brand-dark",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         outline:
-          "border border-deepZinc bg-neutralLightZinc hover:bg-zinc-300 text-deepZinc",
-        link: "text-white underline-offset-4 hover:text-zinc-100 underline bg-transparent border-none",
+          "border border-border bg-background hover:bg-accent text-foreground",
+        link: "text-foreground underline-offset-4 hover:text-accent-foreground underline bg-transparent border-none",
         link2:
-          "text-deepZinc underline-offset-4 hover:text-primaryBlue underline bg-transparent border-none",
-        light: "bg-white text-deepZinc hover:bg-zinc-200 hover:text-deepBlue",
-        destructive: "bg-red-500  destructive text-white hover:bg-red-400",
+          "text-muted-foreground underline-offset-4 hover:text-primary underline bg-transparent border-none",
+        light:
+          "bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/80",
       },
       size: {
         default: "h-10 px-5 py-2",

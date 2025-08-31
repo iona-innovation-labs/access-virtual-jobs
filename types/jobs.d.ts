@@ -1,4 +1,8 @@
-import { JOB_SEARCH_STATUS } from "@/lib/constants";
+import {
+  JOB_SEARCH_STATUS,
+  PUBLIC_JOB_CATEGORIES,
+  PUBLIC_JOB_TYPES,
+} from "@/lib/constants";
 
 export interface Position {
   title?: string;
@@ -14,31 +18,13 @@ export type DatabaseJobType =
   | "part-time"
   | "contract";
 
-export type DatabaseJobCategory =
-  | "office_administration"
-  | "marketing_sales"
-  | "graphics_multimedia"
-  | "web_design_development"
-  | "software_development_programming"
-  | "customer_service_admin_support"
-  | "professional_services"
-  | "writing";
+// Updated to use the keys from constants
+export type DatabaseJobCategory = (typeof PUBLIC_JOB_CATEGORIES)[number]["key"];
 
-export type FrontendJobType =
-  | "Freelance"
-  | "Full-time"
-  | "Part-time"
-  | "Contract";
+export type FrontendJobType = (typeof PUBLIC_JOB_TYPES)[number]["label"];
 
 export type FrontendJobCategory =
-  | "Office & Administration"
-  | "Marketing & Sales"
-  | "Graphics & Multimedia"
-  | "Web Design & Development"
-  | "Software Development / Programming"
-  | "Customer Service & Admin Support"
-  | "Professional Services"
-  | "Writing";
+  (typeof PUBLIC_JOB_CATEGORIES)[number]["label"];
 
 export type FrontendSalaryRange =
   | "Less than $3"

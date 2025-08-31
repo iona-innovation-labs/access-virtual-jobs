@@ -22,27 +22,24 @@ import type {
   FrontendJobType,
   FrontendJobCategory,
   FrontendSalaryRange,
+  DatabaseJobCategory,
+  DatabaseJobType,
 } from "@/types/jobs";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 // FRONTEND TO DATABASE MAPPING
 
-const JOB_TYPE_MAPPING: Record<FrontendJobType, string> = {
-  Freelance: "freelance",
-  "Full-time": "full-time",
-  "Part-time": "part-time",
-  Contract: "contract",
-};
+// Updated job type mapping using constants
+const JOB_TYPE_MAPPING: Record<string, string> = {};
+PUBLIC_JOB_TYPES.forEach((type) => {
+  JOB_TYPE_MAPPING[type.label] = type.key;
+});
 
-const JOB_CATEGORY_MAPPING: Record<FrontendJobCategory, string> = {
-  "Office & Administration": "office_administration",
-  "Marketing & Sales": "marketing_sales",
-  "Graphics & Multimedia": "graphics_multimedia",
-  "Web Design & Development": "web_design_development",
-  "Software Development / Programming": "software_development_programming",
-  "Customer Service & Admin Support": "customer_service_admin_support",
-  "Professional Services": "professional_services",
-  Writing: "writing",
-};
+// Updated job category mapping using constants
+const JOB_CATEGORY_MAPPING: Record<string, string> = {};
+PUBLIC_JOB_CATEGORIES.forEach((category) => {
+  JOB_CATEGORY_MAPPING[category.label] = category.key;
+});
 
 // Reverse mappings
 const DB_TO_FRONTEND_JOB_TYPE = Object.fromEntries(
@@ -603,22 +600,8 @@ export async function createJob(jobData: CreateJobData) {
         salaryCurrency: jobData.salaryCurrency || "USD",
         salaryType: jobData.salaryType || "hourly",
         location: jobData.location?.trim() ?? null,
-        jobType: dbJobType as
-          | "freelance"
-          | "full-time"
-          | "part-time"
-          | "contract"
-          | null,
-        jobCategory: dbJobCategory as
-          | "office_administration"
-          | "marketing_sales"
-          | "graphics_multimedia"
-          | "web_design_development"
-          | "software_development_programming"
-          | "customer_service_admin_support"
-          | "professional_services"
-          | "writing"
-          | null,
+        jobType: dbJobType as DatabaseJobType | null,
+        jobCategory: dbJobCategory as DatabaseJobCategory | null,
         remoteAllowed: jobData.remoteAllowed || false,
         slug,
         status: jobData.status || "active",

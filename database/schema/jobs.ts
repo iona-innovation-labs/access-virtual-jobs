@@ -10,6 +10,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+import { PUBLIC_JOB_CATEGORIES } from "@/lib/constants";
 // import { users } from "./users";
 
 // Enums to match your frontend component exactly
@@ -24,16 +25,13 @@ export const jobTypeEnum = pgEnum("job_type", [
   "part-time",
   "contract",
 ]);
-export const jobCategoryEnum = pgEnum("job_category", [
-  "office_administration",
-  "marketing_sales",
-  "graphics_multimedia",
-  "web_design_development",
-  "software_development_programming",
-  "customer_service_admin_support",
-  "professional_services",
-  "writing",
-]);
+
+// Updated to use the new categories from constants
+export const jobCategoryEnum = pgEnum(
+  "job_category",
+  PUBLIC_JOB_CATEGORIES.map((cat) => cat.key) as [string, ...string[]]
+);
+
 export const salaryTypeEnum = pgEnum("salary_type", [
   "hourly",
   "monthly",
