@@ -16,6 +16,18 @@ import Scale3 from "../public/images/landing-feature/3.jpg";
 import Scale4 from "../public/images/landing-feature/4.jpg";
 import Scale5 from "../public/images/landing-feature/5.jpg";
 
+// Job category images
+import ExecutiveAssistantImage from "../public/images/job-categories/executive_assistant_administrative_assistant.png";
+import CustomerSupportImage from "../public/images/job-categories/customer_support_assistant.png";
+import SocialMediaManagerImage from "../public/images/job-categories/social_media_manager.png";
+import ContentWriterImage from "../public/images/job-categories/content_writer_copywriter.png";
+import SEOSpecialistImage from "../public/images/job-categories/seo_specialist.png";
+import PaidAdsSpecialistImage from "../public/images/job-categories/paid_ads_specialist.png";
+import EcommerceManagerImage from "../public/images/job-categories/ecommerce_store_manager.png";
+import BookkeepingImage from "../public/images/job-categories/bookkeeping_finance_assistant.png";
+import GraphicDesignerImage from "../public/images/job-categories/graphic_designer.png";
+import WebDeveloperImage from "../public/images/job-categories/web_developer.png";
+
 export const landingPage = {
   hero: {
     title: "The Job Board for Virtual Workers in the Philippines",
@@ -236,6 +248,72 @@ export const landingPage = {
       },
 
       { image: Scale3, alt: "Web Development", label: "Web Development" },
+    ],
+  },
+  categories: {
+    title: "Popular Virtual Job Categories",
+    items: [
+      {
+        image: CustomerSupportImage,
+        alt: "Customer Support Assistant",
+        label: "Customer Support Assistant",
+        link: "/jobs?jobCategory=Customer+Support+Assistant",
+      },
+
+      {
+        image: ContentWriterImage,
+        alt: "Content Writer / Copywriter",
+        label: "Content Writer / Copywriter",
+        link: "/jobs?jobCategory=Content+Writer+%2F+Copywriter",
+      },
+      {
+        image: SEOSpecialistImage,
+        alt: "SEO Specialist",
+        label: "SEO Specialist",
+        link: "/jobs?jobCategory=SEO+Specialist",
+      },
+      {
+        image: PaidAdsSpecialistImage,
+        alt: "Paid Ads Specialist (Meta/Google Ads Manager)",
+        label: "Paid Ads Specialist (Meta/Google Ads Manager)",
+        link: "/jobs?jobCategory=Paid+Ads+Specialist+%28Meta%2FGoogle+Ads+Manager%29",
+      },
+      {
+        image: EcommerceManagerImage,
+        alt: "E-Commerce Store Manager (Amazon, Shopify, Walmart)",
+        label: "E-Commerce Store Manager (Amazon, Shopify, Walmart)",
+        link: "/jobs?jobCategory=E-Commerce+Store+Manager+%28Amazon%2C+Shopify%2C+Walmart%29",
+      },
+      {
+        image: BookkeepingImage,
+        alt: "Bookkeeping / Finance Assistant",
+        label: "Bookkeeping / Finance Assistant",
+        link: "/jobs?jobCategory=Bookkeeping+%2F+Finance+Assistant",
+      },
+      {
+        image: SocialMediaManagerImage,
+        alt: "Social Media Manager",
+        label: "Social Media Manager",
+        link: "/jobs?jobCategory=Social+Media+Manager",
+      },
+      {
+        image: GraphicDesignerImage,
+        alt: "Graphic Designer",
+        label: "Graphic Designer",
+        link: "/jobs?jobCategory=Graphic+Designer",
+      },
+      {
+        image: WebDeveloperImage,
+        alt: "Web Developer (Frontend / Backend / Full-stack)",
+        label: "Web Developer (Frontend / Backend / Full-stack)",
+        link: "/jobs?jobCategory=Web+Developer+%28Frontend+%2F+Backend+%2F+Full-stack%29",
+      },
+      {
+        image: ExecutiveAssistantImage,
+        alt: "Executive Assistant / Administrative Assistant",
+        label: "Executive Assistant / Administrative Assistant",
+        link: "/jobs?jobCategory=Executive+Assistant+%2F+Administrative+Assistant",
+      },
     ],
   },
   faqs: {

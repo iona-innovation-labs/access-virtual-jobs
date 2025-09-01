@@ -342,7 +342,7 @@ export default function EditJobForm({ job }: { job: IJobListing }) {
                       </FormControl>
                       <SelectContent>
                         {PUBLIC_JOB_CATEGORIES.map((option, idx) => (
-                          <SelectItem key={idx} value={option.key}>
+                          <SelectItem key={idx} value={option.label}>
                             {option.label}
                           </SelectItem>
                         ))}
