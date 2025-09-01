@@ -108,6 +108,8 @@ const AdminApplicationStatusTab = ({
           description:
             "Application status and progress have been updated successfully.",
         });
+        // Reload the page to reflect the updated data
+        window.location.reload();
       } else {
         toast({
           title: "Update Failed",

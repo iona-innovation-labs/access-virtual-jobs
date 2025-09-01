@@ -134,7 +134,7 @@ export function LatestApplicationsCard({
                     </span>
                   </div>
                   <Link
-                    href={`/admin/app/submissions/${application.applicationPublicId}`}
+                    href={`/admin/app/submissions/v/${application.applicationPublicId}`}
                     className="text-xs text-indigo-600 hover:text-indigo-800 font-medium whitespace-nowrap"
                   >
                     View Details
