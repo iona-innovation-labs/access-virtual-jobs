@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 import { UserRole } from "@/database/schema/users";
 
 declare module "next-auth" {

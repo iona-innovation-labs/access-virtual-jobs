@@ -32,7 +32,7 @@ import { useToast } from "@/hooks/use-toast";
 // Zod Schema
 const ContactInformationSchema = z.object({
   address: z.string().min(1, "Address is required"),
-  whatsappId: z.string().min(1, "Whatsapp ID is required"),
+  whatsappId: z.string().min(1, "WhatsApp is required"),
   phones: z.array(
     z.object({
       number: z.string().min(1, "Phone number is required"),
@@ -244,10 +244,10 @@ export const ContactInformationSection = ({
                         className={errors.address ? "border-red-500" : ""}
                       />
                       <div className="bg-muted/50 mt-2  rounded-sm p-1 text-foreground/50 px-2">
-                        <p className="text-xs text-muted-foreground">
-                          it needs to be similar to the Address Verification
-                          image you are going to upload
-                        </p>
+                        {/* <p className="text-xs text-muted-foreground">
+                          This needs to be similar to the Address Verification
+                          image you are going to upload ()
+                        </p> */}
                       </div>
                       {errors.address && (
                         <p className="text-red-500 text-xs mt-1">
@@ -259,9 +259,9 @@ export const ContactInformationSection = ({
                 />
               </InfoItem>
 
-              {/* Whatsapp ID */}
+              {/* WhatsApp */}
               <InfoItem
-                label="Whatsapp ID"
+                label="WhatsApp"
                 icon={
                   <MessageCircle className="w-4 h-4 text-muted-foreground" />
                 }
@@ -274,7 +274,7 @@ export const ContactInformationSection = ({
                     <div>
                       <Input
                         {...field}
-                        placeholder="e.g., john.smith.skype"
+                        placeholder="+639 123 456 789"
                         disabled={loading || isSubmitting}
                         className={errors.whatsappId ? "border-red-500" : ""}
                       />
@@ -490,7 +490,7 @@ export const ContactInformationSection = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <p>• Use international format for phone numbers</p>
                 <p>• Add multiple contact methods for flexibility</p>
-                <p>• Ensure Whatsapp ID is active and accessible</p>
+                <p>• Ensure WhatsApp is active</p>
                 <p>• Primary email should be professional</p>
               </div>
             </div>

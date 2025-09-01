@@ -178,7 +178,7 @@ export async function GET(
               label: "Email Addresses",
               value: profile.emails?.length > 0,
             },
-            { key: "whatsappId", label: "Whatsapp ID", value: profile.whatsappId },
+            { key: "whatsappId", label: "WhatsApp", value: profile.whatsappId },
             // Exclude phones for public view
           ],
           completed: 0,

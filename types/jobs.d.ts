@@ -1,4 +1,4 @@
-import { JOB_SEARCH_STATUS } from "@/lib/constants";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 export interface Position {
   title?: string;
@@ -14,31 +14,13 @@ export type DatabaseJobType =
   | "part-time"
   | "contract";
 
-export type DatabaseJobCategory =
-  | "office_administration"
-  | "marketing_sales"
-  | "graphics_multimedia"
-  | "web_design_development"
-  | "software_development_programming"
-  | "customer_service_admin_support"
-  | "professional_services"
-  | "writing";
+// Updated to use the keys from constants
+export type DatabaseJobCategory = (typeof PUBLIC_JOB_CATEGORIES)[number]["key"];
 
-export type FrontendJobType =
-  | "Freelance"
-  | "Full-time"
-  | "Part-time"
-  | "Contract";
+export type FrontendJobType = (typeof PUBLIC_JOB_TYPES)[number]["label"];
 
 export type FrontendJobCategory =
-  | "Office & Administration"
-  | "Marketing & Sales"
-  | "Graphics & Multimedia"
-  | "Web Design & Development"
-  | "Software Development / Programming"
-  | "Customer Service & Admin Support"
-  | "Professional Services"
-  | "Writing";
+  (typeof PUBLIC_JOB_CATEGORIES)[number]["label"];
 
 export type FrontendSalaryRange =
   | "Less than $3"
@@ -46,6 +28,16 @@ export type FrontendSalaryRange =
   | "$5 - $7.99"
   | "$8 - $9.99"
   | "More than $10";
+
+export interface IPodioJobListing {
+  id: string;
+  title: string;
+  pay: string;
+  url: string;
+  createdAt: string;
+  postedBy: string;
+  description: string;
+}
 
 // Basic job listing interface
 export interface IJobListing {
@@ -55,7 +47,7 @@ export interface IJobListing {
 
   // Salary
   salaryAmount: number | null;
-  salaryCurrency: string;
+  salaryCurrency: "USD" | "PHP";
   salaryType: "hourly" | "monthly" | "yearly";
   pay: string; // Formatted display string
 
@@ -81,7 +73,6 @@ export interface IJobListing {
 
   numberOfTalents?: number;
   tags?: string[];
-  alsoPostedOn?: string[];
 }
 
 export interface PositionProps {
@@ -124,7 +115,7 @@ export interface IJobApplicationDetails {
   resume: string;
   salaryMin: number;
   salaryMax: number;
-  salaryCurrency: string;
+  salaryCurrency: "USD" | "PHP";
   location: string;
   jobEquity: string;
   about: string;
@@ -159,8 +150,15 @@ export interface IJobApplication {
   userId: string;
   profileId: number;
   jobId: number; // Now references jobs.id
-  status: JOB_SEARCH_STATUS;
+  status: string; // Changed from JOB_SEARCH_STATUS to string for flexibility
   progress: Progress;
   submittedAt: Date;
   job?: IJobListing; // Optional populated job details
+  user?: {
+    id: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  }; // Optional populated user details
 }

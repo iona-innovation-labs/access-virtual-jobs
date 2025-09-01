@@ -22,27 +22,24 @@ import type {
   FrontendJobType,
   FrontendJobCategory,
   FrontendSalaryRange,
+  DatabaseJobCategory,
+  DatabaseJobType,
 } from "@/types/jobs";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 // FRONTEND TO DATABASE MAPPING
 
-const JOB_TYPE_MAPPING: Record<FrontendJobType, string> = {
-  Freelance: "freelance",
-  "Full-time": "full-time",
-  "Part-time": "part-time",
-  Contract: "contract",
-};
+// Updated job type mapping using constants
+const JOB_TYPE_MAPPING: Record<string, string> = {};
+PUBLIC_JOB_TYPES.forEach((type) => {
+  JOB_TYPE_MAPPING[type.label] = type.key;
+});
 
-const JOB_CATEGORY_MAPPING: Record<FrontendJobCategory, string> = {
-  "Office & Administration": "office_administration",
-  "Marketing & Sales": "marketing_sales",
-  "Graphics & Multimedia": "graphics_multimedia",
-  "Web Design & Development": "web_design_development",
-  "Software Development / Programming": "software_development_programming",
-  "Customer Service & Admin Support": "customer_service_admin_support",
-  "Professional Services": "professional_services",
-  Writing: "writing",
-};
+// Updated job category mapping using constants
+const JOB_CATEGORY_MAPPING: Record<string, string> = {};
+PUBLIC_JOB_CATEGORIES.forEach((category) => {
+  JOB_CATEGORY_MAPPING[category.label] = category.key;
+});
 
 // Reverse mappings
 const DB_TO_FRONTEND_JOB_TYPE = Object.fromEntries(
@@ -81,7 +78,7 @@ interface CreateJobData {
   title?: string;
   description?: string;
   salaryAmount?: number;
-  salaryCurrency?: string;
+  salaryCurrency?: "PHP" | "USD";
   salaryType?: "hourly" | "monthly" | "yearly";
   location?: string;
   jobType?: FrontendJobType;
@@ -90,7 +87,7 @@ interface CreateJobData {
   postedById: string | null;
   numberOfTalents?: number;
   tags?: string[];
-  alsoPostedOn?: string[];
+  status?: "active" | "inactive" | "closed";
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {
@@ -282,12 +279,17 @@ async function generateUniqueSlug(
 
 // CORE QUERY FUNCTIONS
 
-export async function getJobs(config: QueryConfig = {}) {
+export async function getJobs(config: QueryConfig = {}, isAdmin = false) {
   try {
-    const conditions: (SQL | undefined)[] = [eq(jobs.status, "active")];
+    const conditions: (SQL | undefined)[] = [
+      isAdmin
+        ? inArray(jobs.status, ["active", "inactive", "closed"])
+        : eq(jobs.status, "active"),
+    ];
 
     if (config.filters) {
       const { filters } = config;
+      console.log("FILTERS", filters);
       if (filters.status) {
         conditions[0] = eq(jobs.status, filters.status);
       }
@@ -361,7 +363,6 @@ export async function getJobs(config: QueryConfig = {}) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -410,7 +411,6 @@ export async function getJobById(id: number) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -462,7 +462,6 @@ export async function getJobBySlug(slug: string) {
         postedByName: users.name,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
       })
       .from(jobs)
       .leftJoin(users, eq(jobs.postedById, users.id))
@@ -546,6 +545,7 @@ export async function getTotalJobsCount(filters?: DatabaseFilters) {
 }
 
 export async function createJob(jobData: CreateJobData) {
+  console.log(jobData);
   try {
     const session = await auth();
     if (!session?.user) {
@@ -600,29 +600,14 @@ export async function createJob(jobData: CreateJobData) {
         salaryCurrency: jobData.salaryCurrency || "USD",
         salaryType: jobData.salaryType || "hourly",
         location: jobData.location?.trim() ?? null,
-        jobType: dbJobType as
-          | "freelance"
-          | "full-time"
-          | "part-time"
-          | "contract"
-          | null,
-        jobCategory: dbJobCategory as
-          | "office_administration"
-          | "marketing_sales"
-          | "graphics_multimedia"
-          | "web_design_development"
-          | "software_development_programming"
-          | "customer_service_admin_support"
-          | "professional_services"
-          | "writing"
-          | null,
+        jobType: dbJobType as DatabaseJobType | null,
+        jobCategory: dbJobCategory as DatabaseJobCategory | null,
         remoteAllowed: jobData.remoteAllowed || false,
         slug,
-        status: "active",
+        status: jobData.status || "active",
         postedById: jobData.postedById,
         numberOfTalents: jobData.numberOfTalents || 1,
         tags: jobData.tags || [],
-        alsoPostedOn: jobData.alsoPostedOn || [],
       } satisfies typeof jobs.$inferInsert)
       .returning();
 
@@ -643,8 +628,13 @@ export async function createJob(jobData: CreateJobData) {
 
 export async function updateJob(jobData: UpdateJobData) {
   try {
+    console.log("updateJob called with:", jobData);
+
     const session = await auth();
+    console.log("Session in updateJob:", session?.user?.id);
+
     if (!session?.user) {
+      console.log("No session in updateJob");
       return {
         ok: false,
         message: "Authentication required",
@@ -654,6 +644,7 @@ export async function updateJob(jobData: UpdateJobData) {
 
     const updateData: any = { ...jobData };
     delete updateData.id;
+    console.log("Update data before processing:", updateData);
 
     if (jobData.title) {
       updateData.slug = await generateUniqueSlug(jobData.title, jobData.id);
@@ -673,14 +664,27 @@ export async function updateJob(jobData: UpdateJobData) {
     }
 
     if (jobData.jobType) {
+      console.log(
+        "Mapping jobType:",
+        jobData.jobType,
+        "to:",
+        JOB_TYPE_MAPPING[jobData.jobType]
+      );
       updateData.jobType = JOB_TYPE_MAPPING[jobData.jobType];
     }
 
     if (jobData.jobCategory) {
+      console.log(
+        "Mapping jobCategory:",
+        jobData.jobCategory,
+        "to:",
+        JOB_CATEGORY_MAPPING[jobData.jobCategory]
+      );
       updateData.jobCategory = JOB_CATEGORY_MAPPING[jobData.jobCategory];
     }
 
     updateData.updatedAt = new Date();
+    console.log("Final update data:", updateData);
 
     const result = await db
       .update(jobs)
@@ -688,7 +692,10 @@ export async function updateJob(jobData: UpdateJobData) {
       .where(eq(jobs.id, jobData.id))
       .returning();
 
+    console.log("Database update result:", result);
+
     if (result.length === 0) {
+      console.log("No rows updated");
       return {
         ok: false,
         message: "Job not found",
@@ -696,12 +703,16 @@ export async function updateJob(jobData: UpdateJobData) {
       };
     }
 
+    const formatted = formatJobForResponse(result[0]);
+    console.log("Formatted response:", formatted);
+
     return {
       ok: true,
       message: "Job updated successfully",
-      data: formatJobForResponse(result[0]),
+      data: formatted,
     };
   } catch (error) {
+    console.error("Error in updateJob:", error);
     log("Error updating job:", "error", error);
     return {
       ok: false,

@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PUBLIC_JOB_TYPES, PUBLIC_JOB_CATEGORIES } from "@/lib/constants";
 
 interface FilterState {
   query: string;
@@ -125,19 +126,10 @@ export default function JobFilter({
     },
   ];
 
-  // Filter options
-  const jobTypes = ["Freelance", "Full-time", "Part-time", "Contract"];
+  // Filter options - Updated to use constants
+  const jobTypes = PUBLIC_JOB_TYPES.map((type) => type.label);
 
-  const jobCategories = [
-    "Office & Administration",
-    "Marketing & Sales",
-    "Graphics & Multimedia",
-    "Web Design & Development",
-    "Software Development / Programming",
-    "Customer Service & Admin Support",
-    "Professional Services",
-    "Writing",
-  ];
+  const jobCategories = PUBLIC_JOB_CATEGORIES.map((category) => category.label);
 
   const salaryRanges = [
     "Less than $3",

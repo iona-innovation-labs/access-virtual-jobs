@@ -11,8 +11,24 @@ import JobHeader from "@/components/jobs/job-header";
 import { JobListSkeleton } from "@/components/jobs/job-list-skeleton";
 
 export const metadata: Metadata = {
-  title: "Explore Jobs",
-  description: "Explore and apply for jobs through Applicant portal",
+  title: "Explore your next remote work & VA job here | Access Virtual Jobs",
+  description:
+    "Connect with top virtual job opportunities from leading companies. Join thousands of professionals building successful remote careers with flexible schedules and competitive compensation.",
+
+  keywords: [
+    "virtual jobs",
+    "remote work opportunities",
+    "online employment",
+    "work from home careers",
+    "virtual assistant jobs",
+    "freelance opportunities",
+    "digital nomad positions",
+    "remote job board",
+    "virtual staffing",
+    "online job platform",
+    "flexible work arrangements",
+    "remote employment solutions",
+  ],
 };
 
 // Separate component for the job content to enable Suspense

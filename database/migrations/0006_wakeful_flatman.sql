@@ -1,0 +1,1 @@
+ALTER TABLE "jobs" ADD COLUMN "podio_item_id" text DEFAULT '';

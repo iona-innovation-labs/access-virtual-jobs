@@ -7,11 +7,11 @@ import path from "path";
 export const metadata: Metadata = {
   title: "Blog - Access Virtual Jobs",
   description:
-    "Insights, tips, and guidance for navigating the world of virtual jobs and remote work.",
+    "Insights, tips, and guidance for navigating the world of VA jobs and remote work.",
   openGraph: {
-    title: "AVJ Blog - Remote Work Insights",
+    title: "AVJ Blog - VA Jobs & Remote Work Insights",
     description:
-      "Expert advice and tips for succeeding in virtual jobs and remote work.",
+      "Expert advice and tips for succeeding in VA jobs and remote work.",
     images: ["/images/blog/blog-og-image.jpg"],
   },
 };

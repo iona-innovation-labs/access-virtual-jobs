@@ -24,6 +24,11 @@ import type {
   Progress,
 } from "@/types/jobs";
 import { log } from "@/lib/logs";
+import { eq, and, ilike, desc, count, or, asc } from "drizzle-orm";
+import { jobApplications } from "@/database/schema/job-applications";
+import { jobs } from "@/database/schema/jobs";
+import { db } from "@/database";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 interface FetchJobListingsConfig {
   sort_by?: string;
@@ -43,16 +48,19 @@ interface FrontendFilterState {
 }
 
 interface CreateJobData {
-  title: string;
+  title?: string;
   description?: string;
   salaryAmount?: number;
-  salaryCurrency?: string;
+  salaryCurrency?: "USD" | "PHP";
   salaryType?: "hourly" | "monthly" | "yearly";
   location?: string;
   jobType?: FrontendJobType;
   jobCategory?: FrontendJobCategory;
   remoteAllowed?: boolean;
   postedById: string | null;
+  numberOfTalents?: number;
+  tags?: string[];
+  status?: "active" | "inactive" | "closed";
 }
 
 interface UpdateJobData extends Partial<CreateJobData> {
@@ -456,6 +464,9 @@ export const createJobPost = async (
   }
 };
 
+// Export createJob for direct use
+export const createAdminJobPost = createJobInDB;
+
 /**
  * Update an existing job posting
  */
@@ -463,15 +474,22 @@ export const updateJobPost = async (
   jobData: UpdateJobData
 ): Promise<IJobListing | null> => {
   try {
+    console.log("updateJobPost called with:", jobData);
+
     const result = await updateJobInDB(jobData);
+    console.log("updateJobInDB result:", result);
 
     if (!result.ok || !result.data) {
+      console.log("updateJobInDB failed:", result.message);
       log("Failed to update job:", "error", result.message);
       return null;
     }
 
-    return formatJobForFrontend(result.data);
+    const formatted = formatJobForFrontend(result.data);
+    console.log("Formatted result:", formatted);
+    return formatted;
   } catch (error) {
+    console.error("Error in updateJobPost:", error);
     log("Error in updateJobPost:", "error", error);
     return null;
   }
@@ -613,23 +631,13 @@ export const parseLegacyJobId = (podioId: string): number | null => {
 
 // EXPORT VALIDATION CONSTANTS
 
-export const JOB_TYPES: FrontendJobType[] = [
-  "Freelance",
-  "Full-time",
-  "Part-time",
-  "Contract",
-];
+export const JOB_TYPES: FrontendJobType[] = PUBLIC_JOB_TYPES.map(
+  (type) => type.label
+);
 
-export const JOB_CATEGORIES: FrontendJobCategory[] = [
-  "Office & Administration",
-  "Marketing & Sales",
-  "Graphics & Multimedia",
-  "Web Design & Development",
-  "Software Development / Programming",
-  "Customer Service & Admin Support",
-  "Professional Services",
-  "Writing",
-];
+export const JOB_CATEGORIES: FrontendJobCategory[] = PUBLIC_JOB_CATEGORIES.map(
+  (category) => category.label
+);
 
 export const SALARY_RANGES: FrontendSalaryRange[] = [
   "Less than $3",
@@ -638,3 +646,245 @@ export const SALARY_RANGES: FrontendSalaryRange[] = [
   "$8 - $9.99",
   "More than $10",
 ];
+
+/**
+ * Fetch jobs for the admin portal with status and search filters
+ */
+export const getAdminJobs = async ({
+  status,
+  search = "",
+  sortBy = "createdAt",
+  sortDesc = true,
+  page = 1,
+  limit = 10,
+}: {
+  status?: string;
+  search?: string;
+  sortBy?: string;
+  sortDesc?: boolean;
+  page?: number;
+  limit?: number;
+}): Promise<FetchJobListingsResponse | null> => {
+  try {
+    const filters: Record<string, any> = {};
+    if (status) {
+      filters.status = status;
+    }
+    if (search) {
+      filters.search = search;
+    }
+    const offset = (page - 1) * limit;
+    const queryConfig = {
+      filters,
+      limit,
+      offset,
+      sortBy: sortBy as "createdAt" | "title" | "salaryAmount",
+      sortDesc,
+    };
+    const [jobsResult, totalCountResult] = await Promise.all([
+      getJobsFromDB(queryConfig, true),
+      getTotalJobsCount(queryConfig.filters),
+    ]);
+    if (!jobsResult.ok) {
+      return {
+        success: false,
+        items: [],
+        total: 0,
+        all: 0,
+      };
+    }
+    const formattedJobs = jobsResult.data.map((job) =>
+      formatJobForFrontend(job, false)
+    );
+    const totalCount = totalCountResult.ok ? totalCountResult.data : 0;
+    return {
+      success: true,
+      items: formattedJobs,
+      total: formattedJobs.length,
+      all: totalCount,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNext: offset + limit < totalCount,
+        hasPrev: offset > 0,
+      },
+    };
+  } catch (error: any) {
+    console.error("Error in getAdminJobs:", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+    };
+  }
+};
+
+/**
+ * Fetch all job applications for admin, with job details and pagination
+ */
+export const getAdminJobApplications = async ({
+  page = 1,
+  limit = 20,
+  status,
+  search,
+  sortBy = "submittedAt",
+  sortDesc = true,
+}: {
+  page?: number;
+  limit?: number;
+  status?: string;
+  search?: string;
+  sortBy?: string;
+  sortDesc?: boolean;
+}): Promise<{
+  success: boolean;
+  items: IJobApplication[];
+  total: number;
+  all: number;
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  };
+}> => {
+  try {
+    const offset = (page - 1) * limit;
+    const filters: any[] = [];
+    if (status && status !== "all")
+      filters.push(eq(jobApplications.status, status));
+    if (search) {
+      // Import users table
+      const { users } = await import("@/database/schema/users");
+      // Search in job title, user name, or application public ID
+      filters.push(
+        or(
+          ilike(jobs.title, `%${search}%`),
+          ilike(users.firstName, `%${search}%`),
+          ilike(users.lastName, `%${search}%`),
+          ilike(users.username, `%${search}%`),
+          ilike(jobApplications.applicationPublicId, `%${search}%`)
+        )
+      );
+    }
+
+    // Import users table
+    const { users } = await import("@/database/schema/users");
+
+    // Determine sort order
+    const sortColumn =
+      sortBy === "submittedAt"
+        ? jobApplications.submittedAt
+        : sortBy === "status"
+          ? jobApplications.status
+          : sortBy === "progress"
+            ? jobApplications.progress
+            : jobApplications.submittedAt;
+
+    const orderBy = sortDesc ? desc(sortColumn) : asc(sortColumn);
+
+    // Join jobApplications with jobs and users
+    const query = db
+      .select({
+        jobApplication: jobApplications,
+        job: jobs,
+        user: users,
+      })
+      .from(jobApplications)
+      .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+      .leftJoin(users, eq(jobApplications.userId, users.id))
+      .where(filters.length ? and(...filters) : undefined)
+      .orderBy(orderBy)
+      .limit(limit)
+      .offset(offset);
+
+    const [applications, totalCountRows] = await Promise.all([
+      query,
+      db
+        .select({ count: count() })
+        .from(jobApplications)
+        .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+        .leftJoin(users, eq(jobApplications.userId, users.id))
+        .where(filters.length ? and(...filters) : undefined),
+    ]);
+    const totalCount = Number(totalCountRows[0]?.count || 0);
+
+    // Format for frontend
+    const items: IJobApplication[] = applications.map((row: any) => {
+      const app = row.jobApplication;
+      const job = row.job;
+      const user = row.user;
+      return {
+        id: app.id,
+        applicationPublicId: app.applicationPublicId,
+        userId: app.userId,
+        profileId: app.profileId,
+        jobId: app.jobId,
+        status: app.status,
+        progress: app.progress,
+        submittedAt: app.submittedAt,
+        job: job
+          ? {
+              id: job.id,
+              title: job.title,
+              description: job.description,
+              salaryAmount: job.salaryAmount,
+              salaryCurrency: job.salaryCurrency,
+              salaryType: job.salaryType,
+              pay: job.pay,
+              location: job.location,
+              jobType: job.jobType,
+              jobCategory: job.jobCategory,
+              remoteAllowed: job.remoteAllowed,
+              slug: job.slug,
+              status: job.status,
+              url: job.url,
+              postedById: job.postedById,
+              postedByName: job.postedByName,
+              createdAt: job.createdAt,
+              updatedAt: job.updatedAt,
+              numberOfTalents: job.numberOfTalents,
+              tags: job.tags,
+            }
+          : undefined,
+        user: user
+          ? {
+              id: user.id,
+              username: user.username,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+            }
+          : undefined,
+      };
+    });
+
+    return {
+      success: true,
+      items,
+      total: items.length,
+      all: totalCount,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+        hasNext: offset + limit < totalCount,
+        hasPrev: offset > 0,
+      },
+    };
+  } catch (error) {
+    console.error("Error in getAdminJobApplications:", error);
+    return {
+      success: false,
+      items: [],
+      total: 0,
+      all: 0,
+      pagination: {
+        currentPage: page,
+        totalPages: 0,
+        hasNext: false,
+        hasPrev: false,
+      },
+    };
+  }
+};

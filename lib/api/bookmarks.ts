@@ -343,7 +343,6 @@ function formatJobForFrontend(job: any): IJobListing {
     updatedAt: job.updatedAt,
     numberOfTalents: job.numberOfTalents,
     tags: job.tags,
-    alsoPostedOn: job.alsoPostedOn,
   };
 }
 

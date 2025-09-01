@@ -646,7 +646,7 @@ export async function GET() {
             },
             {
               key: "whatsappId",
-              label: "Whatsapp ID",
+              label: "WhatsApp",
               value: profile.whatsappId,
             },
           ],

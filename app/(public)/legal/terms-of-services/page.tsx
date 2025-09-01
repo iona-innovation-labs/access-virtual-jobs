@@ -1,5 +1,27 @@
 import { legalConfig } from "@/config/legal.config";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Terms of Services | Access Virtual Jobs",
+  description:
+    "These terms and conditions outline the rules and regulations for the use of Access Virtual Jobs's Website.",
+
+  keywords: [
+    "virtual jobs",
+    "remote work opportunities",
+    "online employment",
+    "work from home careers",
+    "virtual assistant jobs",
+    "freelance opportunities",
+    "digital nomad positions",
+    "remote job board",
+    "virtual staffing",
+    "online job platform",
+    "flexible work arrangements",
+    "remote employment solutions",
+  ],
+};
+
 export default function TermsPage() {
   const { tos } = legalConfig;
 

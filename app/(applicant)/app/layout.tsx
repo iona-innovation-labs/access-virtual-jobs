@@ -12,23 +12,7 @@ export const metadata: Metadata = {
     default: "Applicant Portal - Access Virtual Jobs",
   },
   description:
-    "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
-
-  openGraph: {
-    title: "Applicant Portal - Access Virtual Jobs",
-    description:
-      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
-    type: "website",
-    url: "https://www.accessvirtualJobs.com", // Replace with your actua l URL
-    images: "/opengraph-image.jpg", // Replace with your actual image URL
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Applicant Portal - Access Virtual Jobs",
-    description:
-      "Applicant portal for job seekers that applies and manage job applications - Access Virtual Jobs",
-    images: "/twitter-image.jpg", // Replace with your actual image URL
-  },
+    "Find your next remote work & VA job here at Access Virtual Jobs",
 };
 
 export default async function AppRootLayout({

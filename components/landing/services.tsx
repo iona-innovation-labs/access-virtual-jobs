@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { ArrowRight } from "lucide-react";
 
-const services = landingPage.scale.items;
+const services = landingPage.categories.items;
 
 export default function Services() {
   return (
@@ -15,7 +15,7 @@ export default function Services() {
           <div className="relative">
             <div className="w-full mx-auto text-center pb-12 md:pb-16">
               <h2 className="font-archivo text-5xl md:text-6xl lg:text-7xl font-bold text-white">
-                {landingPage.scale.title}
+                {landingPage.categories.title}
               </h2>
             </div>
 
@@ -28,7 +28,7 @@ export default function Services() {
                   <div className="mb-4">
                     <Link
                       className="block group overflow-hidden"
-                      href={`/jobs/${service.label}`}
+                      href={service.link}
                     >
                       <Image
                         className="w-full rounded-lg aspect-101/64 object-cover group-hover:scale-105 transition duration-700 ease-out"
@@ -42,7 +42,7 @@ export default function Services() {
                   <div className="grow text-center">
                     <Link
                       className="font-monstserrat text-xs text-zinc-100 hover:text-blue-500 transition duration-150 ease-in-out"
-                      href="#0"
+                      href={service.link}
                     >
                       {service.label}
                     </Link>

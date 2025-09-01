@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/database";
 import { users, profiles } from "@/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, count } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 import { sendEmailNotification } from "@/services/send-email-notif";
@@ -9,6 +9,7 @@ import { z } from "zod";
 import { passwordSchema } from "@/lib/validation/password-validation";
 import { userRoles } from "@/database/schema/users";
 import { createNotification } from "@/database/mutations/job_applicants";
+import { sendNewUserNotification } from "@/lib/slack-notification";
 
 const registerSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
       return result;
     }
 
-    const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}_${generateRandomString(6)}`;
+    const username = `${firstName?.trim().toLowerCase()}_${lastName?.trim().toLowerCase()}_${generateRandomString(6)}`;
     const [newUser] = await db
       .insert(users)
       .values({
@@ -168,6 +169,28 @@ export async function POST(request: Request) {
     });
 
     console.log("Verification email sent to:", email);
+
+    // Send Slack notification for new user registration
+    try {
+      // Get total job_seeker count for context
+      const totalUsersResult = await db
+        .select({ count: count() })
+        .from(users)
+        .where(eq(users.role, "job_seeker"));
+      const totalUsers = Number(totalUsersResult[0]?.count || 0);
+
+      await sendNewUserNotification(
+        firstName,
+        username,
+        email,
+        totalUsers,
+        role
+      );
+      console.log("Slack notification sent for new user:", email);
+    } catch (slackError) {
+      console.warn("Failed to send Slack notification:", slackError);
+      // Don't fail the registration if Slack notification fails
+    }
 
     return NextResponse.json({
       success: true,
