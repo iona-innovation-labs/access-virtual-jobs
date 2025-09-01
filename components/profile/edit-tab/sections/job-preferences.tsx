@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
+import { JOB_CATEGORIES } from "@/lib/constants";
 
 // Zod Schema - Updated with jobCategory field
 const JobPreferencesSchema = z.object({
@@ -33,16 +34,7 @@ const JobPreferencesSchema = z.object({
     "freelance",
     "internship",
   ]),
-  jobCategory: z.enum([
-    "office_administration",
-    "marketing_sales",
-    "graphics_multimedia",
-    "web_design_development",
-    "software_development",
-    "customer_service",
-    "professional_services",
-    "writing",
-  ]),
+  jobCategory: z.enum(JOB_CATEGORIES),
 });
 
 type JobPreferencesFormData = z.infer<typeof JobPreferencesSchema>;
@@ -97,19 +89,13 @@ const JobTypeOptions = [
   { value: "freelance", label: "Freelance" },
 ];
 
-const JobCategoryOptions = [
-  { value: "office_administration", label: "Office & Administration" },
-  { value: "marketing_sales", label: "Marketing & Sales" },
-  { value: "graphics_multimedia", label: "Graphics & Multimedia" },
-  { value: "web_design_development", label: "Web Design & Development" },
-  {
-    value: "software_development",
-    label: "Software Development / Programming",
-  },
-  { value: "customer_service", label: "Customer Service & Admin Support" },
-  { value: "professional_services", label: "Professional Services" },
-  { value: "writing", label: "Writing" },
-];
+const JobCategoryOptions = JOB_CATEGORIES.map((category) => ({
+  value: category,
+  label: category
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" "),
+}));
 
 const SalaryUnitOptions = [
   { value: "PHP", label: "PHP" },
@@ -134,7 +120,7 @@ export const JobPreferencesSection = ({
       salaryUnit: "PHP",
       isPublicSalary: true,
       jobType: "full_time",
-      jobCategory: "software_development", // Default category
+      jobCategory: "executive_assistant_administrative_assistant", // Default category
       ...initialData,
     }),
     [initialData]

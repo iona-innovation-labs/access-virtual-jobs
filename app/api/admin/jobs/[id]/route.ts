@@ -4,10 +4,11 @@ import { updateJobPost } from "@/lib/api/jobs";
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    console.log("PUT /api/admin/jobs/[id] called with params:", params);
+    const resolvedParams = await params;
+    console.log("PUT /api/admin/jobs/[id] called with params:", resolvedParams);
 
     const session = await auth();
     console.log("Session:", session?.user?.id);
@@ -23,7 +24,7 @@ export async function PUT(
     const body = await req.json();
     console.log("Request body:", body);
 
-    const jobId = parseInt(params.id);
+    const jobId = parseInt(resolvedParams.id);
     console.log("Parsed job ID:", jobId);
 
     if (isNaN(jobId)) {

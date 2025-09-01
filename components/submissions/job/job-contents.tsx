@@ -3,7 +3,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { FileText, Briefcase } from "lucide-react";
-import { IJobApplication } from "@/types/jobs";
+import { IJobApplication, Status } from "@/types/jobs";
 import ApplicationContent from "./tabs/application";
 import ApplicationDescription from "./tabs/description";
 
@@ -79,7 +79,7 @@ const JobContent = ({ jobApplicationDetails }: JobContentProps) => {
           <div className="p-6">
             <TabsContent value="application" className="mt-0">
               <ApplicationContent
-                status={jobApplicationDetails.status}
+                status={jobApplicationDetails.status as Status}
                 progress={jobApplicationDetails.progress}
               />
             </TabsContent>
