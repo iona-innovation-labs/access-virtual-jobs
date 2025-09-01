@@ -603,9 +603,9 @@ export const ContactInfoSection = ({
           />
 
           <SimpleInfoItem
-            label="Whatsapp ID"
+            label="WhatsApp"
             value={data.whatsappId}
-            placeholder="Enter your Whatsapp ID"
+            placeholder="Enter your WhatsApp Number"
             loading={loading}
             fieldName="whatsappId"
             control={control}
