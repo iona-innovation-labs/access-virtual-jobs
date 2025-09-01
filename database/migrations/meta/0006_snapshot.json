@@ -1,6 +1,6 @@
 {
-  "id": "48471279-843d-41f4-bffc-e97b65980159",
-  "prevId": "7aa86fe4-d44c-4413-8194-c6e761f02f60",
+  "id": "4e734b83-c927-4965-b704-171574f5dbf8",
+  "prevId": "838d060c-9b82-4258-8ab5-7ebeb844f28c",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -1690,6 +1690,13 @@
           "primaryKey": false,
           "notNull": false
         },
+        "job_category": {
+          "name": "job_category",
+          "type": "job_category",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "remote_allowed": {
           "name": "remote_allowed",
           "type": "boolean",
@@ -1744,6 +1751,13 @@
           "primaryKey": false,
           "notNull": false,
           "default": "'{}'"
+        },
+        "podio_item_id": {
+          "name": "podio_item_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
         }
       },
       "indexes": {},

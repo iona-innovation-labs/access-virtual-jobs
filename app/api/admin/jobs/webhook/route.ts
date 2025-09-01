@@ -2,6 +2,7 @@ import { getJobPostFromPodio } from "@/lib/api/podio-jobs";
 import { db } from "@/database";
 import { jobs } from "@/database/schema";
 import { NextRequest, NextResponse } from "next/server";
+// import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest) {
         title: podioJob.title,
         description: podioJob.description,
         salaryAmount: null, // Could parse from podioJob.pay if structured
-        salaryCurrency: "USD", // Default, or parse if available
+        salaryCurrency: "USD" as const, // Default, or parse if available
         salaryType: "hourly" as const, // Use correct literal type
         location: null,
         jobType: null,
@@ -116,7 +117,7 @@ export async function POST(req: NextRequest) {
           : new Date(),
         updatedAt: new Date(),
         numberOfTalents: 1,
-        tags: [] as string[],
+        tags: [],
       };
       const inserted = await db.insert(jobs).values(newJob).returning();
       console.log("[Webhook] Inserted job:", inserted[0]);
@@ -124,6 +125,35 @@ export async function POST(req: NextRequest) {
         success: true,
         message: "Job created",
         job: inserted[0],
+      });
+    }
+    case "item.update": {
+      // const item_id = params.get("item_id") ?? "";
+      // console.log("[Webhook] Parsed params:", { item_id });
+      // const result = await getJobPostFromPodio(item_id);
+      // console.log("[Webhook] JOB FROM PODIO:", result);
+      // if (!result?.success || !result.item) {
+      //   return NextResponse.json(
+      //     {
+      //       success: false,
+      //       message: "Failed to fetch job from Podio",
+      //     },
+      //     { status: 500 }
+      //   );
+      // }
+      // const podioJob = result.item;
+      // // Map Podio job to DB schema
+      // const updatedJob = {
+      //   title: podioJob.title,
+      //   description: podioJob.description,
+      //   status: podioJob["job-posting-status"] === 3 ? "active" ? podioJob["job-posting-status"] === 3 "active" : "closed",
+      // };
+      // const updated = await db.update(jobs).set(updatedJob).where(eq(jobs.podioItemId, podioJob.id)).returning();
+      // console.log("[Webhook] Updated job:", updated[0]);
+      return NextResponse.json({
+        success: true,
+        message: "Job updated",
+        job: null,
       });
     }
     default:

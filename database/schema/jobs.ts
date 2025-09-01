@@ -74,6 +74,8 @@ export const jobs = pgTable("jobs", {
   tags: text("tags")
     .array()
     .default(sql`'{}'`),
+
+  podioItemId: text("podio_item_id").default(""),
 });
 
 // Relations
