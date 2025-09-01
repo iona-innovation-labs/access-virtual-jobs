@@ -21,7 +21,7 @@ const navigationItems = [
     label: "File Uploads",
     icon: Upload,
     description: "Required documents and attachments",
-    badge: "Required",
+    badge: null,
   },
 ];
 

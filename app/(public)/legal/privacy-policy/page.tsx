@@ -1,5 +1,27 @@
 import { legalConfig } from "@/config/legal.config";
 
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Privacy Policy | Access Virtual Jobs",
+  description:
+    "Your privacy is important to us. This policy explains how we collect, use, and protect your personal data.",
+
+  keywords: [
+    "virtual jobs",
+    "remote work opportunities",
+    "online employment",
+    "work from home careers",
+    "virtual assistant jobs",
+    "freelance opportunities",
+    "digital nomad positions",
+    "remote job board",
+    "virtual staffing",
+    "online job platform",
+    "flexible work arrangements",
+    "remote employment solutions",
+  ],
+};
+
 export default function PrivacyPage() {
   const { privacy } = legalConfig;
 

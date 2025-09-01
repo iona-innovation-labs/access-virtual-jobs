@@ -66,7 +66,7 @@ const ProfileCard = ({ profile }: IProfileProps) => {
         <p className="text-zinc-500">{profile.email}</p>
         <p className="text-zinc-500">{profile.phoneNumber}</p>
         <p className="text-zinc-500">{profile.address}</p>
-        <p className="text-zinc-500">Whatsapp ID: {profile.whatsappId}</p>
+        <p className="text-zinc-500">WhatsApp: {profile.whatsappId}</p>
 
         <Separator className="my-4" />
 

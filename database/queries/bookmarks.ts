@@ -35,7 +35,6 @@ interface BookmarkedJob {
   bookmarkedAt: Date;
   numberOfTalents: number | null;
   tags: string[] | null;
-  alsoPostedOn: string[] | null;
 }
 
 /**
@@ -279,7 +278,6 @@ export async function getBookmarksByUser(
         updatedAt: jobs.updatedAt,
         numberOfTalents: jobs.numberOfTalents,
         tags: jobs.tags,
-        alsoPostedOn: jobs.alsoPostedOn,
         // User/bookmark fields
         postedByName: users.name,
         bookmarkedAt: userBookmarks.createdAt,
@@ -318,7 +316,6 @@ export async function getBookmarksByUser(
       bookmarkedAt: row.bookmarkedAt ?? new Date(),
       numberOfTalents: row.numberOfTalents,
       tags: row.tags,
-      alsoPostedOn: row.alsoPostedOn,
     }));
 
     return {

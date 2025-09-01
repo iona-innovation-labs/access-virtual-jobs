@@ -21,7 +21,7 @@ export const EmailNotificationTemplate = ({
   title,
   message,
   footer,
-  settingsUrl = "/app/settings/notification",
+  settingsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/app/settings/notification`,
 }: EmailNotificationTemplateProps) => {
   const previewText = `${title} - ${message.substring(0, 50)}...`;
 

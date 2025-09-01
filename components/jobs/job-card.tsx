@@ -78,7 +78,7 @@ const JobCard = async ({
         </div>
 
         {/* Apply Button */}
-        <JobCardApply isPublic={isPublic} id={String(job.id)} url={job.url} />
+        <JobCardApply isPublic={isPublic} id={String(job.slug)} url={job.url} />
       </div>
     </div>
   );

@@ -494,7 +494,6 @@ export const jobs = pgTable(
     updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow(),
     numberOfTalents: integer("number_of_talents").default(1),
     tags: text().array().default([""]),
-    alsoPostedOn: text("also_posted_on").array().default([""]),
   },
   (table) => [
     foreignKey({

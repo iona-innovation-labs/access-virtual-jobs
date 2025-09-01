@@ -1,7 +1,7 @@
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
-import { getUserByUserId } from "./actions/user-actions";
+// import { getUserByUserId } from "./actions/user-actions";
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "./database";

@@ -10,6 +10,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+import { PUBLIC_JOB_CATEGORIES } from "@/lib/constants";
 // import { users } from "./users";
 
 // Enums to match your frontend component exactly
@@ -24,21 +25,20 @@ export const jobTypeEnum = pgEnum("job_type", [
   "part-time",
   "contract",
 ]);
-export const jobCategoryEnum = pgEnum("job_category", [
-  "office_administration",
-  "marketing_sales",
-  "graphics_multimedia",
-  "web_design_development",
-  "software_development_programming",
-  "customer_service_admin_support",
-  "professional_services",
-  "writing",
-]);
+
+// Updated to use the new categories from constants
+export const jobCategoryEnum = pgEnum(
+  "job_category",
+  PUBLIC_JOB_CATEGORIES.map((cat) => cat.key) as [string, ...string[]]
+);
+
 export const salaryTypeEnum = pgEnum("salary_type", [
   "hourly",
   "monthly",
   "yearly",
 ]);
+
+export const salaryCurrencyEnum = pgEnum("salary_currency", ["PHP", "USD"]);
 
 // Main jobs table
 export const jobs = pgTable("jobs", {
@@ -50,14 +50,14 @@ export const jobs = pgTable("jobs", {
 
   // Salary information
   salaryAmount: decimal("salary_amount", { precision: 10, scale: 2 }),
-  salaryCurrency: varchar("salary_currency", { length: 3 }).default("USD"),
+  salaryCurrency: salaryCurrencyEnum("salary_currency").default("USD"),
   salaryType: salaryTypeEnum("salary_type").default("hourly"),
 
   // Job filtering fields (to match your frontend component)
-  location: varchar("location", { length: 255 }),
+  location: varchar("location", { length: 255 }).default("Remote"),
   jobType: jobTypeEnum("job_type"),
   jobCategory: jobCategoryEnum("job_category"),
-  remoteAllowed: boolean("remote_allowed").default(false),
+  remoteAllowed: boolean("remote_allowed").default(true),
 
   // Status and meta
   status: jobStatusEnum("status").default("active"),
@@ -74,9 +74,8 @@ export const jobs = pgTable("jobs", {
   tags: text("tags")
     .array()
     .default(sql`'{}'`),
-  alsoPostedOn: text("also_posted_on")
-    .array()
-    .default(sql`'{}'`),
+
+  podioItemId: text("podio_item_id").default(""),
 });
 
 // Relations

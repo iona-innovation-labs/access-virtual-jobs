@@ -12,10 +12,15 @@ export default async function JobCarouselList() {
     ""
   );
 
+  // Only render if there are at least 10 jobs
+  if (!positions?.items || positions.items.length < 10) {
+    return null;
+  }
+
   // Pass the data to the client component
   return (
     <>
-      <JobCarouselClient jobs={positions?.items || []} />
+      <JobCarouselClient jobs={positions.items} />
     </>
   );
 }

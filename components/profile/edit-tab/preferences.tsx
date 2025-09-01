@@ -62,7 +62,7 @@ export default function EditProfile() {
               (profile?.jobType as (typeof JOB_TYPES)[number]) ?? "contract",
             jobCategory:
               (profile?.jobCategory as (typeof JOB_CATEGORIES)[number]) ??
-              "office_administration",
+              "executive_assistant_administrative_assistant",
             salaryUnit:
               (profile?.salaryUnit as (typeof SALARY_UNIT)[number]) ?? "PHP",
             desiredSalary: parseFloat(profile?.desiredSalary ?? "0"),

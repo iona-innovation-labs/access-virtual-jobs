@@ -10,7 +10,7 @@ import {
 import { AdapterAccountType } from "@auth/core/adapters";
 
 // Define role enum type
-export const userRoles = ["job_seeker", "recruiter"] as const;
+export const userRoles = ["job_seeker", "recruiter", "admin"] as const;
 export type UserRole = (typeof userRoles)[number];
 
 export const users = pgTable("users", {

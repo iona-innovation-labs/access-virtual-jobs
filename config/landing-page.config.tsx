@@ -16,6 +16,18 @@ import Scale3 from "../public/images/landing-feature/3.jpg";
 import Scale4 from "../public/images/landing-feature/4.jpg";
 import Scale5 from "../public/images/landing-feature/5.jpg";
 
+// Job category images
+import ExecutiveAssistantImage from "../public/images/job-categories/executive_assistant_administrative_assistant.png";
+import CustomerSupportImage from "../public/images/job-categories/customer_support_assistant.png";
+import SocialMediaManagerImage from "../public/images/job-categories/social_media_manager.png";
+import ContentWriterImage from "../public/images/job-categories/content_writer_copywriter.png";
+import SEOSpecialistImage from "../public/images/job-categories/seo_specialist.png";
+import PaidAdsSpecialistImage from "../public/images/job-categories/paid_ads_specialist.png";
+import EcommerceManagerImage from "../public/images/job-categories/ecommerce_store_manager.png";
+import BookkeepingImage from "../public/images/job-categories/bookkeeping_finance_assistant.png";
+import GraphicDesignerImage from "../public/images/job-categories/graphic_designer.png";
+import WebDeveloperImage from "../public/images/job-categories/web_developer.png";
+
 export const landingPage = {
   hero: {
     title: "The Job Board for Virtual Workers in the Philippines",
@@ -186,33 +198,122 @@ export const landingPage = {
   scale: {
     title: "Popular Virtual Job Categories",
     items: [
-      { image: Scale1, alt: "Virtual Assistant", label: "Virtual Assistant" },
+      {
+        image: Scale1,
+        alt: "Executive Assistant / Administrative",
+        label: "Executive",
+      },
       {
         image: Scale2,
-        alt: "Executive Assistant",
-        label: "Executive Assistant",
+        alt: "Social Media Manager",
+        label: "Social Media Manager",
       },
-      { image: Scale3, alt: "Personal Assistant", label: "Personal Assistant" },
+      {
+        image: Scale3,
+        alt: "Lead Generation & Appointment Setter",
+        label: "Lead Generation & Appointment Setter",
+      },
       {
         image: Scale4,
-        alt: "Administrative Support Assistant",
-        label: "Administrative Support Assistant",
+        alt: "E-Commerce Store Manager",
+        label: "E-Commerce Store Manager",
       },
-      { image: Scale5, alt: "Research Assistant", label: "Research Assistant" },
-      { image: Scale1, alt: "AI Developer", label: "AI Developer" },
-      { image: Scale2, alt: "Web Developer", label: "Web Developer" },
-      { image: Scale3, alt: "Software Engineer", label: "Software Engineer" },
-      { image: Scale4, alt: "Backend Developer", label: "Backend Developer" },
       {
         image: Scale5,
-        alt: "Full Stack Developer",
-        label: "Full Stack Developer",
+        alt: "Bookkeeping / Finance",
+        label: "Bookkeeping / Finance",
       },
-      { image: Scale1, alt: "Graphic Designer", label: "Graphic Designer" },
-      { image: Scale2, alt: "UI/UX Designer", label: "UI/UX Designer" },
-      { image: Scale3, alt: "Content Writer", label: "Content Writer" },
-      { image: Scale4, alt: "Copywriter", label: "Copywriter" },
-      { image: Scale5, alt: "Customer Support", label: "Customer Support" },
+      { image: Scale1, alt: "Real Estate", label: "Real Estate" },
+      { image: Scale2, alt: "Customer Support", label: "Customer Support" },
+      {
+        image: Scale3,
+        alt: "Content Writer / Copywriter",
+        label: "Content Writer / Copywriter",
+      },
+      { image: Scale4, alt: "Project Manager", label: "Project Manager" },
+      { image: Scale5, alt: "Graphic Designer", label: "Graphic Designer" },
+      { image: Scale1, alt: "Video Editor", label: "Video Editor" },
+      { image: Scale2, alt: "SEO Specialist", label: "SEO Specialist" },
+      { image: Scale3, alt: "Email Marketing", label: "Email Marketing" },
+      {
+        image: Scale4,
+        alt: "Data Entry & Research",
+        label: "Data Entry & Research",
+      },
+      { image: Scale5, alt: "CRM Manager", label: "CRM Manager" },
+      {
+        image: Scale1,
+        alt: "Marketing Automation",
+        label: "Marketing Automation",
+      },
+
+      { image: Scale3, alt: "Web Development", label: "Web Development" },
+    ],
+  },
+  categories: {
+    title: "Popular Virtual Job Categories",
+    items: [
+      {
+        image: CustomerSupportImage,
+        alt: "Customer Support Assistant",
+        label: "Customer Support Assistant",
+        link: "/jobs?jobCategory=Customer+Support+Assistant",
+      },
+
+      {
+        image: ContentWriterImage,
+        alt: "Content Writer / Copywriter",
+        label: "Content Writer / Copywriter",
+        link: "/jobs?jobCategory=Content+Writer+%2F+Copywriter",
+      },
+      {
+        image: SEOSpecialistImage,
+        alt: "SEO Specialist",
+        label: "SEO Specialist",
+        link: "/jobs?jobCategory=SEO+Specialist",
+      },
+      {
+        image: PaidAdsSpecialistImage,
+        alt: "Paid Ads Specialist (Meta/Google Ads Manager)",
+        label: "Paid Ads Specialist (Meta/Google Ads Manager)",
+        link: "/jobs?jobCategory=Paid+Ads+Specialist+%28Meta%2FGoogle+Ads+Manager%29",
+      },
+      {
+        image: EcommerceManagerImage,
+        alt: "E-Commerce Store Manager (Amazon, Shopify, Walmart)",
+        label: "E-Commerce Store Manager (Amazon, Shopify, Walmart)",
+        link: "/jobs?jobCategory=E-Commerce+Store+Manager+%28Amazon%2C+Shopify%2C+Walmart%29",
+      },
+      {
+        image: BookkeepingImage,
+        alt: "Bookkeeping / Finance Assistant",
+        label: "Bookkeeping / Finance Assistant",
+        link: "/jobs?jobCategory=Bookkeeping+%2F+Finance+Assistant",
+      },
+      {
+        image: SocialMediaManagerImage,
+        alt: "Social Media Manager",
+        label: "Social Media Manager",
+        link: "/jobs?jobCategory=Social+Media+Manager",
+      },
+      {
+        image: GraphicDesignerImage,
+        alt: "Graphic Designer",
+        label: "Graphic Designer",
+        link: "/jobs?jobCategory=Graphic+Designer",
+      },
+      {
+        image: WebDeveloperImage,
+        alt: "Web Developer (Frontend / Backend / Full-stack)",
+        label: "Web Developer (Frontend / Backend / Full-stack)",
+        link: "/jobs?jobCategory=Web+Developer+%28Frontend+%2F+Backend+%2F+Full-stack%29",
+      },
+      {
+        image: ExecutiveAssistantImage,
+        alt: "Executive Assistant / Administrative Assistant",
+        label: "Executive Assistant / Administrative Assistant",
+        link: "/jobs?jobCategory=Executive+Assistant+%2F+Administrative+Assistant",
+      },
     ],
   },
   faqs: {
