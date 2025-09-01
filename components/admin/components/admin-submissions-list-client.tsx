@@ -47,12 +47,8 @@ const statusOptions = [
 ];
 
 const sortOptions = [
-  { value: "submittedAt-desc", label: "Date Submitted: Newest" },
-  { value: "submittedAt-asc", label: "Date Submitted: Oldest" },
-  { value: "status-asc", label: "Status: A-Z" },
-  { value: "status-desc", label: "Status: Z-A" },
-  { value: "progress-asc", label: "Progress: A-Z" },
-  { value: "progress-desc", label: "Progress: Z-A" },
+  { value: "submittedAt-desc", label: "Newest" },
+  { value: "submittedAt-asc", label: "Oldest" },
 ];
 
 // Helper function to format status for display
@@ -181,18 +177,6 @@ export default function AdminSubmissionsListClient({
     } else if (value === "submittedAt-asc") {
       setSortBy("submittedAt");
       setSortDesc(false);
-    } else if (value === "status-asc") {
-      setSortBy("status");
-      setSortDesc(false);
-    } else if (value === "status-desc") {
-      setSortBy("status");
-      setSortDesc(true);
-    } else if (value === "progress-asc") {
-      setSortBy("progress");
-      setSortDesc(false);
-    } else if (value === "progress-desc") {
-      setSortBy("progress");
-      setSortDesc(true);
     }
     setPage(1);
   };
