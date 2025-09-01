@@ -1,12 +1,11 @@
 import React from "react";
 import Image from "next/image";
-import { Briefcase, MapPin, Calendar, Edit, Eye } from "lucide-react";
+import { Briefcase, MapPin, Calendar, Eye } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { VerificationBadge } from "@/components/ui/verification-badge";
 import { useToast } from "@/hooks/use-toast";
-import Link from "next/link";
 
 interface ProfileHeaderProps {
   userInfo: any;
@@ -160,20 +159,6 @@ export const PersonalInfoSection = ({
           <div className="absolute inset-0 bg-black/20"></div>
 
           <div className="absolute top-4 right-4 flex space-x-2">
-            <Button
-              size="sm"
-              variant="outline"
-              className="hover:bg-background text-foregorund"
-            >
-              <Link
-                href={`/app/settings/general`}
-                target="_blank"
-                className=" flex items-center hover:bg-background"
-              >
-                <Edit className="w-4 h-4 mr-2" />
-              </Link>
-              Edit Profile
-            </Button>
             <Button
               size="sm"
               variant="outline"

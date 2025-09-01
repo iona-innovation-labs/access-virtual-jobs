@@ -1,4 +1,18 @@
 User-agent: *
 Allow: /
+Allow: /login
+Allow: /register
+Allow: /jobs
+Allow: /faq
+Allow: /contact
+Allow: /blogs
+Allow: /legal/terms-of-services
+Allow: /legal/privacy-policy
+Disallow: /admin/
+Disallow: /app/
+Disallow: /recruiter/
+Disallow: /api/
+Disallow: /profile/
+Disallow: /post-registration/
 
 Sitemap: https://accessvirtualjobs.com/sitemap.xml

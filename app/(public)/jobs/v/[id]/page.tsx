@@ -33,7 +33,11 @@ export async function generateMetadata({
   const post = await getJobPost(id);
 
   return {
-    title: post ? `${post.item?.title}` : "View Job",
+    title: post
+      ? `${post.item?.title} - Find your next remote work & VA job here | Access Virtual Jobs`
+      : "View Job | Access Virtual Jobs",
+    description:
+      "Connect with top virtual job opportunities from leading companies. Join thousands of professionals building successful remote careers with flexible schedules and competitive compensation.",
   };
 }
 
