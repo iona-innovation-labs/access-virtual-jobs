@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useTransition } from "react";
-import { IJobListing } from "@/types/jobs";
+import { IJobApplication } from "@/types/jobs";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -29,8 +29,8 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
-interface AdminJobListClientProps {
-  initialJobs: IJobListing[];
+interface AdminSubmissionsListClientProps {
+  initialApplications: IJobApplication[];
   initialTotal: number;
   initialStatus: string;
   initialSearch: string;
@@ -42,18 +42,95 @@ interface AdminJobListClientProps {
 
 const statusOptions = [
   { value: "all", label: "All" },
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
-  { value: "closed", label: "Closed" },
+  { value: "on_going", label: "On Going" },
+  { value: "archived", label: "Archived" },
 ];
 
 const sortOptions = [
-  { value: "createdAt-desc", label: "Date Posted: Newest" },
-  { value: "createdAt-asc", label: "Date Posted: Oldest" },
+  { value: "submittedAt-desc", label: "Date Submitted: Newest" },
+  { value: "submittedAt-asc", label: "Date Submitted: Oldest" },
+  { value: "status-asc", label: "Status: A-Z" },
+  { value: "status-desc", label: "Status: Z-A" },
+  { value: "progress-asc", label: "Progress: A-Z" },
+  { value: "progress-desc", label: "Progress: Z-A" },
 ];
 
-export default function AdminJobListClient({
-  initialJobs,
+// Helper function to format status for display
+const formatStatus = (status: string): string => {
+  const statusMap: Record<string, string> = {
+    on_going: "On Going",
+    archived: "Archived",
+  };
+  return statusMap[status] || status;
+};
+
+// Helper function to format progress for display
+const formatProgress = (progress: string): string => {
+  const progressMap: Record<string, string> = {
+    in_review: "In Review",
+    reviewed: "Reviewed",
+    declined_initial_interview: "Declined Initial Interview",
+    initial_interview: "Initial Interview",
+    for_client_interview: "For Client Interview",
+    declined_after_interview: "Declined After Interview",
+    make_offer: "Make Offer",
+    hired_signed: "Hired Signed",
+    endorsed: "Endorsed",
+    reserved_for_future_opening: "Reserved for Future Opening",
+  };
+  return progressMap[progress] || progress;
+};
+
+// Helper function to get status badge variant
+const getStatusBadgeVariant = (status: string) => {
+  switch (status) {
+    case "on_going":
+      return "success";
+    case "archived":
+      return "archived";
+    default:
+      return "default";
+  }
+};
+
+// Helper function to get progress badge variant
+const getProgressBadgeVariant = (progress: string) => {
+  switch (progress) {
+    case "in_review":
+      return "warning";
+    case "reviewed":
+      return "default";
+    case "declined_initial_interview":
+    case "declined_after_interview":
+      return "error";
+    case "initial_interview":
+    case "for_client_interview":
+      return "warning";
+    case "make_offer":
+    case "hired_signed":
+    case "endorsed":
+      return "success";
+    case "reserved_for_future_opening":
+      return "secondary";
+    default:
+      return "default";
+  }
+};
+
+// Helper function to get applicant name
+const getApplicantName = (user?: IJobApplication["user"]): string => {
+  if (!user) return "Unknown";
+
+  if (user.firstName && user.lastName)
+    return `${user.firstName} ${user.lastName}`;
+  if (user.username) return user.username;
+  if (user.email) return user.email;
+
+  return "Unknown";
+};
+
+export default function AdminSubmissionsListClient({
+  initialApplications,
   initialTotal,
   initialStatus,
   initialSearch,
@@ -61,8 +138,9 @@ export default function AdminJobListClient({
   initialSortDesc,
   initialPage,
   pageSize,
-}: AdminJobListClientProps) {
-  const [jobs, setJobs] = useState<IJobListing[]>(initialJobs);
+}: AdminSubmissionsListClientProps) {
+  const [applications, setApplications] =
+    useState<IJobApplication[]>(initialApplications);
   const [total, setTotal] = useState(initialTotal);
   const [status, setStatus] = useState(initialStatus);
   const [search, setSearch] = useState(initialSearch);
@@ -83,13 +161,13 @@ export default function AdminJobListClient({
     return params.toString();
   }
 
-  // Fetch jobs when filters change
+  // Fetch applications when filters change
   useEffect(() => {
     startTransition(() => {
-      fetch(`/api/admin/jobs?${buildQuery()}`)
+      fetch(`/api/admin/submissions?${buildQuery()}`)
         .then((res) => res.json())
         .then((data) => {
-          setJobs(data.items || []);
+          setApplications(data.items || []);
           setTotal(data.all || 0);
         });
     });
@@ -97,12 +175,24 @@ export default function AdminJobListClient({
   }, [status, search, sortBy, sortDesc, page]);
 
   const handleSortChange = (value: string) => {
-    if (value === "createdAt-desc") {
-      setSortBy("createdAt");
+    if (value === "submittedAt-desc") {
+      setSortBy("submittedAt");
       setSortDesc(true);
-    } else if (value === "createdAt-asc") {
-      setSortBy("createdAt");
+    } else if (value === "submittedAt-asc") {
+      setSortBy("submittedAt");
       setSortDesc(false);
+    } else if (value === "status-asc") {
+      setSortBy("status");
+      setSortDesc(false);
+    } else if (value === "status-desc") {
+      setSortBy("status");
+      setSortDesc(true);
+    } else if (value === "progress-asc") {
+      setSortBy("progress");
+      setSortDesc(false);
+    } else if (value === "progress-desc") {
+      setSortBy("progress");
+      setSortDesc(true);
     }
     setPage(1);
   };
@@ -135,7 +225,7 @@ export default function AdminJobListClient({
         <div className="flex gap-2 items-center relative min-w-[200px] w-full max-w-xs">
           <Input
             type="text"
-            placeholder="Search jobs..."
+            placeholder="Search applications..."
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -178,70 +268,55 @@ export default function AdminJobListClient({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
+            <TableHead>Job Title</TableHead>
+            <TableHead>Applicant Name</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Type</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Created At</TableHead>
+            <TableHead>Progress</TableHead>
+            <TableHead>Submitted At</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {jobs.length === 0 ? (
+          {applications.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={7}
+                colSpan={6}
                 className="text-center text-muted-foreground"
               >
-                No jobs found.
+                No job applications found.
               </TableCell>
             </TableRow>
           ) : (
-            jobs.map((job) => (
-              <TableRow key={job.id}>
-                <TableCell>{job.title}</TableCell>
+            applications.map((application) => (
+              <TableRow key={application.id}>
+                <TableCell className="font-medium">
+                  {application.job?.title || "-"}
+                </TableCell>
+                <TableCell>{getApplicantName(application.user)}</TableCell>
                 <TableCell>
-                  <Badge
-                    variant={
-                      job.status === "active"
-                        ? "success"
-                        : job.status === "inactive"
-                          ? "warning"
-                          : "error"
-                    }
-                  >
-                    {job.status}
+                  <Badge variant={getStatusBadgeVariant(application.status)}>
+                    {formatStatus(application.status)}
                   </Badge>
                 </TableCell>
-                <TableCell>{job.jobType || "-"}</TableCell>
-                <TableCell>{job.jobCategory || "-"}</TableCell>
                 <TableCell>
-                  {job.createdAt
-                    ? new Date(job.createdAt).toLocaleDateString()
+                  <Badge
+                    variant={getProgressBadgeVariant(application.progress)}
+                  >
+                    {formatProgress(application.progress)}
+                  </Badge>
+                </TableCell>
+                <TableCell>
+                  {application.submittedAt
+                    ? new Date(application.submittedAt).toLocaleDateString()
                     : "-"}
                 </TableCell>
                 <TableCell className="flex items-center gap-2">
                   <Link
-                    href={`/admin/app/jobs/v/${job.id}`}
+                    href={`/admin/app/submissions/v/${application.applicationPublicId}`}
                     className="text-blue-600 hover:underline text-xs"
                   >
                     View
                   </Link>
-                  <Link
-                    href={`/admin/app/jobs/v/${job.id}/edit`}
-                    className="text-blue-600 hover:underline text-xs"
-                  >
-                    Edit
-                  </Link>
-                  {job.status === "active" && (
-                    <Link
-                      href={`/jobs/v/${job.slug}`}
-                      className="text-blue-600 hover:underline text-xs"
-                      target="_blank"
-                    >
-                      Public View
-                    </Link>
-                  )}
                 </TableCell>
               </TableRow>
             ))

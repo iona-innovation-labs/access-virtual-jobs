@@ -24,7 +24,7 @@ import type {
   Progress,
 } from "@/types/jobs";
 import { log } from "@/lib/logs";
-import { eq, and, ilike, desc, count } from "drizzle-orm";
+import { eq, and, ilike, desc, count, or, asc } from "drizzle-orm";
 import { jobApplications } from "@/database/schema/job-applications";
 import { jobs } from "@/database/schema/jobs";
 import { db } from "@/database";
@@ -728,11 +728,15 @@ export const getAdminJobApplications = async ({
   limit = 20,
   status,
   search,
+  sortBy = "submittedAt",
+  sortDesc = true,
 }: {
   page?: number;
   limit?: number;
   status?: string;
   search?: string;
+  sortBy?: string;
+  sortDesc?: boolean;
 }): Promise<{
   success: boolean;
   items: IJobApplication[];
@@ -748,16 +752,50 @@ export const getAdminJobApplications = async ({
   try {
     const offset = (page - 1) * limit;
     const filters: any[] = [];
-    if (status) filters.push(eq(jobApplications.status, status));
-    if (search) filters.push(ilike(jobs.title, `%${search}%`));
+    if (status && status !== "all")
+      filters.push(eq(jobApplications.status, status));
+    if (search) {
+      // Import users table
+      const { users } = await import("@/database/schema/users");
+      // Search in job title, user name, or application public ID
+      filters.push(
+        or(
+          ilike(jobs.title, `%${search}%`),
+          ilike(users.firstName, `%${search}%`),
+          ilike(users.lastName, `%${search}%`),
+          ilike(users.username, `%${search}%`),
+          ilike(jobApplications.applicationPublicId, `%${search}%`)
+        )
+      );
+    }
 
-    // Join jobApplications with jobs
+    // Import users table
+    const { users } = await import("@/database/schema/users");
+
+    // Determine sort order
+    const sortColumn =
+      sortBy === "submittedAt"
+        ? jobApplications.submittedAt
+        : sortBy === "status"
+          ? jobApplications.status
+          : sortBy === "progress"
+            ? jobApplications.progress
+            : jobApplications.submittedAt;
+
+    const orderBy = sortDesc ? desc(sortColumn) : asc(sortColumn);
+
+    // Join jobApplications with jobs and users
     const query = db
-      .select({ jobApplication: jobApplications, job: jobs })
+      .select({
+        jobApplication: jobApplications,
+        job: jobs,
+        user: users,
+      })
       .from(jobApplications)
       .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+      .leftJoin(users, eq(jobApplications.userId, users.id))
       .where(filters.length ? and(...filters) : undefined)
-      .orderBy(desc(jobApplications.submittedAt))
+      .orderBy(orderBy)
       .limit(limit)
       .offset(offset);
 
@@ -767,6 +805,7 @@ export const getAdminJobApplications = async ({
         .select({ count: count() })
         .from(jobApplications)
         .leftJoin(jobs, eq(jobApplications.jobId, jobs.id))
+        .leftJoin(users, eq(jobApplications.userId, users.id))
         .where(filters.length ? and(...filters) : undefined),
     ]);
     const totalCount = Number(totalCountRows[0]?.count || 0);
@@ -775,6 +814,7 @@ export const getAdminJobApplications = async ({
     const items: IJobApplication[] = applications.map((row: any) => {
       const app = row.jobApplication;
       const job = row.job;
+      const user = row.user;
       return {
         id: app.id,
         applicationPublicId: app.applicationPublicId,
@@ -806,6 +846,15 @@ export const getAdminJobApplications = async ({
               updatedAt: job.updatedAt,
               numberOfTalents: job.numberOfTalents,
               tags: job.tags,
+            }
+          : undefined,
+        user: user
+          ? {
+              id: user.id,
+              username: user.username,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
             }
           : undefined,
       };

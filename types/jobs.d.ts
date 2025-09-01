@@ -1,8 +1,4 @@
-import {
-  JOB_SEARCH_STATUS,
-  PUBLIC_JOB_CATEGORIES,
-  PUBLIC_JOB_TYPES,
-} from "@/lib/constants";
+import { PUBLIC_JOB_CATEGORIES, PUBLIC_JOB_TYPES } from "@/lib/constants";
 
 export interface Position {
   title?: string;
@@ -154,8 +150,15 @@ export interface IJobApplication {
   userId: string;
   profileId: number;
   jobId: number; // Now references jobs.id
-  status: JOB_SEARCH_STATUS;
+  status: string; // Changed from JOB_SEARCH_STATUS to string for flexibility
   progress: Progress;
   submittedAt: Date;
   job?: IJobListing; // Optional populated job details
+  user?: {
+    id: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  }; // Optional populated user details
 }

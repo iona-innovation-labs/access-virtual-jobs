@@ -1,130 +1,84 @@
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "@/components/ui/table";
 import { Metadata } from "next";
+import { getAdminJobApplications } from "@/lib/api/jobs";
+import AdminSubmissionsListClient from "@/components/admin/components/admin-submissions-list-client";
+import { ISearchParams } from "@/types/jobs";
 
 export const metadata: Metadata = {
-  title: "Admin Job Applications",
-  description: "View all job applications submitted by applicants",
+  title: "Admin - Job Applications",
+  description: "View and manage all job applications submitted by applicants.",
 };
 
-interface IJobApplication {
-  id: number;
-  applicationPublicId: string;
-  userId: string;
-  profileId: number;
-  jobId: number;
-  status: string;
-  progress: string;
-  submittedAt: string;
-  job?: {
-    title?: string;
-  };
+function getStringParam(
+  param: string | string[] | undefined,
+  fallback = ""
+): string {
+  if (typeof param === "string") return param;
+  if (Array.isArray(param)) return param[0] || fallback;
+  return fallback;
 }
 
-interface FetchJobApplicationsResponse {
-  success: boolean;
-  items: IJobApplication[];
-  total: number;
-  all: number;
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    hasNext: boolean;
-    hasPrev: boolean;
-  };
-}
+function getQueryParams(searchParams: ISearchParams) {
+  const urlSearchParams = new URLSearchParams();
+  const status = getStringParam(searchParams.status, "");
+  const search = getStringParam(searchParams.search, "");
+  const sortBy = getStringParam(searchParams.sortBy, "submittedAt");
+  const sortDescRaw = getStringParam(searchParams.sortDesc, "true");
+  const sortDesc = sortDescRaw !== "false";
+  const pageRaw = getStringParam(searchParams.page, "1");
+  const page = parseInt(pageRaw, 10) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
 
-async function fetchJobApplications(
-  page: number = 1,
-  limit: number = 20
-): Promise<FetchJobApplicationsResponse> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL || ""}/api/admin/submissions?page=${page}&limit=${limit}`,
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error("Failed to fetch job applications");
-  return res.json();
+  if (status) {
+    urlSearchParams.set("status", status);
+  }
+  if (search) {
+    urlSearchParams.set("search", search);
+  }
+  if (sortBy) {
+    urlSearchParams.set("sortBy", sortBy);
+  }
+  urlSearchParams.set("sortDesc", sortDesc ? "true" : "false");
+  urlSearchParams.set("limit", limit.toString());
+  urlSearchParams.set("offset", offset.toString());
+  return { urlSearchParams, page, limit, status, search, sortBy, sortDesc };
 }
 
 export default async function AdminJobApplicationsPage({
   searchParams,
 }: {
-  searchParams?: Promise<{ page?: string }>;
+  searchParams: Promise<ISearchParams>;
 }) {
-  const page = Number((await searchParams)?.page || 1);
-  const limit = 20;
-  const data = await fetchJobApplications(page, limit);
+  const { page, limit, status, search, sortBy, sortDesc } = getQueryParams(
+    await searchParams
+  );
+
+  const applicationsData = await getAdminJobApplications({
+    status,
+    search,
+    sortBy,
+    sortDesc,
+    page,
+    limit,
+  });
+  const applications = applicationsData?.items || [];
+  const total = applicationsData?.all || 0;
 
   return (
-    <div className="container mx-auto max-w-7xl py-8">
-      <h1 className="text-2xl font-bold mb-6">Job Applications</h1>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Application ID</TableHead>
-            <TableHead>Job Title</TableHead>
-            <TableHead>Applicant User ID</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Progress</TableHead>
-            <TableHead>Submitted At</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.items.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={6} className="text-center">
-                No job applications found.
-              </TableCell>
-            </TableRow>
-          ) : (
-            data.items.map((app) => (
-              <TableRow key={app.id}>
-                <TableCell>{app.applicationPublicId}</TableCell>
-                <TableCell>{app.job?.title || "-"}</TableCell>
-                <TableCell>{app.userId}</TableCell>
-                <TableCell>{app.status}</TableCell>
-                <TableCell>{app.progress}</TableCell>
-                <TableCell>
-                  {new Date(app.submittedAt).toLocaleString()}
-                </TableCell>
-              </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
-      {/* <div className="flex justify-between items-center mt-6">
-        <button
-          className="px-4 py-2 bg-muted rounded disabled:opacity-50"
-          disabled={!data.pagination.hasPrev}
-          onClick={() => {
-            if (data.pagination.hasPrev) {
-              window.location.search = `?page=${data.pagination.currentPage - 1}`;
-            }
-          }}
-        >
-          Previous
-        </button>
-        <span>
-          Page {data.pagination.currentPage} of {data.pagination.totalPages}
-        </span>
-        <button
-          className="px-4 py-2 bg-muted rounded disabled:opacity-50"
-          disabled={!data.pagination.hasNext}
-          onClick={() => {
-            if (data.pagination.hasNext) {
-              window.location.search = `?page=${data.pagination.currentPage + 1}`;
-            }
-          }}
-        >
-          Next
-        </button>
-      </div> */}
-    </div>
+    <main className="w-full mx-auto p-8 bg-white min-h-screen">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Job Applications</h1>
+      </div>
+      <AdminSubmissionsListClient
+        initialApplications={applications}
+        initialTotal={total}
+        initialStatus={status}
+        initialSearch={search}
+        initialSortBy={sortBy}
+        initialSortDesc={sortDesc}
+        initialPage={page}
+        pageSize={limit}
+      />
+    </main>
   );
 }
