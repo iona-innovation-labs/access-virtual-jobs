@@ -83,9 +83,7 @@ interface SlackMessage {
 export async function sendSlackNotification(
   data: SlackNotificationData
 ): Promise<boolean> {
-  const webhookUrl =
-    process.env.SLACK_WEBHOOK_URL ??
-    "https://hooks.slack.com/services/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";
+  const webhookUrl = process.env.NEXT_SLACK_WEBHOOK_URL;
 
   if (!webhookUrl) {
     console.warn("SLACK_WEBHOOK_URL environment variable is not set");
